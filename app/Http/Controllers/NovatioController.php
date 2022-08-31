@@ -129,12 +129,73 @@ class NovatioController extends Controller
         ->get();
         }
 
-        
-        
-        
-        return [
-            'data' => $user
-        ];
+        if($request->user == 'all')
+        {
+            return [
+                'data' => $user,
+                'user' => 'no'
+            ];
+        }
+        if($request->user !== 'all')
+        {
+            $category = DB::table('tg_category')->get();
+            $medicine = DB::table('tg_medicine')->get();
+            $oneuser = DB::table('tg_productssold')
+            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+            ->whereDate('tg_productssold.created_at','>=',$date_begin)
+                    ->whereDate('tg_productssold.created_at','<=',$date_end)
+                    ->where('tg_user.id','>=',$user_begin)
+                    ->where('tg_user.id','<=',$user_end)
+                    ->where('tg_category.id','>=',$cate_begin)
+                    ->where('tg_category.id','<=',$cate_end)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+            ->join('tg_category','tg_category.id','tg_medicine.category_id')
+            ->get();
+            $sum = 0;
+            $catesum = 0;
+            $medisum = 0;
+            $number = 0;
+            $cateory = [];
+            $medic = [];
+            foreach ($oneuser as $key => $one) {
+                $sum = $sum + ($one->m_price * $one->m_number);
+
+            }
+            foreach ($category as $ckey => $cate) {
+                foreach ($oneuser as $key => $one) {
+
+                    if($cate->id == $one->c_id)
+                    {
+                        $catesum = $catesum + ($one->m_price * $one->m_number);
+                        $cateory[$ckey] = array('price' => $catesum, 'name' => $cate->name);
+                    }
+                }
+                    $catesum = 0;
+            }
+            foreach ($medicine as $mkey => $med) {
+                foreach ($oneuser as $key => $one) {
+
+                    if($med->id == $one->m_id)
+                    {
+                        $medisum = $medisum + ($one->m_price * $one->m_number);
+                        $number = $number + $one->m_number;
+
+                        $medic[$mkey] = array('price' => $medisum,'number' => $number, 'name' => $med->name);
+                    }
+                }
+                    $medisum = 0;
+                    $number = 0;
+
+            }
+            return [
+                'data' => $user,
+                'sum' => $sum,
+                'cateory' => $cateory,
+                'medic' => $medic,
+            ];
+        }
     }
     public function regionChart(Request $request)
     {

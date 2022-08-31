@@ -76,136 +76,164 @@
 <body>
     <div class="main-wrapper">
         <div class="content container-fluid mt-1" style="position:fixed;z-index:1000;">
-        <div class="row">
-            <div class="col-sm-12">
-               <div class="card flex-fill">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card flex-fill">
 
-                  <div style="border-bottom-radius:30px !important;">
-                        <div class="d-flex justify-content-between align-items-center">
-                           <div class="btn-group ml-5">
-                           <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
+                        <div style="border-bottom-radius:30px !important;">
+                           <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group ml-5">
+                                <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
 
-                            </div>
-                            <div class="btn-group mr-2 ml-auto">
-                              <div class="row">
-                                 <div class="col-md-12" align="center">
-                                          Viloyat
-                                 </div>
-                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
-                                    <div class="dropdown-menu" style="left:150px !important">
-                                    <a href="#" onclick="ageChart('Hammasi','all','all')" class="dropdown-item" id="tgregion"> Hammasi </a>
-                                       @foreach($regions as $region)
-                                       <a href="#" onclick="ageChart(`{{$region->name}}`,`{{$region->id}}`,'all')" class="dropdown-item" id="tgregion"> {{$region->name}} </a>
-                                       @endforeach
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="btn-group mr-2">
-                              <div class="row">
+                                </div>
+                                <div class="btn-group mr-2 ml-auto">
+                                 <div class="row">
                                     <div class="col-md-12" align="center">
-                                             Sana
+                                             Viloyat
                                     </div>
                                     <div class="col-md-12">
-                                       <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi </button>
-                                       <div class="dropdown-menu timeclass">
-                                       <a href="#" onclick="timeElchi('a_all')" class="dropdown-item" id="a_all">Hammasi </a>
-
-                                          <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
-                                          <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
-                                          <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
-                                          <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
-                                          <input type="date" class="form-control" id="date-input" onchange="getDate()">
-                                       </div>
-                                    </div>
-                              </div>
-                           </div>
-                           <div class="btn-group mr-2">
-                                <div class="row">
-                                 <div class="col-md-12" align="center">
-                                          Mahsulot
-                                 </div>
-                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button3" title="all" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
-                                    <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
-                                    
-                                    <a href="#" onclick="medicine('Hammasi','all')" class="dropdown-item"> Hammasi </a>
-                                       @foreach($category as $cat)
-                                       <a href="#" style="color:red;font-size:20px" onclick="medicineCat(`{{$cat->name}}`,`{{$cat->id}}`,'all')" class="dropdown-item"><b> {{$cat->name}} </b></a>
-
-                                        @foreach($medicine as $med)
-                                          @if($cat->id == $med->category_id)
-                                             <a href="#" style="margin-left:5%;" onclick="medicine(`{{$med->name}}`,`{{$med->id}}`,'all')" class="dropdown-item"> {{$med->name}} </a>
-                                          @endif
-                                        @endforeach
-                                       @endforeach
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="btn-group mr-2">
-                              <div class="row">
-                                    <div class="col-md-12" align="center">
-                                             Elchi
-                                    </div>
-                                    <div class="col-md-12">
-                                       <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button4" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
-                                       <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
-                                          <a href="#" onclick="users('Hammasi','all')" class="dropdown-item"> Hammasi </a>
-                                          @foreach($users as $user)
-                                          <a href="#" onclick="users(`{{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item"> {{$user->last_name}} {{$user->first_name}} </a>
+                                       <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
+                                       <div class="dropdown-menu" style="left:150px !important">
+                                       <a href="#" onclick="ageChart('Hammasi','all','all')" class="dropdown-item" id="tgregion"> Hammasi </a>
+                                          @foreach($regions as $region)
+                                          <a href="#" onclick="ageChart(`{{$region->name}}`,`{{$region->id}}`,'all')" class="dropdown-item" id="tgregion"> {{$region->name}} </a>
                                           @endforeach
                                        </div>
                                     </div>
                                  </div>
-                            </div>
-                           <div class="btn-group" style="margin-right:30px !important;margin-top:20px;">
-                              <div class="row">
-                                    <div class="col-md-12" align="center">
-                                       
+                                </div>
+                                <div class="btn-group mr-2">
+                                     <div class="row">
+                                       <div class="col-md-12" align="center">
+                                                Sana
+                                       </div>
+                                       <div class="col-md-12">
+                                          <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi </button>
+                                          <div class="dropdown-menu timeclass">
+                                          <a href="#" onclick="timeElchi('a_all')" class="dropdown-item" id="a_all">Hammasi </a>
+
+                                             <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
+                                             <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
+                                             <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
+                                             <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
+                                             <input type="date" class="form-control" id="date-input" onchange="getDate()">
+                                          </div>
+                                       </div>
                                     </div>
-                                    <div class="col-md-12">
-                                       <button type="button" class="btn btn-block btn-outline-primary" onclick="refresh()"> Tozalash</button>
-                                       
+                                </div>
+                                <div class="btn-group mr-2">
+                                    <div class="row">
+                                        <div class="col-md-12" align="center">
+                                                Mahsulot
+                                        </div>
+                                        <div class="col-md-12">
+                                        <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button3" title="all" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
+                                        <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
+                                        
+                                        <a href="#" onclick="medicine('Hammasi','all')" class="dropdown-item"> Hammasi </a>
+                                            @foreach($category as $cat)
+                                            <a href="#" style="color:red;font-size:20px" onclick="medicineCat(`{{$cat->name}}`,`{{$cat->id}}`,'all')" class="dropdown-item"><b> {{$cat->name}} </b></a>
+
+                                            @foreach($medicine as $med)
+                                                @if($cat->id == $med->category_id)
+                                                    <a href="#" style="margin-left:5%;" onclick="medicine(`{{$med->name}}`,`{{$med->id}}`,'all')" class="dropdown-item"> {{$med->name}} </a>
+                                                @endif
+                                            @endforeach
+                                            @endforeach
+                                        </div>
+                                        </div>
                                     </div>
-                                 </div>
-                            </div>
+                                </div>
+                                <div class="btn-group mr-2">
+                                    <div class="row">
+                                       <div class="col-md-12" align="center">
+                                                Elchi
+                                       </div>
+                                       <div class="col-md-12">
+                                          <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button4" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
+                                          <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
+                                             <a href="#" onclick="users('Hammasi','all')" class="dropdown-item"> Hammasi </a>
+                                             @foreach($users as $user)
+                                             <a href="#" onclick="users(`{{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item"> {{$user->last_name}} {{$user->first_name}} </a>
+                                             @endforeach
+                                          </div>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="btn-group" style="margin-right:30px !important;margin-top:20px;">
+                                    <div class="row">
+                                       <div class="col-md-12" align="center">
+                                          
+                                       </div>
+                                       <div class="col-md-12">
+                                          <button type="button" class="btn btn-block btn-outline-primary" onclick="refresh()"> Tozalash</button>
+                                          
+                                       </div>
+                                    </div>
+                                </div>
+                           </div>
                         </div>
-                  </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
         
         <div class="content container-fluid mt-1">
-        <div class="row">
-            <div class="col-sm-12" >
-               
-                  <div class="card" style="margin-top:130px;">
-                     <div class="card-body">
-                        <div class="table-responsive">
-                        <table class="table table-stripped">
-                           <thead>
-                              <tr id="">
-                              <th>FIO </th>
-                              <th>Mahsulot </th>
-                              <th>Order </th>
-                              <th>Soni </th>
-                              <th>Viloyat </th>
-                              <th>Sana </th>
-                              <th>Soat </th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                           </tbody>
-                        </table>
+            <div class="row">
+                    <div div class="col-sm-12" >
+                
+                    <div class="card" style="margin-top:130px;">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-stripped">
+                                    <thead>
+                                        <tr id="">
+                                        <th>FIO </th>
+                                        <th>Mahsulot </th>
+                                        <th>Order </th>
+                                        <th>Soni </th>
+                                        <th>Viloyat </th>
+                                        <th>Sana </th>
+                                        <th>Soat </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
+                        <div class="row">
+                           <div class="col-lg-4" id="mainallcat" style="display:none;">
+                              <div class="card flex-fill">
+                                 <div class="card-header">
+                                    <h4 class="card-title" id="allcat"></h4>
+                                 </div>
+                                 <div class="card-body">
+                                    <ul class="activity-feed" id="allul">
+
+                                       
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-4" id="mainallpro" style="display:none;">
+                              <div class="card flex-fill">
+                                 <div class="card-header">
+                                    <h4 class="card-title" id="allpro"></h4>
+                                 </div>
+                                 <div class="card-body">
+                                    <ul class="activity-feed" id="proil">
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                           
+                        </div>
+                    </div>
+                    </div>
             </div>
         </div>
+    </div>
 </body>
 
 
@@ -295,6 +323,56 @@
                                  '</tr>'); 
                $('table> tbody:last').append($row);
                });
+
+               if(response.user == 'no')
+               {
+                  $('#mainallcat').css('display','none');
+                  $('#mainallpro').css('display','none');
+
+
+               }
+
+               if(response.sum)
+               {
+                  $('.delil').remove();
+                  $('#mainallcat').css('display','');
+                  $('#allcat').text('Hammasi');
+                  var $row123 = $('<li class="feed-item delil">'+
+                                    '<div class="feed-date">Umumiy summa</div>'+
+                                    '<span class="feed-text">'+ response.sum +'</span>'+
+                                 '</li>');
+               $('#allul').append($row123);
+
+                  $.each(response.cateory, function(index, value){
+                     var $row123 = $('<li class="feed-item delil">'+
+                                    '<div class="feed-date">'+ value.name + '</div>'+
+                                    '<span class="feed-text">'+ value.price +'</span>'+
+                                 '</li>'); 
+               $('#allul').append($row123);
+
+                  });
+
+
+
+               }
+               if(response.medic)
+               {
+                  $('.delilil').remove();
+                  $('#mainallpro').css('display','');
+                  $('#allpro').text('Mahsulotlar');
+
+                  $.each(response.medic, function(index, value){
+                     var $row123 = $('<li class="feed-item delilil">'+
+                                    '<div class="feed-date">'+ value.name + ' ( '+ value.number +' )</div>'+
+                                    '<span class="feed-text">'+ value.price +'</span>'+
+                                 '</li>'); 
+               $('#proil').append($row123);
+
+                  });
+
+
+
+               }
                }
             },
             error: function(error) {
