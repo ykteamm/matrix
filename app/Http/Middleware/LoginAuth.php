@@ -18,13 +18,13 @@ class LoginAuth
     public function handle(Request $request, Closure $next)
     {
 
-        // if(Session::has('time'))
-        // {
-        //     if((time() - Session::get('time')) > 100)
-        // {
-        //     Session::remove('user');
-        // }
-        // }
+        if(Session::has('time'))
+        {
+            if((time() - Session::get('time')) > 7200)
+        {
+            Session::remove('user');
+        }
+        }
         
         if (Session::has('user')) {
             return $next($request);

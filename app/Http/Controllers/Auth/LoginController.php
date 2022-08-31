@@ -45,27 +45,30 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-        // $request->validate([
-        //     'login' => 'required',
-        //     'password' => 'required|min:4',
-        // ]);
-        // $user = DB::table('tg_user')->where('username',$request->login)->first();
-        // if(isset($user->pr))
-        // {
-        //     if($user->pr == $request->password)
-        //     {
-        //     Session::put('user', $user);
-        //     Session::put('time', time());
-        //     return redirect()->route('blackjack');
+        // $user = DB::table('tg_user')->where('admin',true)->get();
+        // return $user;
+        $request->validate([
+            'login' => 'required',
+            'password' => 'required|min:4',
+        ]);
+        $user = DB::table('tg_user')->where('username',$request->login)
+        ->where('pr',$request->password)
+        ->where('admin',true)->exists();
+        // return $user;
 
-        //     }
-        //     else{
-        //         return redirect()->route('blackjack');
-        //     }
+        if($user)
+        {
+            Session::put('user', $user);
+            Session::put('time', time());
+            return redirect()->route('blackjack');
 
-        // }
-            Session::put('user', 21);
-        return redirect()->route('blackjack');
+        }
+        else{
+        return redirect()->back();
+
+        }
+        //     Session::put('user', 21);
+        // return redirect()->route('blackjack');
         
 
     }
