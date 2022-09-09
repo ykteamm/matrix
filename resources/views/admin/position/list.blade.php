@@ -51,12 +51,12 @@
                             <td>{{ $value->rol_name }}</td>
                             <td class="text-right">
                                 {{-- <a href="{{ route('patient.show',$value->id) }}" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-eye mr-1"></i></a> --}}
-                              @isset(Session::get('per')['rol_update'])
+                              {{-- @isset(Session::get('per')['rol_update']) --}}
                                 <a href="{{ route('position.edit',$value->id) }}" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-edit mr-1"></i></a>
-                              @endisset
-                              @isset(Session::get('per')['rol_delete'])
-                                <a href="{{ route('position.delete',$value->id)}}" class="btn btn-sm btn-white text-danger mr-2"><i class="far fa-trash-alt mr-1"></i></a>
-                              @endisset
+                              {{-- @endisset --}}
+                              {{-- @isset(Session::get('per')['rol_delete']) --}}
+                                {{-- <a href="{{ route('position.delete',$value->id)}}" class="btn btn-sm btn-white text-danger mr-2"><i class="far fa-trash-alt mr-1"></i></a> --}}
+                              {{-- @endisset --}}
                              </td>
                          </tr>
                           @endforeach

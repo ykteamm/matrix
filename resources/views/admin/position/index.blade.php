@@ -18,7 +18,7 @@
        </ul>
    </div>
    @endif
-    <div class="page-header">
+    {{-- <div class="page-header">
         <div class="row align-items-center">
             <div class="col-md-12">
                 <div class="d-flex align-items-center">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -45,7 +45,7 @@
                             <div class="form-group col-md-4">
                             </div>
                             <div class="form-group col-md-2">
-                                <label> All </label>
+                                <label> Hammasi </label>
                                 <input type="checkbox" style="width: 17px;height: 17px;" id="checkAll" class="form-control form-control-sm"/>
                             </div>
                             
@@ -54,11 +54,8 @@
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th> {{__('app.rol_n')}} </th>
-                                        <th style="text-align: center;"> {{__('app.create')}} </th>
-                                        <th style="text-align: center;"> {{__('app.read')}} </th>
-                                        <th style="text-align: center;"> {{__('app.update')}} </th>
-                                        <th style="text-align: center;"> {{__('app.delete')}} </th>
+                                        <th> Nomi </th>
+                                        <th style="text-align: center;"> Ruxsat </th>
 
                                     </tr>
                                 </thead>
@@ -67,10 +64,7 @@
                                     @foreach($positions as $key => $position)
                                     <tr>
                                         <td> {{ $position }} </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" type="checkbox" value="true" name="{{$key.'_create'}}" /> </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" type="checkbox" value="true" name="{{$key.'_read'}}" /> </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" type="checkbox" value="true" name="{{$key.'_update'}}" /> </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" type="checkbox" value="true" name="{{$key.'_delete'}}" /> </td>
+                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" type="checkbox" value="true" name="{{$key}}" /> </td>
                                     </tr>
                                     @endforeach
                                     @endisset

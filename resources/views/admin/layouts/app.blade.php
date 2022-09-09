@@ -14,9 +14,22 @@
     {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     <!-- Fonts -->
-    @include('admin.partials.css');
+    @include('admin.partials.css')
     
-    
+    {{-- <style>
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc_disabled:after,
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc:after,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc_disabled:after,
+        table.dataTable thead .sorting_desc_disabled:before {
+        bottom: .5em;
+        }
+    </style> --}}
 </head>
 <body>
     <div class="main-wrapper">
@@ -30,22 +43,25 @@
         </ul>
     </div>
     @endif --}}
-        @include('admin.components.header');
-        @include('admin.components.sidebar');
-        <div class="page-wrapper">
+        {{-- @include('admin.components.header') --}}
+        @include('admin.components.sidebar')
+        <div class="page-wrapper" style="padding-top: 0px !important">
         @yield('admin_content')
         </div>
     </div>
     
 </body>
 
-    @include('admin.partials.js');
+    @include('admin.partials.js')
     @yield('admin_script')
 
 
 
 <script>
-
+$(document).ready(function () {
+  $('#dtBasicExample').DataTable();
+  $('.dataTables_length').addClass('bs-select');
+});
         $("#hospital_name").change(function(){
             var hospital = $("#hospital_name").val();
             var _token   = $('meta[name="csrf-token"]').attr('content');

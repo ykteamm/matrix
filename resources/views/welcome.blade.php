@@ -1,287 +1,325 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
+@section('admin_content')
+<div class="content container-fluid mt-1">
+   <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
+      <div class="col-xl-12 d-flex">
+      <div class="card flex-fill">
+      <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+      <h5 class="card-title">                  <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+ </h5>
+      {{-- <div class="dropdown" data-toggle="dropdown">
+      <a href="javascript:void(0);" class="btn btn-white btn-sm dropdown-toggle" role="button" data-toggle="dropdown">
+      This Week
+      </a>
+      <div class="dropdown-menu dropdown-menu-right">
+      <a href="javascript:void(0);" class="dropdown-item">Today </a>
+      <a href="javascript:void(0);" class="dropdown-item">This Week </a>
+      <a href="javascript:void(0);" class="dropdown-item">This Month </a>
+      </div>
+      </div> --}}
+      <div class="btn-group">
+         <div class="row">
+               <div class="col-md-12" align="center">
+                        Sana
+               </div>
+               <div class="col-md-12">
+                  <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                  <div class="dropdown-menu timeclass">
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'today'])}}" class="dropdown-item">Bugun</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}" class="dropdown-item">Hafta</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'month'])}}" class="dropdown-item">Oy</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'year'])}}" class="dropdown-item">Yil</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
 
-    @section('content')
-    <div class="content container-fluid">
-               <div class="row">
-                  <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                     <div class="card detail-box1 details-box">
-                        <div class="card-body">
-                           <div class="dash-contetnt">
-                              <div class="mb-3">
-                                 <img src="assets/img/icons/people.png" alt="" width="26" />
-                              </div>
-                              <h4 class="text-white">{{__('app.all_p')}}</h4>
-                              @isset($all_patient)
-                              <h2 class="text-white"> {{ $all_patient }} </h2>
-                              @endisset
-                              {{-- <div class="growth-indicator">
-                                 <span class="text-white"><i class="fas fa-angle-double-up mr-1"></i> (14.25%) </span>
-                              </div> --}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                     <div class="card detail-box2 details-box">
-                        <div class="card-body">
-                           <div class="dash-contetnt">
-                              <div class="mb-3">
-                                 <img src="assets/img/icons/hospital-bed.svg" alt="" width="26" />
-                              </div>
-                              <h4 class="text-white">{{__('app.all_chkb')}} </h4>
-                              @isset($all_chkb)
-                              <h2 class="text-white"> {{ $all_chkb }} </h2>
-                              @endisset
-                              {{-- <div class="growth-indicator">
-                                 <span class="text-white"><i class="fas fa-angle-double-down mr-1"></i> (4.78%) </span>
-                              </div> --}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                     <div class="card detail-box3 details-box">
-                        <div class="card-body">
-                           <div class="dash-contetnt">
-                              <div class="mb-3">
-                                 <img src="assets/img/icons/happiness.png" alt="" width="26" />
-                              </div>
-                              <h4 class="text-white">{{__('app.all_no_dead_chkb_t')}} </h4>
-                              @isset($all_true)
-                              <h2 class="text-white"> {{ $all_true }} </h2>
-                              @endisset
-                              {{-- <div class="growth-indicator">
-                                 <span class="text-white"><i class="fas fa-angle-double-up mr-1"></i> (18.32%) </span>
-                              </div> --}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                     <div class="card detail-box4 details-box">
-                        <div class="card-body">
-                           <div class="dash-contetnt">
-                              <div class="mb-3">
-                                 <img src="assets/img/icons/happiness.png" alt="" width="26" />
-                              </div>
-                              <h4 class="text-white">{{__('app.all_no_chkb')}} </h4>
-                              @isset($chkb_true)
-                              <h2 class="text-white"> {{ $chkb_false }} </h2>
-                              @endisset
-                              {{-- <div class="growth-indicator">
-                                 <span class="text-white"><i class="fas fa-angle-double-down mr-1"></i> (25.14%) </span>
-                              </div> --}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                     <div class="card detail-box5 details-box">
-                        <div class="card-body">
-                           <div class="dash-contetnt">
-                              <div class="mb-3">
-                                 <img src="assets/img/icons/operating.svg" alt="" width="26" />
-                              </div>
-                              <h4 class="text-white">{{__('app.all_dead_chkb_l_t')}}</h4>
-                              @isset($all_false)
-                              <h2 class="text-white"> {{ $all_false }} </h2>
-                              @endisset
-                              {{-- <div class="growth-indicator">
-                                 <span class="text-white"><i class="fas fa-angle-double-down mr-1"></i> (25.14%) </span>
-                              </div> --}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                     <div class="card detail-box6 details-box">
-                        <div class="card-body">
-                           <div class="dash-contetnt">
-                              <div class="mb-3">
-                                 <img src="assets/img/icons/operating.svg" alt="" width="26" />
-                              </div>
-                              <h4 class="text-white">{{__('app.all_dead_chkb')}} </h4>
-                              @isset($chkb_false)
-                              <h2 class="text-white"> {{ $chkb_false }} </h2>
-                              @endisset
-                              {{-- <div class="growth-indicator">
-                                 <span class="text-white"><i class="fas fa-angle-double-down mr-1"></i> (25.14%) </span>
-                              </div> --}}
-                           </div>
-                        </div>
-                     </div>
+                     {{-- <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
+
+                     <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
+                     <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
+                     <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
+                     <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a> --}}
+                     {{-- <input type="date" class="form-control" id="date-input" onchange="getDate()"> --}}
+                     <input type="text" name="datetimes" class="form-control"/>
                   </div>
                </div>
-               <div class="row calender-col">
-                  <div class="col-xl-4">
-                     <div class="card">
-                        <div class="card-header">
-                           <h4 class="card-title">Гендерная статистика</h4>
-                        </div>
-                        <div class="card-body">
-                           <div id="chart_pie"></div>
-                        </div>
+         </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    
+    </div>
+<div class="content container-fluid">
+    <div class="row">
+       <div class="col-12 col-xl-4 d-flex flex-wrap">
+          <div class="card">
+             <div class="card-body">
+                <div class="general-details text-center">
+                   <img src="http://138.68.81.139:8100/media/users/2.jpg" class="img-fluid" alt="" />
+                   <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
+                   {{-- <h6><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="0f697d6e616c4f6a776e627f636a216c6062">[email&#160;protected] </a></h6> --}}
+                   {{-- <a href="chat.html" class="btn-chat">{{$elchi->v_name}}</a> --}}
+                   {{-- <h4>{{$elchi->v_name}}</h4> --}}
+                   {{-- <h4>{{$elchi->d_name}}</h4> --}}
+
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="col-12 col-xl-8 d-flex flex-wrap">
+          <div class="card">
+             <div class="card-body pb-0">
+                <div class="patient-details d-block">
+                   <div class="details-list">
+                     <div>
+                        <h6>Username</h6>
+                        <span class="ml-auto">{{$elchi->username}} </span>
                      </div>
-                  </div>
-                  <div class="col-xl-8 d-flex">
-                     <div class="card flex-fill">
-                        <div class="card-header">
-                           <div class="d-flex justify-content-between align-items-center">
-                              <h5 class="card-title">Статистика возраста </h5>
-                              <div class="dropdown" data-toggle="dropdown">
-                                 {{-- <a href="javascript:void(0);" class="btn btn-white btn-sm dropdown-toggle" role="button" data-toggle="dropdown">
-                                 This Week
-                                 </a> --}}
-                                 <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" role="button" data-toggle="dropdown"> Все </button>
-                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#" onclick="ageChart('a_today')" class="dropdown-item" id="a_today"> Сегодня </a>
-                                    <a href="#" onclick="ageChart('a_week')" class="dropdown-item" id="a_week">Неделя </a>
-                                    <a href="#" onclick="ageChart('a_month')" class="dropdown-item" id="a_month">Месяц  </a>
-                                    <a href="#" onclick="ageChart('a_year')" class="dropdown-item" id="a_year">Год </a>
-                                    <a href="#" onclick="ageChart('a_all')" class="dropdown-item" id="a_all">Все </a>
-                                 </div>
-                                 {{-- <div class="form-group">
-                                    <select class="form-control">
-                                        <option>Default select1</option>
-                                        <option>Default select2</option>
-                                        <option>Default select3</option>
-                                    </select>
-                                </div> --}}
-                              </div>
-                           </div>
-                        </div>
-                        <div class="card-body">
-                           {{-- <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap">
-                              <div class="w-100 d-md-flex align-items-center mb-3 chart-count">
-                                 <div class="mr-3 text-center">
-                                    <span>Total Appointments </span>
-                                    <p class="h4 text-primary">584 </p>
-                                 </div>
-                                 <div class="mr-3 text-center">
-                                    <span>Old Patients </span>
-                                    <p class="h4 text-success">320 </p>
-                                 </div>
-                                 <div class="mr-3 text-center">
-                                    <span>New Patients </span>
-                                    <p class="h4 text-warning">264 </p>
-                                 </div>
-                              </div>
-                           </div> --}}
-                           <div id="disp_none" style="display: none"></div>
-                           <div id="chart_age_2"></div>
-                           <div id="chart_age"></div>
-                        </div>
+                      <div>
+                         <h6>Telefon raqami</h6>
+                         <span class="ml-auto">{{$elchi->phone_number}} </span>
+                      </div>
+                      <div>
+                        <h6>Lavozimi</h6>
+                        <span class="ml-auto">{{$elchi->lv}} </span>
                      </div>
-                  </div>
+                           {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
+
+                      <div>
+                         <h6>Tug'ilgan sanasi</h6>
+                         <span class="ml-auto">{{date('d.m.Y',(strtotime ( $elchi->birthday) ))}}</span>
+                      </div>
+                      <div>
+                        <h6>Yoshi</h6>
+                        <span class="ml-auto">{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $elchi->birthday) ))}}</span>
+                     </div>
+
+                      
+                      <div>
+                         <h6>Viloyat</h6>
+                         <span class="ml-auto">{{$elchi->v_name}} </span>
+                      </div>
+                      <div>
+                        <h6>Tuman</h6>
+                        <span class="ml-auto">{{$elchi->d_name}} </span>
+                     </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap" onclick="tabNone('solid-tab1')"
+      onmouseover="$(this)
+       .css('cursor','pointer')"  
+      >
+         <div class="card detail-box5">
+            <div class="card-body">
+               <div class="dash-contetnt">
+                  <h2 style="color:#05f705;text-align:center;">Barchasi</h2>
+                  <h3 style="color:#ffffff;text-align:center;">{{ number_format($sum, 0, '', ' ')}} so'm</h3>
                </div>
-               <div class="row calender-col">
-                  <div class="col-xl-12 d-flex">
-                     <div class="card flex-fill">
-                        <div class="card-header">
-                           <div class="d-flex justify-content-between align-items-center">
-                              <h5 class="card-title"> Статистика исход </h5>
-                           </div>
-                        </div>
-                        <div class="card-body">
-                           {{-- <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap"> --}}
-                              {{-- <div class="w-100 d-md-flex align-items-center mb-3 chart-count"> --}}
-                                 <div class="row">
-                                    <div class="col-xl-4">
-                                        <div class="nav flex-column nav-pills text-center" style="margin-top:20%;font-size:19px;" role="tablist" aria-orientation="vertical">
-                                          {{-- <a class="nav-link cool-link active" id="v-pills-all-tab" data-toggle="pill" href="#v-pills-all" role="tab" aria-controls="v-pills-all" aria-selected="true"> Все </a> --}}
-                                            <a class="nav-link cool-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"> {{__('app.all_p')}} </a>
-                                            <a class="nav-link cool-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"> {{__('app.all_dead')}} </a>
-                                            <a class="nav-link cool-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"> {{__('app.all_no_dead')}} </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-8">
-                                        <div class="tab-content">
-                                           {{-- <div class="tab-pane fade show active" id="v-pills-all" role="tabpanel" aria-labelledby="v-pills-all-tab">
-                                             <div id="all_3"></div>
-                                            </div> --}}
-                                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                             <div id="all_chart"></div>
-                                            </div>
-                                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                             <div id="all_dead"></div>
-                                            </div>
-                                            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                             <div id="all_no_dead"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {{-- </div> --}}
-                              </div>
-                           {{-- </div> --}}
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               {{-- <form class="needs-validation" novalidate="">
-                  <div class="form-row">
-                      <div class="col-md-4 mb-3">
-                          <label for="validationCustom01">First name </label>
-                          <input type="text" class="form-control" id="validationCustom01" placeholder="First name" value="Mark" required="">
-                          <div class="valid-feedback">
-                             Looks good!
-                          </div>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                          <label for="validationCustom02">Last name </label>
-                          <input type="text" class="form-control" id="validationCustom02" placeholder="Last name" value="Otto" required="">
-                          <div class="valid-feedback">
-                             Looks good!
-                          </div>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                          <label for="validationCustomUsername">Username </label>
-                          <div class="input-group">
-                              <div class="input-group-prepend">
-                                  <span class="input-group-text" id="inputGroupPrepend">@ </span>
-                              </div>
-                              <input type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required="">
-                              <div class="invalid-feedback">
-                                 ______ choose a username.
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="form-row">
-                      <div class="col-md-6 mb-3">
-                          <label for="validationCustom03">City </label>
-                          <input type="text" class="form-control" id="validationCustom03" placeholder="City" required="">
-                          <div class="invalid-feedback">
-                             Please provide a valid ____.
-                          </div>
-                      </div>
-                      <div class="col-md-3 mb-3">
-                          <label for="validationCustom04">State </label>
-                          <input type="text" class="form-control" id="validationCustom04" placeholder="State" required="">
-                          <div class="invalid-feedback">
-                             Please provide a valid _____.
-                          </div>
-                      </div>
-                      <div class="col-md-3 mb-3">
-                          <label for="validationCustom05">Zip </label>
-                          <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" required="">
-                          <div class="invalid-feedback">
-                             Please provide a valid ___.
-                          </div>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required="">
-                          <label class="form-check-label" for="invalidCheck">
-                             Agree to terms and __________
-                          </label>
-                          <div class="invalid-feedback">
-                             You must agree before __________.
-                          </div>
-                      </div>
-                  </div>
-                  <button class="btn btn-primary" type="submit">Submit form </button>
-              </form> --}}
             </div>
-            
+         </div>
+      </div>
+      @php $i=2 @endphp
+
+      @foreach ($cateory as $key => $item)
+       <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap nav-link solid-tab{{$i}} dborder" onclick="tabNone('solid-tab{{$i}}')"
+       onmouseover="$(this)
+       .css('cursor','pointer')" 
+      style="border-bottom: 3px solid #3b3d83"
+
+       >
+         <div class="card detail-box1{{$i}}" >
+            <div class="card-body">
+               <div class="dash-contetnt">
+                  <h2 style="color:#05f705;text-align:center;">{{$item['name']}}</h2>
+                  <h3 style="color:#ffffff;text-align:center;">{{ number_format($item['price'], 0, '', ' ')}} so'm</h3>
+               </div>
+            </div>
+         </div>
+      </div>
+       
+       @php $i = $i + 1 @endphp
+      
+
+
+      @endforeach
+
+   </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+               <div class="card-body">
+                  <div class="tab-content pt-0">
+                    @php $i=2 @endphp
+                    <div class="tab-pane show active dnone" id="solid-tab1">
+                        <div class="tab-data">
+                            <div class="col-lg-12">
+                                <div class="card flex-fill">
+                                   <div class="card-body">
+                                      <div class="table-responsive">
+                                         <table class="table mb-0" id="dtBasicExample">
+                                            <thead>
+                                               <tr>
+                                                  <th>Mahsulot nomi</th>
+                                                  <th>Soni</th>
+                                                  <th>Summasi </th>
+                                                  {{-- <th class="text-right">Summary </th> --}}
+                                               </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $n = 0
+                                                @endphp
+                                            @foreach ($medic as $mkey => $mitem)
+                                                <tr>
+                                                    <td>{{$mitem['name']}} </td>
+                                                    <td>{{$mitem['number']}} </td>
+                                                    <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
+                                                    {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
+                                                 </tr>
+                                                 @php
+                                                     $n += $mitem['number']
+                                                 @endphp
+                                            @endforeach
+                                                 {{-- <tr>
+                                                    <td>Jami</td>
+                                                    <td>{{$n}} </td>
+                                                    <td>{{$sum}}</td>
+                                                 </tr> --}}
+                                            </tbody>
+                                         </table>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                        </div>
+                     </div>
+                    @foreach ($cateory as $key => $item)
+                     <div class="tab-pane dnone" id="solid-tab{{$i}}" style="display:none;">
+                        <div class="tab-data">
+                            <div class="col-lg-12">
+                                <div class="card flex-fill">
+                                   <div class="card-body">
+                                      <div class="table-responsive">
+                                         <table class="table mb-0">
+                                            <thead>
+                                               <tr>
+                                                  <th>Mahsulot nomi</th>
+                                                  <th>Soni</th>
+                                                  <th>Summasi </th>
+                                                  {{-- <th class="text-right">Summary </th> --}}
+                                               </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                $t = 0
+                                            @endphp
+                                            @foreach ($medic as $mkey => $mitem)
+                                                @if ($item['id'] == $mitem['cid'])
+                                                <tr>
+                                                    <td>{{$mitem['name']}} </td>
+                                                    <td>{{$mitem['number']}} </td>
+                                                    <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
+
+                                                    {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
+                                                 </tr>
+                                                 @php
+                                                 $t += $mitem['number']
+                                             @endphp
+                                                @endif
+                                               
+                                            @endforeach
+                                            {{-- <tr>
+                                                <td>Jami</td>
+                                                <td>{{$t}} </td>
+                                                <td>{{$item['price']}}</td>
+                                             </tr> --}}
+                                             @php
+                                                $t = 0
+                                            @endphp
+                                            </tbody>
+                                         </table>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                        </div>
+                     </div>
+                     @php $i = $i + 1 @endphp
+                    @endforeach
+                  </div>
+               </div>
+            </div>
+         </div>
+    </div>
+</div>
+@endsection
+@section('admin_script')
+   <script>
+
+      $(function() {
+  $('input[name="datetimes"]').daterangepicker({
+   //  timePicker: true,
+   //  startDate: moment().startOf('hour'),
+   //  endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'DD.MM.YY'
+    }
+  });
+  $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+      // $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  console.log(picker.startDate.format('YYYY-MM-DD'))
+  window.location = $(this).data("href");
+  var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
+var id = <?php echo json_encode($elchi->id); ?>;
+	var url = "{{ route('elchi',['id' => ':id','time' => ':tim']) }}";
+	url = url.replace(':tim', tim);
+	url = url.replace(':id', id);
+	location.href = url;
+
+  });
+});
+      function tabNone(tab)
+      {
+         $('.dnone').css('display','none')
+         $(`#${tab}`).css('display','block')
+
+         $('.dborder').css('border-top','none')
+       .css('border-left','none')
+       .css('border-right','none')
+       .css('border-bottom','3px solid #3b3d83');
+       
+         $(`.${tab}`).css('border-top','3px solid #3b3d83')
+       .css('border-left','3px solid #3b3d83')
+       .css('border-top-left-radius','30px')
+       .css('border-top-right-radius','30px')
+       .css('border-right','3px solid #3b3d83')
+       .css('border-bottom','none');
+      }
+       function getDate(){
+         var date = new Date($('#date-input').val());
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  if(month < 10)
+                           {
+                              var ddate = '0'+month
+                           }else{
+                              var ddate = month
+                           }
+                           var date1 = [year, ddate, day].join('-')
+                           // $("#age_button2").text(date1);
+         // $('#age_button2').click()
+         $('#aftertime').after(`<a href='{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}' class='dropdown-item'>Hammasi</a>`)
+
+         // region(date1);    
+
+      }
+   </script>
 @endsection

@@ -4530,6 +4530,18 @@ table.table-inbox tbody tr.checked {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c9364', endColorstr='#229549', GradientType=1)
 }
 
+.detail-box12 {
+	background: linear-gradient(to top, rgb(253 250 34) 0%, rgb(226 146 34) 30%, rgb(177 53 0) 100%);
+}
+.detail-box13 {
+	background: linear-gradient(to top, rgb(46 88 124) 0%, rgb(0 52 121) 30%, rgb(0 14 89) 100%);
+}
+.detail-box14 {
+	background: linear-gradient(to top, rgb(202 201 235) 0%, rgb(216 118 189) 30%, rgb(229 43 148) 100%);
+}
+.detail-box15 {
+	background: linear-gradient(to top, rgb(148 231 123) 0%, rgb(92 205 61) 30%, rgb(51 169 21) 100%);
+}
 .details-box:before {
 	content: "";
 	position: absolute;
@@ -5885,7 +5897,7 @@ input:checked+.slider:before {
 		white-space: nowrap
 	}
 	.dropdown-menu.show {
-		transform: translate3d(-150px, 60px, 0px)!important
+		transform: translate3d(15px, 32px, 0px)!important
 	}
 }
 

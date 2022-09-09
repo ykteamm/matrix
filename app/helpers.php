@@ -71,17 +71,12 @@ use Illuminate\Support\Facades\Request;
         function h_positions()
     {
         $h_positions = [
-            'hospital' => 'Больница',
-            'branch' => 'Филиал',
-            'rol' => 'Должность',
-            'user' => 'Пользователь',
-            'p' => 'Пациент',
-            'p_diagnos' => 'Пациент диагноз ',
-            'p_illnes' => 'Пациент осмотр больного ',
-            'p_ekg' => 'Пациент ЭКГ',
-            'p_exo' => 'Пациент ЭХО',
-            'p_treatment' => 'Пациент лечение ',
-            'exit' => 'Исход',
+            'dash' => 'Dashboard',
+            'filter' => 'Filter',
+            'elchi' => 'Elchi',
+            'User' => 'User',
+            'region' => 'Barcha viloyat',
+            'rol' => 'Rol',
         ];
         return $h_positions;
         

@@ -1,12 +1,11 @@
-<div class="header">
+<div class="header" style="background-color: #323584">
     <div class="header-left">
-       <a href="/home" class="logo">
-       {{-- <p>РОКС</p> --}}
-       <p style="font-size: 18px;">Регистр ОКС <img src="/assets/img/logo-small.png" alt="Logo" width="25" height="30"/></p>
+       <a href="/" class="logo">
+       <p style="font-size: 18px;"><img src="{{asset('nvt/logo2.png')}}" alt="Logo" width="100"/></p>
        
        </a>
-       <a href="/main" class="logo logo-small">
-       <img src="/assets/img/logo-small.png" alt="Logo" width="30" height="30" />
+       <a href="/" class="logo logo-small">
+       <img src="{{asset('nvt/logo2.png')}}" alt="Logo" width="130" />
        </a>
     </div>
     <a href="javascript:void(0);" id="toggle_btn">  <i class="fas fa-bars"></i>

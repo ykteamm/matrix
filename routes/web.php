@@ -50,8 +50,17 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::get('/',[HomeController::class,'index'])->name('blackjack');
     Route::get('/search',[HomeController::class,'filter']);
+Route::get('elchi/{id}/{time?}', [HomeController::class,'elchi'])->name('elchi');
+Route::get('elchi-list', [HomeController::class,'elchiList'])->name('elchi-list');
+Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
   
+#position
+Route::resource('position', PositionController::class);
+Route::get('position//{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
+Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
+Route::post('permission', [HomeController::class,'permission'])->name('permissions');
 
+#end-position
 
 });
 

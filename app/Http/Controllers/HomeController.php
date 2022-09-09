@@ -62,7 +62,7 @@ class HomeController extends Controller
 
         }
         arsort( $array);
-        return view('dashboard',compact('array'));
+        return view('index',compact('array'));
     }
 
     public function filter()
@@ -71,7 +71,148 @@ class HomeController extends Controller
         $medicine = DB::table('tg_medicine')->get();
         $category = DB::table('tg_category')->get();
         $users = DB::table('tg_user')->get();
-        return view('search',compact('regions','medicine','users','category'));
+        return view('filter',compact('regions','medicine','users','category'));
+    }
+    public function elchi($id,$time)
+    {
+        if ($time == 'today') {
+            $date_begin = today();
+            $date_end = today();
+            $dateText = 'Bugun';
+        }
+        elseif ($time == 'week') {
+            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( today()) ) ));
+            $date_end = today()->format('Y-m-d');
+            $dateText = 'Hafta';
+        }
+        elseif ($time == 'month') {
+            $date_begin = today()->format('Y-m-01');
+            $date_end = today()->format('Y-m-d');
+            $dateText = 'Oy';
+        }
+        elseif ($time == 'year') {
+            $date_begin = today()->format('Y-01-01');
+            $date_end = today()->format('Y-m-d');
+            $dateText = 'Yil';
+        }
+        elseif ($time == 'all') {
+            $date_begin = today()->format('1790-01-01');
+            $date_end = today()->format('Y-m-d');
+            $dateText = 'Hammasi';
+        }
+        else{
+            $date_begin = substr($time,0,10);
+            $date_end = substr($time,11);
+            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+
+        }  
+        // return  substr("$time",0,10);
+        $elchi = DB::table('tg_user')->where('tg_user.id',$id)
+        ->select('tg_specialty.name as lv','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->join('tg_district','tg_district.id','tg_user.district_id')
+        ->join('tg_specialty','tg_specialty.id','tg_user.specialty_id')
+        ->first();
+        // $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( today()) ) ));
+            // $date_end = today()->format('Y-m-d');
+            $category = DB::table('tg_category')->get();
+            $medicine = DB::table('tg_medicine')->get();
+            $oneuser = DB::table('tg_productssold')
+            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+            ->whereDate('tg_productssold.created_at','>=',$date_begin)
+            ->whereDate('tg_productssold.created_at','<=',$date_end)
+            ->where('tg_user.id',$id)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+            ->join('tg_category','tg_category.id','tg_medicine.category_id')
+            ->get();
+            $sum = 0;
+            $catesum = 0;
+            $medisum = 0;
+            $number = 0;
+            $cateory = [];
+            $medic = [];
+
+            foreach ($medicine as $mkey => $med) {
+                foreach ($oneuser as $key => $one) {
+
+                    if($med->id == $one->m_id)
+                    {
+                        $medisum = $medisum + ($one->m_price * $one->m_number);
+                        $number = $number + $one->m_number;
+
+                        $medic[$mkey] = array('price' => $medisum,'number' => $number, 'name' => $med->name,'cid'=>$one->c_id);
+                    }
+                }
+                    $medisum = 0;
+                    $number = 0;
+
+            }
+            foreach ($oneuser as $key => $one) {
+                $sum = $sum + ($one->m_price * $one->m_number);
+
+            }
+            foreach ($category as $ckey => $cate) {
+                foreach ($oneuser as $key => $one) {
+                    if($cate->id == $one->c_id)
+                    {
+                        $catesum = $catesum + ($one->m_price * $one->m_number);
+                        $cateory[$ckey] = array('price' => $catesum, 'name' => $cate->name,'id' => $cate->id );
+                    }else{
+
+                    }
+                }
+                    // $cateory[] = array('price' => 0, 'name' => $cate->name,'id' => $cate->id );
+
+                    $catesum = 0;
+
+            }
+           
+            if(count($cateory) == 0)
+            {
+                foreach ($category as $key => $value) {
+                    $cateory[] = array('price' => 0, 'name' => $value->name,'id' => $value->id );
+
+                }
+
+            }
+            // return count($category);
+            // return [
+            //     'data' => $user,
+            //     'sum' => $sum,
+            //     'cateory' => $cateory,
+            //     'medic' => $medic,
+            // ];
+        // return $elchi;
+        return view('welcome',compact('elchi','medic','cateory','category','sum','dateText'));
+        // return $id;
+    }
+    public function elchiList()
+    {
+        $elchi = DB::table('tg_user')
+        ->select('tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->join('tg_district','tg_district.id','tg_user.district_id')
+        ->get();
+        return view('elchi',compact('elchi'));
+    }
+    public function userList()
+    {
+        $elchi = DB::table('tg_user')
+        ->where('admin',true)
+        ->select('tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->join('tg_district','tg_district.id','tg_user.district_id')
+        ->get();
+
+        $posi = DB::table('positions')->get();
+        return view('user',compact('elchi','posi'));
+    }
+    public function permission(Request $request)
+    {
+        $update = DB::table('tg_user')->where('id',$request->user_id)->update(['rol_id' => $request->rol_id]);
+        return redirect()->back();
     }
     public function loginSite(Request $request)
     {   

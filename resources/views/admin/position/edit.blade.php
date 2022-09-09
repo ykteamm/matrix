@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <label> All </label>
-                                <input type="checkbox" style="width: 17px;height: 17px;" name="rol_name" id="checkAll" class="form-control form-control-sm"/>
+                                <input type="checkbox" style="width: 17px;height: 17px;"  id="checkAll" class="form-control form-control-sm"/>
                             </div>
                             
                         </div>
@@ -55,11 +55,8 @@
                             <table class="table mb-0">
                                 <thead>
                                     <tr>
-                                        <th> {{__('app.rol_n')}} </th>
-                                        <th style="text-align: center;"> {{__('app.create')}} </th>
-                                        <th style="text-align: center;"> {{__('app.read')}} </th>
-                                        <th style="text-align: center;"> {{__('app.update')}} </th>
-                                        <th style="text-align: center;"> {{__('app.delete')}} </th>
+                                        <th> Nomi </th>
+                                        <th style="text-align: center;"> Ruxsat </th>
 
                                     </tr>
                                 </thead>
@@ -68,10 +65,7 @@
                                     @foreach($positions as $key => $position)
                                     <tr>
                                         <td> {{ $position }} </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" @isset($per_json[$key.'_create']) checked @endisset type="checkbox" value="true" name="{{$key.'_create'}}" /></td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" @isset($per_json[$key.'_read']) checked @endisset type="checkbox" value="true" name="{{$key.'_read'}}" /> </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" @isset($per_json[$key.'_update']) checked @endisset type="checkbox" value="true" name="{{$key.'_update'}}" /> </td>
-                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" @isset($per_json[$key.'_delete']) checked @endisset type="checkbox" value="true" name="{{$key.'_delete'}}" /> </td>
+                                        <td style="text-align: center;"> <input style="width: 17px;height: 17px;" @isset($per_json[$key]) checked @endisset type="checkbox" value="true" name="{{$key}}" /></td>
                                     </tr>
                                     @endforeach
                                     @endisset

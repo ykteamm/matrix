@@ -126,7 +126,7 @@ class PositionController extends Controller
            'rol_name' => $data['rol_name']
         ]);
 
-        Session::put('per', $request->all());
+        // Session::put('per', $request->all());
 
         // $position = new Position($data);
         // $position->save();
