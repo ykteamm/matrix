@@ -256,48 +256,28 @@ class NovatioController extends Controller
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $request->time) ) ));
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $request->time) ) ));
         }
-        if(Session::get('per')['region'] == 'true')
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
-        $regions = DB::table('tg_region')->where('id',Session::get('user')->region_id)->get();
-
-        }else{
         $regions = DB::table('tg_region')->get();
 
-        }
-        if(Session::get('per')['region'] == 'true')
-        {
-        $users = DB::table('tg_user')->where('region_id',Session::get('user')->region_id)->get();
 
         }else{
+            $regions = DB::table('tg_region')->where('id',Session::get('user')->region_id)->get();
+
+        }
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
         $users = DB::table('tg_user')->get();
+
+
+        }else{
+            $users = DB::table('tg_user')->where('region_id',Session::get('user')->region_id)->get();
 
         }
         // $regions = DB::table('tg_region')->get();
         $category = DB::table('tg_category')->get();
-        if(Session::get('per')['region'] == 'true')
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
-        $sum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
-                ->where('tg_region.id',Session::get('user')->region_id)
-                ->whereDate('tg_productssold.created_at','>=',$date_begin)
-                ->whereDate('tg_productssold.created_at','<=',$date_end)
-                ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                ->join('tg_region','tg_region.id','tg_user.region_id')
-                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
-                ->join('tg_category','tg_category.id','tg_medicine.category_id')
-                ->get();
-
-        $fsum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
-                ->where('tg_region.id',Session::get('user')->region_id)
-                ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
-                ->whereDate('tg_productssold.created_at','<=',$f_date_end)
-                ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                ->join('tg_region','tg_region.id','tg_user.region_id')
-                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
-                ->join('tg_category','tg_category.id','tg_medicine.category_id')
-                ->get();
-        }else{
             $sum = DB::table('tg_productssold')
                 ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -310,6 +290,29 @@ class NovatioController extends Controller
 
         $fsum = DB::table('tg_productssold')
                 ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
+                ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->get();
+        }else{
+            
+                $sum = DB::table('tg_productssold')
+                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                ->where('tg_region.id',Session::get('user')->region_id)
+                ->whereDate('tg_productssold.created_at','>=',$date_begin)
+                ->whereDate('tg_productssold.created_at','<=',$date_end)
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->get();
+
+        $fsum = DB::table('tg_productssold')
+                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                ->where('tg_region.id',Session::get('user')->region_id)
                 ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$f_date_end)
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')

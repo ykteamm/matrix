@@ -177,7 +177,19 @@ class HomeController extends Controller
                 }
 
             }
-            // return count($category);
+            $isar = [];
+            foreach($cateory as $key => $value)
+            {
+                $isar[] = $value['name'];
+            }
+            foreach ($category as $key => $value) {
+                if(!in_array($value->name,$isar))
+                {
+                    $cateory[] = array('price' => 0, 'name' => $value->name,'id' => $value->id );
+
+                }
+            }
+            // return $cateory;
             // return [
             //     'data' => $user,
             //     'sum' => $sum,
