@@ -119,7 +119,7 @@
          <div class="card" style="background-color: #3b3d83">
             <div class="card-body">
                <div class="dash-contetnt">
-                  <h2 style="color:#05f705;text-align:center;">Barchasi</h2>
+                  <h2 style="color:#ffffff;text-align:center;">Barchasi</h2>
                   <h3 style="color:#ffffff;text-align:center;">{{ number_format($sum, 0, '', ' ')}} so'm</h3>
                </div>
             </div>
@@ -137,7 +137,7 @@
          <div class="card detail-box1{{$i}}" >
             <div class="card-body">
                <div class="dash-contetnt">
-                  <h2 style="color:#05f705;text-align:center;">{{$item['name']}}</h2>
+                  <h2 style="color:#ffffff;text-align:center;">{{$item['name']}}</h2>
                   <h3 style="color:#ffffff;text-align:center;">{{ number_format($item['price'], 0, '', ' ')}} so'm</h3>
                </div>
             </div>
