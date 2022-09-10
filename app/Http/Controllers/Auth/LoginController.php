@@ -61,7 +61,7 @@ class LoginController extends Controller
             $userd = DB::table('tg_user')->where('username',$request->login)
         ->where('pr',$request->password)
         ->where('admin',true)->first();
-            $per = DB::table('positions')->where('id',$userd->rol_id)->first();
+            $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
             $pcode = json_decode($per->position_json,TRUE);
             Session::put('per', $pcode);

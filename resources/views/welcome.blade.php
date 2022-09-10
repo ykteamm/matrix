@@ -1,49 +1,32 @@
 @extends('admin.layouts.app')
 @section('admin_content')
 <div class="content container-fluid mt-1">
+   
    <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
       <div class="col-xl-12 d-flex">
       <div class="card flex-fill">
       <div class="card-header">
       <div class="d-flex justify-content-between align-items-center">
-      <h5 class="card-title">                  <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
- </h5>
-      {{-- <div class="dropdown" data-toggle="dropdown">
-      <a href="javascript:void(0);" class="btn btn-white btn-sm dropdown-toggle" role="button" data-toggle="dropdown">
-      This Week
-      </a>
-      <div class="dropdown-menu dropdown-menu-right">
-      <a href="javascript:void(0);" class="dropdown-item">Today </a>
-      <a href="javascript:void(0);" class="dropdown-item">This Week </a>
-      <a href="javascript:void(0);" class="dropdown-item">This Month </a>
-      </div>
-      </div> --}}
-      <div class="btn-group">
-         <div class="row">
-               <div class="col-md-12" align="center">
-                        Sana
-               </div>
-               <div class="col-md-12">
-                  <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
-                  <div class="dropdown-menu timeclass">
-                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'today'])}}" class="dropdown-item">Bugun</a>
-                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}" class="dropdown-item">Hafta</a>
-                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'month'])}}" class="dropdown-item">Oy</a>
-                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'year'])}}" class="dropdown-item">Yil</a>
-                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
-
-                     {{-- <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
-
-                     <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
-                     <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
-                     <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
-                     <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a> --}}
-                     {{-- <input type="date" class="form-control" id="date-input" onchange="getDate()"> --}}
-                     <input type="text" name="datetimes" class="form-control"/>
+         <h5 class="card-title">                  <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+         </h5>
+         <div class="btn-group">
+            <div class="row">
+                  <div class="col-md-12" align="center">
+                           Sana
                   </div>
-               </div>
+                  <div class="col-md-12">
+                     <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                     <div class="dropdown-menu timeclass">
+                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'today'])}}" class="dropdown-item">Bugun</a>
+                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}" class="dropdown-item">Hafta</a>
+                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'month'])}}" class="dropdown-item">Oy</a>
+                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'year'])}}" class="dropdown-item">Yil</a>
+                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
+                        <input type="text" name="datetimes" class="form-control"/>
+                     </div>
+                  </div>
+            </div>
          </div>
-      </div>
       </div>
       </div>
       </div>
@@ -57,7 +40,7 @@
           <div class="card">
              <div class="card-body">
                 <div class="general-details text-center">
-                   <img src="http://138.68.81.139:8100/media/users/2.jpg" class="img-fluid" alt="" />
+                   <img src="http://138.68.81.139:8100/media/users/users.png" style="width:150px" class="img-fluid" alt="" />
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
                    {{-- <h6><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="0f697d6e616c4f6a776e627f636a216c6062">[email&#160;protected] </a></h6> --}}
                    {{-- <a href="chat.html" class="btn-chat">{{$elchi->v_name}}</a> --}}
@@ -70,7 +53,7 @@
        </div>
        <div class="col-12 col-xl-8 d-flex flex-wrap">
           <div class="card">
-             <div class="card-body pb-0">
+             <div class="card-body pb-0" style="margin-top: 35px;">
                 <div class="patient-details d-block">
                    <div class="details-list">
                      <div>
@@ -151,8 +134,8 @@
       @endforeach
 
    </div>
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row" id="maindata">
+        <div class="col-lg-12" id="da">
             <div class="card">
                <div class="card-body">
                   <div class="tab-content pt-0">
@@ -301,6 +284,9 @@ var id = <?php echo json_encode($elchi->id); ?>;
        .css('border-top-right-radius','30px')
        .css('border-right','3px solid #3b3d83')
        .css('border-bottom','none');
+
+       $('#maindata').css('border','3px solid #3b3d83')
+       .css('border-top','none').css('border-bottom','none');
       }
        function getDate(){
          var date = new Date($('#date-input').val());

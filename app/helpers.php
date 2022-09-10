@@ -75,9 +75,13 @@ use Illuminate\Support\Facades\Request;
             'filter' => 'Filter',
             'elchi' => 'Elchi',
             'User' => 'User',
-            'region' => 'Barcha viloyat',
             'rol' => 'Rol',
+            'region' => 'Barcha viloyat',
         ];
+        $region = DB::table('tg_region')->get();
+        foreach ($region as $key => $value) {
+            $h_positions[$value->id] = $value->name;
+        }
         return $h_positions;
         
     }

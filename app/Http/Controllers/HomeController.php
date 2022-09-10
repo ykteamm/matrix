@@ -67,10 +67,27 @@ class HomeController extends Controller
 
     public function filter()
     {
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
         $regions = DB::table('tg_region')->get();
+        $users = DB::table('tg_user')->get();
+        }else{
+            $r_id_array = [];
+            foreach (Session::get('per') as $key => $value) {
+                if (is_numeric($key)){
+               $r_id_array[] = $key;
+                }
+            }
+            $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
+            $users = DB::table('tg_user')
+            ->whereIn('tg_region.id',$r_id_array)
+            ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->get();
+        }
+
         $medicine = DB::table('tg_medicine')->get();
         $category = DB::table('tg_category')->get();
-        $users = DB::table('tg_user')->get();
         return view('filter',compact('regions','medicine','users','category'));
     }
     public function elchi($id,$time)
@@ -202,11 +219,38 @@ class HomeController extends Controller
     }
     public function elchiList()
     {
+        $userarrayreg = [];
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
+            $users = DB::table('tg_user')
+                    ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+        }else{
+            $r_id_array = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $r_id_array[] = $key;
+                        }
+                    }
+                    $users = DB::table('tg_user')
+                    ->whereIn('tg_region.id',$r_id_array)
+                    ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            
+        }
         $elchi = DB::table('tg_user')
-        ->select('tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
-        ->join('tg_region','tg_region.id','tg_user.region_id')
-        ->join('tg_district','tg_district.id','tg_user.district_id')
-        ->get();
+            ->whereIn('tg_user.id',$userarrayreg)
+            ->select('tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->get();
         return view('elchi',compact('elchi'));
     }
     public function userList()
@@ -218,7 +262,7 @@ class HomeController extends Controller
         ->join('tg_district','tg_district.id','tg_user.district_id')
         ->get();
 
-        $posi = DB::table('positions')->get();
+        $posi = DB::table('tg_positions')->get();
         return view('user',compact('elchi','posi'));
     }
     public function permission(Request $request)

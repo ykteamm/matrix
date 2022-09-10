@@ -3,14 +3,14 @@
 
 @section('admin_content')
 <div class="content container-fluid">
-   @if (Session::has('message'))
+   {{-- @if (Session::has('message'))
    <div class="alert alert-primary" id="message">
        <ul>
             <li>{{ Session::get('message') }}</li>
        </ul>
    </div>
-   @endif
-    <div class="page-header">
+   @endif --}}
+    {{-- <div class="page-header">
        <div class="row align-items-center">
           <div class="col-md-12">
              <div class="d-flex align-items-center">
@@ -21,7 +21,18 @@
              </div>
           </div>
        </div>
-    </div>
+    </div> --}}
+    <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
+      <div class="col-xl-12 d-flex">
+      <div class="card flex-fill">
+      <div class="card-header">
+         <h5 class="card-title" style="text-align: center">                  
+            <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+         </h5>
+      </div>
+      </div>
+      </div>
+   </div>
     <div class="row">
        <div class="col-sm-12">
           <div class="card">
@@ -37,7 +48,7 @@
                       <thead>
                          <tr>
                             <th>№</th>
-                            <th>role name </th>
+                            <th>Rol nomi</th>
                             @if(isset(Session::get('per')['rol_update']) || isset(Session::get('per')['rol_delete']))
                             <th class="text-right">Action</th>
                             @endif

@@ -1,11 +1,22 @@
 @extends('admin.layouts.app')
 @section('admin_content')
 <div class="content container-fluid">
+   <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
+      <div class="col-xl-12 d-flex">
+      <div class="card flex-fill">
+      <div class="card-header">
+         <h5 class="card-title" style="text-align: center">                  
+            <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+         </h5>
+      </div>
+      </div>
+      </div>
+   </div>
     <div class="row">
         <div class="col-md-12">
         <div class="card">
         <div class="card-header">
-        <h5 class="card-title">Userlarga ruxsatlar berish</h5>
+        <h5 class="card-title">Adminlarga ruxsatlar berish</h5>
         </div>
         <div class="card-body">
         <form action="{{route('permissions')}}" method="POST">
@@ -40,7 +51,7 @@
         </div>
         
         <div class="text-right">
-        <button type="submit" class="btn btn-primary">Submit </button>
+        <button type="submit" class="btn btn-primary">Saqlash </button>
         </div>
         </form>
         </div>

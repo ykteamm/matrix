@@ -25,7 +25,7 @@
                                     <div class="btn-group mr-2 ml-auto">
                                      <div class="row">
                                         <div class="col-md-12" align="center">
-                                                 Viloyat2
+                                                 Viloyat
                                         </div>
                                         <div class="col-md-12">
                                            <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
@@ -44,7 +44,7 @@
                                                     Sana
                                            </div>
                                            <div class="col-md-12">
-                                              <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi </button>
+                                              <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_today"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bugun </button>
                                               <div class="dropdown-menu timeclass">
                                               <a href="#" onclick="timeElchi('a_all')" class="dropdown-item" id="a_all">Hammasi </a>
     

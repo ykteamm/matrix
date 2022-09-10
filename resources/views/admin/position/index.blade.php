@@ -2,7 +2,7 @@
 
 @section('admin_content')
 <div class="content container-fluid">
-    @if ($errors->any())
+    {{-- @if ($errors->any())
    <div class="alert alert-danger" id="message">
        <ul>
            @foreach ($errors->all() as $error)
@@ -17,7 +17,7 @@
             <li>{{ Session::get('message') }}</li>
        </ul>
    </div>
-   @endif
+   @endif --}}
     {{-- <div class="page-header">
         <div class="row align-items-center">
             <div class="col-md-12">
@@ -30,6 +30,17 @@
             </div>
         </div>
     </div> --}}
+    <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
+        <div class="col-xl-12 d-flex">
+        <div class="card flex-fill">
+        <div class="card-header">
+           <h5 class="card-title" style="text-align: center">                  
+              <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+           </h5>
+        </div>
+        </div>
+        </div>
+     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">

@@ -23,7 +23,7 @@ class PositionController extends Controller
     public function index()
     {
         
-        $positions = Position::all();
+        $positions = DB::table('tg_positions')->get();
         return view('admin.position.list',compact('positions'));
         
     }
@@ -52,10 +52,16 @@ class PositionController extends Controller
             'rol_name' => 'required|max:255|unique:positions',
         ]); 
         $data = $request->all(); 
+        
         $data['added_by'] = 1;
         $data['position_json'] = $request->all();
-        $position = new Position($data);
-        $position->save();
+        // return $data;
+        $position = DB::table('tg_positions')->insert(array(
+            'position_json' => json_encode($data['position_json']),
+            'rol_name' => $data['rol_name'],
+            'created_at' => today(),
+            'update_at' => today()
+        ));
         if ($position) {
             return redirect()->route('position.index')->with('message',(__('message.save_success')));
         }else{
@@ -83,12 +89,15 @@ class PositionController extends Controller
      */
     public function edit($id)
     {
-        $per = Position::where('id',$id)->first();
+        // return $id;
+        $per = DB::table('tg_positions')->where('id',$id)->first();
         $rol_name = $per->rol_name;
         $per_json = $per->position_json;
+        $per_json =  json_decode($per_json);
         unset($per_json->rol_name);
         unset($per_json->_token);
         $positions = h_positions();
+
         function object_to_array($data)
         {
             if (is_array($data) || is_object($data))
@@ -103,6 +112,7 @@ class PositionController extends Controller
             return $data;
         }
         $per_json = object_to_array($per_json);
+
         return view('admin.position.edit',compact('positions','rol_name','per_json','id'));
     }
 
@@ -120,12 +130,17 @@ class PositionController extends Controller
         //     'rol_name' => 'required|max:255|unique:positions',
         // ]); 
         $data = $request->all(); 
-        $position = Position::where('id', $id)
-       ->update([
-           'position_json' => $request->all(),
-           'rol_name' => $data['rol_name']
-        ]);
+    //     $position = Position::where('id', $id)
+    //    ->update([
+    //        'position_json' => $request->all(),
+    //        'rol_name' => $data['rol_name']
+    //     ]);
 
+        $position = DB::table('tg_positions')->where('id', $id)->update(array(
+            'position_json' => json_encode($request->all()),
+            'rol_name' => $data['rol_name'],
+            'update_at' => today()
+        ));
         // Session::put('per', $request->all());
 
         // $position = new Position($data);

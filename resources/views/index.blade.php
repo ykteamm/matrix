@@ -2,89 +2,60 @@
 @section('admin_content')
 @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
-<div class="content container-fluid">
+<div class="content container-fluid mt-1">
+   <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
+      <div class="col-xl-12 d-flex">
+      <div class="card flex-fill">
+      <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+         <h5 class="card-title">                  <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+         </h5>
+         <div class="btn-group mr-5 ml-auto">
+            <div class="row">
+                  <div class="col-md-12" align="center">
+                           Sana
+                  </div>
+                  <div class="col-md-12">
+                     <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bugun </button>
+                     <div class="dropdown-menu timeclass">
+                     <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
+
+                        <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
+                        <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
+                        <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
+                        <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
+                        <input type="date" class="form-control" id="date-input" onchange="getDate()">
+                     </div>
+                  </div>
+            </div>
+         </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
     <div class="page-header">
         <div class="main-wrapper">
-
-            <div class="content container-fluid mt-1">
-            <div class="row">
-                <div class="col-sm-12">
-                   <div class="card flex-fill">
-    
-                      <div>
-                            <div class="d-flex justify-content-between align-items-center">
-                               {{-- <div class="btn-group ml-5">
-                                <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
-                                </div> --}}
-                               <div class="btn-group mr-5 ml-auto">
-                                  <div class="row">
-                                        <div class="col-md-12" align="center">
-                                                 Sana
-                                        </div>
-                                        <div class="col-md-12">
-                                           <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Oy </button>
-                                           <div class="dropdown-menu timeclass">
-                                           <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
-    
-                                              <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
-                                              <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
-                                              <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
-                                              <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
-                                              <input type="date" class="form-control" id="date-input" onchange="getDate()">
-                                           </div>
-                                        </div>
-                                  </div>
-                               </div>
-                               <div class="btn-group">
-                                  <div class="row">
-                                        <div class="col-md-12" align="center">
-                                                 Xisobot
-                                        </div>
-                                        <div class="col-md-12">
-                                           <a href="/search" type="button" class="btn btn-block btn-outline-primary" > Filter </a>
-                                           
-                                        </div>
-                                  </div>
-                               </div>
-                            </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            </div>
             <div class="content container-fluid">
             {{-- <div class="card-header">
                       </div> --}}
                    {{-- second row --}}
+                   <div class="row">
+                    {{-- <div class="col-xl-8"> --}}
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <p class="card-title" style="text-align: center;font-size:30px">
+                                    Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
+                                </p>
+                            </div>
+                        </div>
+                    {{-- </div> --}}
+                   </div>
+                    <div class="row" id="myregionid">
+                    </div>
                     <div class="row" id="catid">
                     </div>
                    <div class="row" id="regionid">
-                    <!-- @foreach($array as $arr) -->
-                        <!-- <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
-                            <div class="card detail-box1 details-box">
-                                <div class="card-body">
-                                    <div class="dash-contetnt">
-                                            <h4 style="color:#05f705;">{{$arr['region']}} </h4>
-                                            <h4 class="text-white">{{ number_format($arr['summa'], 0, '', ' ') }} so'm</h4>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                      <!-- @endforeach -->
-                      <!-- <div class="col-12 col-md-6 col-lg-2 d-flex flex-wrap">
-                         <div class="card detail-box2 details-box">
-                            <div class="card-body">
-                               <div class="dash-contetnt">
-                                  <div class="mb-3">
-                                  </div>
-                                  <h4 class="text-white">dasd </h4>
-                                  <h1 class="text-white all_chkb"></h1>
-                               </div>
-                            </div>
-                         </div>
-                      </div> -->
-    
                    </div>
                    <div class="row calender-col">
                       <div class="col-xl-12" id="forvil">
@@ -181,7 +152,7 @@
 @section('admin_script')
 <script>
     $(document).ready(function(){
-        region('a_month');
+        region('a_today');
    });
       function region(asd){
 
@@ -195,6 +166,9 @@
             },
             success:function(response){
                if(response) {
+                var countreg = 0;
+                    for (var _ in response.dashboard) countreg++;
+                    countreg = countreg - 1;
                   if(!response.ssumma[1])
                {
                   // $('#forvil').remove();
@@ -296,10 +270,41 @@
                     },
                 };
                 $('.delregion').remove();
-
+                
                 $.each(response.dashboard, function(index, value){
 
-                var $row = $('<div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap delregion">'+
+                if(response.myid == value.id)
+                {
+                    var $row = $('<div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap delregion">'+
+                                '<div class="card detail-box4">'+
+                                    '<div class="card-body">'+
+                                        '<div class="dash-contetnt">'+
+                                            '<h2 style="color:#ffffff;text-align:center;">'+ value.region +'</h2>'+
+                                            '<h3 style="color:#ffffff;text-align:center;">'+value.icon + value.summa +' so\'m</h3>'+
+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'); 
+                }
+                if(response.regionid == false){$('#myregionid').append($row);}else{$('#regionid').append($row);}
+
+                });
+                if(countreg > 0 && countreg < 4)
+                {   
+                    if(countreg%2 == 0){var md = 6; var lg=12/countreg;}else{var md = 12; var lg=12/countreg;}
+
+                }
+                else if(countreg == 0){$('#forvil').remove();}
+                else if(countreg == 6){var md = 6;var lg = 4;}
+                else if(countreg == 8){var md = 6;var lg = 3;}
+                else if(countreg == 9){var md = 6;var lg = 3;}
+                else{var md = 6;var lg = 3;}
+                $.each(response.dashboard, function(index, value){
+                
+                if(response.myid != value.id)
+                {
+                    var $row = $('<div class="col-12 col-md-'+md+' col-lg-'+lg+' d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
@@ -310,26 +315,27 @@
                                     '</div>'+
                                 '</div>'+
                              '</div>'); 
-                $('#regionid').append($row);
-
+                }
+                if(response.regionid == false){$('#myregionid').append($row);}else{$('#regionid').append($row);}
                 });
+                
 
                 $('.delcat').remove();
-
+                var detail = 2;
                 $.each(response.catarray, function(index, value){
 
                 var $row = $('<div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap delcat">'+
-                                '<div class="card detail-box2">'+
+                                '<div class="card detail-box1'+detail+'">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
-                                            '<h2 style="color:#05f705;text-align:center;">'+ value.name +'</h2>'+
+                                            '<h2 style="color:#ffffff;text-align:center;">'+ value.name +'</h2>'+
                                             '<h3 style="color:#ffffff;text-align:center;">'+value.icon + value.summa +' so\'m</h3>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
                              '</div>'); 
                 $('#catid').append($row);
-
+                detail++
                 });
 
                 $('.deltr').remove();

@@ -12,7 +12,19 @@ class NovatioController extends Controller
         $inputs = $request->all();
         $time = $inputs['time'];
         
-        
+        // if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        // {
+        // $regions = DB::table('tg_region')->get();
+
+        // }else{
+        //     $r_id_array = [];
+        //     foreach (Session::get('per') as $key => $value) {
+        //         if (is_numeric($key)){
+        //        $r_id_array[] = $key;
+        //         }
+        //     }
+
+        // }
         if($request->cate == 'med')
         {
             if ($request->medi == 'all') {
@@ -42,14 +54,38 @@ class NovatioController extends Controller
             $medi_begin = 1;
             $medi_end = 100000;
         }
+        $userarrayreg = [];
 
         if ($request->user == 'all') {
-            $user_begin = 1;
-            $user_end = 100000;
+            if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+            {
+                $users = DB::table('tg_user')
+                    ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            }
+            else{
+                $r_id_array = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $r_id_array[] = $key;
+                        }
+                    }
+                    $users = DB::table('tg_user')
+                    ->whereIn('tg_region.id',$r_id_array)
+                    ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            }
         }
         if ($request->user !== 'all') {
-            $user_begin = $request->user;
-            $user_end = $request->user;
+            $userarrayreg[] = $request->user;
         }
         if ($request->order == 'all') {
             $order_begin = 1;
@@ -105,8 +141,7 @@ class NovatioController extends Controller
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.medicine_id','>=',$medi_begin)
                 ->where('tg_productssold.medicine_id','<=',$medi_end)
-                ->where('tg_user.id','>=',$user_begin)
-                ->where('tg_user.id','<=',$user_end)
+                ->whereIn('tg_user.id',$userarrayreg)
                 ->where('tg_order.id','>=',$order_begin)
                 ->where('tg_order.id','<=',$order_end)
                 ->where('tg_category.id','>=',$cate_begin)
@@ -126,8 +161,7 @@ class NovatioController extends Controller
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.medicine_id','>=',$medi_begin)
                 ->where('tg_productssold.medicine_id','<=',$medi_end)
-                ->where('tg_user.id','>=',$user_begin)
-                ->where('tg_user.id','<=',$user_end)
+                ->whereIn('tg_user.id',$userarrayreg)
                 ->where('tg_order.id','>=',$order_begin)
                 ->where('tg_order.id','<=',$order_end)
                 ->where('tg_category.id','>=',$cate_begin)
@@ -157,8 +191,7 @@ class NovatioController extends Controller
             ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$date_end)
-                    ->where('tg_user.id','>=',$user_begin)
-                    ->where('tg_user.id','<=',$user_end)
+                    ->whereIn('tg_user.id',$userarrayreg)
                     ->where('tg_category.id','>=',$cate_begin)
                     ->where('tg_category.id','<=',$cate_end)
             ->join('tg_user','tg_user.id','tg_productssold.user_id')
@@ -256,24 +289,64 @@ class NovatioController extends Controller
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $request->time) ) ));
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $request->time) ) ));
         }
+
+        
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
+        $regions = DB::table('tg_region')->get();
+
+        $myid = 0;
+        $regionid = TRUE;
+
+        }else{
+            $r_id_array = [];
+            foreach (Session::get('per') as $key => $value) {
+                if (is_numeric($key)){
+               $r_id_array[] = $key;
+                }
+            }
+            if(in_array(Session::get('user')->region_id,$r_id_array))
+            {
+                $myid = Session::get('user')->region_id;
+                $regionid = FALSE;
+
+            }else{
+                $regionid = TRUE;
+                $myid = 0;
+            }
+
+        }
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
         $regions = DB::table('tg_region')->get();
 
 
         }else{
-            $regions = DB::table('tg_region')->where('id',Session::get('user')->region_id)->get();
+            
+            $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
 
         }
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
+        $regions = DB::table('tg_region')->get();
+
+
+        }else{
+            
+            $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
+
+        }
+
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
         $users = DB::table('tg_user')->get();
 
 
         }else{
-            $users = DB::table('tg_user')->where('region_id',Session::get('user')->region_id)->get();
+            $users = DB::table('tg_user')->whereIn('region_id',$r_id_array)->get();
 
         }
+
         // $regions = DB::table('tg_region')->get();
         $category = DB::table('tg_category')->get();
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
@@ -288,20 +361,20 @@ class NovatioController extends Controller
                 ->join('tg_category','tg_category.id','tg_medicine.category_id')
                 ->get();
 
-        $fsum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
-                ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
-                ->whereDate('tg_productssold.created_at','<=',$f_date_end)
-                ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                ->join('tg_region','tg_region.id','tg_user.region_id')
-                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
-                ->join('tg_category','tg_category.id','tg_medicine.category_id')
-                ->get();
+            $fsum = DB::table('tg_productssold')
+                    ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                    ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
+                    ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                    ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                    ->get();
         }else{
             
                 $sum = DB::table('tg_productssold')
                 ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
-                ->where('tg_region.id',Session::get('user')->region_id)
+                ->whereIn('tg_region.id',$r_id_array)
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
@@ -310,16 +383,16 @@ class NovatioController extends Controller
                 ->join('tg_category','tg_category.id','tg_medicine.category_id')
                 ->get();
 
-        $fsum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
-                ->where('tg_region.id',Session::get('user')->region_id)
-                ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
-                ->whereDate('tg_productssold.created_at','<=',$f_date_end)
-                ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                ->join('tg_region','tg_region.id','tg_user.region_id')
-                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
-                ->join('tg_category','tg_category.id','tg_medicine.category_id')
-                ->get();
+            $fsum = DB::table('tg_productssold')
+                    ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                    ->where('tg_region.id',Session::get('user')->region_id)
+                    ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
+                    ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                    ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                    ->get();
         }
 
         $summa = 0;
@@ -371,7 +444,7 @@ class NovatioController extends Controller
 
 
             }
-            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon);
+            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id);
             $summa = 0;
             $fsumma = 0;
 
@@ -471,7 +544,7 @@ class NovatioController extends Controller
         $newarray = [];
         foreach($array as $ar)
         {
-            $newarray[] = array('summa' => number_format($ar['summa'], 0, '', ' '),'region' => $ar['region'],'icon' => $ar['icon']);
+            $newarray[] = array('summa' => number_format($ar['summa'], 0, '', ' '),'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }
         $newuserarray = [];
         foreach($userArray as $userar)
@@ -484,8 +557,23 @@ class NovatioController extends Controller
         //     'c' => $f_date_begin,
         //     'd' => $f_date_end,
         // ];
-        
+        // if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        // {
+        //     $sd = 2;
+        // }else{
+        //     $sd = Session::get('per');
+        //     $r_id_array = [];
+        //     foreach (Session::get('per') as $key => $value) {
+        //         if (is_numeric($key)){
+        //        $r_id_array[] = $key;
+
+
+        //         }
+        //     }
+        // }
         return [
+            'myid' => $myid,
+            'regionid' => $regionid,
             'sregion' => $sortregionArray,
             'ssumma' => $sortsummaArray,
             'region' => $regionArray,
