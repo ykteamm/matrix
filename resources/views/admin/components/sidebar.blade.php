@@ -1,4 +1,4 @@
-<div class="sidebar" id="sidebar">
+<div class="sidebar mt-5" id="sidebar" >
     <div class="sidebar-inner slimscroll">
        <div id="sidebar-menu" class="sidebar-menu">
           <ul>

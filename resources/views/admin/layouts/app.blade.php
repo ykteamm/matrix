@@ -43,7 +43,7 @@
         </ul>
     </div>
     @endif --}}
-        {{-- @include('admin.components.header') --}}
+        @include('admin.components.header')
         @include('admin.components.sidebar')
         <div class="page-wrapper" style="padding-top: 0px !important">
         @yield('admin_content')

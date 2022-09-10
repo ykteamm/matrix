@@ -34,4 +34,7 @@
             width: 100%;
             //transition: width .3s;
         }
+        .calender-col {
+            margin-top: 45px !important;
+        }
     </style>

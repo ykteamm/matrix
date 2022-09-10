@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('admin_content')
 <div class="content container-fluid">
-   <div class="row calender-col" style="background-color: rgb(246, 246, 246);position:inherit;z-index:1000;margin-top:-15px;top:0">
+   <div class="row calender-col" style="margin-top: 45px">
       <div class="col-xl-12 d-flex">
       <div class="card flex-fill">
       <div class="card-header">
