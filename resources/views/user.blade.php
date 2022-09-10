@@ -70,6 +70,7 @@
                            <th>FIO </th>
                            {{-- <th>Yoshi </th> --}}
                            <th>Viloyat </th>
+                           <th>Rol nomi </th>
                            {{-- <th>Telefon raqami </th> --}}
                            {{-- <th>Email </th>
                            <th class="text-right">Action </th> --}}
@@ -90,6 +91,8 @@
                            <td>{{$item->last_name}} {{$item->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                            <td>{{$item->v_name}}</td>
+                           <td> <span class="badge bg-info-light">{{$item->rol_name}}</span>  </td>
+                           
                            {{-- <td>{{$item->phone_number}}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">
