@@ -256,13 +256,12 @@ class HomeController extends Controller
     public function userList()
     {
         $elchi = DB::table('tg_user')
-        ->where('admin',true)
-        ->select('tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
+        ->where('admin',TRUE)
+        ->select('tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
-        ->join('tg_district','tg_district.id','tg_user.district_id')
-        ->join('tg_positions','tg_positions.id','tg_user.rol_id')
+        ->leftjoin('tg_positions','tg_positions.id','tg_user.rol_id')
         ->get();
-
+        // return $elchi;
         $posi = DB::table('tg_positions')->get();
         return view('user',compact('elchi','posi'));
     }
