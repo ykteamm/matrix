@@ -18,14 +18,14 @@
                <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
                   @endif
              @endisset
-                  {{-- @isset(Session::get('per')['User']) --}}
-             {{-- @if(Session::get('per')['User'] == 'true') --}}
+                  @isset(Session::get('per')['User'])
+             @if(Session::get('per')['User'] == 'true')
                <li><a href="{{route('user-list')}}"><i class="feather-filter"></i>  <span>Adminlar </span></a>
              </li>
-             {{-- @endif --}}
-             {{-- @endisset --}}
-             {{-- @isset(Session::get('per')['rol']) --}}
-             {{-- @if(Session::get('per')['rol'] == 'true') --}}
+             @endif
+             @endisset
+             @isset(Session::get('per')['rol'])
+             @if(Session::get('per')['rol'] == 'true')
                   <li class="submenu">
                   {{-- @if(isset(Session::get('per')['rol_create']) || isset(Session::get('per')['rol_read'])) --}}
                      <a href="settings.html"><i class="feather-sliders"></i>  <span> Ro'l </span><span class="menu-arrow"></span></a>
@@ -39,8 +39,8 @@
                      {{-- @endisset --}}
                      </ul>
                   </li>
-                  {{-- @endif --}}
-             {{-- @endisset --}}
+                  @endif
+             @endisset
                {{-- </ul>
             </li> --}}
             {{-- <li><a href="{{ route('back') }}"><i class="feather-home"></i>  <span> 2 </span></a> --}}
