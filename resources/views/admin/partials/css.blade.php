@@ -37,4 +37,60 @@
         .calender-col {
             margin-top: 45px !important;
         }
+        @media(min-width:1092px) {
+
+            .logtop {
+                margin-top: 250px;
+                /* color: rgb(210, 108, 13) !important; */
+            }
+        }
+        @media(min-width:1213px) {
+
+            .logtop {
+                margin-top: 333px;
+                /* color: rgb(210, 108, 13) !important; */
+            }
+            }
+             @media(min-width:1365px) {
+
+            .logtop {
+                margin-top: 420px;
+                /* color: rgb(210, 108, 13) !important; */
+            }
+            }
+            @media(min-width:1456px) {
+
+            .logtop {
+                margin-top: 478px;
+                /* color: rgb(210, 108, 13) !important; */
+            }
+            }
+            @media(min-width:1638px) {
+
+            .logtop {
+                margin-top: 588px;
+                /* color: rgb(210, 108, 13) !important; */
+            }
+            }
+            @media(min-width:2184px) {
+
+.logtop {
+    margin-top: 915px;
+    /* color: rgb(210, 108, 13) !important; */
+}
+}
+@media(min-width:412px) {
+
+.logtop {
+    margin-top: 500px;
+    /* color: rgb(210, 108, 13) !important; */
+}
+}
+@media(max-width:375px) {
+
+.logtop {
+    margin-top: 275px;
+    /* color: rgb(210, 108, 13) !important; */
+}
+}
     </style>

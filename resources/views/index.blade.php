@@ -270,10 +270,29 @@
                     },
                 };
                 $('.delregion').remove();
-                
+//                 $.each(response.dashboard, function(index, value){
+
+// if(response.regid == value.id)
+// {
+//     var $row = $('<div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap delregion">'+
+//                 '<div class="card detail-box4">'+
+//                     '<div class="card-body">'+
+//                         '<div class="dash-contetnt">'+
+//                             '<h2 style="color:#ffffff;text-align:center;">'+ value.region +'</h2>'+
+//                             '<h3 style="color:#ffffff;text-align:center;">'+value.icon + value.summa +' so\'m</h3>'+
+
+//                         '</div>'+
+//                     '</div>'+
+//                 '</div>'+
+//             '</div>'); 
+// }
+//     $('#myregionid').append($row);
+
+
+// });
                 $.each(response.dashboard, function(index, value){
 
-                if(response.myid == value.id)
+                if(response.myid == value.id || response.regid == value.id)
                 {
                     var $row = $('<div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box4">'+
@@ -287,7 +306,12 @@
                                 '</div>'+
                             '</div>'); 
                 }
-                if(response.regionid == false){$('#myregionid').append($row);}else{$('#regionid').append($row);}
+                // if(response.regionid == false){
+                    $('#myregionid').append($row);
+                // }else{
+                    
+                //     $('#regionid').append($row);
+                // }
 
                 });
                 if(countreg > 0 && countreg < 4)
@@ -302,7 +326,7 @@
                 else{var md = 6;var lg = 3;}
                 $.each(response.dashboard, function(index, value){
                 
-                if(response.myid != value.id)
+                if(response.myid != value.id && response.regid != value.id)
                 {
                     var $row = $('<div class="col-12 col-md-'+md+' col-lg-'+lg+' d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
@@ -316,7 +340,13 @@
                                 '</div>'+
                              '</div>'); 
                 }
-                if(response.regionid == false){$('#myregionid').append($row);}else{$('#regionid').append($row);}
+                // if(response.regionid == false){
+                //     $('#myregionid').append($row);
+                // }else{
+                    
+                    $('#regionid').append($row);
+                // }
+                // if(response.regionid == false){$('#myregionid').append($row);}else{$('#regionid').append($row);}
                 });
                 
 

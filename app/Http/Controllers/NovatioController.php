@@ -572,6 +572,7 @@ class NovatioController extends Controller
         //     }
         // }
         return [
+            'regid' => Session::get('user')->region_id,
             'myid' => $myid,
             'regionid' => $regionid,
             'sregion' => $sortregionArray,
