@@ -12,7 +12,7 @@
       </div>
       </div>
    </div>
-    <div class="page-header">
+    <div>
         <div class="main-wrapper ">
             <div class="content" style="background-color: rgb(254, 254, 254);margin-top:10px;">
                {{-- <div class="content" style="background-color: rgb(246, 246, 246);position:fixed;z-index:1000;margin-top:-15px;top:0"> --}}
@@ -28,7 +28,7 @@
                         
                         <div class="card flex-fill">
     
-                            <div style="border-bottom-radius:30px !important;margin-left:auto;">
+                            <div style="border-bottom-radius:30px !important;margin-left:auto">
                                <div class="justify-content-between align-items-center" >
                                     {{-- <div class="btn-group ml-5">
                                     <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
@@ -257,7 +257,7 @@
                         </div>
                 </div>
             </div> --}}
-            <div class="content container-fluid mt-1">
+            <div class="content mt-1">
                 <div class="row">
                         <div div class="col-sm-12" >
                     

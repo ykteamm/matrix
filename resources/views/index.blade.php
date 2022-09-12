@@ -2,7 +2,7 @@
 @section('admin_content')
 @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
-<div class="content container-fluid mt-1">
+<div class="content mt-1">
    <div class="row calender-col" style="margin-top: 45px">
       <div class="col-xl-12 d-flex">
       <div class="card flex-fill">
@@ -34,9 +34,9 @@
       </div>
       </div>
       </div>
-    <div class="page-header">
+    {{-- <div class="page-header"> --}}
         <div class="main-wrapper">
-            <div class="content container-fluid">
+            <div class="content">
             {{-- <div class="card-header">
                       </div> --}}
                    {{-- second row --}}
@@ -144,7 +144,7 @@
                 </div>
             </div>
         <!-- </div> -->
-    </div>
+    {{-- </div> --}}
 </div>
 @endif
 @endisset
