@@ -1,28 +1,40 @@
 @extends('admin.layouts.app')
 @section('admin_content')
 <div class="content container-fluid">
+   <div class="row calender-col" style="margin-top: 45px">
+      <div class="col-xl-12 d-flex">
+      <div class="card flex-fill">
+      <div class="card-header">
+         <h5 class="card-title" style="text-align: center">                  
+            <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
+         </h5>
+      </div>
+      </div>
+      </div>
+   </div>
     <div class="page-header">
         <div class="main-wrapper ">
-            <div class="content" style="background-color: rgb(246, 246, 246);position:fixed;z-index:1000;margin-top:-15px;top:0">
+            <div class="content" style="background-color: rgb(254, 254, 254);margin-top:10px;">
+               {{-- <div class="content" style="background-color: rgb(246, 246, 246);position:fixed;z-index:1000;margin-top:-15px;top:0"> --}}
                 
-                <div class="row">
-                    <div class="col-sm-12">
+                {{-- <div class="row"> --}}
+                    {{-- <div class="col-sm-12">
                        <div style="text-align: center;">
                             <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
         
                             </div>
-                    </div> 
-                    <div class="col-sm-12">
+                    </div>  --}}
+                    {{-- <div class="col-sm-12" > --}}
                         
                         <div class="card flex-fill">
     
-                            <div style="border-bottom-radius:30px !important;">
-                               <div class="d-flex justify-content-between align-items-center">
+                            <div style="border-bottom-radius:30px !important;margin-left:auto;">
+                               <div class="justify-content-between align-items-center" >
                                     {{-- <div class="btn-group ml-5">
                                     <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
     
                                     </div> --}}
-                                    <div class="btn-group mr-2 ml-auto">
+                                    <div class="btn-group">
                                      <div class="row">
                                         <div class="col-md-12" align="center">
                                                  Viloyat
@@ -38,7 +50,7 @@
                                         </div>
                                      </div>
                                     </div>
-                                    <div class="btn-group mr-2">
+                                    <div class="btn-group">
                                          <div class="row">
                                            <div class="col-md-12" align="center">
                                                     Sana
@@ -57,7 +69,7 @@
                                            </div>
                                         </div>
                                     </div>
-                                    <div class="btn-group mr-2">
+                                    <div class="btn-group">
                                         <div class="row">
                                             <div class="col-md-12" align="center">
                                                     Mahsulot
@@ -80,7 +92,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="btn-group mr-2">
+                                    <div class="btn-group">
                                         <div class="row">
                                            <div class="col-md-12" align="center">
                                                     Elchi
@@ -110,8 +122,8 @@
                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    {{-- </div> --}}
+                {{-- </div> --}}
             </div>
             {{-- <div class="content mt-1" style="background-color: white;position:fixed;z-index:1000;margin-top:-15px;top:0">
                 <div class="row">
@@ -249,7 +261,7 @@
                 <div class="row">
                         <div div class="col-sm-12" >
                     
-                        <div class="card" style="margin-top:130px;">
+                        <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-stripped">

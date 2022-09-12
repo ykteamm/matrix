@@ -12,7 +12,7 @@
       </div>
       </div>
    </div>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-12">
         <div class="card">
         <div class="card-header">
@@ -57,7 +57,7 @@
         </div>
         </div>
         </div>
-    </div>
+    </div> --}}
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
@@ -66,11 +66,13 @@
                   <table class="table mb-0" id="dtBasicExample">
                      <thead>
                         <tr>
-                           <th>Username</th>
+                           {{-- <th>Username</th> --}}
                            <th>FIO </th>
                            {{-- <th>Yoshi </th> --}}
                            <th>Viloyat </th>
                            <th>Rol nomi </th>
+                           <th>Holati </th>
+                           <th>vaqti</th>
                            {{-- <th>Telefon raqami </th> --}}
                            {{-- <th>Email </th>
                            <th class="text-right">Action </th> --}}
@@ -87,7 +89,7 @@
                            
                            > --}}
                         <tr>
-                           <td>{{$item->username}} </td>
+                           {{-- <td>{{$item->username}} </td> --}}
                            <td>{{$item->last_name}} {{$item->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                            <td>{{$item->v_name}}</td>
@@ -96,8 +98,13 @@
                            @else
                            <td>  <span class="badge bg-info-light">{{$item->rol_name}}</span> </td>
                            @endif
+                           @if(Cache::has('user-is-online-' . $item->id))
+                           <td><span class="text-success">Online</span></td>
                            
-                           {{-- <td>{{$item->phone_number}}</td> --}}
+                           @else
+                           <td><span class="text-secondary">Offline</span></td>
+                           @endif
+                           <td>{{$item->last_seen}}</td>
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">
                               <a href="patients-profile.html" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-eye mr-1"></i> View </a>

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\Patient;
 use App\Models\Position;
+use Carbon\Carbon;
+use Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
@@ -257,13 +259,23 @@ class HomeController extends Controller
     {
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
-        ->select('tg_positions.id as pid','tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name')
+        ->select('tg_user.last_seen','tg_positions.id as pid','tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->leftjoin('tg_positions','tg_positions.id','tg_user.rol_id')
         ->get();
         // return $elchi;
         $posi = DB::table('tg_positions')->get();
         return view('user',compact('elchi','posi'));
+    }
+    public function userOnlineStatus()
+    {
+        $users = DB::table('tg_user')->where('admin',true)->get();
+        foreach ($users as $user) {
+            if (Cache::has('user-is-online-' . $user->id))
+                echo $user->first_name . " is online. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
+            else
+                echo $user->first_name . " is offline. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
+        }
     }
     public function permission(Request $request)
     {

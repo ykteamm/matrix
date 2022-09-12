@@ -53,7 +53,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 Route::get('elchi/{id}/{time?}', [HomeController::class,'elchi'])->name('elchi');
 Route::get('elchi-list', [HomeController::class,'elchiList'])->name('elchi-list');
 Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
-  
+Route::get('/status', [HomeController::class,'userOnlineStatus']);
 #position
 Route::resource('position', PositionController::class);
 Route::get('position//{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
