@@ -104,7 +104,7 @@
                            @else
                            <td><span class="text-secondary">Offline</span></td>
                            @endif
-                           <td>{{ date('d.m.Y h:i:s A',(strtotime ( '-5 hours' , strtotime ( $item->last_seen) ) )) }}</td>
+                           <td>{{ date('d.m.Y h:i:s',(strtotime ( '+1 hours' , strtotime ( $item->last_seen) ) )) }}</td>
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">
                               <a href="patients-profile.html" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-eye mr-1"></i> View </a>
