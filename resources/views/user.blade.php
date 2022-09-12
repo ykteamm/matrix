@@ -79,19 +79,23 @@
                      <tbody>
                         @foreach ($elchi as $item)
                         
-                        <tr 
+                        {{-- <tr 
                         onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
                         .css('color','white');" 
                         onmouseleave="$(this).css('background','white').css('color','black');"
                            class='clickable-row' data-href='{{route('elchi',['id' => $item->id,'time' => 'today'])}}'
                            
-                           >
-                           
+                           > --}}
+                        <tr>
                            <td>{{$item->username}} </td>
                            <td>{{$item->last_name}} {{$item->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                            <td>{{$item->v_name}}</td>
-                           <td> <span class="badge bg-info-light">{{$item->rol_name}}</span>  </td>
+                           @if ($item->pid)
+                           <td> <a href="{{ route('position.edit',$item->pid) }}"> <span class="badge bg-info-light">{{$item->rol_name}}</span> </a> </td>
+                           @else
+                           <td>  <span class="badge bg-info-light">{{$item->rol_name}}</span> </td>
+                           @endif
                            
                            {{-- <td>{{$item->phone_number}}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>

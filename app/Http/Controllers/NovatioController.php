@@ -385,7 +385,7 @@ class NovatioController extends Controller
 
             $fsum = DB::table('tg_productssold')
                     ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
-                    ->where('tg_region.id',Session::get('user')->region_id)
+                    ->whereIn('tg_region.id',$r_id_array)
                     ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$f_date_end)
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
