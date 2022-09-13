@@ -43,9 +43,9 @@
                    {{-- second row --}}
                    <div class="col-xl-12 mt-3">
                     {{-- <div class="card flex-fill" style="margin-bottom:0 !important"> --}}
-                       <h1 style="text-align: center">                  
+                       <h3 style="text-align: center">                  
                         Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
-                       </h1>
+                       </h3>
                     {{-- </div> --}}
                 </div>
                     <div class="row" id="myregionid">
