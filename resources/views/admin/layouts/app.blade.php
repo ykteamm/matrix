@@ -31,7 +31,9 @@
         }
     </style> --}}
     <style>
-        
+        body{
+            background-color: rgb(255, 255, 255)
+        }
         .gold-box {
             background-color: #ffffff;
             position:sticky;
