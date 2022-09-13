@@ -116,9 +116,15 @@ class NovatioController extends Controller
             $date_end = today()->format('Y-m-d');
         }
         else{
-            $date_begin = $request->time;
-            $date_end = $request->time;
+            // $date_begin = $request->time;
+            // $date_end = $request->time;
+            // $date_begin = substr($request->time,0,8);
+            $date_begin = date('Y-m-d',(strtotime (substr($request->time,0,10) ) ));
+            $date_end = date('Y-m-d',(strtotime ( substr($request->time,11) ) ));
+
+            // $date_end = substr($request->time,9);
         }
+        // return $date_begin;
         if($inputs['id'] == 'all')
         {
             // if(isset(Session::get('per')['region']))
@@ -283,11 +289,13 @@ class NovatioController extends Controller
             $f_date_end = today()->format('Y-m-d');
         }
         else{
-            $date_begin = $request->time;
-            $date_end = $request->time;
+            // $date_begin = $request->time;
+            // $date_end = $request->time;
+            $date_begin = date('Y-m-d',(strtotime (substr($request->time,0,10) ) ));
+            $date_end = date('Y-m-d',(strtotime ( substr($request->time,11) ) ));
 
-            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $request->time) ) ));
-            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( $request->time) ) ));
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($request->time,0,10)) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($request->time,11)) ) ));
         }
 
         

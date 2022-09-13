@@ -2,55 +2,61 @@
 @section('admin_content')
 @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
-<div class="content mt-1">
-   <div class="row calender-col" style="margin-top: 45px">
-      <div class="col-xl-12 d-flex">
-      <div class="card flex-fill">
-      <div class="card-header">
-      <div class="d-flex justify-content-between align-items-center">
-         <h5 class="card-title">                  <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
-         </h5>
-         <div class="btn-group mr-5 ml-auto">
-            <div class="row">
-                  <div class="col-md-12" align="center">
-                           Sana
-                  </div>
-                  <div class="col-md-12">
-                     <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bugun </button>
-                     <div class="dropdown-menu timeclass">
-                     <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
+<div class="content mt-1 main-wrapper ">
+   <div class="row gold-box">
+    @include('admin.components.logo')
 
-                        <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
-                        <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
-                        <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
-                        <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
-                        <input type="date" class="form-control" id="date-input" onchange="getDate()">
-                     </div>
-                  </div>
-            </div>
-         </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
+      <div class="card flex-fill">
+       
+        <div class="btn-group mr-5 ml-auto">
+           <div class="row">
+                 <div class="col-md-12" align="center">
+                          Sana
+                 </div>
+                 <div class="col-md-12">
+                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bugun </button>
+                    <div class="dropdown-menu timeclass">
+                    <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
+
+                       <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
+                       <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
+                       <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
+                       <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
+                       {{-- <input type="date" class="form-control" id="date-input" onchange="getDate()"> --}}
+                       <input type="text" name="datetimes" class="form-control"/>
+
+                    </div>
+                 </div>
+           </div>
+
+        </div>
+        
+           <div class="col-xl-12 mt-3">
+            {{-- <div class="card flex-fill" style="margin-bottom:0 !important"> --}}
+               <h1 style="text-align: center">                  
+                Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
+               </h1>
+            {{-- </div> --}}
+        </div>
+     </div>
+    </div>
     {{-- <div class="page-header"> --}}
-        <div class="main-wrapper">
+        <div class="main-wrapper headbot">
             <div class="content">
             {{-- <div class="card-header">
                       </div> --}}
                    {{-- second row --}}
-                   <div class="row">
-                    {{-- <div class="col-xl-8"> --}}
-                        <div class="card">
-                            <div class="card-header no-border">
-                                <p class="card-title" style="text-align: center;font-size:30px">
-                                    Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
-                                </p>
-                            </div>
-                        </div>
-                    {{-- </div> --}}
+                   
+                    <div class="row" id="myregionid">
+                    </div>
+                    <div class="row" id="catid">
+                    </div>
+                   <div class="row" id="regionid">
                    </div>
+                   <div class="row calender-col">
+                      <div class="col-xl-12" id="forvil">
+                         <div class="card">
+                         
                     <div class="row" id="myregionid">
                     </div>
                     <div class="row" id="catid">
@@ -151,6 +157,26 @@
 @endsection
 @section('admin_script')
 <script>
+       $(function() {
+  $('input[name="datetimes"]').daterangepicker({
+   //  timePicker: true,
+   //  startDate: moment().startOf('hour'),
+   //  endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'DD.MM.YYYY'
+    }
+  });
+  $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+
+  var tim = picker.startDate.format('DD.MM.YYYY')+'/'+picker.endDate.format('DD.MM.YYYY');
+  $("#age_button2").text(tim);
+  region(tim);
+
+
+
+
+  });
+});
     $(document).ready(function(){
         region('a_today');
    });

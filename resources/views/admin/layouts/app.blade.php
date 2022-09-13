@@ -30,6 +30,25 @@
         bottom: .5em;
         }
     </style> --}}
+    <style>
+        
+        .gold-box {
+            background-color: #ffffff;
+            position:sticky;
+            top:60px;
+            z-index:100;
+            border-radius: 10px;
+            }
+        .headbot {
+            margin-top:47px;
+        }
+        div.sticky {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top:40px !important;
+        z-index: 4 !important;
+        }
+    </style>
 </head>
 <body>
     <div class="main-wrapper">

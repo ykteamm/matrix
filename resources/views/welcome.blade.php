@@ -1,40 +1,34 @@
 @extends('admin.layouts.app')
 @section('admin_content')
-<div class="content container-fluid mt-1">
-   
-   <div class="row calender-col" style="margin-top: 45px">
-      <div class="col-xl-12 d-flex">
-      <div class="card flex-fill">
-      <div class="card-header">
-      <div class="d-flex justify-content-between align-items-center">
-         <h5 class="card-title">                  <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
-         </h5>
-         <div class="btn-group">
+<div class="content mt-1 main-wrapper">
+   <div class="row gold-box">
+      @include('admin.components.logo')
+  
+        <div class="card flex-fill">
+         
+          <div class="btn-group mr-5 ml-auto">
             <div class="row">
-                  <div class="col-md-12" align="center">
-                           Sana
+               <div class="col-md-12" align="center">
+                        Sana
+               </div>
+               <div class="col-md-12">
+                  <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                  <div class="dropdown-menu timeclass">
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'today'])}}" class="dropdown-item">Bugun</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}" class="dropdown-item">Hafta</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'month'])}}" class="dropdown-item">Oy</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'year'])}}" class="dropdown-item">Yil</a>
+                     <a href="{{route('elchi',['id' => $elchi->id,'time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
+                     <input type="text" name="datetimes" class="form-control"/>
                   </div>
-                  <div class="col-md-12">
-                     <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
-                     <div class="dropdown-menu timeclass">
-                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'today'])}}" class="dropdown-item">Bugun</a>
-                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}" class="dropdown-item">Hafta</a>
-                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'month'])}}" class="dropdown-item">Oy</a>
-                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'year'])}}" class="dropdown-item">Yil</a>
-                        <a href="{{route('elchi',['id' => $elchi->id,'time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
-                        <input type="text" name="datetimes" class="form-control"/>
-                     </div>
-                  </div>
+               </div>
             </div>
-         </div>
-      </div>
-      </div>
-      </div>
-      </div>
+          </div>
+       </div>
       </div>
     
-    </div>
-<div class="content container-fluid">
+
+<div class="content headbot">
     <div class="row">
        <div class="col-12 col-xl-4 d-flex flex-wrap">
           <div class="card">
@@ -241,6 +235,7 @@
             </div>
          </div>
     </div>
+</div>
 </div>
 @endsection
 @section('admin_script')

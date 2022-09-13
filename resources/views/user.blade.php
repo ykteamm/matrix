@@ -1,16 +1,9 @@
 @extends('admin.layouts.app')
 @section('admin_content')
-<div class="content container-fluid">
-   <div class="row calender-col" style="margin-top: 45px">
-      <div class="col-xl-12 d-flex">
-      <div class="card flex-fill">
-      <div class="card-header">
-         <h5 class="card-title" style="text-align: center">                  
-            <img src="{{asset('nvt/logo2.png')}}" style="height: 100px;" class="img-fluid" alt="" />
-         </h5>
-      </div>
-      </div>
-      </div>
+<div class="content main-wrapper ">
+   <div class="row gold-box">
+      @include('admin.components.logo')
+
    </div>
     {{-- <div class="row">
         <div class="col-md-12">
@@ -58,7 +51,7 @@
         </div>
         </div>
     </div> --}}
-   <div class="row">
+   <div class="row headbot">
       <div class="col-sm-12">
          <div class="card">
             <div class="card-body">

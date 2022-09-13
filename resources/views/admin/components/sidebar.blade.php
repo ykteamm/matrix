@@ -1,5 +1,5 @@
-<div class="sidebar mt-5" id="sidebar" >
-    <div class="sidebar-inner slimscroll">
+<div class="sidebar mt-5"  >
+    <div class="sidebar-inner">
        <div id="sidebar-menu" class="sidebar-menu">
           <ul>
             @isset(Session::get('per')['dash'])
@@ -44,11 +44,18 @@
                {{-- </ul>
             </li> --}}
             {{-- <li><a href="{{ route('back') }}"><i class="feather-home"></i>  <span> 2 </span></a> --}}
-             <li class="logtop"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="feather-home"></i>  <span> Chiqish </span></a>
-               <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                  @csrf
-              </form>
+             
           </ul>
+          {{-- <div> --}}
+            <ul>
+               <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="feather-home"></i>  <span> Chiqish </span></a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                     @csrf
+                 </form>
+            </ul>
+          {{-- </div> --}}
+          
+
        </div>
     </div>
  </div>
