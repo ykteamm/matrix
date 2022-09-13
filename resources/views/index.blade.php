@@ -31,13 +31,8 @@
 
         </div>
         
-           <div class="col-xl-12 mt-3">
-            {{-- <div class="card flex-fill" style="margin-bottom:0 !important"> --}}
-               <h1 style="text-align: center">                  
-                Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
-               </h1>
-            {{-- </div> --}}
-        </div>
+           
+        
      </div>
     </div>
     {{-- <div class="page-header"> --}}
@@ -46,11 +41,36 @@
             {{-- <div class="card-header">
                       </div> --}}
                    {{-- second row --}}
-                   
+                   <div class="col-xl-12 mt-3">
+                    {{-- <div class="card flex-fill" style="margin-bottom:0 !important"> --}}
+                       <h1 style="text-align: center">                  
+                        Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
+                       </h1>
+                    {{-- </div> --}}
+                </div>
                     <div class="row" id="myregionid">
                     </div>
                     <div class="row" id="catid">
                     </div>
+                    <div class="card flex-fill">
+       
+                        <div class="btn-group mr-5 ml-auto">
+                           <div class="row">
+                                 <div class="col-md-12" align="center">
+                                          Viloyat
+                                 </div>
+                                <div class="col-md-12" style="text-align: center">
+
+                                    <label class="switch">
+                                        <input type="checkbox" checked id="checkslider" name="true" onchange="check()">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                        </div>
+                
+                        </div>
+                        
+                     </div>
                    <div class="row" id="regionid">
                    </div>
                    <div class="row calender-col">
@@ -63,6 +83,13 @@
                     </div>
                    <div class="row" id="regionid">
                    </div>
+                   <div id="dchart">
+                   <div id="rchart_del"></div>
+
+                    <div id="rchart">
+                    </div>
+                   </div>
+                   
                    <div class="row calender-col">
                       <div class="col-xl-12" id="forvil">
                          <div class="card">
@@ -157,6 +184,21 @@
 @endsection
 @section('admin_script')
 <script>
+    function check()
+    {
+        var ckb_status = $("#checkslider").prop('checked');
+
+        if(ckb_status){
+            $('#dchart').css('display','none');
+            $('#regionid').css('display','');
+
+        }else{
+            
+            $('#regionid').css('display','none');
+            $('#dchart').css('display','');
+
+        }
+    }
        $(function() {
   $('input[name="datetimes"]').daterangepicker({
    //  timePicker: true,
@@ -178,6 +220,8 @@
   });
 });
     $(document).ready(function(){
+        $('#dchart').css('display','none');
+
         region('a_today');
    });
       function region(asd){
@@ -295,6 +339,65 @@
                     categories: response.su_name
                     },
                 };
+
+                var optionsch = {
+  series: [
+    {
+        name:'Summa',
+      data: response.ssumma
+    }
+  ],
+  chart: {
+    type: "bar",
+    height: 450
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+      distributed: true,
+      startingShape: "rounded",
+      endingShape: "rounded",
+      colors: {
+        backgroundBarColors: ["#eee"],
+        backgroundBarOpacity: 1,
+        backgroundBarRadius: 9
+      }
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  grid: {
+    yaxis: {
+      lines: {
+        show: false
+      }
+    }
+  },
+  xaxis: {
+    axisBorder: {
+      show: false
+    },
+    categories: response.sregion
+  },
+  colors: [
+    "#008FFB",
+    "#00E396",
+    "#FEB019",
+    "#FF4560",
+    "#775DD0",
+    "#3f51b5",
+    "#03a9f4",
+    "#4caf50",
+    "#f9ce1d",
+    "#FF9800"
+  ],
+  legend: {
+    show: true
+  }
+};
+
+
                 $('.delregion').remove();
 //                 $.each(response.dashboard, function(index, value){
 
@@ -405,6 +508,11 @@
                $('#userid').append($row2);
             });
 
+            $('#rchart').remove();
+            $('#rchart_del').after("<div id='rchart'></div>");
+
+            var rechart = new ApexCharts(document.querySelector("#rchart"), optionsch);
+            rechart.render();
 
                 $('#regionchart').remove();
                 $('#regionchart_sort').remove();
