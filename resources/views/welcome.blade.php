@@ -34,7 +34,7 @@
           <div class="card">
              <div class="card-body">
                 <div class="general-details text-center">
-                   <img src="http://138.68.81.139:8100/media/users/users.png" style="width:150px" class="img-fluid" alt="" />
+                   <img src="{{asset('assets/img/users/users.png')}}" style="width:150px" class="img-fluid" alt="" />
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
                    {{-- <h6><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="0f697d6e616c4f6a776e627f636a216c6062">[email&#160;protected] </a></h6> --}}
                    {{-- <a href="chat.html" class="btn-chat">{{$elchi->v_name}}</a> --}}
