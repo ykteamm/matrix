@@ -26,14 +26,15 @@
                      <tbody>
                         @foreach ($elchi as $item)
                         @if($item->admin == TRUE)
-                        <tr style="background: #323584;color:white;"
+                        <tr
                            >
                            
                            <td class="d-none">{{$item->rid}} </td>
-                           <td>{{$item->username}} </td>
-                           <td>{{$item->last_name}} {{$item->first_name}} ( Admin )</td>
+                           <td></td>
+                           <td style="text-align: center">{{$item->last_name}} {{$item->first_name}} ( RM )</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
-                           <td>{{$item->v_name}}</td>
+                           <td style="color:white;">{{$item->v_name}}</td>
+                           
                            {{-- <td>{{$item->phone_number}}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">

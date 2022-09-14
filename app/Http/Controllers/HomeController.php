@@ -250,6 +250,7 @@ class HomeController extends Controller
         }
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
+            ->whereIn('tg_user.specialty_id',[1,5])
             ->select('tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->orderBy('tg_user.admin','DESC')->get();
