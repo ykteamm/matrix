@@ -75,7 +75,7 @@
                    </div>
                    <div class="row calender-col">
                       <div class="col-xl-12" id="forvil">
-                         <div class="card">
+                         <div class="card" style="height: 62%">
                          
                     <div class="row" id="myregionid">
                     </div>
@@ -344,12 +344,13 @@
   series: [
     {
         name:'Summa',
-      data: response.ssumma
+      data: response.ssumma,
+      
     }
   ],
   chart: {
     type: "bar",
-    height: 450
+    height: 650,
   },
   plotOptions: {
     bar: {
@@ -366,6 +367,8 @@
   },
   dataLabels: {
     enabled: false
+    // enabled: true,
+              
   },
   grid: {
     yaxis: {
@@ -375,22 +378,19 @@
     }
   },
   xaxis: {
-    axisBorder: {
-      show: false
-    },
-    categories: response.sregion
+
+    categories: response.sregion,
+   
   },
+//   yaxis: {
+//     labels: {
+//             style: {
+//               fontSize: '22px'
+//             }
+//           }
+//   },
   colors: [
-    "#008FFB",
-    "#00E396",
-    "#FEB019",
-    "#FF4560",
-    "#775DD0",
-    "#3f51b5",
-    "#03a9f4",
-    "#4caf50",
-    "#f9ce1d",
-    "#FF9800"
+    "#008FFB"
   ],
   legend: {
     show: true

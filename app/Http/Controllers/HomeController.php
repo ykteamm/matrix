@@ -250,9 +250,9 @@ class HomeController extends Controller
         }
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
-            ->select('tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->select('tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
-            ->get();
+            ->orderBy('tg_user.admin','DESC')->get();
         return view('elchi',compact('elchi'));
     }
     public function userList()

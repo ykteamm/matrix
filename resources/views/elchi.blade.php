@@ -13,6 +13,7 @@
                   <table class="table mb-0" id="dtBasicExample">
                      <thead>
                         <tr>
+                           <th class="d-none">id</th>
                            <th>Username</th>
                            <th>FIO </th>
                            {{-- <th>Yoshi </th> --}}
@@ -24,7 +25,23 @@
                      </thead>
                      <tbody>
                         @foreach ($elchi as $item)
-                        
+                        @if($item->admin == TRUE)
+                        <tr style="background: #323584;color:white;"
+                           >
+                           
+                           <td class="d-none">{{$item->rid}} </td>
+                           <td>{{$item->username}} </td>
+                           <td>{{$item->last_name}} {{$item->first_name}} ( Admin )</td>
+                           {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
+                           <td>{{$item->v_name}}</td>
+                           {{-- <td>{{$item->phone_number}}</td> --}}
+                           {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
+                           <td class="text-right">
+                              <a href="patients-profile.html" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-eye mr-1"></i> View </a>
+                              <a href="javascript:void(0);" class="btn btn-sm btn-white text-danger mr-2"><i class="far fa-trash-alt mr-1"></i>Delete </a>
+                           </td> --}}
+                        </tr>
+                        @else
                         <tr 
                         onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
                         .css('color','white');" 
@@ -33,6 +50,7 @@
                            
                            >
                            
+                           <td class="d-none">{{$item->rid}} </td>
                            <td>{{$item->username}} </td>
                            <td>{{$item->last_name}} {{$item->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
@@ -44,7 +62,7 @@
                               <a href="javascript:void(0);" class="btn btn-sm btn-white text-danger mr-2"><i class="far fa-trash-alt mr-1"></i>Delete </a>
                            </td> --}}
                         </tr>
-                        
+                        @endif
                         @endforeach
                      </tbody>
                   </table>
