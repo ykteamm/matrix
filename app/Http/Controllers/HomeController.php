@@ -72,7 +72,10 @@ class HomeController extends Controller
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
         $regions = DB::table('tg_region')->get();
-        $users = DB::table('tg_user')->get();
+        $users = DB::table('tg_user')
+        ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->get();
         }else{
             $r_id_array = [];
             foreach (Session::get('per') as $key => $value) {
@@ -83,7 +86,7 @@ class HomeController extends Controller
             $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
             $users = DB::table('tg_user')
             ->whereIn('tg_region.id',$r_id_array)
-            ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->get();
         }
@@ -250,7 +253,7 @@ class HomeController extends Controller
         }
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
-            ->whereIn('tg_user.specialty_id',[1,5])
+            ->where('tg_user.admin',FALSE)
             ->select('tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->orderBy('tg_user.admin','DESC')->get();
@@ -267,6 +270,191 @@ class HomeController extends Controller
         // return $elchi;
         $posi = DB::table('tg_positions')->get();
         return view('user',compact('elchi','posi'));
+    }
+    public function proList($time)
+    {
+        // $time = '02.09.2022/02.09.2022';
+        if ($time == 'today') {
+            $date_begin = today();
+            $date_end = today();
+
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
+            $dateText = 'Bugun';
+        }
+        elseif ($time == 'week') {
+            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( today()) ) ));
+            $date_end = today()->format('Y-m-d');
+
+            $f_date_begin = date('Y-m-d',(strtotime ( '-2 week' , strtotime ( today()) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( today()) ) ));
+            $dateText = 'Hafta';
+        }
+        elseif ($time == 'month') {
+            $date_begin = today()->format('Y-m-01');
+            $date_end = today()->format('Y-m-d');
+
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_begin) ) ));
+            $f_date_end = today()->format('Y-m-01');
+            $dateText = 'Oy';
+        }
+        elseif ($time == 'year') {
+            $date_begin = today()->format('Y-01-01');
+            $date_end = today()->format('Y-m-d');
+
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_begin) ) ));
+            $f_date_end = today()->format('Y-01-01');
+            $dateText = 'Yil';
+        }
+        elseif ($time == 'all') {
+            $date_begin = today()->format('1790-01-01');
+            $date_end = today()->format('Y-m-d');
+
+            $f_date_begin = today()->format('1790-01-01');
+            $f_date_end = today()->format('Y-m-d');
+            $dateText = 'Hammasi';
+        }
+        else{
+            $date_begin = substr($time,0,10);
+            $date_end = substr($time,11);
+
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,0,10)) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,11)) ) ));
+            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+
+        }  
+        $r_id_array = [];
+
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
+        $regions = DB::table('tg_region')->get();
+        foreach ($regions as $key => $value) {
+            // if (is_numeric($key)){
+           $r_id_array[] = $value->id;
+            // }
+        }
+
+        }else{
+            foreach (Session::get('per') as $key => $value) {
+                if (is_numeric($key)){
+               $r_id_array[] = $key;
+                }
+            }
+
+        }
+        $products = DB::table('tg_productssold')
+                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
+                ->whereDate('tg_productssold.created_at','>=',$date_begin)
+                ->whereDate('tg_productssold.created_at','<=',$date_end)
+                ->whereIn('tg_region.id',$r_id_array)
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->get();
+        $products_range = DB::table('tg_productssold')
+                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
+                ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
+                ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                ->whereIn('tg_region.id',$r_id_array)
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->get();
+
+        $category = DB::table('tg_category')->get();
+        $medicine = DB::table('tg_medicine')->get();
+
+            $sum = 0;
+            $catesum = 0;
+            $medisum = 0;
+            $number = 0;
+            $cateory = [];
+            $medic = [];
+            $medicf = [];
+            // foreach ($products as $key => $one) {
+            //     $sum = $sum + ($one->m_price * $one->m_number);
+
+            // }
+            // foreach ($category as $ckey => $cate) {
+            //     foreach ($products as $key => $one) {
+
+            //         if($cate->id == $one->c_id)
+            //         {
+            //             $catesum = $catesum + ($one->m_price * $one->m_number);
+            //             $cateory[$ckey] = array('price' => $catesum, 'name' => $cate->name);
+            //         }
+            //     }
+            //         $catesum = 0;
+            // }
+            $inarray = [];
+            foreach ($products as $key => $one) {
+                $inarray[] = $one->m_id;
+            }
+            $inarraycat = [];
+            foreach ($products as $key => $one) {
+                $inarraycat[] = $one->c_id;
+            }
+            foreach ($medicine as $mkey => $med) {
+                foreach ($products as $key => $one) {
+
+                    if($med->id == $one->m_id)
+                    {
+                        $medisum = $medisum + ($one->m_price * $one->m_number);
+                        $number = $number + $one->m_number;
+
+                        $medic[$mkey] = array('mid'=>$one->m_id,'narx'=>$med->price,'price' => $medisum,'number' => $number, 'name' => $med->name,'cid' => $one->c_id,'nol' => 1);
+                    }
+                    
+            
+                }
+                    $medisum = 0;
+                    $number = 0;
+
+            }
+            $medica = $medic;
+            $alls = [];
+            foreach ($category as $key => $one) {
+
+                foreach ($medicine as $mkey => $med) {
+                    // if(!in_array($med->id,$inarray))
+                    // {
+                        $alls[] = array('mid'=>$med->id,'narx'=>$med->price,'price' => 0,'number' => 0, 'name' => $med->name,'cid' => $one->id,'nol' => 0);
+                    // }
+                }
+            }
+
+            $alls2 = $alls;
+
+            foreach ($alls as $key => $one) {
+
+                foreach ($medica as $mkey => $med) {
+                    if($one['cid'] == $med['cid'] && $one['mid'] == $med['mid'] )
+                    {
+                        // $medic[] = array('mid'=>$med['id'],'narx'=>$med['price'],'price' => 0,'number' => 0, 'name' => $med->name,'cid' => $one->id,'nol' => 0);
+                        $alls2[$key] = $medica[$mkey];
+                        // $alls[] = array('mid'=>$med->id,'narx'=>$med->price,'price' => 0,'number' => 0, 'name' => $med->name,'cid' => $one->id,'nol' => 0);
+                    }
+                }
+
+            }
+            foreach ($alls2 as $key => $one) {
+                unset($alls2[$key]->mid);
+            }
+
+            
+                
+            // return [
+            //     'data' => $user,
+            //     'sum' => $sum,
+            //     'cateory' => $cateory,
+            //     'medic' => $medic,
+            // ];
+            $medic = $alls2;
+            
+        return view('product',compact('medic','category','dateText'));
+        // return $alls2;
     }
     public function userOnlineStatus()
     {

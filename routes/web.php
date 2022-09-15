@@ -58,6 +58,7 @@ Route::get('/status', [HomeController::class,'userOnlineStatus']);
 Route::resource('position', PositionController::class);
 Route::get('position//{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
 Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
+Route::get('pro-list/{time}', [HomeController::class,'proList'])->name('pro-list');
 Route::post('permission', [HomeController::class,'permission'])->name('permissions');
 
 #end-position

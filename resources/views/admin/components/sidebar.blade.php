@@ -18,6 +18,14 @@
                <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
                   @endif
              @endisset
+
+             @isset(Session::get('per')['pro'])
+             @if(Session::get('per')['pro'] == 'true')
+             <li><a href="{{route('pro-list','today')}}"><i class="feather-filter"></i>  <span>Mahsulotlar </span></a>
+             </li>
+            @endif
+             @endisset
+
                   @isset(Session::get('per')['User'])
              @if(Session::get('per')['User'] == 'true')
                <li><a href="{{route('user-list')}}"><i class="feather-filter"></i>  <span>Adminlar </span></a>
@@ -41,6 +49,12 @@
                   </li>
                   @endif
              @endisset
+             {{-- @isset(Session::get('per')['User']) --}}
+             {{-- @if(Session::get('per')['User'] == 'true') --}}
+               
+             {{-- @endif --}}
+             {{-- @endisset --}}
+
                {{-- </ul>
             </li> --}}
             {{-- <li><a href="{{ route('back') }}"><i class="feather-home"></i>  <span> 2 </span></a> --}}

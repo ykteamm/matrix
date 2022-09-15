@@ -82,6 +82,11 @@
 $(document).ready(function () {
   $('#dtBasicExample').DataTable();
   $('.dataTables_length').addClass('bs-select');
+
+  $('#dtBasicExample12').DataTable({
+    "order": [[ 2, "desc" ]]
+  });
+  $('.dataTables_length').addClass('bs-select');
 });
         $("#hospital_name").change(function(){
             var hospital = $("#hospital_name").val();

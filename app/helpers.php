@@ -74,6 +74,7 @@ use Illuminate\Support\Facades\Request;
             'dash' => 'Dashboard',
             'filter' => 'Filter',
             'elchi' => 'Elchi',
+            'pro' => 'Mahsulotlar',
             'User' => 'User',
             'rol' => 'Rol',
             'region' => 'Barcha viloyat',

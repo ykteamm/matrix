@@ -75,9 +75,9 @@
                         <div class="col-md-12">
                            <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button4" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
                            <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
-                              <a href="#" onclick="users('Hammasi','all')" class="dropdown-item"> Hammasi </a>
+                              <a href="#" onclick="users('Hammasi','all')" class="dropdown-item" id="addregionall"> Hammasi </a>
                               @foreach($users as $user)
-                              <a href="#" onclick="users(`{{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item"> {{$user->last_name}} {{$user->first_name}} </a>
+                              <a href="#" onclick="users(`{{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall"> {{$user->last_name}} {{$user->first_name}} </a>
                               @endforeach
                            </div>
                         </div>
@@ -239,6 +239,18 @@
              },
              success:function(response){
                 if(response) {
+                  $('.regionall').remove();
+
+                  $.each(response.reid, function(index, value){
+
+                     var $row = $('<a onclick="users(`'+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall" >'
+                                       + value.last_name + value.first_name +
+                                  '</a>'); 
+                     $('#addregionall').after($row);
+                     
+                  });
+
+
                    $('.fortr').remove();
                    $.each(response.data, function(index, value){
                       var d = new Date(value.m_data);
@@ -258,7 +270,7 @@
                             }
 
                       var $row = $('<tr class="fortr">'+
-                                     '<td>'+ value.ul_name + ' ' + value.uf_name +'</td>'+
+                                     '<td style="cursor:pointer;" onclick="users(`'+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
                                      '<td onclick="orderId('+value.t_id+')"><button type="button" class="btn btn-block btn-outline-primary">'+ 'order'+value.t_id +'</button></td>'+
                                      '<td>'+ value.m_name +'</td>'+
                                      '<td>'+ value.m_number +'</td>'+
