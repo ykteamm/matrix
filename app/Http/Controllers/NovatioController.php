@@ -450,20 +450,35 @@ class NovatioController extends Controller
             
             if($summa > $fsumma)
             {
-                $foiz = $summa - $fsumma;
-                $icon = '<i class="fas fa-angle-double-up mr-1" style="color:#05f705;"></i>';
+                if($fsumma == 0)
+                {
+                    $foiz = 100;
+                    
+                }else{
+                $foiz = number_format((($summa-$fsumma)*100)/$summa,2);
+                }
+                $icon = '<i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
+
 
 
             }
             elseif($summa == $fsumma)
             {
-                $foiz = '';
+                $foiz = '0';
                 $icon = '';
             }
             else
             {
-                $foiz = $fsumma - $summa;
-                $icon = '<i class="fas fa-angle-double-down mr-1" style="color:#f71505;"></i>';
+                if($summa == 0)
+                {
+                    $foiz = 100;
+                    
+                }else{
+                $foiz = number_format((($fsumma-$summa)*100)/$fsumma,2);
+
+                }
+
+                $icon = '<i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
 
 
             }
@@ -507,20 +522,35 @@ class NovatioController extends Controller
             
             if($c_summa > $fsumma)
             {
-                $foiz = $summa - $c_summa;
-                $icon = '<i class="fas fa-angle-double-up mr-1" style="color:#05f705;"></i>';
+                if($fsumma == 0)
+                {
+                    $foiz = 100;
+                    
+                }else{
+                $foiz = number_format((($c_summa-$fsumma)*100)/$c_summa,2);
+                }
+                $icon = '<i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
+
 
 
             }
             elseif($c_summa == $fsumma)
             {
-                $foiz = '';
+                $foiz = '0';
                 $icon = '';
             }
             else
             {
-                $foiz = $fsumma - $c_summa;
-                $icon = '<i class="fas fa-angle-double-down mr-1" style="color:#f71505;"></i>';
+
+                if($fsumma == 0)
+                {
+                    $foiz = 100;
+                    
+                }else{
+                $foiz = number_format((($fsumma-$c_summa)*100)/$fsumma,2);
+                }
+                $icon = '<i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
+
 
 
             }
@@ -562,17 +592,47 @@ class NovatioController extends Controller
         $newcatarray = [];
         foreach($catarray as $catar)
         {
-            $newcatarray[] = array('summa' => number_format($catar['summa'], 0, '', ' '),'name' => $catar['name'],'icon' => $catar['icon']);
+            $number = $catar['summa'];
+            if ($number < 999999 && $number > 999) {
+                // Anything less than a billion
+                $format = number_format($number / 1000) . 'K';
+            }else if ($number < 999999999 && $number > 999999) {
+                // Anything less than a billion
+                $format = number_format($number / 1000000,) . 'M';
+            }else {
+                $format = number_format($number, 0, '', '.');
+            }
+            $newcatarray[] = array('tols'=> number_format($catar['summa'], 0, '', '.'),'summa' => $format,'name' => $catar['name'],'icon' => $catar['icon']);
         }
         $newarray = [];
         foreach($array as $ar)
         {
-            $newarray[] = array('summa' => number_format($ar['summa'], 0, '', ' '),'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
+            $number = $ar['summa'];
+             if ($number < 999999 && $number > 999) {
+                // Anything less than a billion
+                $format = number_format($number / 1000) . 'K';
+            }else if ($number < 999999999 && $number > 999999) {
+                // Anything less than a billion
+                $format = number_format($number / 1000000,) . 'M';
+            }else {
+                $format = number_format($number, 0, '', '.');
+            }
+            $newarray[] = array('tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }
         $newuserarray = [];
         foreach($userArray as $userar)
         {
-            $newuserarray[] = array('summa' => number_format($userar['summa'], 0, '', ' '),'name' => $userar['name']);
+            $number = $userar['summa'];
+            if ($number < 999999 && $number > 999) {
+                // Anything less than a billion
+                $format = number_format($number / 1000) . 'K';
+            }else if ($number < 999999999 && $number > 999999) {
+                // Anything less than a billion
+                $format = number_format($number / 1000000,) . 'M';
+            }else {
+                $format = number_format($number, 0, '', '.');
+            }
+            $newuserarray[] = array('tols'=> number_format($userar['summa'], 0, '', '.'),'summa' => $format,'name' => $userar['name']);
         }
         // return [
         //     'a' => $date_begin,

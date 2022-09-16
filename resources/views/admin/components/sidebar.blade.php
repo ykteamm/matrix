@@ -19,12 +19,12 @@
                   @endif
              @endisset
 
-             @isset(Session::get('per')['pro'])
-             @if(Session::get('per')['pro'] == 'true')
+             {{-- @isset(Session::get('per')['pro']) --}}
+             {{-- @if(Session::get('per')['pro'] == 'true') --}}
              <li><a href="{{route('pro-list','today')}}"><i class="feather-filter"></i>  <span>Mahsulotlar </span></a>
              </li>
-            @endif
-             @endisset
+            {{-- @endif --}}
+             {{-- @endisset --}}
 
                   @isset(Session::get('per')['User'])
              @if(Session::get('per')['User'] == 'true')

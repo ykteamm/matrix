@@ -48,7 +48,7 @@
                        </h3>
                     {{-- </div> --}}
                 </div>
-                    <div class="row" id="myregionid">
+                    <div class="row align-items-center justify-content-center" id="myregionid">
                     </div>
                     <div class="row" id="catid">
                     </div>
@@ -423,13 +423,14 @@
 
                 if(response.myid == value.id || response.regid == value.id)
                 {
-                    var $row = $('<div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap delregion">'+
-                                '<div class="card detail-box4">'+
+                    var $row = $('<div class="col-4 col-md-4 col-lg-4 d-flex flex-wrap delregion">'+
+                                '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
-                                            '<h2 style="color:#ffffff;text-align:center;">'+ value.region +'</h2>'+
-                                            '<h3 style="color:#ffffff;text-align:center;">'+value.icon + value.summa +' so\'m</h3>'+
-
+                                            '<h2 style="color:#05f705;text-align:center;">'+ value.region +'</h2>'+
+                                            '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
+                                            '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
+                                            '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -461,9 +462,10 @@
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
-                                            '<h2 style="color:#05f705;text-align:center;">'+ value.region +'</h2>'+
-                                            '<h3 style="color:#ffffff;text-align:center;">'+value.icon + value.summa +' so\'m</h3>'+
-
+                                            '<h2 style="color:#05f705;text-align:center;height:45px;">'+ value.region +'</h2>'+
+                                            '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
+                                            '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
+                                            '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -487,8 +489,10 @@
                                 '<div class="card detail-box1'+detail+'">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
-                                            '<h2 style="color:#ffffff;text-align:center;">'+ value.name +'</h2>'+
-                                            '<h3 style="color:#ffffff;text-align:center;">'+value.icon + value.summa +' so\'m</h3>'+
+                                            '<h2 style="color:#05f705;text-align:center;">'+ value.name +'</h2>'+
+                                            '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
+                                            '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
+                                            '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+

@@ -70,6 +70,7 @@
                                             <th>Soni</th>
                                             {{-- <th>Yoshi </th> --}}
                                             <th>Summasi </th>
+                                            <th>Farqi </th>
                                             {{-- <th>Telefon raqami </th> --}}
                                             {{-- <th>Email </th>
                                             <th class="text-right">Action </th> --}}
@@ -79,6 +80,8 @@
                                     <tbody>
                                         @foreach ($medic as $item)
                                         @if($citem->id == $item['cid'] && $item['nol'] == 1)
+                                        @foreach ($medic2 as $item2)
+                                          @if($item['mid'] == $item2['mid'] && $item['cid'] == $item2['cid'])
                                         <tr
                                             >
                                             
@@ -89,14 +92,28 @@
                                             <td>{{$item['number']}}</td>
                                             {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                                             <td class="sorting_4">{{$item['price']}}</td>
+                                            @if($item['price'] > $item2['price'])
+                             <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item['price'],1)}}%</td>
+                             @elseif($item['price'] < $item2['price'])
+                            <td><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>{{number_format((($item2['price'] - $item['price'])*100)/$item2['price'],1)}}%</td>
+                              @else
+                            <td>0%</td>
+
+                             @endif
                                             
                                             
                                         </tr>
+                                        @endif
+
+                                        @endforeach
+
                                         @endif
                                         
                                         @endforeach
                                         @foreach ($medic as $item)
                                         @if($citem->id == $item['cid'] && $item['nol'] == 0)
+                                        @foreach ($medic2 as $item2)
+                                          @if($item['mid'] == $item2['mid'] && $item['cid'] == $item2['cid'])
                                         <tr class="forc{{$citem->id}}" style="display: none;"
                                             >
                                             
@@ -105,9 +122,21 @@
 
                                             <td>{{$item['number']}}</td>
                                             <td>{{$item['price']}}</td>
+                                            @if($item['price'] > $item2['price'])
+                             <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item['price'],1)}}%</td>
+                             @elseif($item['price'] < $item2['price'])
+                            <td><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>{{number_format((($item2['price'] - $item['price'])*100)/$item2['price'],1)}}%</td>
+                              @else
+                            <td>0%</td>
+
+                             @endif
                                             
                                             
                                         </tr>
+                                        @endif
+                                        
+                                        @endforeach
+
                                         @endif
                                         @endforeach
                                     </tbody>
@@ -139,6 +168,7 @@
                              <th>Soni</th>
                              {{-- <th>Yoshi </th> --}}
                              <th>Summasi </th>
+                             <th>Farqi </th>
                              {{-- <th>Telefon raqami </th> --}}
                              {{-- <th>Email </th>
                              <th class="text-right">Action </th> --}}
@@ -150,7 +180,8 @@
                         
                           @foreach ($medic as $item)
                           @if($item['nol'] == 1)
-
+                          @foreach ($medic2 as $item2)
+                           @if($item['mid'] == $item2['mid'] && $item['cid'] == $item2['cid'])
                           <tr>
                              {{-- <td class="pl-5">{{$item['name']}} </td> --}}
                              <td><span title="{{$item['narx']}}" data-toggle="tooltip" data-placement="top">{{$item['name']}}</span> </td>
@@ -158,7 +189,19 @@
                              {{-- <td>{{$item['narx']}}</td> --}}
                              <td>{{$item['number']}}</td>
                              <td class="sorting_1">{{$item['price']}}</td>
+                             @if($item['price'] > $item2['price'])
+                             <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item['price'],1)}}%</td>
+                             @elseif($item['price'] < $item2['price'])
+                            <td><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>{{number_format((($item2['price'] - $item['price'])*100)/$item2['price'],1)}}%</td>
+                              @else
+                            <td>0%</td>
+
+                             @endif
+
                           </tr>
+                          @endif
+                          @endforeach
+
                           @endif
                           @endforeach
                        </tbody>

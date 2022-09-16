@@ -373,21 +373,6 @@ class HomeController extends Controller
             $cateory = [];
             $medic = [];
             $medicf = [];
-            // foreach ($products as $key => $one) {
-            //     $sum = $sum + ($one->m_price * $one->m_number);
-
-            // }
-            // foreach ($category as $ckey => $cate) {
-            //     foreach ($products as $key => $one) {
-
-            //         if($cate->id == $one->c_id)
-            //         {
-            //             $catesum = $catesum + ($one->m_price * $one->m_number);
-            //             $cateory[$ckey] = array('price' => $catesum, 'name' => $cate->name);
-            //         }
-            //     }
-            //         $catesum = 0;
-            // }
             $inarray = [];
             foreach ($products as $key => $one) {
                 $inarray[] = $one->m_id;
@@ -418,10 +403,7 @@ class HomeController extends Controller
             foreach ($category as $key => $one) {
 
                 foreach ($medicine as $mkey => $med) {
-                    // if(!in_array($med->id,$inarray))
-                    // {
                         $alls[] = array('mid'=>$med->id,'narx'=>$med->price,'price' => 0,'number' => 0, 'name' => $med->name,'cid' => $one->id,'nol' => 0);
-                    // }
                 }
             }
 
@@ -432,9 +414,7 @@ class HomeController extends Controller
                 foreach ($medica as $mkey => $med) {
                     if($one['cid'] == $med['cid'] && $one['mid'] == $med['mid'] )
                     {
-                        // $medic[] = array('mid'=>$med['id'],'narx'=>$med['price'],'price' => 0,'number' => 0, 'name' => $med->name,'cid' => $one->id,'nol' => 0);
                         $alls2[$key] = $medica[$mkey];
-                        // $alls[] = array('mid'=>$med->id,'narx'=>$med->price,'price' => 0,'number' => 0, 'name' => $med->name,'cid' => $one->id,'nol' => 0);
                     }
                 }
 
@@ -442,19 +422,48 @@ class HomeController extends Controller
             foreach ($alls2 as $key => $one) {
                 unset($alls2[$key]->mid);
             }
-
-            
-                
-            // return [
-            //     'data' => $user,
-            //     'sum' => $sum,
-            //     'cateory' => $cateory,
-            //     'medic' => $medic,
-            // ];
             $medic = $alls2;
+
+            #2
+            $medic2 = [];
+
+            foreach ($medicine as $mkey => $med) {
+                foreach ($products_range as $key => $one) {
+
+                    if($med->id == $one->m_id)
+                    {
+                        $medisum = $medisum + ($one->m_price * $one->m_number);
+                        $number = $number + $one->m_number;
+
+                        $medic2[$mkey] = array('mid'=>$one->m_id,'narx'=>$med->price,'price' => $medisum,'number' => $number, 'name' => $med->name,'cid' => $one->c_id,'nol' => 1);
+                    }
+                    
             
-        return view('product',compact('medic','category','dateText'));
-        // return $alls2;
+                }
+                    $medisum = 0;
+                    $number = 0;
+
+            }
+            $medica2 = $medic2;
+
+            $alls22 = $alls;
+
+            foreach ($alls as $key => $one) {
+
+                foreach ($medica2 as $mkey => $med) {
+                    if($one['cid'] == $med['cid'] && $one['mid'] == $med['mid'] )
+                    {
+                        $alls22[$key] = $medica2[$mkey];
+                    }
+                }
+
+            }
+            // foreach ($alls22 as $key => $one) {
+            //     unset($alls22[$key]->mid);
+            // }
+            $medic2 = $alls22;
+            
+        return view('product',compact('medic','medic2','category','dateText'));
     }
     public function userOnlineStatus()
     {
