@@ -287,8 +287,8 @@ class HomeController extends Controller
     // die();
     //  $agent = new Agent();
     //  return $agent->device();
-    $host = request()->getHttpHost();
-    return $host;
+    // $host = request()->getHttpHost();
+    return gethostbyaddr($_SERVER['REMOTE_ADDR']);;
 
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
