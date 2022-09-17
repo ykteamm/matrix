@@ -50,9 +50,20 @@
         top:40px !important;
         z-index: 4 !important;
         }
+        .numberkm{
+            font-size:28px;
+            font-family: Gilroy;
+        }
+        .numberpr{
+            font-size:40px;
+            font-family: Gilroy;
+        }
     </style>
+
+    <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css">
+    
 </head>
-<body>
+<body onload = "load()">
     <div class="main-wrapper">
         {{-- @include('components.flash'); --}}
         {{-- @if ($errors->any())
@@ -75,8 +86,23 @@
 
     @include('admin.partials.js')
     @yield('admin_script')
-
-
+    <script>
+        function httpGetAsync(url, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+        callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous
+    xmlHttp.send(null);
+}
+        function load(){ 
+      
+    //         $.getJSON("https://ipgeolocation.abstractapi.com/v1/?api_key=5a42f230a84e4d059286391bad05d42d", function(data) {
+    // console.log(data);
+}) 
+        }
+      </script>
 
 <script>
 $(document).ready(function () {

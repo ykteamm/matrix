@@ -285,8 +285,8 @@ class HomeController extends Controller
 
     // echo "<center>$getip <br> $getdevice <br> $getbrowser <br> $getos</center>";
     // die();
-     $agent = new Agent();
-     return $agent->device();
+    //  $agent = new Agent();
+    //  return $agent->device();
     // $host = request()->getHttpHost();
     //  return getenv('COMPUTERNAME');
 

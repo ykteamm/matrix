@@ -486,13 +486,13 @@
                 $.each(response.catarray, function(index, value){
 
                 var $row = $('<div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap delcat">'+
-                                '<div class="card detail-box1'+detail+'">'+
+                                '<div style="border-radius:26px;" class="card detail-box'+value.detail+'">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
-                                            '<h2 style="color:#05f705;text-align:center;">'+ value.name +'</h2>'+
-                                            '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
-                                            '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
-                                            '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
+                                            '<h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">'+ value.name +'</h2>'+
+                                            '<h3 style="color:#ffffff;text-align:left;margin-left:0px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
+                                            '<h6 style="margin-top:-10px;color:#ffffff"><span style="text-align:left;">'+value.icon +'</span></h6>'+
+                                            // '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+

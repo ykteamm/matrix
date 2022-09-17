@@ -529,15 +529,16 @@ class NovatioController extends Controller
                 }else{
                 $foiz = number_format((($c_summa-$fsumma)*100)/$c_summa,2);
                 }
-                $icon = '<i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
+                $icon = '<span style="font-family:Gilroy";>+'.$foiz.'% </span><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>';
 
-
+                $detail = 12;
 
             }
             elseif($c_summa == $fsumma)
             {
                 $foiz = '0';
                 $icon = '';
+                $detail = 1;
             }
             else
             {
@@ -549,13 +550,14 @@ class NovatioController extends Controller
                 }else{
                 $foiz = number_format((($fsumma-$c_summa)*100)/$fsumma,2);
                 }
-                $icon = '<i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
+                $icon = '<span style="font-family:Gilroy";>-'.$foiz.'% </span><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>';
+                $detail = 13;
 
 
 
             }
            
-                    $catarray[] = array('summa' => $c_summa,'name' => $valuefa->name,'icon' => $icon);
+                    $catarray[] = array('detail' => $detail,'summa' => $c_summa,'name' => $valuefa->name,'icon' => $icon);
             $c_summa = 0;
 
         }
@@ -595,14 +597,14 @@ class NovatioController extends Controller
             $number = $catar['summa'];
             if ($number < 999999 && $number > 999) {
                 // Anything less than a billion
-                $format = number_format($number / 1000) . 'K';
+                $format =  '<span class="numberpr">'.number_format($number / 1000).'</span>' . '<span class="numberkm">K</span>';
             }else if ($number < 999999999 && $number > 999999) {
                 // Anything less than a billion
-                $format = number_format($number / 1000000,) . 'M';
+                $format = '<span class="numberpr">'.number_format($number / 1000000,).'</span>' . '<span class="numberkm">M</span>';
             }else {
                 $format = number_format($number, 0, '', '.');
             }
-            $newcatarray[] = array('tols'=> number_format($catar['summa'], 0, '', '.'),'summa' => $format,'name' => $catar['name'],'icon' => $catar['icon']);
+            $newcatarray[] = array('detail' => $catar['detail'],'tols'=> number_format($catar['summa'], 0, '', '.'),'summa' => $format,'name' => $catar['name'],'icon' => $catar['icon']);
         }
         $newarray = [];
         foreach($array as $ar)

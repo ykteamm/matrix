@@ -4531,10 +4531,17 @@ table.table-inbox tbody tr.checked {
 }
 
 .detail-box12 {
-	background: linear-gradient(to top, rgb(253 250 34) 0%, rgb(226 146 34) 30%, rgb(177 53 0) 100%);
+	/* background: linear-gradient(to top, rgb(253 250 34) 0%, rgb(226 146 34) 30%, rgb(177 53 0) 100%); */
+	/* background: linear-gradient(to top left, rgb(150 39 5) -17%, rgb(1 13 46) 62%); */
+	/* background: linear-gradient(321deg, rgb(37 184 25) -19%, rgb(3 11 32) 55%); */
+	background: linear-gradient( 313deg, hsl(125deg 88% 49%) 0%, hsl(125deg 57% 20% / 88%) 30%, hsl(224deg 95% 8%) 65% );
+
 }
 .detail-box13 {
-	background: linear-gradient(to top, rgb(46 88 124) 0%, rgb(0 52 121) 30%, rgb(0 14 89) 100%);
+	/* background: linear-gradient(to top, rgb(46 88 124) 0%, rgb(0 52 121) 30%, rgb(0 14 89) 100%); */
+	/* background: linear-gradient(321deg, rgb(235 29 29) -19%, rgb(3 11 32) 55%); */
+	background:linear-gradient( 313deg, hsl(0deg 100% 55%) 0%, hsl(350deg 58% 28%) 30%, hsl(224deg 95% 8%) 65% );
+
 }
 .detail-box14 {
 	background: linear-gradient(to top, rgb(202 201 235) 0%, rgb(216 118 189) 30%, rgb(229 43 148) 100%);
