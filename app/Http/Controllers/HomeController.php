@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UserSystemInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 // use Illuminate\Http\Patient;
@@ -276,22 +277,13 @@ class HomeController extends Controller
     }
     public function userList()
     {
-        $ipaddress = '';
-       if (isset($_SERVER['HTTP_CLIENT_IP']))
-           $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-       else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-           $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-       else if(isset($_SERVER['HTTP_X_FORWARDED']))
-           $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-       else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-           $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-       else if(isset($_SERVER['HTTP_FORWARDED']))
-           $ipaddress = $_SERVER['HTTP_FORWARDED'];
-       else if(isset($_SERVER['REMOTE_ADDR']))
-           $ipaddress = $_SERVER['REMOTE_ADDR'];
-       else
-           $ipaddress = 'UNKNOWN';    
-       return $ipaddress;
+        $getip = UserSystemInfo::get_ip();
+    $getbrowser = UserSystemInfo::get_browsers();
+    $getdevice = UserSystemInfo::get_device();
+    $getos = UserSystemInfo::get_os();
+
+    echo "<center>$getip <br> $getdevice <br> $getbrowser <br> $getos</center>";
+    die();
 
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
