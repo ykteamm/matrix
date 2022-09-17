@@ -275,15 +275,16 @@ class HomeController extends Controller
             ->orderBy('tg_user.admin','DESC')->get();
         return view('elchi',compact('elchi'));
     }
-    public function userList()
+    public function userList(Request $request)
     {
-        $getip = UserSystemInfo::get_ip();
-    $getbrowser = UserSystemInfo::get_browsers();
-    $getdevice = UserSystemInfo::get_device();
-    $getos = UserSystemInfo::get_os();
+    //     $getip = UserSystemInfo::get_ip();
+    // $getbrowser = UserSystemInfo::get_browsers();
+    // $getdevice = UserSystemInfo::get_device();
+    // $getos = UserSystemInfo::get_os();
 
-    echo "<center>$getip <br> $getdevice <br> $getbrowser <br> $getos</center>";
-    die();
+    // echo "<center>$getip <br> $getdevice <br> $getbrowser <br> $getos</center>";
+    // die();
+    return $request->header('User-Agent');
 
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
