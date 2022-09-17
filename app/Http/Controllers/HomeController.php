@@ -276,6 +276,23 @@ class HomeController extends Controller
     }
     public function userList()
     {
+        $ipaddress = '';
+       if (isset($_SERVER['HTTP_CLIENT_IP']))
+           $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+       else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+           $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+       else if(isset($_SERVER['HTTP_X_FORWARDED']))
+           $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+       else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+           $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+       else if(isset($_SERVER['HTTP_FORWARDED']))
+           $ipaddress = $_SERVER['HTTP_FORWARDED'];
+       else if(isset($_SERVER['REMOTE_ADDR']))
+           $ipaddress = $_SERVER['REMOTE_ADDR'];
+       else
+           $ipaddress = 'UNKNOWN';    
+       return $ipaddress;
+
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
         ->select('tg_user.last_seen','tg_positions.id as pid','tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name')
