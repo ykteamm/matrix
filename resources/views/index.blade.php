@@ -491,7 +491,7 @@
                                         '<div class="dash-contetnt">'+
                                             '<h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">'+ value.name +'</h2>'+
                                             '<h3 style="color:#ffffff;text-align:left;margin-left:0px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
-                                            '<h6 style="margin-top:-10px;color:#ffffff"><span style="text-align:left;">'+value.icon +'</span></h6>'+
+                                            '<h6 style="margin-top:-10px;"><span style="text-align:left;">'+value.icon +'</span></h6>'+
                                             // '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+

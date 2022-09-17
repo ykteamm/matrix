@@ -529,7 +529,7 @@ class NovatioController extends Controller
                 }else{
                 $foiz = number_format((($c_summa-$fsumma)*100)/$c_summa,2);
                 }
-                $icon = '<span style="font-family:Gilroy";>+'.$foiz.'% </span><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>';
+                $icon = '<span style="font-family:Gilroy;color:#39f33c;">+'.$foiz.'% </span><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>';
 
                 $detail = 12;
 
@@ -550,7 +550,7 @@ class NovatioController extends Controller
                 }else{
                 $foiz = number_format((($fsumma-$c_summa)*100)/$fsumma,2);
                 }
-                $icon = '<span style="font-family:Gilroy";>-'.$foiz.'% </span><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>';
+                $icon = '<span style="font-family:Gilroy;color:#f34539;">-'.$foiz.'% </span><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>';
                 $detail = 13;
 
 
