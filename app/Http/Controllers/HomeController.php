@@ -287,7 +287,7 @@ class HomeController extends Controller
     // die();
     //  $agent = new Agent();
     //  return $agent->device();
-    return gethostbyname(gethostname());
+    return php_uname();
 
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
