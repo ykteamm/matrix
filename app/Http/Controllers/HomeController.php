@@ -15,6 +15,7 @@ use Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+use Jenssegers\Agent\Agent;
 // use Session;
 // use Config;
 
@@ -284,7 +285,9 @@ class HomeController extends Controller
 
     // echo "<center>$getip <br> $getdevice <br> $getbrowser <br> $getos</center>";
     // die();
-    return $request->header('User-Agent');
+    //  $agent = new Agent();
+    //  return $agent->device();
+    return gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
