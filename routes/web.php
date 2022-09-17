@@ -60,6 +60,7 @@ Route::get('position//{id?}/delete', [App\Http\Controllers\PositionController::c
 Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('pro-list/{time}', [HomeController::class,'proList'])->name('pro-list');
 Route::post('permission', [HomeController::class,'permission'])->name('permissions');
+Route::get('reg', [HomeController::class,'reg']);
 
 #end-position
 

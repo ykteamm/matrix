@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Blackjack</title>
 
     <!-- Scripts -->
     {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
@@ -82,8 +82,23 @@
 $(document).ready(function () {
   $('#dtBasicExample').DataTable();
   $('.dataTables_length').addClass('bs-select');
+
+  $('#dtBasicExampleAdmin').DataTable({
+    "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+  });
+
+  $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "order": [[ 4, "desc" ]]
+
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+//   $('.dataTables_length').addClass('bs-select');
+
   $('.dtBasicExample').DataTable();
   $('.dataTables_length').addClass('bs-select');
+
   $('#dtBasicExample12').DataTable({
     "order": [[ 2, "desc" ]]
   });

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\Patient;
 use App\Models\Position;
+use App\Models\Region;
 use Carbon\Carbon;
 use Cache;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,20 @@ class HomeController extends Controller
     // {
     //     return view('home');
     // }
+    public function reg()
+    {
+        // $email = DB::table('tg_user')->where('id', '36')->value('pr');
+        $user = DB::table('tg_productssold')
+        ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price');
+        $search = $user->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id');
+               
+        // $search = $user->addSelect(DB::raw('count(*) as last'));
+
+        $search = $user->groupBy('tg_medicine.name','tg_medicine.price')->get();
+
+
+        return $search;
+    }
     public function index()
     {
         $regions = DB::table('tg_region')->get();
@@ -604,5 +619,7 @@ class HomeController extends Controller
     {
         return view('user.login');
     }
+
+    
 
 }
