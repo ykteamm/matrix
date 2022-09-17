@@ -278,7 +278,7 @@ class HomeController extends Controller
     }
     public function userList(Request $request)
     {
-    //     $getip = UserSystemInfo::get_ip();
+        // $getip = UserSystemInfo::get_ip();
     // $getbrowser = UserSystemInfo::get_browsers();
     // $getdevice = UserSystemInfo::get_device();
     // $getos = UserSystemInfo::get_os();
@@ -287,7 +287,7 @@ class HomeController extends Controller
     // die();
     //  $agent = new Agent();
     //  return $agent->device();
-    return gethostbyaddr($_SERVER['REMOTE_ADDR']);
+    return gethostbyname(gethostname());
 
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
