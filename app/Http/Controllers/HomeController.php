@@ -11,6 +11,7 @@ use App\Models\Patient;
 use App\Models\Position;
 use App\Models\Region;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Config;
 use Jenssegers\Agent\Agent;
 // use Session;
 // use Config;
-
+use Storage;
+use Illuminate\Support\Facades\Http;
 class HomeController extends Controller
 {
     /**
@@ -56,6 +58,9 @@ class HomeController extends Controller
     }
     public function index()
     {
+
+        
+        
         $regions = DB::table('tg_region')->get();
 
         $sum = DB::table('tg_productssold')
@@ -114,6 +119,19 @@ class HomeController extends Controller
     }
     public function elchi($id,$time)
     {
+        $getimg = DB::table('tg_user')->where('id',$id)->value('image');
+        // return substr($getimg,6);
+        $exists = Storage::disk('public_uploads')->exists(substr($getimg,6));
+        // return $exists;
+        if(!$exists) {
+            $response = Http::get('http://138.68.81.139:8100/api/v1/user/image/'.$id);
+            $url = $response['image'];
+            $contents = file_get_contents($url);
+            $name = substr($url, strrpos($url, '/') + 1);
+            Storage::disk('public_uploads')->put($name, $contents);
+        }
+        
+
         if ($time == 'today') {
             $date_begin = today();
             $date_end = today();
@@ -147,7 +165,7 @@ class HomeController extends Controller
         }  
         // return  substr("$time",0,10);
         $elchi = DB::table('tg_user')->where('tg_user.id',$id)
-        ->select('tg_specialty.name as lv','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
+        ->select('tg_user.image','tg_specialty.name as lv','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->join('tg_district','tg_district.id','tg_user.district_id')
         ->join('tg_specialty','tg_specialty.id','tg_user.specialty_id')
@@ -268,13 +286,122 @@ class HomeController extends Controller
                     }
             
         }
+
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
             ->where('tg_user.admin',FALSE)
             ->select('tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->orderBy('tg_user.admin','DESC')->get();
-        return view('elchi',compact('elchi'));
+
+            
+        $elchi_work=[];
+        $elchi_fact=[];
+        $elchi_prognoz=[];
+        $cale = DB::table('tg_calendar')->where('year_month',today()->format('m.Y'))->first();
+        $cale_date = json_decode($cale->day_json);
+        // return $elchi;
+        $date = DB::table('tg_smena')
+            // ->whereIn(DB::raw('DATE(created_from)'), $all_date)
+            ->whereDate('created_from','>=',today()->format('Y-m').'-01')
+            ->whereDate('created_from','<=',today()->format('Y-m').'-30')
+            ->where('smena',2)
+            ->where('user_id', 35)
+            ->orderBy('created_from','DESC')
+            ->pluck('created_from');
+        // return $date[0];
+        $fsd=[];
+        foreach($elchi as $elch)
+        {
+
+            $date = DB::table('tg_smena')
+            // ->whereIn(DB::raw('DATE(created_from)'), $all_date)
+            ->whereDate('created_from','>=',today()->format('Y-m').'-01')
+            ->whereDate('created_from','<=',today()->format('Y-m').'-30')
+            ->where('smena',2)
+            ->where('user_id', $elch->id)
+            ->orderBy('created_from','DESC')
+            ->pluck('created_from');
+
+            // return $date;
+            // $fsd[]=$date;
+        if(isset($date[0]))
+        {
+
+        
+        $all_date=[];
+        foreach($cale_date as $key => $value)
+        {   
+            if($value == 'true' && $key <=  date('d',(strtotime ( $date[0] ) )))
+            {
+                if (strlen($key) == 1) {
+                    $key = '0'.$key;
+                }
+            $all_date[] = today()->format('Y-m').'-'.$key;
+            }
+        }
+        $no_day=0;
+        foreach($date as $item){
+            if(!in_array($item,$all_date)){
+                $no_day += 1;
+            }
+        }
+        $sunday = 0;
+        foreach($date as $d)
+        {
+            if(date('l',(strtotime ( $d ) )) == 'Sunday')
+            {
+                $sunday = $sunday + 1;
+                
+            }
+        }
+
+
+        $pr = count($all_date)+$sunday;
+        // return $date;
+        $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
+        
+                $user = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price')
+                ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
+                ->where('tg_user.id', $elch->id)
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->groupBy('tg_medicine.name','tg_medicine.price')->get();
+                $user_sum=0;
+                foreach($user as $key)
+                {
+                    $user_sum += $key->allprice;
+                }
+                if(count($date) == 0)
+                {
+                    $prognoz = 0;
+
+                }else{
+
+                    if($pr == 0)
+                    {
+                        $prognoz = 0;
+                    }else{
+                $prognoz = number_format(($user_sum/$pr)*($cale->work_day+$sunday),0,'','.');
+
+                    }
+                }
+        $elchi_fact[$elch->id] = number_format($user_sum, 0, '', '.');
+
+        $elchi_prognoz[$elch->id] = $prognoz;
+        $user_sum=0;
+        }else{
+        $elchi_prognoz[$elch->id] = 0;
+        $elchi_fact[$elch->id] = 0;
+        $elchi_work[$elch->id] = 0;
+
+        }
+        }
+        // return $fsd;/
+
+        // return view('elchi');
+        return view('elchi',compact('elchi','elchi_work','elchi_fact','elchi_prognoz'));
     }
     public function userList(Request $request)
     {
@@ -504,6 +631,57 @@ class HomeController extends Controller
                 echo $user->first_name . " is offline. Last seen: " . Carbon::parse($user->last_seen)->diffForHumans() . " <br>";
         }
     }
+
+    public function grade()
+    {
+        $r_id_array = [];
+
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
+        $regions = DB::table('tg_region')->get();
+        foreach ($regions as $key => $value) {
+           $r_id_array[] = $value->id;
+        }
+
+        }else{
+            foreach (Session::get('per') as $key => $value) {
+                if (is_numeric($key)){
+               $r_id_array[] = $key;
+                }
+            }
+
+        }
+        $elchilar = DB::table('tg_user')
+        ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
+        ->whereIn('tg_region.id',$r_id_array)
+        ->where('tg_user.admin',FALSE)
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->get();
+        // return $elchilar;
+        $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
+
+        // return $regions;
+        return view('grade',compact('elchilar','regions'));
+    }
+    public function setting()
+    {
+        $today = today(); 
+        // return $today;
+    $dates = []; 
+
+    for($i=1; $i < $today->daysInMonth + 1; ++$i) {
+        $dayName = \Carbon\Carbon::createFromDate($today->year, $today->month, $i)->format('l');
+        $day = \Carbon\Carbon::createFromDate($today->year, $today->month, $i)->format('d');
+        if($day[0] == '0')
+        {
+            $day = substr($day,1);
+        }
+        $dates[$day] = $dayName;
+    }
+        // return $dates;
+        return view('settings',compact('dates'));
+    }
+
     public function permission(Request $request)
     {
         $update = DB::table('tg_user')->where('id',$request->user_id)->update(['rol_id' => $request->rol_id]);

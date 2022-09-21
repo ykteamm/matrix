@@ -27,6 +27,10 @@
  <script src="{{asset('/assets/plugins/datatables/datatables-buttons/js/buttons.print.min.js')}}"></script>
  <script src="{{asset('/assets/plugins/datatables/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 
+ {{-- <script type="text/javascript" src="{{ asset('/assets/js/calendar2.js') }}"></script> --}}
+ {{-- <script type="text/javascript" src="{{ asset('/assets/js/popper.js') }}"></script> --}}
+
+
  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 {{-- <script src="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"></script> --}}

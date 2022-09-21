@@ -673,4 +673,16 @@ class NovatioController extends Controller
             'catarray' => $newcatarray,
         ];
     }
+
+    public function calendar(Request $request)
+    {
+        $save = DB::table('tg_calendar')->insert([
+            'year_month' => $request->year_month,
+            'day_json' => json_encode($request->day_json),
+            'work_day' => intval($request->work_day),
+            'created_at' => today(),
+        ]);
+        return $save;
+
+    }
 }

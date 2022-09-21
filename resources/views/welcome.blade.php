@@ -33,8 +33,9 @@
        <div class="col-12 col-xl-4 d-flex flex-wrap">
           <div class="card">
              <div class="card-body">
-                <div class="general-details text-center">
-                   <img src="{{asset('assets/img/users/users.png')}}" style="width:150px" class="img-fluid" alt="" />
+                <div class="text-center">
+                   {{-- <img src="{{asset('assets/img/'.$elchi->image)}}" style="width:134px;height:213;"  class="img-fluid" alt="" /> --}}
+                   <img src="{{asset('assets/img/'.$elchi->image)}}" style="border-radius:30%" height="200px">
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
                    {{-- <h6><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="0f697d6e616c4f6a776e627f636a216c6062">[email&#160;protected] </a></h6> --}}
                    {{-- <a href="chat.html" class="btn-chat">{{$elchi->v_name}}</a> --}}

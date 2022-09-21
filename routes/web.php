@@ -23,6 +23,7 @@ use App\Http\Middleware\LoginAuth;
    
     Route::post('region/elchi', [App\Http\Controllers\NovatioController::class,'region']);
     Route::post('region/chart', [App\Http\Controllers\NovatioController::class,'regionChart']);
+    Route::post('calendar', [App\Http\Controllers\NovatioController::class,'calendar']);
 
 
 Auth::routes();
@@ -61,6 +62,8 @@ Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('pro-list/{time}', [HomeController::class,'proList'])->name('pro-list');
 Route::post('permission', [HomeController::class,'permission'])->name('permissions');
 Route::get('reg', [HomeController::class,'reg']);
+Route::get('grade', [HomeController::class,'grade'])->name('grade');
+Route::get('setting', [HomeController::class,'setting'])->name('setting');
 
 #end-position
 

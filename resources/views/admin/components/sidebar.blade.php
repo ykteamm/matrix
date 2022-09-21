@@ -25,7 +25,10 @@
              </li>
             {{-- @endif --}}
              {{-- @endisset --}}
-
+             <li><a href="{{route('grade')}}"><i class="feather-filter"></i>  <span>Baholash </span></a>
+             </li>
+             <li><a href="{{route('setting')}}"><i class="feather-filter"></i>  <span>Sozlamalar </span></a>
+             </li>
                   @isset(Session::get('per')['User'])
              @if(Session::get('per')['User'] == 'true')
                <li><a href="{{route('user-list')}}"><i class="feather-filter"></i>  <span>Adminlar </span></a>

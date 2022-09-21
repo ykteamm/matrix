@@ -14,9 +14,11 @@
     <link rel="stylesheet" href="{{ asset('/assets/plugins/datatables/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/plugins/datatables/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link href="{{ asset('/assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('/assets/css/calendar.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> --}}
     <style>
+        
         .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
             color: rgb(0, 0, 0);
             background-color: #ffffff !important;
