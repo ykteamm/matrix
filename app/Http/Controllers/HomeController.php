@@ -843,7 +843,6 @@ class HomeController extends Controller
     }
     public function nvt(Request $request)
     {
-        
         $agent = $request->header('User-Agent');
         // $text = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
         // return $agent;
@@ -872,7 +871,10 @@ class HomeController extends Controller
 
         if(count($agent_array) != 1)
         {
+            $maxid = DB::table('tg_grade')->max('teacher_id');
+
             $id = DB::table('tg_client')->insertGetId([
+                'id' => $maxid+1,
                 'device' => $agent,
                 'created_at' => today(),
             ]);
