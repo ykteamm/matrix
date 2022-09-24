@@ -335,7 +335,7 @@ class HomeController extends Controller
             $getquesid = DB::table('tg_question')->where('department_id',$depar->id)->pluck('id');
 
             $getdep = DB::table('tg_grade')->whereIn('question_id',$getquesid)->distinct()->pluck('teacher_id');
-            if($getdep == 0)
+            if(count($getdep) == 0)
             {
             $all_avg = 0;
 
