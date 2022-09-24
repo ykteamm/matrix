@@ -87,7 +87,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                 </div>
                 <div>
                     @foreach ($questions as $item)
-                                    <div class="row gr{{$item->grade}} allgr" style="display: none;">
+                                    <div class="row gr{{$item->grade}} allgr mt-2" style="display: none;">
                                 <div class="col-8">
 
                                     <h3 class="ml-3">{{$item->qname}}</h3>
@@ -100,7 +100,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                                 @endforeach
                 </div>
                 <div class="mt-5" style="text-align: center">
-                    <button style="display:none" onclick="getCheck()" type="button" class="btn btn-outline-info" >Ovoz berish</button>
+                    <button style="display:none" onclick="getCheck()" type="button" class="btn btn-info" >Ovoz berish</button>
                 </div>
             </div>
             <div class="content container-fluid headbot" id="status300" style="display: none;">
