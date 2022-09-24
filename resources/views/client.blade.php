@@ -14,9 +14,7 @@
         
    <style>
         @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-    body{
-        background-color:wheat  
-    }
+    
     .rate {
     display: inline-block;
     border: 0;
@@ -92,7 +90,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                                     <div class="row gr{{$item->grade}} allgr" style="display: none;">
                                 <div class="col-6">
 
-                                    <span class="ml-5">{{$item->qname}}</span>
+                                    <span class="ml-4">{{$item->qname}}</span>
                                 </div>
                                 <div class="col-6" style="text-align: center">
 
