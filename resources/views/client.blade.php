@@ -97,6 +97,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                                     <input style="height:25px;width:25px" type="checkbox" class="checkboxes" value="{{$item->qid}}">
                                 </div>
                                     </div>
+                                    <br>
                                 @endforeach
                 </div>
                 <div class="mt-5" style="text-align: center">
