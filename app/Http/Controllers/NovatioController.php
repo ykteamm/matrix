@@ -815,8 +815,7 @@ class NovatioController extends Controller
                     {
                         foreach($question_array as $key => $question)
                         {
-                            $save = DB::table('tg_client_grade')->insert([
-                                'id' => $key+2,
+                            $save = DB::table('tg_clientgrade')->insert([
                                 'question_id' => $question,
                                 'client_id' => $agent_id,
                                 'user_id' => $user_id
@@ -846,7 +845,6 @@ class NovatioController extends Controller
                     foreach($question_array as $key => $question)
                     {
                         $save = DB::table('tg_clientgrade')->insert([
-                            'id' => $key+1,
                             'question_id' => $question,
                             'client_id' => $agent_id,
                             'user_id' => $user_id

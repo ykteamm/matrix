@@ -873,8 +873,8 @@ class HomeController extends Controller
         if(count($agent_array) != 1)
         {
             $id = DB::table('tg_client')->insertGetId([
-                'id' =>4,
-                'device' => $agent
+                'device' => $agent,
+                'created_at' => today(),
             ]);
             $agent_array[] = array('id' => $id,'name'=>$agent);
             return $agent_array;
