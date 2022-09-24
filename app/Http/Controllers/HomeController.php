@@ -892,7 +892,7 @@ class HomeController extends Controller
         ->where('tg_department.status',2)
         ->join('tg_department','tg_department.id','tg_question.department_id')
         ->get();
-        $yulduz = DB::table('tg_question')->where('name','yulduz')->where('grade',6)->first();
+        $yulduz = DB::table('tg_question')->where('grade',6)->first();
 
         // return $yulduz;
         // $token = $request->bearerToken();
