@@ -50,6 +50,11 @@ Route::middleware([LoginAdmin::class])->group(function () {
 
 });
 
+$user = DB::table('tg_user')->where('admin',false)->pluck('username');
+
+foreach ($user as $u) {
+    Route::get($u, [HomeController::class,'nvt']); 
+}
 Route::middleware([LoginAuth::class])->group(function () {
 
     Route::get('/',[HomeController::class,'index'])->name('blackjack');
@@ -68,11 +73,7 @@ Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
 
-$user = DB::table('tg_user')->where('admin',false)->pluck('username');
 
-foreach ($user as $u) {
-    Route::get($u, [HomeController::class,'nvt']); 
-}
 
 
 
