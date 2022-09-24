@@ -818,7 +818,9 @@ class NovatioController extends Controller
                             $save = DB::table('tg_clientgrade')->insert([
                                 'question_id' => $question,
                                 'client_id' => $agent_id,
-                                'user_id' => $user_id
+                                'user_id' => $user_id,
+                                'created_at' => today(),
+
                             ]);
                         }
                     }
@@ -846,7 +848,9 @@ class NovatioController extends Controller
                         $save = DB::table('tg_clientgrade')->insert([
                             'question_id' => $question,
                             'client_id' => $agent_id,
-                            'user_id' => $user_id
+                            'user_id' => $user_id,
+                    'created_at' => today(),
+
                         ]);
                     }
                 }
