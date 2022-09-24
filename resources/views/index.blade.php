@@ -423,7 +423,7 @@
 
                 if(response.myid == value.id || response.regid == value.id)
                 {
-                    var $row = $('<div class="col-4 col-md-4 col-lg-4 d-flex flex-wrap delregion">'+
+                    var $row = $('<div class="col-12 col-md-6 col-lg-4 d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
