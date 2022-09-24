@@ -357,7 +357,14 @@ class HomeController extends Controller
             }
             $davg += $dr['avg'];
         }
+        if($maxnol == 0)
+        {
+            $allavg =0;
+        }else{
+
+        
         $allavg = $davg/$maxnol;
+        }
     }
 
     // return $d_for_user;
