@@ -877,7 +877,7 @@ class HomeController extends Controller
                 'created_at' => today(),
             ]);
             $agent_array[] = array('id' => $id,'name'=>$agent);
-            return $agent_array;
+            // return $agent_array;
         }
 
         // return $agent_array;
