@@ -348,11 +348,16 @@ class HomeController extends Controller
 
         $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => number_format($all_avg, 2));
         $davg = 0;
+        $maxnol = 0;
         foreach($d_array as $dr)
-        {
+        {   
+            if($dr['avg'] > 0)
+            {
+                $maxnol +=1;
+            }
             $davg += $dr['avg'];
         }
-        $allavg = $davg/count($d_array);
+        $allavg = $davg/$maxnol;
     }
 
     // return $d_for_user;

@@ -120,7 +120,8 @@
                _token: _token
             },
             success:function(response){
-                
+              window.location.reload();
+
             }});
         }
    </script>
