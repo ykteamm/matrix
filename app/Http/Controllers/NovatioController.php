@@ -767,7 +767,7 @@ class NovatioController extends Controller
         $agent_id = $request->agent_array['id'];
         $question_array = $request->a;
         $ques_yulduz = $request->yulduz['id'];
-        return $ques_yulduz;
+        // return $ques_yulduz;
         $isset = DB::table('tg_grade')
         ->where('created_at',today())
         ->where('teacher_id',$agent_id)
