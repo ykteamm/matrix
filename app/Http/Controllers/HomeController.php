@@ -335,8 +335,15 @@ class HomeController extends Controller
             $getquesid = DB::table('tg_question')->where('department_id',$depar->id)->pluck('id');
 
             $getdep = DB::table('tg_grade')->whereIn('question_id',$getquesid)->distinct()->pluck('teacher_id');
-        $all_avg = $avg_u/count($getdep);
+            if($getdep == 0)
+            {
+            $all_avg = 0;
 
+            }else{
+
+            
+            $all_avg = $avg_u/count($getdep);
+            }
         }
 
         $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => number_format($all_avg, 2));
