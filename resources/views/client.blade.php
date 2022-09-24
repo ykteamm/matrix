@@ -90,7 +90,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                                     <div class="row gr{{$item->grade}} allgr" style="display: none;">
                                 <div class="col-6">
 
-                                    <span class="ml-4">{{$item->qname}}</span>
+                                    <span class="ml-3">{{$item->qname}}</span>
                                 </div>
                                 <div class="col-6" style="text-align: center">
 
