@@ -24,6 +24,9 @@ use App\Http\Middleware\LoginAuth;
     Route::post('region/elchi', [App\Http\Controllers\NovatioController::class,'region']);
     Route::post('region/chart', [App\Http\Controllers\NovatioController::class,'regionChart']);
     Route::post('calendar', [App\Http\Controllers\NovatioController::class,'calendar']);
+    Route::post('grade/ball', [App\Http\Controllers\NovatioController::class,'grade']);
+    Route::post('grade/save', [App\Http\Controllers\NovatioController::class,'gradeSave']);
+    Route::post('grade/tashqi', [App\Http\Controllers\NovatioController::class,'gradeTashqi']);
 
 
 Auth::routes();
@@ -57,13 +60,21 @@ Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('/status', [HomeController::class,'userOnlineStatus']);
 #position
 Route::resource('position', PositionController::class);
-Route::get('position//{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
+Route::get('position/{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
 Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('pro-list/{time}', [HomeController::class,'proList'])->name('pro-list');
 Route::post('permission', [HomeController::class,'permission'])->name('permissions');
 Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
-Route::get('setting', [HomeController::class,'setting'])->name('setting');
+Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
+
+$user = DB::table('tg_user')->where('admin',false)->pluck('username');
+
+foreach ($user as $u) {
+    Route::get($u, [HomeController::class,'nvt']); 
+}
+
+
 
 #end-position
 

@@ -5,6 +5,25 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
+
+if(!function_exists('wordSimilarity')){
+    function wordSimilarity($s1,$s2) {
+
+        $words1 = preg_split('/\s+/',$s1);
+        $words2 = preg_split('/\s+/',$s2);
+        $diffs1 = array_diff($words2,$words1);
+        $diffs2 = array_diff($words1,$words2);
+    
+        $diffsLength = strlen(join("",$diffs1).join("",$diffs2));
+        $wordsLength = strlen(join("",$words1).join("",$words2));
+        if(!$wordsLength) return 0;
+    
+        $differenceRate = ( $diffsLength / $wordsLength );
+        $similarityRate = 1 - $differenceRate;
+        return $similarityRate;
+    
+    }
+}
     if(!function_exists('setSchemaInConnection')){
             function setSchemaInConnection()
         {
@@ -75,14 +94,22 @@ use Illuminate\Support\Facades\Request;
             'filter' => 'Filter',
             'elchi' => 'Elchi',
             'pro' => 'Mahsulotlar',
+            'grade' => 'Baholash',
+            'setting' => 'Sozlamalar',
             'User' => 'User',
             'rol' => 'Rol',
             'region' => 'Barcha viloyat',
         ];
+        $department = DB::table('tg_department')->where('status',1)->get();
+        foreach ($department as $key => $value) {
+            $h_positions['d'.$value->id] = $value->name;
+        }
+        
         $region = DB::table('tg_region')->get();
         foreach ($region as $key => $value) {
             $h_positions[$value->id] = $value->name;
         }
+        
         return $h_positions;
         
     }

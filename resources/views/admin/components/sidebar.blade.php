@@ -19,16 +19,24 @@
                   @endif
              @endisset
 
-             {{-- @isset(Session::get('per')['pro']) --}}
-             {{-- @if(Session::get('per')['pro'] == 'true') --}}
+             @isset(Session::get('per')['pro'])
+             @if(Session::get('per')['pro'] == 'true')
              <li><a href="{{route('pro-list','today')}}"><i class="feather-filter"></i>  <span>Mahsulotlar </span></a>
              </li>
-            {{-- @endif --}}
-             {{-- @endisset --}}
+            @endif
+             @endisset
+             @isset(Session::get('per')['grade'])
+             @if(Session::get('per')['grade'] == 'true')
              <li><a href="{{route('grade')}}"><i class="feather-filter"></i>  <span>Baholash </span></a>
              </li>
-             <li><a href="{{route('setting')}}"><i class="feather-filter"></i>  <span>Sozlamalar </span></a>
+             @endif
+             @endisset
+             @isset(Session::get('per')['setting'])
+             @if(Session::get('per')['setting'] == 'true')
+             <li><a href="{{route('setting','09.2022')}}"><i class="feather-filter"></i>  <span>Sozlamalar </span></a>
              </li>
+             @endif
+             @endisset
                   @isset(Session::get('per')['User'])
              @if(Session::get('per')['User'] == 'true')
                <li><a href="{{route('user-list')}}"><i class="feather-filter"></i>  <span>Adminlar </span></a>

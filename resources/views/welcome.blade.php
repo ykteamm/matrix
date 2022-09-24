@@ -34,14 +34,10 @@
           <div class="card">
              <div class="card-body">
                 <div class="text-center">
-                   {{-- <img src="{{asset('assets/img/'.$elchi->image)}}" style="width:134px;height:213;"  class="img-fluid" alt="" /> --}}
                    <img src="{{asset('assets/img/'.$elchi->image)}}" style="border-radius:30%" height="200px">
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
-                   {{-- <h6><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="0f697d6e616c4f6a776e627f636a216c6062">[email&#160;protected] </a></h6> --}}
-                   {{-- <a href="chat.html" class="btn-chat">{{$elchi->v_name}}</a> --}}
-                   {{-- <h4>{{$elchi->v_name}}</h4> --}}
-                   {{-- <h4>{{$elchi->d_name}}</h4> --}}
-
+                   <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
+                   <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>
                 </div>
              </div>
           </div>
@@ -89,6 +85,65 @@
           </div>
        </div>
     </div>
+    <div class="row" id="forcollapsegrade" style="display: none;">
+      <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
+            <div class="card bg-white">
+            {{-- <div class="card-header">
+            <h5 class="card-title">Ball </h5>
+            </div> --}}
+            <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-solid nav-justified">
+               @foreach ($d_array as $key => $item)
+                  <li class="nav-item"><a class="nav-link @if($key == 0) active @endif" href="#solid-justified-tab{{$key+1}}" data-toggle="tab">{{ $item['name'] }} ({{$item['avg']}})</a></li>
+               @endforeach
+            {{-- <li class="nav-item"><a class="nav-link" href="#solid-justified-tab2" data-toggle="tab">Profile </a></li> --}}
+            {{-- <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Messages </a></li> --}}
+            </ul>
+            <div class="tab-content">
+               @foreach ($d_array as $key => $item)
+
+               <div class="tab-pane show @if($key==0) active @endif" id="solid-justified-tab{{$key+1}}">
+                  <div class="tab-left">
+                  
+                     @foreach ($d_for_user as $ite)
+                     @if($ite['depid'] == $item['id'])
+                     <div class="d-flex mb-3">
+                        <div class="medicne d-flex">
+                           {{$ite['username']}}
+                        </div>
+                        <div class="medicne-time ml-auto">
+                           {{$ite['avg']}}
+                        </div>
+                     </div>
+                     @endif
+                     @endforeach
+                     
+                  </div>
+               </div>
+            @endforeach
+
+            </div>
+            </div>
+            </div>
+      </div>
+
+   </div>
+   <div class="row" id="forcollapsegrade2" style="display: none;">
+      <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
+            <div class="card bg-white">
+            <div class="card-body">
+               @foreach ($quearray as $item)
+               <button type="button" class="btn btn-outline-info ml-3 mt-3 notification">
+                  <span>{{$item['name']}}</span>
+                  <span class="badge">{{$item['count']}}</span>
+                </button>
+               @endforeach
+               
+            </div>
+            </div>
+      </div>
+
+   </div>
     <div class="row">
       <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap" onclick="tabNone('solid-tab1')"
       onmouseover="$(this)
@@ -241,7 +296,14 @@
 @endsection
 @section('admin_script')
    <script>
-
+       function collapseGrade()
+    {
+        $('#forcollapsegrade').slideToggle("slow");
+    }
+    function collapseGrade2()
+    {
+        $('#forcollapsegrade2').slideToggle("slow");
+    }
       $(function() {
   $('input[name="datetimes"]').daterangepicker({
    //  timePicker: true,

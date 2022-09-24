@@ -49,12 +49,21 @@
                                             Launch demo modal
                                           </button>
                                     </h4> --}}
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#intizom{{$elchi->id}}">
+                                    @foreach ($departments as $depitem)
+                                    @isset(Session::get('per')['d'.$depitem->id])
+                                    @if(Session::get('per')['d'.$depitem->id] == 'true')
+                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dep{{$item->id}}{{$depitem->id}}{{$elchi->id}}">
+                                        {{$depitem->name}}
+                                      </button>
+                                    @endif
+                                    @endisset
+                                    @endforeach
+                                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#intizom{{$elchi->id}}">
                                         Intizom
                                       </button>
                                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bilim{{$elchi->id}}">
                                         Bilim
-                                      </button>
+                                      </button> --}}
                                 </div>
                             </div>
                         </div>
@@ -71,78 +80,159 @@
     </div>
 
    </div>
+   @foreach ($regions as $item)
    @foreach ($elchilar as $elchi)
-   <div class="modal fade" id="intizom{{$elchi->id}}">
+   @foreach ($departments as $dep)
+
+   <div class="modal fade" id="dep{{$item->id}}{{$dep->id}}{{$elchi->id}}">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Intizom savollari</h4>
+          <h4 class="modal-title">{{$dep->name}} savollari</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
             <ul class="list-group">
-                <li class="list-group-item ">1. Savol1 
+                @php
+                    $i=1;
+                @endphp
+                @foreach ($questions as $key => $quest)
+                    @if ($dep->id == $quest->department_id)
+                        
+                @if(isset($grades[$quest->id]) && $grades[$quest->id]['uid'] == $elchi->id)
+                <li class="list-group-item ">
+                    <div>{{$i++}}. {{$quest->name}}</div>
+                    <div style="text-align:center;">
                     <fieldset class="rate">
-                        <input type="radio" id="rating10" name="rating" value="10" /><label for="rating10" title="5 stars"></label>
-                        <input type="radio" id="rating9" name="rating" value="9" /><label class="half" for="rating9" title="4 1/2 stars"></label>
-                        <input type="radio" id="rating8" name="rating" value="8" /><label for="rating8" title="4 stars"></label>
-                        <input type="radio" id="rating7" name="rating" value="7" /><label class="half" for="rating7" title="3 1/2 stars"></label>
-                        <input type="radio" id="rating6" name="rating" value="6" /><label for="rating6" title="3 stars"></label>
-                        <input type="radio" id="rating5" name="rating" value="5" /><label class="half" for="rating5" title="2 1/2 stars"></label>
-                        <input type="radio" id="rating4" name="rating" value="4" /><label for="rating4" title="2 stars"></label>
-                        <input type="radio" id="rating3" name="rating" value="3" /><label class="half" for="rating3" title="1 1/2 stars"></label>
-                        <input type="radio" id="rating2" name="rating" value="2" /><label for="rating2" title="1 star"></label>
-                        <input type="radio" id="rating1" name="rating" value="1" /><label class="half" for="rating1" title="1/2 star"></label>
-                    
+                        <input type="radio" id="rating10" name="rating" value="10" />
+                        <label class="@if($grades[$quest->id]['grade'] >= 5) colorrate @endif" for="rating10" title="5 ball"></label>
+                        <input type="radio" id="rating9" name="rating" value="9" />
+                        <label class="half @if($grades[$quest->id]['grade'] >= 4.5) colorrate @endif" for="rating9" title="4.5 ball"></label>
+                        <input type="radio" id="rating8" name="rating" value="8" />
+                        <label class="@if($grades[$quest->id]['grade'] >= 4) colorrate @endif" for="rating8" title="4 ball"></label>
+                        <input type="radio" id="rating7" name="rating" value="7" />
+                        <label class="half @if($grades[$quest->id]['grade'] >= 3.5) colorrate @endif" for="rating7" title="3.5 ball"></label>
+                        <input type="radio" id="rating6" name="rating" value="6" />
+                        <label class="@if($grades[$quest->id]['grade'] >= 3) colorrate @endif" for="rating6" title="3 ball"></label>
+                        <input type="radio" id="rating5" name="rating" value="5" />
+                        <label class="half @if($grades[$quest->id]['grade'] >= 2.5) colorrate @endif" for="rating5" title="2.5 ball"></label>
+                        <input type="radio" id="rating4" name="rating" value="4" />
+                        <label  class="@if($grades[$quest->id]['grade'] >= 2) colorrate @endif" for="rating4" title="2 ball"></label>
+                        <input type="radio" id="rating3" name="rating" value="3" />
+                        <label class="half @if($grades[$quest->id]['grade'] >= 1.5) colorrate @endif" for="rating3" title="1.5 ball"></label>
+                        <input type="radio" id="rating2" name="rating" value="2" />
+                        <label class="@if($grades[$quest->id]['grade'] >= 1) colorrate @endif" for="rating2" title="1 ball"></label>
+                        <input type="radio" id="rating1" name="rating" value="1" />
+                        <label class="half  @if($grades[$quest->id]['grade'] >= 0.5) colorrate @endif" for="rating1" title="0.5 ball"></label>
                     </fieldset>
-                    {{-- <div class="rating">
-
-                        <input type="radio" name="rating" value="5" id="5"><label for="5" onclick="">☆</label>
-                        <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                        <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                        <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                        <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-                      </div> --}}
-                    {{-- <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" value="2">
-                    <p>
-                        <i class='far fa-star'></i>
-                        <i class='far fa-star'></i>
-                        <i class='far fa-star'></i>
-                        <i class='far fa-star'></i>
-                        <i class='far fa-star'></i>
-                    </p> --}}
+                </div>
                 </li>
-                <li class="list-group-item ">2. Savol2 </li>
-                <li class="list-group-item ">3. Savol3 </li>
-                <li class="list-group-item ">4. Savol4 </li>
-                <li class="list-group-item ">5. Savol5 </li>
-                <li class="list-group-item ">6. Savol6 </li>
-                <li class="list-group-item ">7. Savol7 </li>
+
+                @else
+                <li class="list-group-item ">
+                    <div>{{$i++}}. {{$quest->name}}</div>
+                    <div style="text-align:center;">
+                    <fieldset class="rate" name="" id="q{{$elchi->id}}{{$dep->id}}{{$quest->id}}">
+                        <input type="radio" id="rating10" name="rating" value="10" /><label class="q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating10" title="5 ball" onclick="rateHover(5,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating9" name="rating" value="9" /><label class="half q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating9" title="4.5 ball" onclick="rateHover(4.5,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating8" name="rating" value="8" /><label class="q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating8" title="4 ball" onclick="rateHover(4,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating7" name="rating" value="7" /><label class="half q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating7" title="3.5 ball" onclick="rateHover(3.5,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating6" name="rating" value="6" /><label class="q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating6" title="3 ball" onclick="rateHover(3,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating5" name="rating" value="5" /><label class="half q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating5" title="2.5 ball" onclick="rateHover(2.5,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating4" name="rating" value="4" /><label class="q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating4" title="2 ball" onclick="rateHover(2,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating3" name="rating" value="3" /><label class="half q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating3" title="1.5 ball" onclick="rateHover(1.5,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating2" name="rating" value="2" /><label class="q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating2" title="1 ball" onclick="rateHover(1,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                        <input type="radio" id="rating1" name="rating" value="1" /><label class="half q{{$elchi->id}}{{$dep->id}}{{$quest->id}}" for="rating1" title="0.5 ball" onclick="rateHover(0.5,`q{{$elchi->id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->id}},{{$quest->id}})"></label>
+                    </fieldset>
+                </div>
+                </li>
+                @endif
+                @endif
+
+                @endforeach
               </ul>
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="gradeSave(true)">Saqlash</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
         </div>
         
       </div>
     </div>
 </div>
    @endforeach
+   @endforeach
+   @endforeach
 @endsection
 @section('admin_script')
    <script>
+    // $(window).click(function(e) {
+    //     if($('body').hasClass('modal-open'))
+    //     {
+    //     alert(31231);
+
+    //     }
+    // });
+    $(document).ready(function(){
+
+    $('.modal').on('hidden.bs.modal', function () {
+        gradeSave(false);
+    });
+});
     function filterReg(item)
     {
         $(`#${item}`).slideToggle("slow");
     }
-    
-    // $(document).on('click','#filter_search',function(){$('#filter_inputs').slideToggle("slow");});
-        
+    function rateHover(ball,text,eid,qid)
+    {
+        // $("label:hover ~ label").css("color","black");
+        // input:checked ~ label,label:hover, label:hover ~ label { color: #73B100;  }
+        $(`.${text}`).removeAttr('style');
+        $("input:checked ~ label,label:hover, label:hover ~ label").css("color","#73B100");
+        $(`#${text}`).attr('name',ball);
+
+        var _token   = $('meta[name="csrf-token"]').attr('content');
+         $.ajax({
+            url: "/grade/ball",
+            type:"POST",
+            data:{
+                eid:eid,
+                qid:qid,
+                ball:ball,
+               _token: _token
+            },
+            success:function(response){
+             
+            }
+        });
+    } 
+    function gradeSave(bool)
+    {
+        var _token   = $('meta[name="csrf-token"]').attr('content');
+         $.ajax({
+            url: "/grade/save",
+            type:"POST",
+            data:{
+                save:bool,
+               _token: _token
+            },
+            success:function(response){
+                if (response.status == 200) {
+                    window.location.reload()
+                    
+                }
+                if (response.status == 300) {
+                    $('.modal').modal('hide');
+                    
+                }
+            }
+        });
+    }
    </script>
 @endsection

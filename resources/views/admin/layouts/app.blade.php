@@ -97,10 +97,35 @@
 input:checked ~ label, /* color current and previous stars on checked */
 label:hover, label:hover ~ label { color: #73B100;  } /* color previous stars on hover */
 
+ 
 /* Hover highlights */
 input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
 input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
 label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #A6E72D;  } 
+.colorrate{
+    color:#A6E72D
+}
+
+
+.notification {
+  background-color: rgb(17, 9, 100);
+  color: white;
+  text-decoration: none;
+  padding: 8px 26px;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 10%;
+  background-color: #0eee59;
+  color: white;
+}
     </style>
 
     <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css">

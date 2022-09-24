@@ -112,7 +112,6 @@ class PositionController extends Controller
             return $data;
         }
         $per_json = object_to_array($per_json);
-
         return view('admin.position.edit',compact('positions','rol_name','per_json','id'));
     }
 

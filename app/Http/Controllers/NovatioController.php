@@ -685,4 +685,193 @@ class NovatioController extends Controller
         return $save;
 
     }
+
+    public function grade(Request $request)
+    {
+        $grade = $request->ball;
+        $user_id = $request->eid;
+        $question_id = $request->qid;
+        $teacher_id = Session::get('user')->id;
+
+        $exists = DB::table('tg_grade')
+        ->where('user_id',$user_id)
+        ->where('teacher_id',$teacher_id)
+        ->where('question_id',$question_id)
+        ->where('created_at',today())
+        ->first();
+        // return $exists;
+        if(!$exists){
+            $save = DB::table('tg_grade')->insert([
+                'user_id' => $user_id,
+                'teacher_id' => $teacher_id,
+                'question_id' => $question_id,
+                'grade' => $grade,
+                'created_at' => today(),
+            ]);
+            return $save;
+
+        }
+        if($exists->save == false){
+            $save = DB::table('tg_grade')->where('id',$exists->id)->update([
+                'grade' => $grade,
+                'created_at' => today(),
+            ]);
+            return $save;
+        }
+        // if ($save) {
+            // return
+        // }
+    }
+    public function gradeSave(Request $request)
+    {
+        $bool = $request->save;
+        $teacher_id = Session::get('user')->id;
+        $count = DB::table('tg_grade')
+        ->where('teacher_id',$teacher_id)
+        ->where('created_at',today())
+        ->where('save',false)
+        ->get();
+        if($bool == 'true')
+        {
+        if(count($count) > 0 )
+        {
+            $save = DB::table('tg_grade')
+            ->where('created_at',today())
+            ->where('teacher_id',$teacher_id)->update([
+                'save' => TRUE
+            ]);
+
+            return [
+                'status' => 200 
+            ];
+        }
+        else{
+            return [
+                'status' => 300 
+            ];
+
+        }  
+        }else{
+            $save = DB::table('tg_grade')
+            ->where('created_at',today())
+            ->where('save',FALSE)
+            ->where('teacher_id',$teacher_id)->delete();
+        }
+
+    }
+
+    public function gradeTashqi(Request $request)
+    {
+        $grade = $request->ygrade;
+        $user_id = $request->user['id'];
+        $agent_id = $request->agent_array['id'];
+        $question_array = $request->a;
+        $ques_yulduz = $request->yulduz['id'];
+        $isset = DB::table('tg_grade')
+        ->where('created_at',today())
+        ->where('teacher_id',$agent_id)
+        ->where('user_id',$user_id)
+        ->get();
+        if(count($isset) >= 1)
+        {
+            return [
+                'status' => 200 
+            ];
+        }else{
+
+        $xy = DB::table('tg_grade')
+        ->where('teacher_id',$agent_id)
+        ->where('user_id',$user_id)
+        ->orderBy('id','DESC')
+        ->first();
+        // return $xy;
+        if(isset($xy)){
+            $x = [1,2,3];
+            $y = [4,5];
+            if(in_array($xy->grade,$x))
+            {
+                $yes = 1;
+            }else{
+                $yes = 2;
+            }
+            if(in_array($grade,$x))
+            {
+                $yes1 = 1;
+            }else{
+                $yes1 = 2;
+            }
+            if($yes*$yes1 == 2)
+            {
+                $save = DB::table('tg_grade')->insert([
+                    'question_id' => $ques_yulduz,
+                    'teacher_id' => $agent_id,
+                    'user_id' => $user_id,
+                    'grade' => $grade,
+                    'save' => true,
+                    'created_at' => today(),
+                ]);
+
+                if(isset($question_array))
+                    {
+                        foreach($question_array as $key => $question)
+                        {
+                            $save = DB::table('tg_client_grade')->insert([
+                                'id' => $key+2,
+                                'question_id' => $question,
+                                'client_id' => $agent_id,
+                                'user_id' => $user_id
+                            ]);
+                        }
+                    }
+                    return [
+                        'status' => 200 
+                    ];
+            }else{
+                return [
+                    'status' => 200 
+                ];
+            }
+        }else{
+            $save = DB::table('tg_grade')->insert([
+                'question_id' => $ques_yulduz,
+                'teacher_id' => $agent_id,
+                'user_id' => $user_id,
+                'grade' => $grade,
+                'save' => true,
+                'created_at' => today(),
+            ]);
+
+            if(isset($question_array))
+                {
+                    foreach($question_array as $key => $question)
+                    {
+                        $save = DB::table('tg_clientgrade')->insert([
+                            'id' => $key+1,
+                            'question_id' => $question,
+                            'client_id' => $agent_id,
+                            'user_id' => $user_id
+                        ]);
+                    }
+                }
+                return [
+                    'status' => 200 
+                ];
+        }
+    }
+        
+        // if(count($isset) > 1)
+        // {
+
+        // }
+
+        
+        
+        
+        
+
+        return [
+            'status' => 200 
+        ];
+    }
+
 }

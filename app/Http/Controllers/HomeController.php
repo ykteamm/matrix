@@ -20,6 +20,9 @@ use Jenssegers\Agent\Agent;
 // use Session;
 // use Config;
 use Storage;
+use Illuminate\Support\Facades\Route;
+
+
 use Illuminate\Support\Facades\Http;
 class HomeController extends Controller
 {
@@ -254,7 +257,155 @@ class HomeController extends Controller
             //     'medic' => $medic,
             // ];
         // return $elchi;
-        return view('welcome',compact('elchi','medic','cateory','category','sum','dateText'));
+        $startDay = today()->startOfWeek()->addDay(1);
+        $endDay = Carbon::now();
+
+        $department = DB::table('tg_department')->where('status',1)->get();
+        $d_array =[];
+        $d_for_user = [];
+        $allavg = 0;
+
+        $yulduz = DB::table('tg_question')->where('grade',6)->first();
+
+        $users = DB::table('tg_grade')
+            ->select('tg_user.id','tg_user.first_name','tg_user.last_name')
+            ->where('tg_grade.question_id','!=',$yulduz->id)
+            ->join('tg_user','tg_user.id','tg_grade.teacher_id')
+            ->distinct()
+            ->get();
+        // return $users;
+        foreach($department as $depar)
+        {
+
+        // $users = DB::table('tg_user')->where('admin',true)
+        //     ->select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_positions.position_json->d'.$depar->id.' as '.$depar->name.'')
+        //     ->join('tg_positions','tg_positions.id','tg_user.rol_id')
+        //     ->where('tg_positions.position_json->d'.$depar->id.'','true')
+        //     ->get();
+        
+        // $yulduz = DB::table('tg_question')->where('grade',6)->first();
+
+        // $users = DB::table('tg_grade')->where('question_id','!=',$yulduz->id)->distinct()->pluck('teacher_id');
+        
+
+        $avg_u = 0;
+            $avg_q = 0;
+        foreach($users as $dnam)
+        {
+            $question = DB::table('tg_question')->where('department_id',$depar->id)->get();
+
+
+                foreach($question as $key => $ques)
+            {
+                $grade = DB::table('tg_grade')
+                ->where('teacher_id',$dnam->id)
+                ->where('user_id',$id)
+                ->where('question_id',$ques->id)
+                ->avg('grade');
+
+                // $grade_count = DB::table('tg_grade')
+                // ->where('teacher_id',$dnam->id)
+                // ->where('user_id',$id)
+                // ->where('question_id',$ques->id)
+                // ->avg('grade');
+                // if($grade_count == 0)
+                // {
+                // $avg_q += 0;
+
+                // }else{
+                $avg_q += $grade;
+                // }
+            }
+
+            $avg_u += $avg_q/count($question);
+            // $d_for_user[] = array('depid' => $depar->id,'username' => $dnam->first_name);
+            if($avg_q/count($question) > 0)
+            {
+            $d_for_user[] = array('avg' => number_format($avg_q/count($question),2),'depid' => $depar->id,'username' => $dnam->last_name.' '.$dnam->first_name);
+                
+            }
+            $avg_q = 0;
+
+        }
+        
+        if(count($users) == 0)
+        {
+            $all_avg = 0;
+        }else{
+            $getquesid = DB::table('tg_question')->where('department_id',$depar->id)->pluck('id');
+
+            $getdep = DB::table('tg_grade')->whereIn('question_id',$getquesid)->distinct()->pluck('teacher_id');
+        $all_avg = $avg_u/count($getdep);
+
+        }
+
+        $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => number_format($all_avg, 2));
+        $davg = 0;
+        foreach($d_array as $dr)
+        {
+            $davg += $dr['avg'];
+        }
+        $allavg = $davg/count($d_array);
+    }
+
+    // return $d_for_user;
+
+        $yulduz = DB::table('tg_question')->where('grade',6)->first();
+
+        $client = DB::table('tg_grade')->where('question_id',$yulduz->id)->distinct()->pluck('teacher_id');
+        // return $client;
+
+
+        $tashqi = DB::table('tg_grade')->where('question_id',$yulduz->id)
+        ->where('user_id',$id)
+        ->get();
+        // return $tashqi;
+        $tgrade=0;
+        $altgarde=0;
+        foreach($client as $cl)
+        {
+            if(count($tashqi) != 0)
+            {
+
+            
+            foreach($tashqi as $tq)
+            {
+                if($cl == $tq->teacher_id)
+                {
+                    $tgrade += $tq->grade;
+                }
+            }
+
+                $altgarde += $tgrade/count($tashqi);
+            
+            }else{
+                $altgarde += 0;
+
+            }
+            
+        }
+        $altgardes = number_format($altgarde/count($client),2);
+
+        $allques = DB::table('tg_clientgrade')->where('user_id',$id)->get();
+        $allquesgr = DB::table('tg_question')->whereIn('grade',[1,2,3,4,5])->get();
+        $quecount = 0;
+        $quearray = [];
+        foreach($allquesgr as $key => $value)
+        {
+            foreach($allques as $keys => $values)
+            {
+                if($value->id == $values->question_id)
+                {
+                    $quecount += 1;
+                }
+            }
+            $quearray[] = array('name' => $value->name,'count' => $quecount);
+            $quecount = 0;
+
+        }
+
+        // return $quearray;
+        return view('welcome',compact('allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
     }
     public function elchiList()
@@ -659,27 +810,113 @@ class HomeController extends Controller
         ->get();
         // return $elchilar;
         $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
+        $departments = DB::table('tg_department')->where('status',1)->get();
+        $questions = DB::table('tg_question')->get();
 
-        // return $regions;
-        return view('grade',compact('elchilar','regions'));
+        $grades_user = DB::table('tg_grade')
+        ->select('grade','question_id as qid','user_id as uid')
+        ->where('created_at',today())
+        ->where('teacher_id',Session::get('user')->id)
+        ->get();
+        // ->pluck('grade','question_id','user_id');
+        $grades=[];
+        foreach($grades_user as $gar)
+        {
+            $grades[$gar->qid] = array('grade'=>$gar->grade,'uid'=>$gar->uid);
+        }
+        // return $grades[2]['grade'];
+        return view('grade',compact('elchilar','regions','departments','questions','grades'));
     }
-    public function setting()
+    public function nvt(Request $request)
     {
-        $today = today(); 
-        // return $today;
-    $dates = []; 
+        
+        $agent = $request->header('User-Agent');
+        // $text = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
+        // return $agent;
+        // $text2 = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.114 YaBrowser/22.9.1.1094 Yowser/2.5 Safari/537.36';
+        // return str_contains($agent, $text2);
+        // $text4 = 'Mozilla/5.0 (Linux; Android 12; M2101K7AG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36';
+        // $text3 = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50';
+        // return wordSimilarity($agent, $text4);
+        
+        $get_agent = DB::table('tg_client')->get();
+        $agent_array = [];
+        $max=0;
+        foreach($get_agent as $ag)
+        {
+            if(wordSimilarity($agent, $ag->device)>0.9)
+            {
+                if(wordSimilarity($agent, $ag->device) > $max)
+                {
+                    $max = wordSimilarity($agent, $ag->device);
+                $agent_array[] = array('id' => $ag->id,'name'=>$ag->device);
 
-    for($i=1; $i < $today->daysInMonth + 1; ++$i) {
-        $dayName = \Carbon\Carbon::createFromDate($today->year, $today->month, $i)->format('l');
-        $day = \Carbon\Carbon::createFromDate($today->year, $today->month, $i)->format('d');
+                }
+            }
+        }
+        // return count($agent_array);
+
+        if(count($agent_array) != 1)
+        {
+            $id = DB::table('tg_client')->insertGetId([
+                'id' =>4,
+                'device' => $agent
+            ]);
+            $agent_array[] = array('id' => $id,'name'=>$agent);
+            return $agent_array;
+        }
+
+        // return $agent_array;
+
+        // $currentURL = URL::current();
+        // $route = Route::current()->getPrefix();
+        // $prefix = Request::route()->getPrefix();""
+        $route = Route::current()->uri();
+        $user = DB::table('tg_user')->where('username',$route)->first();
+        $questions = DB::table('tg_question')
+        ->select('tg_question.id as qid','tg_question.name as qname','tg_question.grade')
+        ->where('tg_department.status',2)
+        ->join('tg_department','tg_department.id','tg_question.department_id')
+        ->get();
+        $yulduz = DB::table('tg_question')->where('name','yulduz')->where('grade',6)->first();
+
+        // return $yulduz;
+        // $token = $request->bearerToken();
+        // var_dump($request->headers['headers']);
+        return view('client',compact('user','questions','agent_array','yulduz'));
+
+    }
+    public function setting($month)
+    {
+        $year = substr($month,3);
+        $months = substr($month,0,-5);
+        $maxday =  Carbon::now()->year($year)->month($months)->daysInMonth;
+        $dates = []; 
+
+        $ym = DB::table('tg_calendar')->where('year_month',$month)->value('day_json');
+        // return $ym;
+        if($ym)
+        {
+            $ym_json = json_decode($ym);
+        }else{
+            $ym_json = 1;
+        }
+    for($i=1; $i < $maxday + 1; ++$i) {
+        $dayName = \Carbon\Carbon::createFromDate($year,$months, $i)->format('l');
+        $day = \Carbon\Carbon::createFromDate($year, $months, $i)->format('d');
         if($day[0] == '0')
         {
             $day = substr($day,1);
         }
         $dates[$day] = $dayName;
     }
-        // return $dates;
-        return view('settings',compact('dates'));
+        $monthname =  \Carbon\Carbon::createFromDate($year,$months)->format('F');
+        // $monthname2 =  \Carbon\Carbon::createFromDate($year,$month)->format('Y-m')->addMonth();;
+        $plusmonth = date('m.Y',(strtotime ( '+1 month' , strtotime ( '01.'.$month) ) ));
+        $minusmonth = date('m.Y',(strtotime ( '-1 month' , strtotime ( '01.'.$month) ) ));
+        $weeks = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        $key = array_search($dates[1],$weeks);
+        return view('settings',compact('dates','monthname','minusmonth','plusmonth','month','ym_json','key'));
     }
 
     public function permission(Request $request)

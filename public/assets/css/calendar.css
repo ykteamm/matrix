@@ -53,9 +53,13 @@
   display: inline-block;
   width: 13.6%;
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 13px;
   font-size:20px;
   color: #777;
+}
+
+li button{
+  padding: 10px 40px !important;
 }
 
 .days li .active {
