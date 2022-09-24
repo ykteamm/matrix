@@ -365,7 +365,7 @@ class HomeController extends Controller
         $yulduz = DB::table('tg_question')->where('grade',6)->first();
 
         $client = DB::table('tg_cgrade')->where('question_id',$yulduz->id)->distinct()->pluck('teacher_id');
-        // return $client;
+        return $client;
 
 
         $tashqi = DB::table('tg_cgrade')->where('question_id',$yulduz->id)
