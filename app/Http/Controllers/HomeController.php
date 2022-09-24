@@ -391,8 +391,15 @@ class HomeController extends Controller
             }
             
         }
-        $altgardes = number_format($altgarde/count($client),2);
 
+        if(count($client) == 0)
+        {
+            $altgardes = 0.00;
+        }else{
+
+        
+        $altgardes = number_format($altgarde/count($client),2);
+        }
         $allques = DB::table('tg_clientgrade')->where('user_id',$id)->get();
         $allquesgr = DB::table('tg_question')->whereIn('grade',[1,2,3,4,5])->get();
         $quecount = 0;
