@@ -88,13 +88,13 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                 <div>
                     @foreach ($questions as $item)
                                     <div class="row gr{{$item->grade}} allgr" style="display: none;">
-                                <div class="col-6">
+                                <div class="col-8">
 
-                                    <span class="ml-3">{{$item->qname}}</span>
+                                    <h3 class="ml-3">{{$item->qname}}</h3>
                                 </div>
-                                <div class="col-6" style="text-align: center">
+                                <div class="col-4" style="text-align: center">
 
-                                    <input type="checkbox" class="checkboxes" value="{{$item->qid}}">
+                                    <input style="height:25px;width:25px" type="checkbox" class="checkboxes" value="{{$item->qid}}">
                                 </div>
                                     </div>
                                 @endforeach
