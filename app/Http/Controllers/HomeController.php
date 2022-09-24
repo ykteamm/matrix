@@ -403,7 +403,7 @@ class HomeController extends Controller
             $altgardes = 0.00;
         }else{
 
-        return $altgarde;
+        // return $altgarde;
         $altgardes = number_format($altgarde/count($client),2);
         }
         $allques = DB::table('tg_clientgrade')->where('user_id',$id)->get();
