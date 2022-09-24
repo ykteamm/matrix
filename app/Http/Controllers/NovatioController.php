@@ -768,7 +768,7 @@ class NovatioController extends Controller
         $question_array = $request->a;
         $ques_yulduz = $request->yulduz['id'];
         // return $ques_yulduz;
-        $isset = DB::table('tg_grade')
+        $isset = DB::table('tg_cgrade')
         ->where('created_at',today())
         ->where('teacher_id',$agent_id)
         ->where('user_id',$user_id)
@@ -780,7 +780,7 @@ class NovatioController extends Controller
             ];
         }else{
 
-        $xy = DB::table('tg_grade')
+        $xy = DB::table('tg_cgrade')
         ->where('teacher_id',$agent_id)
         ->where('user_id',$user_id)
         ->orderBy('id','DESC')
@@ -803,12 +803,11 @@ class NovatioController extends Controller
             }
             if($yes*$yes1 == 2)
             {
-                $save = DB::table('tg_grade')->insert([
+                $save = DB::table('tg_cgrade')->insert([
                     'question_id' => $ques_yulduz,
                     'teacher_id' => $agent_id,
                     'user_id' => $user_id,
                     'grade' => $grade,
-                    'save' => true,
                     'created_at' => today(),
                 ]);
 
@@ -832,12 +831,11 @@ class NovatioController extends Controller
                 ];
             }
         }else{
-            $save = DB::table('tg_grade')->insert([
+            $save = DB::table('tg_cgrade')->insert([
                 'question_id' => $ques_yulduz,
                 'teacher_id' => $agent_id,
                 'user_id' => $user_id,
                 'grade' => $grade,
-                'save' => true,
                 'created_at' => today(),
             ]);
 

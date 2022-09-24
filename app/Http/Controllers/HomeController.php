@@ -359,11 +359,11 @@ class HomeController extends Controller
 
         $yulduz = DB::table('tg_question')->where('grade',6)->first();
 
-        $client = DB::table('tg_grade')->where('question_id',$yulduz->id)->distinct()->pluck('teacher_id');
+        $client = DB::table('tg_cgrade')->where('question_id',$yulduz->id)->distinct()->pluck('teacher_id');
         // return $client;
 
 
-        $tashqi = DB::table('tg_grade')->where('question_id',$yulduz->id)
+        $tashqi = DB::table('tg_cgrade')->where('question_id',$yulduz->id)
         ->where('user_id',$id)
         ->get();
         // return $tashqi;
@@ -871,10 +871,8 @@ class HomeController extends Controller
 
         if(count($agent_array) != 1)
         {
-            $maxid = DB::table('tg_grade')->max('teacher_id');
 
             $id = DB::table('tg_client')->insertGetId([
-                'id' => $maxid+1,
                 'device' => $agent,
                 'created_at' => today(),
             ]);
