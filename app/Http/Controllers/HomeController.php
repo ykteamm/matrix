@@ -132,7 +132,7 @@ class HomeController extends Controller
             $contents = file_get_contents($url);
             $name = substr($url, strrpos($url, '/') + 1);
             Storage::disk('public_uploads')->put($name, $contents);
-            $update = DB::table('tg_user')->update([
+            $update = DB::table('tg_user')->where('id',$id)->update([
                 'image_change' => FALSE
             ]);
         }
