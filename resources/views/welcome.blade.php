@@ -34,7 +34,7 @@
           <div class="card">
              <div class="card-body">
                 <div class="text-center">
-                   <img src="{{asset('assets/img/'.$elchi->image)}}" style="border-radius:30%" height="200px">
+                   <img src="{{asset('assets/img/'.$elchi->image)}}" style="border-radius:50%" height="200px">
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>

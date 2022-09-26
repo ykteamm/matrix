@@ -123,16 +123,26 @@ class HomeController extends Controller
     public function elchi($id,$time)
     {
         $getimg = DB::table('tg_user')->where('id',$id)->value('image');
-        // return substr($getimg,6);
-        $exists = Storage::disk('public_uploads')->exists(substr($getimg,6));
-        // return $exists;
-        if(!$exists) {
+        $img = DB::table('tg_user')->where('id',$id)->value('image_change');
+        if($img)
+        {
+            \File::delete(public_path() . '/assets/img/'.$getimg);
             $response = Http::get('http://138.68.81.139:8100/api/v1/user/image/'.$id);
             $url = $response['image'];
             $contents = file_get_contents($url);
             $name = substr($url, strrpos($url, '/') + 1);
             Storage::disk('public_uploads')->put($name, $contents);
+            $update = DB::table('tg_user')->update([
+                'image_change' => FALSE
+            ]);
         }
+        // // return substr($getimg,6);
+        // return $getimg;
+        // $exists = Storage::disk('public_uploads')->exists(substr($getimg,6));
+        // // return $exists;
+        // if(!$exists) {
+            
+        // }
         
 
         if ($time == 'today') {
