@@ -191,7 +191,7 @@
                                  <td>{{$browser.$item->teacher_id}} </td>
                                  <td>{{$item->grade}}</td>
                                  {{-- <td>{{date('d.m.Y H:m',(strtotime ( $item->created_at) ))}} </td> --}}
-                           <td>{{ date('d.m.Y H:i:s',(strtotime ( '-5 hours' , strtotime ( $item->created_at) ) )) }}</td>
+                           <td>{{ date('d.m.Y H:i:s',(strtotime ( strtotime ( $item->created_at) ) )) }}</td>
 
                               </tr>
                               @endforeach
