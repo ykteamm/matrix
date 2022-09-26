@@ -98,6 +98,34 @@ class UserSystemInfo
   		return $browser;
   	}
 
+	  public static function get_browsersdev($user_agent){
+
+
+		$browser = "Unknown Browser";
+
+		$browser_array = array(
+			'/msie/i'  => 'Internet Explorer',
+			'/Trident/i'  => 'Internet Explorer',
+			'/firefox/i'  => 'Firefox',
+			'/safari/i'  => 'Safari',
+			'/chrome/i'  => 'Chrome',
+			'/edge/i'  => 'Edge',
+			'/opera/i'  => 'Opera',
+			'/netscape/'  => 'Netscape',
+			'/maxthon/i'  => 'Maxthon',
+			'/knoqueror/i'  => 'Konqueror',
+			'/ubrowser/i'  => 'UC Browser',
+			'/mobile/i'  => 'Safari Browser',
+		);
+
+		foreach($browser_array as $regex => $value){
+			if(preg_match($regex, $user_agent)){
+				$browser = $value;
+			}
+		}
+		return $browser;
+	}
+
   	public static function get_device(){
 
   		$tablet_browser = 0;

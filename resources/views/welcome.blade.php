@@ -129,6 +129,7 @@
 
    </div>
    <div class="row" id="forcollapsegrade2" style="display: none;">
+      
       <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
             <div class="card bg-white">
             <div class="card-body">
@@ -142,6 +143,66 @@
             </div>
             </div>
       </div>
+      <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
+         <div class="card bg-white">
+         <div class="card-body">
+
+            @php
+               $browser = "Unknown Browser";
+
+               $browser_array = array(
+                  '/msie/i'  => 'Internet Explorer',
+                  '/Trident/i'  => 'Internet Explorer',
+                  '/firefox/i'  => 'Firefox',
+                  '/safari/i'  => 'Safari',
+                  '/chrome/i'  => 'Chrome',
+                  '/edge/i'  => 'Edge',
+                  '/opera/i'  => 'Opera',
+                  '/netscape/'  => 'Netscape',
+                  '/maxthon/i'  => 'Maxthon',
+                  '/knoqueror/i'  => 'Konqueror',
+                  '/ubrowser/i'  => 'UC Browser',
+                  '/mobile/i'  => 'Safari Browser',
+               );
+
+               
+            @endphp
+               <h4> <span> </span> </h4>
+               
+                     <div class="table-responsive">
+                        <table class="table mb-0" id="dtBasicExample">
+                           <thead>
+                              <tr>
+                                 <th>Qurilma</th>
+                                 <th>Ball </th>
+                                 <th>Sana </th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              @foreach ($devicegrade as $item)
+                                 @php
+                                 foreach($browser_array as $regex => $value){
+                                       if(preg_match($regex, $item->device)){
+                                          $browser = $value;
+                                       }
+                                    }
+                                 @endphp
+                              <tr>
+                                 <td>{{$browser.$item->teacher_id}} </td>
+                                 <td>{{$item->grade}}</td>
+                                 {{-- <td>{{date('d.m.Y H:m',(strtotime ( $item->created_at) ))}} </td> --}}
+                           <td>{{ date('d.m.Y H:i:s',(strtotime ( '-5 hours' , strtotime ( $item->created_at) ) )) }}</td>
+
+                              </tr>
+                              @endforeach
+
+                           </tbody>
+                        </table>
+                     </div>
+            
+         </div>
+         </div>
+   </div>
 
    </div>
     <div class="row">

@@ -440,9 +440,12 @@ class HomeController extends Controller
             $quecount = 0;
 
         }
-
-        // return $quearray;
-        return view('welcome',compact('allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        $devicegrade = DB::table('tg_cgrade')->where('user_id',$id)
+        ->join('tg_client','tg_client.id','tg_cgrade.teacher_id')
+        ->get();
+        
+        // return $allques;
+        return view('welcome',compact('devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
     }
     public function elchiList()
