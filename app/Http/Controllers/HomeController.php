@@ -68,7 +68,7 @@ class HomeController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         
         // execute!
         $response = curl_exec($ch);
@@ -77,7 +77,7 @@ class HomeController extends Controller
         curl_close($ch);
 
         return [
-            'res' => $response['reason']
+            'res' => $response
         ];
     }
     public function reg()
