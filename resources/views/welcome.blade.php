@@ -109,7 +109,8 @@
                      @if($ite['depid'] == $item['id'])
                      <div class="d-flex mb-3">
                         <div class="medicne d-flex">
-                           {{$ite['username']}}
+                           <a style="cursor: pointer" onclick="getQuestion(`qd{{$ite['uid']}}{{$item['id']}}`)"> {{$ite['username']}}</a>
+                          
                         </div>
                         <div class="medicne-time ml-auto">
                            {{$ite['avg']}}
@@ -119,6 +120,26 @@
                      @endforeach
                      
                   </div>
+                  @foreach ($allquestion as $ite)
+
+                  <div class="tab-left ml-4 allqd qd{{$ite->teacher_id}}{{$item['id']}}" style="display: none;">
+                     @if($ite->did == $item['id'])
+                     <div class="d-flex mb-3">
+                        <div class="medicne d-flex">
+                           <span>{{$ite->qname}}</span>
+                        </div>
+                        <div class="medicne-time ml-auto mr-5">
+                           {{$ite->grade}}
+                        </div>
+                        <div class="medicne">
+                           {{$ite->created_at}}
+                        </div>
+                     </div>
+                     @endif
+                     
+                  </div>
+                  @endforeach
+
                </div>
             @endforeach
 
@@ -190,8 +211,10 @@
                               <tr>
                                  <td>{{$browser.$item->teacher_id}} </td>
                                  <td>{{$item->grade}}</td>
-                                 {{-- <td>{{date('d.m.Y H:m',(strtotime ( $item->created_at) ))}} </td> --}}
-                           <td>{{ date('d.m.Y H:i:s',(strtotime ( '-0 hours' , strtotime ( $item->created_at) ) )) }}</td>
+                                 {{-- <td>{{$item->created_at}}</td> --}}
+                                 <td>{{date('d.m.Y H:i',(strtotime ( $item->created_at) ))}} </td>
+                           {{-- <td>{{ date('d.m.Y H:i',(strtotime ( '+0 hours' , strtotime ( $item->created_at) ) )) }}</td> --}}
+                           {{-- <td>{{ date('H:i',(strtotime ( '+10 hours' , strtotime ( $item->created_at) ) )) }}</td> --}}
 
                               </tr>
                               @endforeach
@@ -257,10 +280,10 @@
                                 <div class="card flex-fill">
                                    <div class="card-body">
                                       <div class="table-responsive">
-                                         <table class="table mb-0" id="dtBasicExample">
+                                         <table class="table mb-0 example1">
                                             <thead>
                                                <tr>
-                                                  <th>Mahsulot nomi</th>
+                                                  <th>Mahsulot nomi1</th>
                                                   <th>Soni</th>
                                                   <th>Summasi </th>
                                                   {{-- <th class="text-right">Summary </th> --}}
@@ -357,6 +380,13 @@
 @endsection
 @section('admin_script')
    <script>
+      function getQuestion(id)
+      {
+         $('.allqd').css('display','none')
+         // alert(id)
+         $(`.${id}`).css('display','')
+         
+      }
        function collapseGrade()
     {
         $('#forcollapsegrade').slideToggle("slow");

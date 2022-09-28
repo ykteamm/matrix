@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Session;
+use Carbon\Carbon;
+
 class NovatioController extends Controller
 {
     public function region(Request $request)
@@ -680,7 +682,7 @@ class NovatioController extends Controller
             'year_month' => $request->year_month,
             'day_json' => json_encode($request->day_json),
             'work_day' => intval($request->work_day),
-            'created_at' => today(),
+            'created_at' => Carbon::now(),
         ]);
         return $save;
 
@@ -706,7 +708,7 @@ class NovatioController extends Controller
                 'teacher_id' => $teacher_id,
                 'question_id' => $question_id,
                 'grade' => $grade,
-                'created_at' => today(),
+                'created_at' => Carbon::now(),
             ]);
             return $save;
 
@@ -714,7 +716,7 @@ class NovatioController extends Controller
         if($exists->save == false){
             $save = DB::table('tg_grade')->where('id',$exists->id)->update([
                 'grade' => $grade,
-                'created_at' => today(),
+                'created_at' => Carbon::now(),
             ]);
             return $save;
         }
@@ -762,6 +764,8 @@ class NovatioController extends Controller
 
     public function gradeTashqi(Request $request)
     {
+        $cdate = Carbon::now();
+
         $grade = $request->ygrade;
         $user_id = $request->user['id'];
         $agent_id = $request->agent_array['id'];
@@ -769,7 +773,7 @@ class NovatioController extends Controller
         $ques_yulduz = $request->yulduz['id'];
         // return $ques_yulduz;
         $isset = DB::table('tg_cgrade')
-        ->where('created_at',today())
+        ->where('created_at',$cdate)
         ->where('teacher_id',$agent_id)
         ->where('user_id',$user_id)
         ->get();
@@ -808,7 +812,7 @@ class NovatioController extends Controller
                     'teacher_id' => $agent_id,
                     'user_id' => $user_id,
                     'grade' => $grade,
-                    'created_at' => today(),
+                    'created_at' => $cdate,
                 ]);
 
                 if(isset($question_array))
@@ -819,7 +823,7 @@ class NovatioController extends Controller
                                 'question_id' => $question,
                                 'client_id' => $agent_id,
                                 'user_id' => $user_id,
-                                'created_at' => today(),
+                                'created_at' => $cdate,
 
                             ]);
                         }
@@ -838,7 +842,7 @@ class NovatioController extends Controller
                 'teacher_id' => $agent_id,
                 'user_id' => $user_id,
                 'grade' => $grade,
-                'created_at' => today(),
+                'created_at' => $cdate,
             ]);
 
             if(isset($question_array))
@@ -849,7 +853,7 @@ class NovatioController extends Controller
                             'question_id' => $question,
                             'client_id' => $agent_id,
                             'user_id' => $user_id,
-                    'created_at' => today(),
+                    'created_at' => $cdate,
 
                         ]);
                     }

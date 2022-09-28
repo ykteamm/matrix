@@ -27,7 +27,7 @@ use App\Http\Middleware\LoginAuth;
     Route::post('grade/ball', [App\Http\Controllers\NovatioController::class,'grade']);
     Route::post('grade/save', [App\Http\Controllers\NovatioController::class,'gradeSave']);
     Route::post('grade/tashqi', [App\Http\Controllers\NovatioController::class,'gradeTashqi']);
-
+    Route::post('/sms',[App\Http\Controllers\HomeController::class, 'smsfly']);
 
 Auth::routes();
 

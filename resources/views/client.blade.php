@@ -86,18 +86,62 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                         {{-- </div> --}}
                 </div>
                 <div>
+                    <div class="container-fluid">
+                        <div style="display:none" class="allgr iconrade mt-3">
+
+                        <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2">
+                            <div>
+                                <p><i class="fas fa-heart change" aria-hidden="true"></i></p>
+                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+                            </div>
+                            <div>
+                                <p><i class="fas fa-thumbs-up change" aria-hidden="true"></i></p>
+                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+
+                            </div>
+                            <div>
+                                <p><i class="fas fa-bolt change" aria-hidden="true"></i></p>
+                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+
+                            </div>
+                            <div>
+                                <p><i class="fas fa-comments change" aria-hidden="true"></i></p>
+                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+
+                            </div>
+                            <div>
+                                <p><i class="fas fa-leaf change" aria-hidden="true"></i></p>
+                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+
+                            </div>
+                            <div>
+                                <p><i class="fas fa-award change" aria-hidden="true"></i></p>
+                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+
+                            </div>
+                            {{-- <i class="fas fa-thumbs-up change" aria-hidden="true"></i>
+                            <i class="fas fa-bolt change" aria-hidden="true"></i>
+                            <i class="fas fa-comments change" aria-hidden="true"></i>
+                            <i class="fas fa-leaf change" aria-hidden="true"></i>
+                            <i class="fas fa-award change" aria-hidden="true"></i> --}}
+
+                        </div>
+                    </div>
+                        
+
                     @foreach ($questions as $item)
-                                    <div class="row gr{{$item->grade}} allgr mt-2" style="display: none;border-bottom:1px solid green">
-                                <div class="col-8">
+                        <div class="row gr{{$item->grade}} allgr mt-2 pb-3 pt-3" style="display: none;border-bottom:1px solid rgb(62, 68, 62)">
+                            <div class="col-8">
 
-                                    <h3 class="ml-3">{{$item->qname}}</h3>
-                                </div>
-                                <div class="col-4" style="text-align: center">
+                                <h3 class="ml-3">{{$item->qname}}</h3>
+                            </div>
+                            <div class="col-4" style="text-align: center">
 
-                                    <input style="height:25px;width:25px" type="checkbox" class="checkboxes" value="{{$item->qid}}">
-                                </div>
-                                    </div>
-                                @endforeach
+                                <input style="height:25px;width:25px" type="checkbox" class="checkboxes" value="{{$item->qid}}">
+                            </div>
+                        </div>
+                    @endforeach
+                    </div>
                 </div>
                 <div class="mt-5" style="text-align: center">
                     <button style="display:none" onclick="getCheck()" type="button" class="btn btn-info" >Ovoz berish</button>
@@ -118,6 +162,21 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     @include('admin.partials.js')
 
     <script>
+        $(document).ready(function () {
+            $('.change').css('margin','0px 40px 0px 40px')
+            $('.change').css('cursor','pointer')
+            $('.changes').css('margin','0px 40px 0px 40px')
+
+            // $('.change').mouseenter(function () { 
+            //     $(this).css('color','#45bc20')
+            // });
+            $('.change').click(function () { 
+                $(this).css('color','#45bc20')
+            });
+            // $('.change').mouseleave(function () { 
+            //     $(this).css('color','rgb(142, 160, 141)')
+            // });
+        });
         function getCheck()
         {
             let a = [];
@@ -152,6 +211,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
         }
         function hideQues(id)
         {
+                $('.change').css('color','rgb(142, 160, 141)');
             $('#getyulduz').attr('name',id);
 
             $('.allgr').css('display','none')
@@ -166,8 +226,9 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
             }
             if(id ==4 || id == 5)
             {
-             $('.gr4').css('display','');
-             $('.gr5').css('display','');
+                $('.iconrade').css('display','')
+            //  $('.gr4').css('display','');
+            //  $('.gr5').css('display','');
 
             }
         }

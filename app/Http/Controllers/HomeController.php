@@ -22,7 +22,6 @@ use Jenssegers\Agent\Agent;
 use Storage;
 use Illuminate\Support\Facades\Route;
 
-
 use Illuminate\Support\Facades\Http;
 class HomeController extends Controller
 {
@@ -45,6 +44,20 @@ class HomeController extends Controller
     // {
     //     return view('home');
     // }
+    public function smsfly(Request $request)
+    {
+        $data =  $request->all();
+        $phone = $data['phone'];
+        $message = $data['message'];
+        $responses = Http::withoutVerifying()->post('https://api.smsfly.uz/send', [
+            'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
+            'phone' => $phone,
+            'message' => $message,
+        ]);
+        return [
+            'res' => $responses['reason']
+        ];
+    }
     public function reg()
     {
         // $email = DB::table('tg_user')->where('id', '36')->value('pr');
@@ -62,8 +75,18 @@ class HomeController extends Controller
     public function index()
     {
 
-        
-        
+        // $deparid = DB::table('tg_department')->pluck('id');
+
+        // $sesid = [];
+        // foreach(Session::get('per') as $key => $item)
+        // {
+        //     if(strlen($key) == 2)
+        //     {
+        //         $sesid[] = substr($key,0,1);
+        //     }
+        // }
+        // return $sesid;
+        // return Session::get('per');
         $regions = DB::table('tg_region')->get();
 
         $sum = DB::table('tg_productssold')
@@ -269,10 +292,11 @@ class HomeController extends Controller
         // return $elchi;
         $startDay = today()->startOfWeek()->addDay(1);
         $endDay = Carbon::now();
-
         $department = DB::table('tg_department')->where('status',1)->get();
         $d_array =[];
         $d_for_user = [];
+        $d_for_user2 = [];
+        $allquestion = [];
         $allavg = 0;
 
         $yulduz = DB::table('tg_question')->where('grade',6)->first();
@@ -283,27 +307,18 @@ class HomeController extends Controller
             ->join('tg_user','tg_user.id','tg_grade.teacher_id')
             ->distinct()
             ->get();
-        // return $users;
-        foreach($department as $depar)
-        {
 
-        // $users = DB::table('tg_user')->where('admin',true)
-        //     ->select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_positions.position_json->d'.$depar->id.' as '.$depar->name.'')
-        //     ->join('tg_positions','tg_positions.id','tg_user.rol_id')
-        //     ->where('tg_positions.position_json->d'.$depar->id.'','true')
-        //     ->get();
-        
-        // $yulduz = DB::table('tg_question')->where('grade',6)->first();
-
-        // $users = DB::table('tg_grade')->where('question_id','!=',$yulduz->id)->distinct()->pluck('teacher_id');
+            foreach($department as $depar)
+            {
+        $question = DB::table('tg_question')->where('department_id',$depar->id)->get();
         
 
-        $avg_u = 0;
-            $avg_q = 0;
         foreach($users as $dnam)
         {
-            $question = DB::table('tg_question')->where('department_id',$depar->id)->get();
-
+            $quescount = 0;
+            $avg_u = 0;
+            $avg_q = 0;
+            $ads = [];
 
                 foreach($question as $key => $ques)
             {
@@ -313,50 +328,68 @@ class HomeController extends Controller
                 ->where('question_id',$ques->id)
                 ->avg('grade');
 
-                // $grade_count = DB::table('tg_grade')
-                // ->where('teacher_id',$dnam->id)
-                // ->where('user_id',$id)
-                // ->where('question_id',$ques->id)
-                // ->avg('grade');
-                // if($grade_count == 0)
-                // {
-                // $avg_q += 0;
+                $quesforuser = DB::table('tg_grade')
+                ->select('tg_department.id as did','tg_question.name as qname','tg_grade.*')
+                ->where('teacher_id',$dnam->id)
+                ->where('user_id',$id)
+                ->where('question_id',$ques->id)
+                ->join('tg_question','tg_question.id','tg_grade.question_id')
+                ->join('tg_department','tg_department.id','tg_question.department_id')
+                ->get();
 
-                // }else{
+                foreach($quesforuser as $keyd => $valued)
+                {
+                    $allquestion[] = $valued;
+                }
+                if($grade != NULL)
+                {
+                    $quescount++;
+
+                }
                 $avg_q += $grade;
-                // }
             }
-
-            $avg_u += $avg_q/count($question);
-            // $d_for_user[] = array('depid' => $depar->id,'username' => $dnam->first_name);
-            if($avg_q/count($question) > 0)
+            if($quescount == 0)
             {
-            $d_for_user[] = array('avg' => number_format($avg_q/count($question),2),'depid' => $depar->id,'username' => $dnam->last_name.' '.$dnam->first_name);
-                
-            }
-            $avg_q = 0;
-
-        }
-        
-        if(count($users) == 0)
-        {
-            $all_avg = 0;
-        }else{
-            $getquesid = DB::table('tg_question')->where('department_id',$depar->id)->pluck('id');
-
-            $getdep = DB::table('tg_grade')->whereIn('question_id',$getquesid)->distinct()->pluck('teacher_id');
-            if(count($getdep) == 0)
-            {
-            $all_avg = 0;
+            $avg_u += 0;
 
             }else{
+            $avg_u += $avg_q/$quescount;
 
-            
-            $all_avg = $avg_u/count($getdep);
             }
-        }
 
-        $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => number_format($all_avg, 2));
+            if($avg_u > 0)
+            {
+            $d_for_user[] = array('uid' => $dnam->id,'avg' => number_format($avg_u,2),'depid' => $depar->id,'username' => $dnam->last_name.' '.$dnam->first_name);
+            $d_for_user2[] = array('avg' => number_format($avg_u,2),'depid' => $depar->id,'username' => $dnam->last_name.' '.$dnam->first_name);
+            }
+            // $avg_q = 0;
+            // $avg_u = 0;
+        // $quescount = 0;
+
+
+        }
+        $avguser = 0;
+        foreach($d_for_user2 as $keyr => $valuer)
+        {
+            $avguser += $valuer['avg'];
+        }
+        if(count($d_for_user2) == 0)
+            {
+            $allsavguser = 0;
+
+            }else{
+            $allsavguser = $avguser/count($d_for_user2);
+            $ads[] = $allsavguser;
+            }
+        // $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => $avguser);
+        // $avguser = 0;
+
+        $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => number_format($allsavguser, 2));
+        $d_for_user2 = [];
+
+        
+
+        }
         $davg = 0;
         $maxnol = 0;
         foreach($d_array as $dr)
@@ -375,10 +408,8 @@ class HomeController extends Controller
         
         $allavg = $davg/$maxnol;
         }
-    }
 
-    // return $d_for_user;
-
+        // return $allquestion;
         $yulduz = DB::table('tg_question')->where('grade',6)->first();
 
         $client = DB::table('tg_cgrade')->where('question_id',$yulduz->id)
@@ -420,7 +451,7 @@ class HomeController extends Controller
             $altgardes = 0.00;
         }else{
 
-        // return $altgarde;
+        // return $allquestion;
         $altgardes = number_format($altgarde/count($client),2);
         }
         $allques = DB::table('tg_clientgrade')->where('user_id',$id)->get();
@@ -441,11 +472,12 @@ class HomeController extends Controller
 
         }
         $devicegrade = DB::table('tg_cgrade')->where('user_id',$id)
+        ->select('tg_cgrade.*','tg_client.device as device')
+        // ->select('tg_cgrade.grade as grade','tg_cgrade.created_at as cat','tg_client.device as device','tg_cgrade')
         ->join('tg_client','tg_client.id','tg_cgrade.teacher_id')
         ->get();
         
-        // return $allques;
-        return view('welcome',compact('devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        return view('welcome',compact('allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
     }
     public function elchiList()
@@ -900,7 +932,7 @@ class HomeController extends Controller
 
             $id = DB::table('tg_client')->insertGetId([
                 'device' => $agent,
-                'created_at' => today(),
+                'created_at' => Carbon::now(),
             ]);
             $agent_array[] = array('id' => $id,'name'=>$agent);
             // return $agent_array;

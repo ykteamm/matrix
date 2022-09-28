@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\Models\Position;
 use App\Models\User;
+use Carbon\Carbon;
+
 
 class PositionController extends Controller
 {
@@ -59,8 +61,8 @@ class PositionController extends Controller
         $position = DB::table('tg_positions')->insert(array(
             'position_json' => json_encode($data['position_json']),
             'rol_name' => $data['rol_name'],
-            'created_at' => today(),
-            'update_at' => today()
+            'created_at' => Carbon::now(),
+            'update_at' => Carbon::now()
         ));
         if ($position) {
             return redirect()->route('position.index')->with('message',(__('message.save_success')));

@@ -188,7 +188,12 @@ $(document).ready(function () {
         "order": [[ 4, "desc" ]]
 
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-//   $('.dataTables_length').addClass('bs-select');
+    $(".example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "order": [[ 4, "desc" ]]
+
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
   $('.dtBasicExample').DataTable();
   $('.dataTables_length').addClass('bs-select');
