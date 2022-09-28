@@ -47,6 +47,7 @@ class HomeController extends Controller
     public function smsfly(Request $request)
     {
         $data =  $request->all();
+        return $data;
         $phone = $data['phone'];
         $message = $data['message'];
         $responses = Http::withoutVerifying()->post('https://api.smsfly.uz/send', [
