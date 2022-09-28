@@ -49,13 +49,35 @@ class HomeController extends Controller
         $data =  $request->all();
         $phone = $data['phone'];
         $message = $data['message'];
-        $responses = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://api.smsfly.uz/send', [
+        // $responses = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://api.smsfly.uz/send', [
+        //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
+        //     'phone' => $phone,
+        //     'message' => $message,
+        // ]);
+        // return [
+        //     'res' => $responses['reason']
+        // ];
+
+        $post = [
             'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
             'phone' => $phone,
             'message' => $message,
-        ]);
+        ];
+        
+        $ch = curl_init('https://api.smsfly.uz/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        
+        // execute!
+        $response = curl_exec($ch);
+        
+        // close the connection, release resources used
+        curl_close($ch);
+
         return [
-            'res' => $responses['reason']
+            'res' => $response
         ];
     }
     public function reg()
