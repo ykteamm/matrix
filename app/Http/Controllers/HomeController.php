@@ -77,7 +77,7 @@ class HomeController extends Controller
         curl_close($ch);
 
         return [
-            'res' => $response
+            'res' => $post
         ];
     }
     public function reg()
