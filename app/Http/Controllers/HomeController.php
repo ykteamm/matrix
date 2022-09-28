@@ -49,7 +49,7 @@ class HomeController extends Controller
         $data =  $request->all();
         $phone = $data['phone'];
         $message = $data['message'];
-        $responses = Http::withoutVerifying()->post('https://api.smsfly.uz/send', [
+        $responses = Http::withoutVerifying()->withOptions(["verify"=>false])->post('https://api.smsfly.uz/send', [
             'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
             'phone' => $phone,
             'message' => $message,
