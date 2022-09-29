@@ -33,7 +33,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <input type="text" placeholder="Bo'lim nomini kiriting"  name="bname" class="form-control form-control-sm" required/>
+                                        <input type="text" placeholder="Savolni kiriting"  name="bname" class="form-control form-control-sm" required/>
                                     </div>
                                     {{-- <div > --}}
                                     <div class="form-group col-md-2">
@@ -55,6 +55,7 @@
                                                 <th> № </th>
                                                 <th> Nomi </th>
                                                 <th> Guruhi </th>
+                                                <th> Harakat </th>
         
                                             </tr>
                                         </thead>

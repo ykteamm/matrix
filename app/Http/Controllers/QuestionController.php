@@ -29,7 +29,6 @@ class QuestionController extends Controller
         $departichki = DB::table('tg_department')->whereIn('status',[1])->get();
         $departtashqi = DB::table('tg_department')->whereIn('status',[2])->get();
 
-        // return $depart;
         return view('question.create',compact('question','departichki','departtashqi'));
     }
 
@@ -138,7 +137,26 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
+        // return $id;
+        // $delete = DB::table('tg_clientgrade')->where('question_id',$id)->delete();
+        // $delete = DB::table('tg_question')->where('id',$id)->delete();
+
+// return $delete;
+        $question = DB::table('tg_question')->where('id',$id)->first();
+        if($question->grade == 0)
+        {
+            $delete = DB::table('tg_grade')->where('question_id',$id)->delete();
+
+        }else{
+            $delete = DB::table('tg_clientgrade')->where('question_id',$id)->delete();
+
+        }
+
         $delete = DB::table('tg_question')->where('id',$id)->delete();
+        // $question = DB::table('tg_question')->where('grade','!=',6)->get();
+
+        // return $fsdf;
+
         $question = DB::table('tg_question')->where('grade','!=',6)->get();
         $departichki = DB::table('tg_department')->whereIn('status',[1])->get();
         $departtashqi = DB::table('tg_department')->whereIn('status',[2])->get();

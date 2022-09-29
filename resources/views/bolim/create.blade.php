@@ -31,6 +31,7 @@
                                                 <th> № </th>
                                                 <th> Nomi </th>
                                                 <th> Guruhi </th>
+                                                <th> Harakat </th>
         
                                             </tr>
                                         </thead>
