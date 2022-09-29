@@ -71,8 +71,8 @@ body {
             <div class="content container-fluid headbot" id="status200">
                 <div class="row">
                     <div class="col-12" style="text-align: center">
-                        <h1 style="font-weight:900">{{$user->last_name}}</h1>
-                        <h1 style="font-weight:900">{{$user->first_name}}</h1>
+                        <h1 style="font-weight:900;font-size:60px">{{$user->last_name}}</h1>
+                        <h1 style="font-weight:900;font-size:60px">{{$user->first_name}}</h1>
                         <fieldset class="rate" name="" id="getyulduz">
                             <input  type="radio" id="rating10" name="rating" value="10" /><label class="" for="rating10" title="5 ball" onclick="hideQues(5)"></label>
                             {{-- <input type="radio" id="rating9" name="rating" value="9" /><label class="half " for="rating9" title="4.5 ball" onclick=""></label> --}}
@@ -103,10 +103,12 @@ body {
                             <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2">
                                 @foreach ($questions as $item)
                                 @if ($item->grade >= 4)
-                                <div  style="cursor: pointer" onclick="rangImage(`{{$item->qid}}`)">
-                                    <p class="changes rimg rangsiz{{$item->qid}}"><img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt=""></p>
+                                <div  style="cursor: pointer;" onclick="rangImage(`{{$item->qid}}`)">
+                                    <p class="changes rimg rangsiz{{$item->qid}}">
+                                        <img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt="">
+                                    </p>
                                     <p style="display: none" class="changes raimg rangli{{$item->qid}}"><img class="imgrangli{{$item->qid}}" src="{{asset('assets/grade/rangli'.$item->qid.'.png')}}" height="50px" alt="" name="{{$item->qid}}"></p>
-                                    <p class="changes " style="font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
+                                    <p class="changes mt-1" style="font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
                                 </div>
                                 @endif
                                 
