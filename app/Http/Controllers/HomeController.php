@@ -136,11 +136,11 @@ class HomeController extends Controller
     public function index()
     {
 
-        $deparid = DB::table('tg_productssold')->where('order_id',720)->update([
-            'number' => 1
-        ]);
-        $deparid = DB::table('tg_productssold')->where('order_id',720)->get();
-        return $deparid;
+        // $deparid = DB::table('tg_productssold')->where('order_id',720)->update([
+        //     'number' => 1
+        // ]);
+        // $deparid = DB::table('tg_productssold')->where('order_id',720)->get();
+        // return $deparid;
         // $sesid = [];
         // foreach(Session::get('per') as $key => $item)
         // {
