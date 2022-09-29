@@ -62,6 +62,7 @@ class NovatioController extends Controller
             if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
             {
                 $users = DB::table('tg_user')
+                    ->where('tg_user.admin',FALSE)
                     ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->get();
@@ -78,6 +79,7 @@ class NovatioController extends Controller
                     }
                     $users = DB::table('tg_user')
                     ->whereIn('tg_region.id',$r_id_array)
+                    ->where('tg_user.admin',FALSE)
                     ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->get();
@@ -160,6 +162,8 @@ class NovatioController extends Controller
                 ->where('tg_order.id','<=',$order_end)
                 ->where('tg_category.id','>=',$cate_begin)
                 ->where('tg_category.id','<=',$cate_end)
+                ->where('tg_user.admin',FALSE)
+
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -187,6 +191,8 @@ class NovatioController extends Controller
                 ->where('tg_order.id','<=',$order_end)
                 ->where('tg_category.id','>=',$cate_begin)
                 ->where('tg_category.id','<=',$cate_end)
+                ->where('tg_user.admin',FALSE)
+
         ->join('tg_user','tg_user.id','tg_productssold.user_id')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -216,6 +222,8 @@ class NovatioController extends Controller
                     ->whereIn('tg_user.id',$userarrayreg)
                     ->where('tg_category.id','>=',$cate_begin)
                     ->where('tg_category.id','<=',$cate_end)
+                    ->where('tg_user.admin',FALSE)
+
             ->join('tg_user','tg_user.id','tg_productssold.user_id')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -364,11 +372,17 @@ class NovatioController extends Controller
 
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
-        $users = DB::table('tg_user')->get();
+        $users = DB::table('tg_user')
+        ->where('tg_user.admin',FALSE)
+        
+        ->get();
 
 
         }else{
-            $users = DB::table('tg_user')->whereIn('region_id',$r_id_array)->get();
+            $users = DB::table('tg_user')
+            ->where('tg_user.admin',FALSE)
+            
+            ->whereIn('region_id',$r_id_array)->get();
 
         }
 
@@ -380,6 +394,8 @@ class NovatioController extends Controller
                 ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
+                ->where('tg_user.admin',FALSE)
+
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -390,6 +406,8 @@ class NovatioController extends Controller
                     ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                     ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                    ->where('tg_user.admin',FALSE)
+
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -402,6 +420,8 @@ class NovatioController extends Controller
                 ->whereIn('tg_region.id',$r_id_array)
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
+                ->where('tg_user.admin',FALSE)
+
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -413,6 +433,8 @@ class NovatioController extends Controller
                     ->whereIn('tg_region.id',$r_id_array)
                     ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                    ->where('tg_user.admin',FALSE)
+
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')

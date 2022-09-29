@@ -372,8 +372,8 @@
           $("#age_button4").text(name);
           var id = $("#age_button").attr('name');
           var text = $("#age_button").text();
- 
-          ageChart('Hammasi','all','all');
+            // alert(id)
+          ageChart(text,id,'all');
        }
        function orderId(ids){
           var id = $("#age_button").attr('name');
