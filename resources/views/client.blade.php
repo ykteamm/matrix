@@ -30,8 +30,8 @@
 /* The star of the show */
 .rate > label:before {
     display: inline-block;
-    font-size: 2rem;
-    padding: .3rem .2rem;
+    font-size: 60px;
+    padding: 15px 10px;
     margin: 0;
     cursor: pointer;
     font-family: FontAwesome;
@@ -46,27 +46,35 @@
 }
 /* Click + hover color */
 input:checked ~ label, /* color current and previous stars on checked */
-label:hover, label:hover ~ label { color: #10a712;  } /* color previous stars on hover */
+label:hover, label:hover ~ label { color: #fff200;  } /* color previous stars on hover */
 
  
 /* Hover highlights */
 input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
 input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
-label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #A6E72D;  } 
+label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #fff200;  } 
 .colorrate{
     color:#A6E72D
+}
+
+body {
+	color: #cecdcd !important;
+	
 }
    </style>
 </head>
 <body class="mini-sidebar">
     <div class="main-wrapper">
-        <div class="content main-wrapper ">
+        <div class="content main-wrapper h2for">
+            <h2 class="mb-4 p-3 h2for" style="text-align:center;background-color: chartreuse">Meni ishimga baho qo'ying</h2>
+
             <div class="content container-fluid headbot" id="status200">
                 <div class="row">
-                    <div class="col-12 mt-5" style="text-align: center">
-                        <h2>{{$user->last_name}} {{$user->first_name}}</h2>
+                    <div class="col-12" style="text-align: center">
+                        <h1 style="font-weight:900">{{$user->last_name}}</h1>
+                        <h1 style="font-weight:900">{{$user->first_name}}</h1>
                         <fieldset class="rate" name="" id="getyulduz">
-                            <input type="radio" id="rating10" name="rating" value="10" /><label class="" for="rating10" title="5 ball" onclick="hideQues(5)"></label>
+                            <input  type="radio" id="rating10" name="rating" value="10" /><label class="" for="rating10" title="5 ball" onclick="hideQues(5)"></label>
                             {{-- <input type="radio" id="rating9" name="rating" value="9" /><label class="half " for="rating9" title="4.5 ball" onclick=""></label> --}}
                             <input type="radio" id="rating8" name="rating" value="8" /><label class="" for="rating8" title="4 ball" onclick="hideQues(4)"></label>
                             {{-- <input type="radio" id="rating7" name="rating" value="7" /><label class="half " for="rating7" title="3.5 ball" onclick=""></label> --}}
@@ -86,21 +94,24 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                         {{-- </div> --}}
                 </div>
                 <div>
-                    <div class="container-fluid">
-                        <div style="display:none" class="allgr iconrade mt-3">
+                    <h2 class="mb-4 p-3 allgr gr1" style="display:none;text-align: center">Nima muammolar bo'ldi</h2>
+                    <h2 class="mb-4 p-3 allgr iconrade" style="display:none;text-align: center">Sizga nimalar yoqdi</h2>
 
-                        <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2">
-                            @foreach ($questions as $item)
-                            @if ($item->grade >= 4)
-                            <div style="cursor: pointer" onclick="rangImage(`{{$item->qid}}`)">
-                                <p class="changes rangsiz{{$item->qid}}"><img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt=""></p>
-                                <p style="display: none" class="changes rangli{{$item->qid}}"><img src="{{asset('assets/grade/rangli'.$item->qid.'.png')}}" height="50px" alt=""></p>
-                                <p class="changes " style="font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
+                    <div class="container-fluid">
+                        <div style="display: none" class="allgr iconrade mt-3">
+                        {{-- <div> --}}
+                            <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2">
+                                @foreach ($questions as $item)
+                                @if ($item->grade >= 4)
+                                <div  style="cursor: pointer" onclick="rangImage(`{{$item->qid}}`)">
+                                    <p class="changes rimg rangsiz{{$item->qid}}"><img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt=""></p>
+                                    <p style="display: none" class="changes raimg rangli{{$item->qid}}"><img class="imgrangli{{$item->qid}}" src="{{asset('assets/grade/rangli'.$item->qid.'.png')}}" height="50px" alt="" name="{{$item->qid}}"></p>
+                                    <p class="changes " style="font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
+                                </div>
+                                @endif
+                                
+                                @endforeach
                             </div>
-                            @endif
-                            
-                            @endforeach
-                            <div>
 
                         </div>
                     </div>
@@ -120,7 +131,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                     @endforeach
                     </div>
                 </div>
-                <div class="mt-5" style="text-align: center">
+                <div class="mt-2 mb-5" style="text-align: center">
                     <button style="display:none" onclick="getCheck()" type="button" class="btn btn-info" >Ovoz berish</button>
                 </div>
             </div>
@@ -143,6 +154,9 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
         {
             $(`.rangsiz${id}`).css('display','none');
             $(`.rangli${id}`).css('display','');
+            $(`.imgrangli${id}`).addClass('ranglia');
+            $(`.imgrangli${id}`).attr('name',id);
+            
         }
         $(document).ready(function () {
             $('.change').css('margin','0px 40px 0px 40px')
@@ -165,6 +179,19 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
             $(".checkboxes:checked").each(function() {
                 a.push(this.value)
             });
+            if(a.length == 0)
+            {
+                $(".ranglia").each(function() {
+                    if($(this).attr('name') != 0)
+                    {
+                         a.push($(this).attr('name'))
+
+                    }
+                // a.push(this.attr('name'))
+            });
+            }
+            
+            // console.log(a)
             var yulduz = <?php echo json_encode( $yulduz ) ?>;
             agent_array = <?php echo json_encode( $agent_array ) ?>;
             user = <?php echo json_encode( $user ) ?>;
@@ -186,6 +213,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                 if(response.status == 200)
                 {
                     $('#status200').css('display','none');
+                    $('.h2for').css('display','none');
                     $('#status300').css('display','');
                 }
             }
@@ -193,6 +221,13 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
         }
         function hideQues(id)
         {
+            $(".ranglia").each(function() {
+                $(this).attr('name','0')
+                // a.push(this.attr('name'))
+            });
+            $(`.raimg`).css('display','none');
+            $(`.rimg`).css('display','');
+
                 $('.change').css('color','rgb(142, 160, 141)');
             $('#getyulduz').attr('name',id);
 
