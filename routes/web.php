@@ -65,6 +65,9 @@ Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('/status', [HomeController::class,'userOnlineStatus']);
 #position
 Route::resource('position', PositionController::class);
+Route::resource('bolim', BolimController::class);
+Route::resource('question', QuestionController::class);
+Route::get('question/{id?}/delete', [App\Http\Controllers\QuestionController::class,'destroy'])->name('question.delete');
 Route::get('position/{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
 Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('pro-list/{time}', [HomeController::class,'proList'])->name('pro-list');
@@ -72,6 +75,10 @@ Route::post('permission', [HomeController::class,'permission'])->name('permissio
 Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
+
+
+Route::get('image-grade', [App\Http\Controllers\HomeController::class,'imageGrade'])->name('image.grade');
+Route::post('imagegrade-save', [App\Http\Controllers\HomeController::class,'imageGradeSave'])->name('imagegrade.store');
 
 
 

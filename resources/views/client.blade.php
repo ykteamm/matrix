@@ -90,40 +90,17 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
                         <div style="display:none" class="allgr iconrade mt-3">
 
                         <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2">
-                            <div>
-                                <p><i class="fas fa-heart change" aria-hidden="true"></i></p>
-                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
+                            @foreach ($questions as $item)
+                            @if ($item->grade >= 4)
+                            <div style="cursor: pointer" onclick="rangImage(`{{$item->qid}}`)">
+                                <p class="changes rangsiz{{$item->qid}}"><img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt=""></p>
+                                <p style="display: none" class="changes rangli{{$item->qid}}"><img src="{{asset('assets/grade/rangli'.$item->qid.'.png')}}" height="50px" alt=""></p>
+                                <p class="changes " style="font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
                             </div>
+                            @endif
+                            
+                            @endforeach
                             <div>
-                                <p><i class="fas fa-thumbs-up change" aria-hidden="true"></i></p>
-                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
-
-                            </div>
-                            <div>
-                                <p><i class="fas fa-bolt change" aria-hidden="true"></i></p>
-                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
-
-                            </div>
-                            <div>
-                                <p><i class="fas fa-comments change" aria-hidden="true"></i></p>
-                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
-
-                            </div>
-                            <div>
-                                <p><i class="fas fa-leaf change" aria-hidden="true"></i></p>
-                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
-
-                            </div>
-                            <div>
-                                <p><i class="fas fa-award change" aria-hidden="true"></i></p>
-                                <p class="changes" style="font-size:20px;color:rgb(14, 20, 14);">sdfsd</p>
-
-                            </div>
-                            {{-- <i class="fas fa-thumbs-up change" aria-hidden="true"></i>
-                            <i class="fas fa-bolt change" aria-hidden="true"></i>
-                            <i class="fas fa-comments change" aria-hidden="true"></i>
-                            <i class="fas fa-leaf change" aria-hidden="true"></i>
-                            <i class="fas fa-award change" aria-hidden="true"></i> --}}
 
                         </div>
                     </div>
@@ -162,6 +139,11 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     @include('admin.partials.js')
 
     <script>
+        function rangImage(id)
+        {
+            $(`.rangsiz${id}`).css('display','none');
+            $(`.rangli${id}`).css('display','');
+        }
         $(document).ready(function () {
             $('.change').css('margin','0px 40px 0px 40px')
             $('.change').css('cursor','pointer')

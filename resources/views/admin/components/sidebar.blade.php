@@ -31,6 +31,14 @@
              </li>
              @endif
              @endisset
+             <li class="submenu">
+                  <a href="settings.html"><i class="feather-sliders"></i>  <span> Savollar </span><span class="menu-arrow"></span></a>
+                  <ul style="display: none;">
+                     <li><a href="{{route('bolim.create')}}">Bo'limlar</a></li>
+                     <li><a href="{{route('question.create')}}">Ichki savollar</a></li>
+                     <li><a href="{{route('image.grade')}}">Rasm biriktirish</a></li>
+                  </ul>
+               </li>
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')
              <li><a href="{{route('setting','09.2022')}}"><i class="feather-filter"></i>  <span>Sozlamalar </span></a>

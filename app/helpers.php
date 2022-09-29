@@ -95,6 +95,7 @@ if(!function_exists('wordSimilarity')){
             'elchi' => 'Elchi',
             'pro' => 'Mahsulotlar',
             'grade' => 'Baholash',
+            'ques' => 'Savollar',
             'setting' => 'Sozlamalar',
             'User' => 'User',
             'rol' => 'Rol',

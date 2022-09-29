@@ -91,6 +91,34 @@ class HomeController extends Controller
         //     'res' => $response
         // ];
     }
+    public function imageGrade()
+    {
+        // $files = Storage::disk('public_grade')->allFiles();
+        // return $files;
+        $question = DB::table('tg_question')->whereIn('grade',[4,5])->get();
+        return view('image.create',compact('question'));
+    }
+    public function imageGradeSave(Request $request)
+    {
+        if($request->file('filerangli')){
+            $file= $request->file('filerangli');
+            $filename= 'rangli'.$request->bolim.'.'.$file->getClientOriginalExtension();
+            $file-> move(public_path('assets/grade'), $filename);
+            // Storage::disk('public_grade')->put($filename, $file);
+        }
+        if($request->file('filerangsiz')){
+            $file= $request->file('filerangsiz');
+            $filename= 'rangsiz'.$request->bolim.'.'.$file->getClientOriginalExtension();
+            $file-> move(public_path('assets/grade'), $filename);
+            // Storage::disk('public_grade')->put($filename, $file);
+        }
+        return redirect()->back();
+
+        // $files = Storage::disk('public_grade')->allFiles();
+        // return $files;
+        // $question = DB::table('tg_question')->whereIn('grade',[4,5])->get();
+        // return view('image.create',compact('question'));
+    }
     public function reg()
     {
         // $email = DB::table('tg_user')->where('id', '36')->value('pr');
@@ -108,8 +136,11 @@ class HomeController extends Controller
     public function index()
     {
 
-        // $deparid = DB::table('tg_department')->pluck('id');
-
+        $deparid = DB::table('tg_productssold')->where('order_id',720)->update([
+            'number' => 1
+        ]);
+        $deparid = DB::table('tg_productssold')->where('order_id',720)->get();
+        return $deparid;
         // $sesid = [];
         // foreach(Session::get('per') as $key => $item)
         // {
@@ -988,6 +1019,7 @@ class HomeController extends Controller
         // return $yulduz;
         // $token = $request->bearerToken();
         // var_dump($request->headers['headers']);
+        // return $questions;
         return view('client',compact('user','questions','agent_array','yulduz'));
 
     }

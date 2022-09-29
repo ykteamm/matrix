@@ -45,6 +45,10 @@ return [
             'driver' => 'local',
             'root'   => public_path() . '/assets/img/users',
         ],
+        'public_grade' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/assets/grade',
+        ],
 
         's3' => [
             'driver' => 's3',
