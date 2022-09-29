@@ -59,7 +59,12 @@ class QuestionController extends Controller
                 'created_at' => Carbon::now(),
             ]);
         }
-        return redirect()->back();
+        $question = DB::table('tg_question')->where('grade','!=',6)->get();
+        $departichki = DB::table('tg_department')->whereIn('status',[1])->get();
+        $departtashqi = DB::table('tg_department')->whereIn('status',[2])->get();
+
+        // return $depart;
+        return view('question.create',compact('question','departichki','departtashqi'));
     }
 
     /**
@@ -134,7 +139,12 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         $delete = DB::table('tg_question')->where('id',$id)->delete();
-        return redirect()->back();
+        $question = DB::table('tg_question')->where('grade','!=',6)->get();
+        $departichki = DB::table('tg_department')->whereIn('status',[1])->get();
+        $departtashqi = DB::table('tg_department')->whereIn('status',[2])->get();
+
+        // return $depart;
+        return view('question.create',compact('question','departichki','departtashqi'));
         // if($delete){
         //     return redirect()->back()->with('message',(__('message.delete_success')));
         // }else{
