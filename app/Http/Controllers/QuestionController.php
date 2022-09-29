@@ -134,10 +134,11 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         $delete = DB::table('tg_question')->where('id',$id)->delete();
-        if($delete){
-            return redirect()->back()->with('message',(__('message.delete_success')));
-        }else{
-            return redirect()->back()->with('message',(__('message.delete_error')));
-        }
+        return redirect()->back();
+        // if($delete){
+        //     return redirect()->back()->with('message',(__('message.delete_success')));
+        // }else{
+        //     return redirect()->back()->with('message',(__('message.delete_error')));
+        // }
     }
 }
