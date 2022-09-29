@@ -31,6 +31,8 @@
              </li>
              @endif
              @endisset
+             @isset(Session::get('per')['ques'])
+             @if(Session::get('per')['ques'] == 'true')
              <li class="submenu">
                   <a href="settings.html"><i class="feather-sliders"></i>  <span> Savollar </span><span class="menu-arrow"></span></a>
                   <ul style="display: none;">
@@ -39,6 +41,8 @@
                      <li><a href="{{route('image.grade')}}">Rasm biriktirish</a></li>
                   </ul>
                </li>
+               @endif
+             @endisset
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')
              <li><a href="{{route('setting','09.2022')}}"><i class="feather-filter"></i>  <span>Sozlamalar </span></a>
