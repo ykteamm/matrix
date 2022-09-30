@@ -55,13 +55,14 @@
                            >
                            
                            <td class="d-none">{{$item->rid}} </td>
-                           <td>{{$item->username}} </td>
-                           <td>{{$item->last_name}} {{$item->first_name}}</td>
+                   <td>  {{$item->username}} </td>
+                   <td> <img class="mr-2" src="{{asset('assets/img/'.$item->image)}}" style="border-radius:50%" height="20px"> {{$item->last_name}} {{$item->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                            <td>{{$item->v_name}}</td>
                            <td>{{$elchi_work[$item->id]}}</td>
-                           <td>{{$elchi_fact[$item->id]}}</td>
-                           <td>{{$elchi_prognoz[$item->id]}}</td>
+                           <td> <span class="badge bg-warning-light">{{$elchi_fact[$item->id]}}</span></td>
+                           <td> <span class="badge bg-success-light">{{$elchi_prognoz[$item->id]}}</span></td>
+                           {{-- <td>{{$elchi_prognoz[$item->id]}}</td> --}}
                            {{-- <td>{{$item->phone_number}}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">

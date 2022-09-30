@@ -46,13 +46,13 @@
 }
 /* Click + hover color */
 input:checked ~ label, /* color current and previous stars on checked */
-label:hover, label:hover ~ label { color: #fff200;  } /* color previous stars on hover */
+label:hover, label:hover ~ label { color: #d2c810;  } /* color previous stars on hover */
 
  
 /* Hover highlights */
 input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
 input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
-label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #fff200;  } 
+label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #d2c810;  } 
 .colorrate{
     color:#A6E72D
 }
@@ -68,7 +68,7 @@ body {
         <div class="content main-wrapper h2for">
             <h2 class="mb-4 p-3 h2for" style="text-align:center;background-color: chartreuse">Meni ishimga baho qo'ying</h2>
 
-            <div class="content container-fluid headbot" id="status200">
+            <div class="content headbot" id="status200">
                 <div class="row">
                     <div class="col-12" style="text-align: center">
                         <h1 style="font-weight:900;font-size:60px">{{$user->last_name}}</h1>
@@ -97,18 +97,21 @@ body {
                     <h2 class="mb-4 p-3 allgr gr1" style="display:none;text-align: center">Nima muammolar bo'ldi</h2>
                     <h2 class="mb-4 p-3 allgr iconrade" style="display:none;text-align: center">Sizga nimalar yoqdi</h2>
 
-                    <div class="container-fluid">
+                    <div class="">
                         <div style="display: none" class="allgr iconrade mt-3">
                         {{-- <div> --}}
-                            <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2">
+                            <div style="font-size:40px;color:rgb(142, 160, 141);overflow-x:scroll"  class="d-flex justify-content-between align-items-center ml-2 mr-2 mt-0">
                                 @foreach ($questions as $item)
                                 @if ($item->grade >= 4)
-                                <div  style="cursor: pointer;" onclick="rangImage(`{{$item->qid}}`)">
-                                    <p class="changes rimg rangsiz{{$item->qid}}">
-                                        <img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt="">
-                                    </p>
-                                    <p style="display: none" class="changes raimg rangli{{$item->qid}}"><img class="imgrangli{{$item->qid}}" src="{{asset('assets/grade/rangli'.$item->qid.'.png')}}" height="50px" alt="" name="{{$item->qid}}"></p>
-                                    <p class="changes mt-1" style="font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
+                                <div  style="cursor: pointer;margin-top:0 !important;height:130px" onclick="rangImage(`{{$item->qid}}`)">
+                                    {{-- <div style="height: 100px"> --}}
+                                        <p class="changes rimg rangsiz{{$item->qid}}" style="text-align: center">
+                                            <img src="{{asset('assets/grade/rangsiz'.$item->qid.'.png')}}" height="50px" alt="">
+                                        </p>
+                                    {{-- </div> --}}
+                                    
+                                    <p style="display: none;text-align: center" class="changes raimg rangli{{$item->qid}}"><img class="imgrangli{{$item->qid}}" src="{{asset('assets/grade/rangli'.$item->qid.'.png')}}" height="50px" alt="" name="{{$item->qid}}"></p>
+                                    <p class="changes mt-1" style="display:flex;justify-content:center;font-size:20px;color:rgb(14, 20, 14);">{{$item->qname}}</p>
                                 </div>
                                 @endif
                                 
@@ -133,7 +136,7 @@ body {
                     @endforeach
                     </div>
                 </div>
-                <div class="mt-2 mb-5" style="text-align: center">
+                <div class="mt-5 mb-5" style="text-align: center">
                     <button style="display:none" onclick="getCheck()" type="button" class="btn btn-info" >Ovoz berish</button>
                 </div>
             </div>
