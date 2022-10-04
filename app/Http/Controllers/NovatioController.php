@@ -830,19 +830,20 @@ class NovatioController extends Controller
             }
             if($yes*$yes1 == 2)
             {
-                $save = DB::table('tg_cgrade')->insert([
+                $savefs = DB::table('tg_cgrade')->insert([
                     'question_id' => $ques_yulduz,
                     'teacher_id' => $agent_id,
                     'user_id' => $user_id,
                     'grade' => $grade,
                     'created_at' => $cdate,
+                    'save' => FALSE
                 ]);
 
                 if(isset($question_array))
                     {
                         foreach($question_array as $key => $question)
                         {
-                            $save = DB::table('tg_clientgrade')->insert([
+                            $savefsf = DB::table('tg_clientgrade')->insert([
                                 'question_id' => $question,
                                 'client_id' => $agent_id,
                                 'user_id' => $user_id,
@@ -866,17 +867,19 @@ class NovatioController extends Controller
                 'user_id' => $user_id,
                 'grade' => $grade,
                 'created_at' => $cdate,
+                'save' => FALSE
+
             ]);
 
             if(isset($question_array))
                 {
                     foreach($question_array as $key => $question)
                     {
-                        $save = DB::table('tg_clientgrade')->insert([
+                        $savere = DB::table('tg_clientgrade')->insert([
                             'question_id' => $question,
                             'client_id' => $agent_id,
                             'user_id' => $user_id,
-                    'created_at' => $cdate,
+                            'created_at' => $cdate,
 
                         ]);
                     }
