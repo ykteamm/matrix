@@ -732,6 +732,7 @@ class NovatioController extends Controller
                 'question_id' => $question_id,
                 'grade' => $grade,
                 'created_at' => Carbon::now(),
+                'save' => FALSE
             ]);
             return $save;
 
