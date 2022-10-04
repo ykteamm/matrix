@@ -860,7 +860,7 @@ class NovatioController extends Controller
                 ];
             }
         }else{
-            $save = DB::table('tg_cgrade')->insert([
+            $save22 = DB::table('tg_cgrade')->insert([
                 'question_id' => $ques_yulduz,
                 'teacher_id' => $agent_id,
                 'user_id' => $user_id,
