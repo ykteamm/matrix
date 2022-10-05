@@ -2,6 +2,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
@@ -83,6 +84,9 @@ Route::post('imagegrade-save', [App\Http\Controllers\HomeController::class,'imag
 
 
 
+Route::resource('pill',PillController::class);
+Route::resource('bquestion',BilimQuestionController::class);
+Route::get('bquestion/{id?}/delete', [App\Http\Controllers\BilimQuestionController::class,'destroy'])->name('bquestion.delete');
 
 #end-position
 

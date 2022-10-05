@@ -32,26 +32,3 @@
     Please check the form below for errors
 </div>
 @endif
-$("#province").change(function(){
-    var province = $("#province").val();
-    if (province) {
-        var district = {!! json_encode($district->toArray()) !!};
-    
-    $.each(district, function(key,val) {
-        if(province == val['province_id']){
-    $(`#${val['district_name']}${val['province_id']}`).css("display","");
-
-
-        }
-        else{
-    $(`#${val['district_name']}${val['province_id']}`).css("display","none");
-
-        }
-
-    });
-    }
-    
-    $("#place_dist").val('');
-    $("#for_district").css("display","none");
-    $("#district").css("display","");
-});

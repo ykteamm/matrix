@@ -133,8 +133,8 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
 </head>
 <body onload = "load()">
     <div class="main-wrapper">
-        {{-- @include('components.flash'); --}}
-        {{-- @if ($errors->any())
+        @include('components.flash');
+        @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -142,7 +142,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
             @endforeach
         </ul>
     </div>
-    @endif --}}
+    @endif
         @include('admin.components.header')
         @include('admin.components.sidebar')
         <div class="page-wrapper" style="padding-top: 0px !important">

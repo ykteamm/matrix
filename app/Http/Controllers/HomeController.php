@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\District;
 use App\Models\Patient;
 use App\Models\Position;
+use App\Models\Pill;
+use App\Models\Question;
 use App\Models\Region;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -151,6 +153,10 @@ class HomeController extends Controller
         // }
         // return $sesid;
         // return Session::get('per');
+
+        // $regions = Question::with('pill')->get();
+        // return $regions;
+
         $regions = DB::table('tg_region')->get();
 
         $sum = DB::table('tg_productssold')

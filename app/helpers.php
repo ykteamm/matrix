@@ -4,7 +4,15 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
+use Carbon\Carbon;
 
+if(!function_exists('date_now')){
+    function date_now() {
+
+        return Carbon::now();
+    
+    }
+}
 
 if(!function_exists('wordSimilarity')){
     function wordSimilarity($s1,$s2) {

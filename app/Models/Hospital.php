@@ -11,8 +11,8 @@ class Hospital extends Model
         'hospital_name',     
     ];
 
-    public function branch()
+    ublic function branch()
     {
         return $this->hasMany(Branch::class, 'hospital_id', 'id');
-    }
+    }p
 }
