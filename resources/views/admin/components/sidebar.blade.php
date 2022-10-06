@@ -19,6 +19,9 @@
                   @endif
              @endisset
 
+               <li><a href="{{route('pharmacy-list')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
+
+
              @isset(Session::get('per')['pro'])
              @if(Session::get('per')['pro'] == 'true')
              <li><a href="{{route('pro-list','today')}}"><i class="feather-filter"></i>  <span>Mahsulotlar </span></a>
@@ -31,6 +34,8 @@
              </li>
              @endif
              @endisset
+
+             
              @isset(Session::get('per')['ques'])
              @if(Session::get('per')['ques'] == 'true')
              <li class="submenu">
@@ -48,8 +53,8 @@
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Bilim savollar </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
                   <li><a href="{{route('pill-question.create')}}">Asosiy Kategoriya</a></li>
-                  <li><a href="{{route('question.create')}}">Ichki Kategoriya</a></li>
-                  <li><a href="{{route('image.grade')}}">Savollar</a></li>
+                  <li><a href="{{route('condition-question.create')}}">Ichki Kategoriya</a></li>
+                  <li><a href="{{route('knowledge-question.create')}}">Savollar</a></li>
                </ul>
             </li>
 

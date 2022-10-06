@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PillQuestion extends Model
+class KnowledgeQuestion extends Model
 {
     use HasFactory;
 
-    protected $table = 'tg_pill_questions';
+    protected $table = 'tg_knowledge_questions';
     protected $fillable = [
         'id',
         'name',
-        'knowledge_id',
+        'condition_question_id',
     ];
 
     public function condition_question()
     {
-        return $this->hasMany(ConditionQuestion::class,'pill_question_id','id');
+        return $this->belongsTo(ConditionQuestion::class,'condition_question_id','id');
     }
 }

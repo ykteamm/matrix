@@ -6,7 +6,7 @@ use App\Helpers\UserSystemInfo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 // use Illuminate\Http\Patient;
-use App\Models\District;
+use App\Models\Pharmacy;
 use App\Models\Patient;
 use App\Models\Position;
 use App\Models\Pill;
@@ -93,6 +93,23 @@ class HomeController extends Controller
         //     'res' => $response
         // ];
     }
+    public function pharmacyList(Request $request)
+    {
+        // dd($request);
+        // \File::delete(public_path() . '/assets/img/'.$getimg);
+        // $id =2;
+            
+        $pharmacy = Pharmacy::all();
+        foreach($pharmacy as $item)
+        {
+            $response = Http::get('http://128.199.2.165:8100/api/v1/pharm/image/'.$item->id.'/');
+            $url = $response['image'];
+            $contents = file_get_contents($url);
+            $name = substr($url, strrpos($url, '/') + 1);
+            Storage::disk('public_uploads')->put($name, $contents);
+        }
+        return view('pharmacy',compact('pharmacy'));
+    }
     public function imageGrade()
     {
         // $files = Storage::disk('public_grade')->allFiles();
@@ -137,7 +154,16 @@ class HomeController extends Controller
     }
     public function index()
     {
-
+        //  DB::table('tg_grade')
+        // ->whereIn('question_id',DB::table('tg_question')
+        // ->where('department_id',DB::table('tg_department')->where('name','Bilim')->where('status',1)->first()->id)
+        // ->pluck('id'))
+        // ->delete();
+        //  DB::table('tg_question')
+        // ->where('department_id',DB::table('tg_department')->where('name','Bilim')->where('status',1)->first()->id)
+        // ->delete();
+        // DB::table('tg_department')->where('name','Bilim')->where('status',1)->delete();
+        
         // $deparid = DB::table('tg_productssold')->where('order_id',720)->update([
         //     'number' => 1
         // ]);
@@ -220,7 +246,7 @@ class HomeController extends Controller
         if($img)
         {
             \File::delete(public_path() . '/assets/img/'.$getimg);
-            $response = Http::get('http://138.68.81.139:8100/api/v1/user/image/'.$id);
+            $response = Http::get('http://128.199.2.165:8100/api/v1/user/image/'.$id);
             $url = $response['image'];
             $contents = file_get_contents($url);
             $name = substr($url, strrpos($url, '/') + 1);

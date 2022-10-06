@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Knowledge;
 use App\Models\PillQuestion;
-class PillQuestionController extends Controller
+use App\Models\ConditionQuestion;
+
+class ConditionQuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class PillQuestionController extends Controller
      */
     public function index()
     {
-        
+        //
     }
 
     /**
@@ -24,9 +25,9 @@ class PillQuestionController extends Controller
      */
     public function create()
     {
-        $knowledge = Knowledge::first();
         $pill_questions = PillQuestion::all();
-        return view('pill-question.create',compact('knowledge','pill_questions'));
+        $condition_questions = ConditionQuestion::with('pill_question')->get();
+        return view('condition-question.create',compact('pill_questions','condition_questions'));
     }
 
     /**
@@ -38,18 +39,18 @@ class PillQuestionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'knowledge_id'=>'required',
-            'pill_question'=>'required',
+            'pill_question_id'=>'required',
+            'condition_question'=>'required',
         ]);
 
         $data = $request->all();
-        $new_pill_question = new PillQuestion([
-            'name' => $data['pill_question'],
-            'knowledge_id' => $data['knowledge_id'],
+        $new_condition_question = new ConditionQuestion([
+            'pill_question_id' => $data['pill_question_id'],
+            'name' => $data['condition_question'],
             'created_at' => date_now(),
         ]);
-        $new_pill_question->save();
-        if($new_pill_question->id)
+        $new_condition_question->save();
+        if($new_condition_question->id)
         {
             return redirect()->back()->with('success','Ma\'lumot saqlandi');
         }else{
@@ -76,8 +77,10 @@ class PillQuestionController extends Controller
      */
     public function edit($id)
     {
-        $pill_question = PillQuestion::find($id);
-        return view('pill-question.edit',compact('pill_question'));
+        $condition_question = ConditionQuestion::with('pill_question')->find($id);
+        $pill_questions = PillQuestion::all();
+
+        return view('condition-question.edit',compact('condition_question','pill_questions'));
     }
 
     /**
@@ -90,17 +93,19 @@ class PillQuestionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'pill_question'=>'required',
+            'pill_question_id'=>'required',
+            'condition_question'=>'required',
         ]);
         $data = $request->all();
-        $update_pill_question = PillQuestion::where('id',$id)->update([
-            'name' => $data['pill_question'],
+        $update_condition_question = ConditionQuestion::where('id',$id)->update([
+            'name' => $data['condition_question'],
+            'pill_question_id' => $data['pill_question_id'],
             'updated_at' => date_now(),
         ]);
 
-        if($update_pill_question)
+        if($update_condition_question)
         {
-            return redirect()->route('pill-question.create')->with('success','Ma\'lumot saqlandi');
+            return redirect()->route('condition-question.create')->with('success','Ma\'lumot saqlandi');
         }else{
             return redirect()->back()->error('error', 'Ma\'lumot saqlanmadi');
         }
@@ -114,7 +119,7 @@ class PillQuestionController extends Controller
      */
     public function destroy($id)
     {
-        $delete = PillQuestion::find($id)->delete();
+        $delete = ConditionQuestion::find($id)->delete();
         if($delete){
             return redirect()->back()->with('message',(__('message.delete_success')));
         }else{

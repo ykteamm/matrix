@@ -77,6 +77,8 @@ Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
 
+Route::get('pharmacy-list', [HomeController::class,'pharmacyList'])->name('pharmacy-list');
+
 
 Route::get('image-grade', [App\Http\Controllers\HomeController::class,'imageGrade'])->name('image.grade');
 Route::post('imagegrade-save', [App\Http\Controllers\HomeController::class,'imageGradeSave'])->name('imagegrade.store');
@@ -86,6 +88,12 @@ Route::post('imagegrade-save', [App\Http\Controllers\HomeController::class,'imag
 
 Route::resource('pill-question',PillQuestionController::class);
 Route::get('pill-question/{id?}/delete', [App\Http\Controllers\PillQuestionController::class,'destroy'])->name('pill-question.delete');
+
+Route::resource('condition-question',ConditionQuestionController::class);
+Route::get('condition-question/{id?}/delete', [App\Http\Controllers\ConditionQuestionController::class,'destroy'])->name('condition-question.delete');
+
+Route::resource('knowledge-question',KnowledgeQuestionController::class);
+Route::get('knowledge-question/{id?}/delete', [App\Http\Controllers\KnowledgeQuestionController::class,'destroy'])->name('knowledge-question.delete');
 
 Route::resource('bquestion',BilimQuestionController::class);
 Route::get('bquestion/{id?}/delete', [App\Http\Controllers\BilimQuestionController::class,'destroy'])->name('bquestion.delete');
