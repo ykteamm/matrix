@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Carbon\Carbon;
-
+use App\Models\Knowledge;
 if(!function_exists('date_now')){
     function date_now() {
 
@@ -109,6 +109,9 @@ if(!function_exists('wordSimilarity')){
             'rol' => 'Rol',
             'region' => 'Barcha viloyat',
         ];
+        $knowledge = Knowledge::first();
+        $h_positions['bilim'.$knowledge->id] = $knowledge->name;
+
         $department = DB::table('tg_department')->where('status',1)->get();
         foreach ($department as $key => $value) {
             $h_positions['d'.$value->id] = $value->name;

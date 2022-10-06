@@ -47,7 +47,7 @@
              <li class="submenu">
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Bilim savollar </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
-                  <li><a href="{{route('bquestion.create')}}">Asosiy Kategoriya</a></li>
+                  <li><a href="{{route('pill-question.create')}}">Asosiy Kategoriya</a></li>
                   <li><a href="{{route('question.create')}}">Ichki Kategoriya</a></li>
                   <li><a href="{{route('image.grade')}}">Savollar</a></li>
                </ul>

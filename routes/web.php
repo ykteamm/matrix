@@ -84,7 +84,9 @@ Route::post('imagegrade-save', [App\Http\Controllers\HomeController::class,'imag
 
 
 
-Route::resource('pill',PillController::class);
+Route::resource('pill-question',PillQuestionController::class);
+Route::get('pill-question/{id?}/delete', [App\Http\Controllers\PillQuestionController::class,'destroy'])->name('pill-question.delete');
+
 Route::resource('bquestion',BilimQuestionController::class);
 Route::get('bquestion/{id?}/delete', [App\Http\Controllers\BilimQuestionController::class,'destroy'])->name('bquestion.delete');
 

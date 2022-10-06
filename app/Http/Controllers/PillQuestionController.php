@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Knowledge;
-use App\Models\Pill;
-class BilimQuestionController extends Controller
+use App\Models\PillQuestion;
+class PillQuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class BilimQuestionController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -24,9 +24,9 @@ class BilimQuestionController extends Controller
      */
     public function create()
     {
-        $department = Knowledge::first();
-        $questions = Pill::where('department_id',$department->id)->get();
-        return view('bquestion.create',compact('department','questions'));
+        $knowledge = Knowledge::first();
+        $pill_questions = PillQuestion::all();
+        return view('pill-question.create',compact('knowledge','pill_questions'));
     }
 
     /**
@@ -37,14 +37,19 @@ class BilimQuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $new = new Question([
-            'name' => $data['question'],
-            'department_id' => $data['bolimid'],
-            'grade' => 0,
+        $request->validate([
+            'knowledge_id'=>'required',
+            'pill_question'=>'required',
         ]);
-        $new->save();
-        if($new->id)
+
+        $data = $request->all();
+        $new_pill_question = new PillQuestion([
+            'name' => $data['pill_question'],
+            'knowledge_id' => $data['knowledge_id'],
+            'created_at' => date_now(),
+        ]);
+        $new_pill_question->save();
+        if($new_pill_question->id)
         {
             return redirect()->back()->with('success','Ma\'lumot saqlandi');
         }else{
@@ -71,7 +76,8 @@ class BilimQuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pill_question = PillQuestion::find($id);
+        return view('pill-question.edit',compact('pill_question'));
     }
 
     /**
@@ -83,7 +89,21 @@ class BilimQuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'pill_question'=>'required',
+        ]);
+        $data = $request->all();
+        $update_pill_question = PillQuestion::where('id',$id)->update([
+            'name' => $data['pill_question'],
+            'created_at' => date_now(),
+        ]);
+
+        if($update_pill_question)
+        {
+            return redirect()->route('pill-question.create')->with('success','Ma\'lumot saqlandi');
+        }else{
+            return redirect()->back()->error('error', 'Ma\'lumot saqlanmadi');
+        }
     }
 
     /**
@@ -94,7 +114,7 @@ class BilimQuestionController extends Controller
      */
     public function destroy($id)
     {
-        $delete = Question::find($id)->delete();
+        $delete = PillQuestion::find($id)->delete();
         if($delete){
             return redirect()->back()->with('message',(__('message.delete_success')));
         }else{
