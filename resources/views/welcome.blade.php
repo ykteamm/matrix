@@ -325,8 +325,8 @@
                                                 <thead>
                                                    <tr>
                                                       <th>Mahsulot nomi</th>
-                                                      {{-- <th>Soni</th> --}}
-                                                      <th>Summasi</th>
+                                                      <th>Soni</th>
+                                                      {{-- <th>Summasi</th> --}}
                                                    </tr>
                                                 </thead>
                                                 <tbody>
@@ -336,8 +336,8 @@
                                                 @foreach ($medicineall as $mkey => $mitem)
                                                     <tr>
                                                         <td>{{$mitem['name']}} </td>
-                                                        {{-- <td>{{$mitem['number']}} </td> --}}
-                                                        <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
+                                                        <td>{{$mitem['number']}} </td>
+                                                        {{-- <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td> --}}
                                                         {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
                                                      </tr>
                                                      @php

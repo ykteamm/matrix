@@ -192,7 +192,7 @@ $(document).ready(function () {
     }).buttons().container().appendTo('#asdasd .col-md-6:eq(0)');
 
     $(".example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
 
     }).buttons().container().appendTo('#asdasd2 .col-md-6:eq(0)');
