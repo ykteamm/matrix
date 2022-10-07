@@ -306,6 +306,10 @@ class HomeController extends Controller
             // $date_end = today()->format('Y-m-d');
             $category = DB::table('tg_category')->get();
             $medicine = DB::table('tg_medicine')->get();
+            $medicine_cate = DB::table('tg_medicine')
+            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price')
+            ->join('tg_category','tg_category.id','tg_medicine.category_id')
+            ->get();
             $oneuser = DB::table('tg_productssold')
             ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -322,7 +326,30 @@ class HomeController extends Controller
             $number = 0;
             $cateory = [];
             $medic = [];
+            $medicineall = [];
 
+            foreach ($medicine_cate as $mkey => $med) {
+
+                $medicineall[$mkey] = array('price' => 0,'number' => 0, 'name' => $med->m_name,'cid'=>$med->c_id);
+                
+
+            }
+            foreach ($medicine_cate as $mkey => $med) {
+                foreach ($oneuser as $key => $one) {
+
+                    if($med->m_id == $one->m_id)
+                    {
+                        $medisum = $medisum + ($one->m_price * $one->m_number);
+                        $number = $number + $one->m_number;
+
+                        $medicineall[$mkey] = array('price' => $medisum,'number' => $number, 'name' => $med->m_name,'cid'=>$one->c_id);
+                    }
+                }
+                    $medisum = 0;
+                    $number = 0;
+
+            }
+            // return  $medicineall;
             foreach ($medicine as $mkey => $med) {
                 foreach ($oneuser as $key => $one) {
 
@@ -338,6 +365,7 @@ class HomeController extends Controller
                     $number = 0;
 
             }
+            // return $medic;
             foreach ($oneuser as $key => $one) {
                 $sum = $sum + ($one->m_price * $one->m_number);
 
@@ -573,7 +601,7 @@ class HomeController extends Controller
         ->join('tg_client','tg_client.id','tg_cgrade.teacher_id')
         ->get();
         
-        return view('welcome',compact('allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        return view('welcome',compact('medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
     }
     public function elchiList()

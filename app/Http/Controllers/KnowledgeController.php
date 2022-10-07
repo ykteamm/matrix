@@ -4,11 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Knowledge;
-use App\Models\PillQuestion;
-use App\Models\ConditionQuestion;
-use App\Models\KnowledgeQuestion;
-use Illuminate\Support\Str;
-class PillQuestionController extends Controller
+class KnowledgeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +13,7 @@ class PillQuestionController extends Controller
      */
     public function index()
     {
-        
+        //
     }
 
     /**
@@ -27,34 +23,8 @@ class PillQuestionController extends Controller
      */
     public function create()
     {
-        // for ($i=0; $i < 50; $i++) { 
-            // $randomString = Str::random(8);
-            // $new_pill_question = new PillQuestion([
-            //     'name' => 'Dori'.$randomString,
-            //     'knowledge_id' => 1,
-            //     'created_at' => date_now(),
-            // ]);
-            // $new_pill_question->save();
-        // }
-        // $randomString = Str::random(8);
-        // dd($randomString);
-        // $pill_questions = ConditionQuestion::all();
-        // foreach($pill_questions as $item)
-        // {
-        //     for ($i=0; $i < 5; $i++) { 
-        //         $randomString = Str::random(8);
-
-        //         $new_condition_question = new KnowledgeQuestion([
-        //             'condition_question_id' => $item->id,
-        //             'name' => 'Asosiy'.$randomString,
-        //             'created_at' => date_now(),
-        //         ]);
-        //         $new_condition_question->save();
-        //     }
-        // }
-        $knowledge = Knowledge::first();
-        $pill_questions = PillQuestion::all();
-        return view('pill-question.create',compact('knowledge','pill_questions'));
+        $knowledges = Knowledge::all();
+        return view('knowledge.create',compact('knowledges'));
     }
 
     /**
@@ -66,18 +36,16 @@ class PillQuestionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'knowledge_id'=>'required',
-            'pill_question'=>'required',
+            'knowledge'=>'required',
         ]);
 
         $data = $request->all();
-        $new_pill_question = new PillQuestion([
-            'name' => $data['pill_question'],
-            'knowledge_id' => $data['knowledge_id'],
+        $new_knowledge = new Knowledge([
+            'name' => $data['knowledge'],
             'created_at' => date_now(),
         ]);
-        $new_pill_question->save();
-        if($new_pill_question->id)
+        $new_knowledge->save();
+        if($new_knowledge->id)
         {
             return redirect()->back()->with('success','Ma\'lumot saqlandi');
         }else{
@@ -104,8 +72,8 @@ class PillQuestionController extends Controller
      */
     public function edit($id)
     {
-        $pill_question = PillQuestion::find($id);
-        return view('pill-question.edit',compact('pill_question'));
+        $knowledge = Knowledge::find($id);
+        return view('knowledge.edit',compact('knowledge'));
     }
 
     /**
@@ -118,17 +86,17 @@ class PillQuestionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'pill_question'=>'required',
+            'knowledge'=>'required',
         ]);
         $data = $request->all();
-        $update_pill_question = PillQuestion::where('id',$id)->update([
-            'name' => $data['pill_question'],
+        $update_knowledge = Knowledge::where('id',$id)->update([
+            'name' => $data['knowledge'],
             'updated_at' => date_now(),
         ]);
 
-        if($update_pill_question)
+        if($update_knowledge)
         {
-            return redirect()->route('pill-question.create')->with('success','Ma\'lumot saqlandi');
+            return redirect()->route('knowledge.create')->with('success','Ma\'lumot saqlandi');
         }else{
             return redirect()->back()->error('error', 'Ma\'lumot saqlanmadi');
         }
@@ -142,7 +110,7 @@ class PillQuestionController extends Controller
      */
     public function destroy($id)
     {
-        $delete = PillQuestion::find($id)->delete();
+        $delete = Knowledge::find($id)->delete();
         if($delete){
             return redirect()->back()->with('message',(__('message.delete_success')));
         }else{

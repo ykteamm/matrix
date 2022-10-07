@@ -272,50 +272,88 @@
         <div class="col-lg-12" id="da">
             <div class="card">
                <div class="card-body">
+                  <ul class="nav nav-tabs nav-tabs-solid nav-justified">
+                     <li class="nav-item"><a class="nav-link active" href="#solid-justified-tab21" data-toggle="tab">Sotilganlar </a></li>
+                     <li class="nav-item"><a class="nav-link" href="#solid-justified-tab31" data-toggle="tab">Barchasi </a></li>
+                  </ul>
                   <div class="tab-content pt-0">
                     @php $i=2 @endphp
                     <div class="tab-pane show active dnone" id="solid-tab1">
-                        <div class="tab-data">
-                            <div class="col-lg-12">
-                                <div class="card flex-fill">
-                                   <div class="card-body">
-                                      <div class="table-responsive">
-                                         <table class="table mb-0 example1">
-                                            <thead>
-                                               <tr>
-                                                  <th>Mahsulot nomi1</th>
-                                                  <th>Soni</th>
-                                                  <th>Summasi </th>
-                                                  {{-- <th class="text-right">Summary </th> --}}
-                                               </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php
-                                                    $n = 0
-                                                @endphp
-                                            @foreach ($medic as $mkey => $mitem)
-                                                <tr>
-                                                    <td>{{$mitem['name']}} </td>
-                                                    <td>{{$mitem['number']}} </td>
-                                                    <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
-                                                    {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
-                                                 </tr>
-                                                 @php
-                                                     $n += $mitem['number']
-                                                 @endphp
-                                            @endforeach
-                                                 {{-- <tr>
-                                                    <td>Jami</td>
-                                                    <td>{{$n}} </td>
-                                                    <td>{{$sum}}</td>
-                                                 </tr> --}}
-                                            </tbody>
-                                         </table>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                        </div>
+                        {{-- <div class="tab-data"> --}}
+                           <div class="tab-content pt-0">
+                              <div class="tab-pane show active " id="solid-justified-tab21">
+                                 <div class="col-lg-12">
+                                    <div class="card">
+                                       <div class="card-body">
+                                          <div class="table-responsive" id="asdasd">
+                                             <table class="table mb-0" id="example123">
+                                                <thead>
+                                                   <tr>
+                                                      <th>Mahsulot nomi1</th>
+                                                      <th>Soni</th>
+                                                      <th>Summasi</th>
+                                                   </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $n = 0
+                                                    @endphp
+                                                @foreach ($medic as $mkey => $mitem)
+                                                    <tr>
+                                                        <td>{{$mitem['name']}} </td>
+                                                        <td>{{$mitem['number']}} </td>
+                                                        <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
+                                                        {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
+                                                     </tr>
+                                                     @php
+                                                         $n += $mitem['number']
+                                                     @endphp
+                                                @endforeach
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="tab-pane" id="solid-justified-tab31">
+                                 <div class="col-lg-12">
+                                    <div class="card">
+                                       <div class="card-body">
+                                          <div class="table-responsive" id="asdasd2">
+                                             <table class="table mb-0 example1" id="">
+                                                <thead>
+                                                   <tr>
+                                                      <th>Mahsulot nomi</th>
+                                                      {{-- <th>Soni</th> --}}
+                                                      <th>Summasi</th>
+                                                   </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $n = 0
+                                                    @endphp
+                                                @foreach ($medicineall as $mkey => $mitem)
+                                                    <tr>
+                                                        <td>{{$mitem['name']}} </td>
+                                                        {{-- <td>{{$mitem['number']}} </td> --}}
+                                                        <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
+                                                        {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
+                                                     </tr>
+                                                     @php
+                                                         $n += $mitem['number']
+                                                     @endphp
+                                                @endforeach
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                            
+                        {{-- </div> --}}
                      </div>
                     @foreach ($cateory as $key => $item)
                      <div class="tab-pane dnone" id="solid-tab{{$i}}" style="display:none;">

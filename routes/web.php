@@ -98,6 +98,9 @@ Route::get('knowledge-question/{id?}/delete', [App\Http\Controllers\KnowledgeQue
 Route::resource('bquestion',BilimQuestionController::class);
 Route::get('bquestion/{id?}/delete', [App\Http\Controllers\BilimQuestionController::class,'destroy'])->name('bquestion.delete');
 
+Route::resource('knowledge',KnowledgeController::class);
+Route::get('knowledge/{id?}/delete', [App\Http\Controllers\KnowledgeController::class,'destroy'])->name('knowledge.delete');
+
 #end-position
 
 });
