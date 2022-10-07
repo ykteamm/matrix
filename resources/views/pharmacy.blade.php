@@ -14,6 +14,7 @@
                      <thead>
                         <tr>
                            <th>Nomi</th>
+                           <th>Rasmi</th>
                            <th>Telefon raqami</th>
                            <th>Joyi m<sup>2</sup></th>
                            {{-- <th>Ish kuni </th> --}}
@@ -27,6 +28,7 @@
                            >
                            
                            <td>{{$item->name}}</td>
+                           <td> <img src="http://128.199.2.165:8100/media/{{$item->image}}" height="80px" alt=""> </td>
                            <td>{{$item->phone_number}}</td>
                            <td>{{$item->volume}}</td>
                            {{-- <td style="text-align: center">{{$item->last_name}} {{$item->first_name}} ( RM )</td> --}}
