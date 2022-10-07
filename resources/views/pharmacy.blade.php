@@ -28,7 +28,7 @@
                            >
                            
                            <td>{{$item->name}}</td>
-                           <td> <img src="http://128.199.2.165:8100/media/{{$item->image}}" height="80px" alt=""> </td>
+                           <td> <img src="https://telegra.ph/file/a9d999c0cd458d44ce655.jpg" height="80px" alt=""> </td>
                            <td>{{$item->phone_number}}</td>
                            <td>{{$item->volume}}</td>
                            {{-- <td style="text-align: center">{{$item->last_name}} {{$item->first_name}} ( RM )</td> --}}

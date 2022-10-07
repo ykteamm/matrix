@@ -11,14 +11,14 @@ class everyWeek extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'message:weekly';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Yakshanba kuni savollarni elchiga biriktirish';
 
     /**
      * Create a new command instance.
@@ -38,6 +38,6 @@ class everyWeek extends Command
     public function handle()
     {
         // DB::table('tg_user')->first();
-        // echo ""
+        echo "My first schedule";
     }
 }

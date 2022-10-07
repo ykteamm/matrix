@@ -15,7 +15,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('messsage:weekly')
+        ->fridays()
+        ->at('11:03')
+        ->sendOutputTo('scheduler.log');
     }
 
     /**

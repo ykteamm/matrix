@@ -14,18 +14,38 @@
                                 <div class="row">
                                     <div class="form-group col-md-2">
                                         <select class="form-control form-control-sm" name='pill_question_id'>
-                                            <option value="" disabled selected hidden></option>
+                                            @if(Session::has('p_q_id'))
                                             @foreach ($pill_questions as $question)
-                                                <option value='{{$question->id}}'>{{$question->name}}</option>
-                                            @endforeach 
+                                                @if (Session::get('p_q_id') == $question->id)
+                                                    <option value='{{$question->id}}' selected>{{$question->name}}</option>
+                                                @else
+                                                    <option value='{{$question->id}}'>{{$question->name}}</option>
+                                                @endif
+                                            @endforeach
+                                            @else
+                                            <option value="" disabled selected hidden>{{ Session::get('p_q_id') }}</option>
+                                            @foreach ($pill_questions as $question)
+                                                    <option value='{{$question->id}}'>{{$question->name}}</option>
+                                            @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                     <div class="form-group col-md-2">
                                         <select class="form-control form-control-sm" name='condition_question_id'>
                                             <option value="" disabled selected hidden class="condition-selected"></option>
+                                            @if(Session::has('p_q_id'))
+                                            @foreach ($condition_questions as $question)
+                                                @if (Session::get('p_q_id') == $question->pill_question->id)
+                                                    <option value='{{$question->id}}' class="pill-question-{{$question->pill_question->id}} all-pill-question">{{$question->name}}</option>
+                                                @else
+                                                <option value='{{$question->id}}' class="pill-question-{{$question->pill_question->id}} all-pill-question" style="display:none;">{{$question->name}}</option>
+                                                @endif
+                                            @endforeach 
+                                            @else
                                             @foreach ($condition_questions as $question)
                                                 <option value='{{$question->id}}' class="pill-question-{{$question->pill_question->id}} all-pill-question" style="display:none;">{{$question->name}}</option>
                                             @endforeach 
+                                            @endif
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">

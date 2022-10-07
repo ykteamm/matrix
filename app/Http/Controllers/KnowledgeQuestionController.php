@@ -55,7 +55,7 @@ class KnowledgeQuestionController extends Controller
         $new_knowledge_question->save();
         if($new_knowledge_question->id)
         {
-            return redirect()->back()->with('success','Ma\'lumot saqlandi');
+            return redirect()->back()->with('p_q_id',$data['pill_question_id']);
         }else{
             return redirect()->back()->error('error', 'Ma\'lumot saqlanmadi');
         }
