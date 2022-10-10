@@ -281,9 +281,6 @@
                                      '<td>'+ value.r_name +'</td>'+
                                      '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
                                      '<td>'+ curr_hour +':'+curr_minutes+'</td>'+
-                                     '<td class="text-right cancel-edit'+value.sid+value.t_id+'"><a type="button" onclick="editpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-primary mr-2"><i class="fas fa-edit mr-1"></i></a></td>'+
-                                     '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="cancelpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-danger mr-2"><i class="fas fa-times mr-1"></i></a></td>'+
-                                     '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="savepurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-save mr-1"></i></a></td>'+
                                   '</tr>'); 
                 $('#fortbody').append($row);
                 });
