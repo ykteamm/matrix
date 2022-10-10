@@ -29,6 +29,8 @@ use App\Http\Middleware\LoginAuth;
     Route::post('grade/save', [App\Http\Controllers\NovatioController::class,'gradeSave']);
     Route::post('grade/tashqi', [App\Http\Controllers\NovatioController::class,'gradeTashqi']);
     Route::post('/sms',[App\Http\Controllers\HomeController::class, 'smsfly']);
+    Route::post('edit/purchase', [App\Http\Controllers\NovatioController::class,'editPurchase']);
+
 
 Auth::routes();
 
@@ -100,6 +102,10 @@ Route::get('bquestion/{id?}/delete', [App\Http\Controllers\BilimQuestionControll
 
 Route::resource('knowledge',KnowledgeController::class);
 Route::get('knowledge/{id?}/delete', [App\Http\Controllers\KnowledgeController::class,'destroy'])->name('knowledge.delete');
+
+Route::get('knowledge-grade', [App\Http\Controllers\HomeController::class,'knowGrade'])->name('know.grade');
+Route::get('elchi_know/{id?}', [App\Http\Controllers\ElchiController::class,'elchiKnow'])->name('elchi.know');
+Route::post('know-grade-store', [App\Http\Controllers\ElchiController::class,'knowGradeStore'])->name('know-grade.store');
 
 #end-position
 

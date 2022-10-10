@@ -16,7 +16,12 @@
                                     <div class="form-group col-md-4">
                                         <input type="text" value="{{$knowledge->name}}"  name="knowledge" class="form-control form-control-sm" required/>
                                     </div>
-
+                                    <div class="form-group col-md-3">
+                                        <input type="number" value="{{$knowledge->number}}"  name="knowledge_number" class="form-control form-control-sm" required/>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input type="number" value="{{$knowledge->step}}"  name="knowledge_step" class="form-control form-control-sm" required/>
+                                    </div>
                                     <div class="form-group col-md-2">
                                             <button type="submit" class="btn btn-primary"> O'zgartirish </button>
                                     </div>

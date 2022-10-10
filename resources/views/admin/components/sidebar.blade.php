@@ -49,6 +49,8 @@
                @endif
              @endisset
 
+             @isset(Session::get('per')['know_ques'])
+             @if(Session::get('per')['know_ques'] == 'true')
              <li class="submenu">
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Bilim savollar </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
@@ -58,6 +60,15 @@
                   <li><a href="{{route('knowledge-question.create')}}">Savollar</a></li>
                </ul>
             </li>
+            @endif
+            @endisset
+
+            {{-- @isset(Session::get('per')['know_grade']) --}}
+             {{-- @if(Session::get('per')['know_grade'] == 'true') --}}
+            <li><a href="{{route('know.grade')}}"><i class="feather-filter"></i>  <span>Bilim baholash </span></a>
+            </li>
+            {{-- @endif --}}
+            {{-- @endisset --}}
 
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')

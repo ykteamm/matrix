@@ -15,9 +15,10 @@ class CreateUserQuestionsTable extends Migration
     {
         Schema::create('tg_user_questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pill_question_id');
-            $table->foreignId('knowledge_question_id');
             $table->foreignId('user_id');
+            $table->jsonb('step1')->nullable();
+            $table->jsonb('step3')->nullable();
+            $table->jsonb('question_step');
             $table->timestamps();
         });
     }

@@ -16,6 +16,8 @@ class CreateKnowledgeTable extends Migration
         Schema::create('tg_knowledge', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('number');
+            $table->integer('level');
             $table->timestamps();
         });
     }

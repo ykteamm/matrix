@@ -48,8 +48,15 @@
                                             @foreach($condition_questions as $key => $question)
                                             <tr>
                                                 <td> {{ $key+1 }} </td>
+                                                {{-- @if ($question->name) --}}
                                                 <td> {{ $question->name }} </td>
+                                                    
+                                                {{-- @endif --}}
+                                                {{-- <td> {{ $question->name }} </td> --}}
+                                                {{-- @if ($question->pill_question) --}}
                                                 <td> {{ $question->pill_question->name }} </td>
+                                                    
+                                                {{-- @endif --}}
                                                 <td class="text-right">
                                                     {{-- <a href="{{ route('patient.show',$value->id) }}" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-eye mr-1"></i></a> --}}
                                                   {{-- @isset(Session::get('per')['rol_update']) --}}

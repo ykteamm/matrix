@@ -11,7 +11,11 @@ use App\Models\Patient;
 use App\Models\Position;
 use App\Models\Pill;
 use App\Models\Question;
-use App\Models\Region;
+use App\Models\Knowledge;
+use App\Models\PillQuestion;
+use App\Models\UserQuestion;
+use App\Models\ConditionQuestion;
+use App\Models\KnowledgeQuestion;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Cache;
@@ -25,6 +29,8 @@ use Storage;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Arr;
+
 class HomeController extends Controller
 {
     /**
@@ -182,6 +188,181 @@ class HomeController extends Controller
 
         // $regions = Question::with('pill')->get();
         // return $regions;
+        // $array = [1, 2, 3, 4, 5];
+        // $pluck_id = PillQuestion::where('knowledge_id',3)->pluck('id');
+ 
+        // $random = array_rand($pluck_id,2);
+        // return Carbon::now();
+        // $users = DB::table('tg_user_questions')->where('id','>',470)->delete();
+
+        // $user_question = UserQuestion::where('user_id',59)->get('step3');
+        // // return $user_question;
+        // $pluck_id = PillQuestion::where('knowledge_id',3)->count();
+        // $step1_ids = [];
+        // foreach($user_question as $user)
+        // {
+        //     $step1_user = json_decode($user->step3);
+        //     foreach($step1_user as $key => $value)
+        //     {   
+        //         if ($key == 2) {  
+        //             foreach($value as $v_item) 
+        //             {
+        //                 $step1_ids[] = $v_item;
+        //             }
+        //         }
+        //     }
+        // }
+        // rsort($step1_ids);
+        // return $step1_ids;
+        // $step1_ids_slice = $step1_ids;
+        // if($pluck_id <= count($step1_ids))
+        // {
+        //     $max = floor(count($step1_ids) / $pluck_id);
+        //     for ($i=0; $i < $max*$pluck_id; $i++) { 
+        //         array_splice($step1_ids,0,1);
+        //     }
+        // }
+        // return $step1_ids; 
+        $knowledges = Knowledge::with('pill_question')->get();
+        $users = DB::table('tg_user')->where('admin',FALSE)->get('id');
+
+        // $knowledges2 = ConditionQuestion::distinct()->pluck('pill_question_id');
+        // $knowledges = PillQuestion::where('knowledge_id',3)->distinct()->pluck('id');
+        // $knowledges = PillQuestion::get;
+        // $knowledge = PillQuestion::all();
+        // $knowledge = PillQuestion::all();
+        // return $users;  
+        $step1 = [];
+        $step3 = [];
+        $question_step = [];
+        $testarray = [];
+        foreach($users as $user_items)
+        {
+            $user_question = UserQuestion::where('user_id',$user_items->id)->get();
+            foreach($knowledges as $key => $pills)
+            {   
+                
+                if($pills->step == 1)
+                {
+                    $step1_ids = [];
+                        foreach($user_question as $user)
+                        {
+                            $step1_user = json_decode($user->step1);
+                            foreach($step1_user as $key => $value)
+                            {   
+                                if ($key == $pills->id) {
+                                    foreach($value as $v_item) 
+                                        {
+                                            $step1_ids[] = $v_item;
+                                        }
+                                }
+                            }
+                        }
+
+                    $step1_count = PillQuestion::where('knowledge_id',$pills->id)->count();
+                    if($step1_count <= count($step1_ids))
+                        {
+                            $max = floor(count($step1_ids) / $step1_count);
+                            for ($i=0; $i < $max*$step1_count; $i++) { 
+                            unset($step1_ids[$i]);
+                            }
+                        }
+                    // $step1_unique = array_unique($step1_ids);
+                    $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                    ->whereNotIn('id',$step1_ids)
+                    ->limit($pills->number)->pluck('id');
+                    if(count($pluck_id) == 0){
+                        $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                        ->limit($pills->number)->pluck('id');
+                    }
+                    $step1[$pills->id] = $pluck_id;
+
+                }
+                if($pills->step == 3)
+                {
+                    $step3_ids = [];
+                        foreach($user_question as $user)
+                        {
+                            $step3_user = json_decode($user->step3);
+                            foreach($step3_user as $key => $value)
+                            {   
+                                if ($key == $pills->id) {
+                                    foreach($value as $v_item) 
+                                        {
+                                            $step3_ids[] = $v_item;
+                                        }
+                                }
+                            }
+                        }
+                        $step3_count = PillQuestion::where('knowledge_id',$pills->id)->count();
+                        if($step3_count <= count($step3_ids))
+                            {
+                                $max = floor(count($step3_ids) / $step3_count);
+                                for ($i=0; $i < $max*$step3_count; $i++) { 
+                                unset($step3_ids[$i]);
+                                }
+                            }
+                    // $step3_unique = array_unique($step3_ids);
+                    $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                    ->whereNotIn('id',$step3_ids)
+                    ->limit($pills->number)->pluck('id');
+                    if(count($pluck_id) == 0)
+                    {
+                        $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                         ->limit($pills->number)->pluck('id');
+                    }
+                    $step3[$pills->id] = $pluck_id;
+                    foreach($step3[$pills->id] as $item_key => $item)
+                    {
+                        $condition_id = ConditionQuestion::where('pill_question_id',$item)->pluck('id');
+                    
+                        foreach($condition_id as $condition_key => $condition)
+                        {
+                            $condition_item_id = KnowledgeQuestion::where('condition_question_id',$condition)->inRandomOrder()
+                            ->limit(1)->pluck('id');
+                            $question_step[$condition] = $condition_item_id;
+
+                        }
+                    }
+                }
+                
+            }
+            // $new_user_question = new UserQuestion([
+            //     'user_id' => $user_items->id,
+            //     'step1' => json_encode($step1),
+            //     'step3' => json_encode($step3),
+            //     'question_step' => json_encode($question_step),
+            //     'created_at' => '2022-10-02 12:19:21',
+            //     'updated_at' => '2022-10-02 12:19:21',
+            // ]);
+            // $new_user_question->save();
+            $step1 = [];
+                $step3 = [];
+                $question_step = [];
+                    $step1_ids = [];
+                    $step3_ids = [];
+
+        }
+        // $user_question = UserQuestion::where('user_id',59)->get();
+        // $pluck_id = PillQuestion::where('knowledge_id',2)->pluck('id');
+        // $step1_ids = [];
+        // foreach($user_question as $user)
+        // {
+        //     $step1_user = json_decode($user->step1);
+        //     foreach($step1_user as $key => $value)
+        //     {   
+        //         if ($key == 3) {
+        //             $step1_ids[] = $value[0];
+        //         }
+        //     }
+        // }
+        // $pluck_id = PillQuestion::where('knowledge_id',3)
+        // ->whereNotIn('id',$step1_ids)
+        // ->inRandomOrder()
+        //             ->limit(1)->pluck('id');
+        // return $step1_user;
+        // var_dump($pluck_id);
+        // die();
 
         $regions = DB::table('tg_region')->get();
 
@@ -749,6 +930,17 @@ class HomeController extends Controller
 
         // return view('elchi');
         return view('elchi',compact('elchi','elchi_work','elchi_fact','elchi_prognoz'));
+    }
+    public function knowGrade(Request $request)
+    {
+        $elchi = DB::table('tg_user')
+            // ->whereIn('tg_user.id',$userarrayreg)
+            ->where('tg_user.admin',FALSE)
+            ->select('tg_user.image','tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->orderBy('tg_user.admin','DESC')->get();
+
+        return view('elchi-know',compact('elchi'));
     }
     public function userList(Request $request)
     {

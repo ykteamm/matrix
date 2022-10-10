@@ -12,11 +12,12 @@ class Knowledge extends Model
     protected $table = 'tg_knowledge';
     protected $fillable = [
         'id',
-        'name'
+        'name',
+        'number'
     ];
 
-    // public function question()
-    // {
-    //     return $this->belongsTo(Question::class,'question_id','id');
-    // }
+    public function pill_question()
+    {
+        return $this->hasMany(PillQuestion::class,'knowledge_id','id');
+    }
 }

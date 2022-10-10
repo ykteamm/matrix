@@ -152,7 +152,7 @@ class NovatioController extends Controller
             // }
             $all = [];
                 $user = DB::table('tg_productssold')
-                ->select('tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+                ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.medicine_id','>=',$medi_begin)
@@ -181,7 +181,7 @@ class NovatioController extends Controller
             ->get();
 
         $user = DB::table('tg_productssold')->where('tg_region.id',$inputs['id'])
-        ->select('tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+        ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
         ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.medicine_id','>=',$medi_begin)
@@ -905,5 +905,14 @@ class NovatioController extends Controller
             'status' => 200 
         ];
     }
+    public function editPurchase(Request $request)
+    {
+        $sid = $request->sid;
+        $tid = $request->tid;
+        $number = $request->number;
 
+        $update = DB::table('tg_productssold')->where('id',$sid)->update([
+            'number' => $number,
+        ]);
+    }
 }

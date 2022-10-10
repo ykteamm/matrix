@@ -52,7 +52,7 @@ class PillQuestionController extends Controller
         //         $new_condition_question->save();
         //     }
         // }
-        $knowledge = Knowledge::first();
+        $knowledge = Knowledge::all();
         $pill_questions = PillQuestion::all();
         return view('pill-question.create',compact('knowledge','pill_questions'));
     }

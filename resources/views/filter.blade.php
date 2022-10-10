@@ -252,6 +252,8 @@
 
 
                    $('.fortr').remove();
+
+
                    $.each(response.data, function(index, value){
                       var d = new Date(value.m_data);
  
@@ -268,18 +270,21 @@
                             }else{
                                var ddate = curr_month
                             }
-
+                     
                       var $row = $('<tr class="fortr">'+
                                      '<td style="cursor:pointer;" onclick="users(`'+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
                                      '<td onclick="orderId('+value.t_id+')"><button type="button" class="btn btn-block btn-outline-primary">'+ 'order'+value.t_id +'</button></td>'+
                                      '<td>'+ value.m_name +'</td>'+
-                                     '<td>'+ value.m_number +'</td>'+
+                                     '<td ><span class="edit'+value.sid+value.t_id+'">'+ value.m_number +'</span>'+
+                                     '<input style="display:none;" class="input'+value.sid+value.t_id+
+                                     '" type="number" name="" class="form-control form-control-sm" required/></td>'+
                                      '<td>'+ value.r_name +'</td>'+
                                      '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
                                      '<td>'+ curr_hour +':'+curr_minutes+'</td>'+
+                                     '<td class="text-right cancel-edit'+value.sid+value.t_id+'"><a type="button" onclick="editpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-primary mr-2"><i class="fas fa-edit mr-1"></i></a></td>'+
+                                     '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="cancelpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-danger mr-2"><i class="fas fa-times mr-1"></i></a></td>'+
+                                     '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="savepurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-save mr-1"></i></a></td>'+
                                   '</tr>'); 
-                     // console.log($row)
-
                 $('#fortbody').append($row);
                 });
                 $('.delil').remove();
@@ -340,6 +345,55 @@
              }
           });
        };
+       function editpurchase(sid,tid)
+       {
+         var edit_number = $(`.edit${sid}${tid}`).text();
+         $(`.edit${sid}${tid}`).css('display','none');
+         $(`.input${sid}${tid}`).css('display','');
+         $(`.input${sid}${tid}`).val(edit_number);
+         $(`.cancel-save${sid}${tid}`).css('display','');
+         $(`.cancel-edit${sid}${tid}`).css('display','none');
+         // alert(edit_number);
+       }
+       function cancelpurchase(sid,tid)
+       {
+         var edit_number = $(`.edit${sid}${tid}`).text();
+         $(`.edit${sid}${tid}`).css('display','');
+         $(`.input${sid}${tid}`).css('display','none');
+         $(`.input${sid}${tid}`).val();
+         $(`.cancel-save${sid}${tid}`).css('display','none');
+         $(`.cancel-edit${sid}${tid}`).css('display','');
+         // alert(edit_number);
+       }
+       function savepurchase(sid,tid)
+       {
+         // var region = $("#age_button").attr('name');
+         // var time = $("#age_button2").attr('name');
+          var user_id = $("#age_button4").attr('name');
+          var user = $("#age_button4").text();
+         //  var medicine = $("#age_button3").attr('name');
+          var text = $("#age_button").text();
+          var id = $("#age_button").attr('name');
+
+         var number = $(`.input${sid}${tid}`).val();
+         var _token   = $('meta[name="csrf-token"]').attr('content');
+          $.ajax({
+             url: "/edit/purchase",
+             type:"POST",
+             data:{
+                sid: sid,
+                tid: tid,
+                number: number,
+                _token: _token
+             },
+             success:function(response){
+
+
+               users(user,user_id);
+
+             }
+            });
+       }
        function timeElchi(sd){
           var text = $(`#${sd}`).text();
           $("#age_button2").text(text);
