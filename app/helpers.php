@@ -105,7 +105,7 @@ if(!function_exists('wordSimilarity')){
             'grade' => 'Baholash',
             'ques' => 'Savollar',
             'know_ques' => 'Bilim savollar',
-            'know_garde' => 'Bilim baholash',
+            'know_grade' => 'Bilim baholash',
             'edit_purchase' => 'Xaridlarni o\'zgartirish',
             'setting' => 'Sozlamalar',
             'User' => 'User',
