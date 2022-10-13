@@ -16,6 +16,7 @@
                            <th>Username </th>
                            <th>FIO </th>
                            <th>Mahsulot</th>
+                           <th>Chek raqami</th>
                            <th>O'zgarish</th>
                            <th>Vaqt</th>
                         </tr>
@@ -27,6 +28,7 @@
 
                            <td>{{$elchi->last_name}} {{$elchi->first_name}}</td>
                            <td>{{$elchi->name}}</td>
+                           <td>{{$elchi->order_id}}</td>
                            <td>{{$elchi->old}} -> {{$elchi->new}}</td>
                            <td>{{$elchi->created_at}}</td>
                            
