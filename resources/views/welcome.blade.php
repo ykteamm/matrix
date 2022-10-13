@@ -117,7 +117,7 @@
                   {
                      $all_avgs = 0;
                   }else{
-                     $all_avgs = number_format($avgs/$i,2)
+                     $all_avgs = number_format($avgs/$i,2);
 
                   }
                @endphp
