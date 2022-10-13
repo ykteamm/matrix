@@ -70,12 +70,12 @@
             @endif
             @endisset
 
-            {{-- @isset(Session::get('per')['know_grade']) --}}
-             {{-- @if(Session::get('per')['know_grade'] == 'true') --}}
+            @isset(Session::get('per')['know_grade'])
+             @if(Session::get('per')['know_grade'] == 'true')
             <li><a href="{{route('all.grade')}}"><i class="feather-filter"></i>  <span>Baholash </span></a>
             </li>
-            {{-- @endif --}}
-            {{-- @endisset --}}
+            @endif
+            @endisset
 
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')
