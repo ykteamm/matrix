@@ -113,7 +113,13 @@
                   }
                   
                }
-               $all_avgs = number_format($avgs/$i,2)
+               if($i == 0)
+                  {
+                     $all_avgs = 0;
+                  }else{
+                     $all_avgs = number_format($avgs/$i,2)
+
+                  }
                @endphp
             <li class="nav-item"><a class="nav-link" href="#solid-justified-tab-bilim" data-toggle="tab">Bilim 
                ({{$all_avgs}})
