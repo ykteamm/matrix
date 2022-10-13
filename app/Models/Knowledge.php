@@ -13,7 +13,8 @@ class Knowledge extends Model
     protected $fillable = [
         'id',
         'name',
-        'number'
+        'number',
+        'step'
     ];
 
     public function pill_question()

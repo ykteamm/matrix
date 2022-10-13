@@ -262,7 +262,15 @@ class HomeController extends Controller
                     $step1_count = PillQuestion::where('knowledge_id',$pills->id)->count();
                     if($step1_count <= count($step1_ids))
                         {
-                            $max = floor(count($step1_ids) / $step1_count);
+                            if($step3_count == 0)
+                                {
+                                $max = 0;
+
+                                }else{
+                                    $max = floor(count($step1_ids) / $step1_count);
+
+                                }
+                            
                             for ($i=0; $i < $max*$step1_count; $i++) { 
                             unset($step1_ids[$i]);
                             }
@@ -297,7 +305,14 @@ class HomeController extends Controller
                         $step3_count = PillQuestion::where('knowledge_id',$pills->id)->count();
                         if($step3_count <= count($step3_ids))
                             {
+                                if($step3_count == 0)
+                                {
+                                $max = 0;
+
+                                }else{
                                 $max = floor(count($step3_ids) / $step3_count);
+
+                                }
                                 for ($i=0; $i < $max*$step3_count; $i++) { 
                                 unset($step3_ids[$i]);
                                 }
@@ -422,20 +437,20 @@ class HomeController extends Controller
     }
     public function elchi($id,$time)
     {
-        $getimg = DB::table('tg_user')->where('id',$id)->value('image');
-        $img = DB::table('tg_user')->where('id',$id)->value('image_change');
-        if($img)
-        {
-            \File::delete(public_path() . '/assets/img/'.$getimg);
-            $response = Http::get('http://128.199.2.165:8100/api/v1/user/image/'.$id);
-            $url = $response['image'];
-            $contents = file_get_contents($url);
-            $name = substr($url, strrpos($url, '/') + 1);
-            Storage::disk('public_uploads')->put($name, $contents);
-            $update = DB::table('tg_user')->where('id',$id)->update([
-                'image_change' => FALSE
-            ]);
-        }
+        // $getimg = DB::table('tg_user')->where('id',$id)->value('image');
+        // $img = DB::table('tg_user')->where('id',$id)->value('image_change');
+        // if($img)
+        // {
+        //     \File::delete(public_path() . '/assets/img/'.$getimg);
+        //     $response = Http::get('http://128.199.2.165:8100/api/v1/user/image/'.$id);
+        //     $url = $response['image'];
+        //     $contents = file_get_contents($url);
+        //     $name = substr($url, strrpos($url, '/') + 1);
+        //     Storage::disk('public_uploads')->put($name, $contents);
+        //     $update = DB::table('tg_user')->where('id',$id)->update([
+        //         'image_change' => FALSE
+        //     ]);
+        // }
         // // return substr($getimg,6);
         // return $getimg;
         // $exists = Storage::disk('public_uploads')->exists(substr($getimg,6));
@@ -478,7 +493,7 @@ class HomeController extends Controller
         }  
         // return  substr("$time",0,10);
         $elchi = DB::table('tg_user')->where('tg_user.id',$id)
-        ->select('tg_user.image','tg_specialty.name as lv','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
+        ->select('tg_user.image_url','tg_specialty.name as lv','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->join('tg_district','tg_district.id','tg_user.district_id')
         ->join('tg_specialty','tg_specialty.id','tg_user.specialty_id')
@@ -781,8 +796,107 @@ class HomeController extends Controller
         // ->select('tg_cgrade.grade as grade','tg_cgrade.created_at as cat','tg_client.device as device','tg_cgrade')
         ->join('tg_client','tg_client.id','tg_cgrade.teacher_id')
         ->get();
+
+        $know_grade = DB::table('tg_knowledge_grades')
+        ->where('user_id',$id)->get();
+
+        $knowledges = DB::table('tg_knowledge')->whereIn('step',[1,3])->get();
+        $know_teachers = DB::table('tg_knowledge_grades')->distinct()->pluck('teacher_id');
+        // return $know_teachers;
+        $pill_array = [];
+        $step_array = [];
+        $step_array_counter = [];
+        $step_array_grade_all = [];
         
-        return view('welcome',compact('medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        foreach($knowledges as $knowledge)
+        {
+            if($knowledge->step == 1){
+            $pill_counter = 0;
+                foreach($know_teachers as $teachers)
+            {
+                $condition = DB::table('tg_pill_questions')->where('knowledge_id',$knowledge->id)->pluck('id');
+                $questions = DB::table('tg_knowledge_grades')
+                ->whereIn('pill_id',$condition)
+                ->where('user_id',$id)
+                ->where('teacher_id',$teachers)->avg('grade');
+
+                $questions_grade = DB::table('tg_knowledge_grades')
+                ->whereIn('pill_id',$condition)
+                ->where('user_id',$id)
+                ->where('teacher_id',$teachers)->first();
+
+                $step_array_grade_all[] = $questions_grade;
+
+                $questions_count = DB::table('tg_knowledge_grades')
+                ->whereIn('pill_id',$condition)
+                ->where('user_id',$id)
+                ->where('teacher_id',$teachers)->count();
+
+                $step_array_grade = [];
+
+                if($questions == 0 )
+                {
+                    $pill_avg = 0;
+
+                }else{
+                    $pill_avg = $questions/$questions_count;
+                }
+
+                $pill_counter += $pill_avg;
+            }
+                if($pill_counter == 0)
+                {
+                    $all_avg = 0;
+                }else{
+                    $all_avg = $pill_counter/count($know_teachers);
+                }
+                $pill_array[] = array('avg' => number_format($all_avg,2),'name' =>$knowledge->name);
+            }
+            if($knowledge->step == 3){
+
+                $condition_step = DB::table('tg_pill_questions')->where('knowledge_id',$knowledge->id)->get();
+                
+                foreach($condition_step as $key_con => $con)
+                {
+            $pill_counter = 0;
+            $pill_counter_count = 0;
+
+                foreach($know_teachers as $teachers)
+                {
+
+                $step3 = DB::table('tg_knowledge_grades')
+                ->select('tg_knowledge_grades.grade','tg_pill_questions.name','tg_pill_questions.id as pid')
+                ->where('tg_knowledge_grades.teacher_id',$teachers)
+                ->where('tg_pill_questions.id',$con->id)
+                ->where('tg_knowledge_grades.user_id',$id)
+                ->join('tg_knowledge_questions','tg_knowledge_questions.id','tg_knowledge_grades.knowledge_question_id')
+                ->join('tg_condition_questions','tg_condition_questions.id','tg_knowledge_questions.condition_question_id')
+                ->join('tg_pill_questions','tg_pill_questions.id','tg_condition_questions.pill_question_id')
+                ->avg('tg_knowledge_grades.grade');
+                if($step3 != 0)
+                        {
+                            if(isset($step_array_counter[$key_con]))
+                            {
+                                $step_array_counter[$key_con] = $step_array_counter[$key_con] + 1;
+                            $step_array[$key_con] = array('count' => $step_array[$key_con]['count'] + 1,'id' => $key_con,'avg' => $step_array[$key_con]['avg'] + $step3,'name' => $con->name);
+
+                            }else{
+                                $step_array_counter[$key_con] = 1;
+                            $step_array[$key_con] = array('count' => 1,'avg' => $step3,'name' => $con->name);
+
+                            }
+                        }
+                }
+                        
+                }
+
+                
+            }
+            
+            
+        }
+        // return $step_array_grade_all;
+        return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
     }
     public function elchiList()
@@ -818,11 +932,10 @@ class HomeController extends Controller
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
             ->where('tg_user.admin',FALSE)
-            ->select('tg_user.image','tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->select('tg_user.image_url','tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->orderBy('tg_user.admin','DESC')->get();
 
-            
         $elchi_work=[];
         $elchi_fact=[];
         $elchi_prognoz=[];

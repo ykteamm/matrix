@@ -253,9 +253,11 @@
 
                    $('.fortr').remove();
 
-
+                  var yulduz = <?php echo json_encode( Session::get('per') ) ?>;
+                  
                    $.each(response.data, function(index, value){
                       var d = new Date(value.m_data);
+
  
                             var curr_day = d.getDate();
                             var curr_month = d.getMonth();
@@ -271,7 +273,26 @@
                                var ddate = curr_month
                             }
                      
-                      var $row = $('<tr class="fortr">'+
+                            if(yulduz.edit_purchase)
+                              {
+                                 var $row = $('<tr class="fortr">'+
+                                     '<td style="cursor:pointer;" onclick="users(`'+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
+                                     '<td onclick="orderId('+value.t_id+')"><button type="button" class="btn btn-block btn-outline-primary">'+ 'order'+value.t_id +'</button></td>'+
+                                     '<td>'+ value.m_name +'</td>'+
+                                     '<td ><span class="edit'+value.sid+value.t_id+'">'+ value.m_number +'</span>'+
+                                     '<input style="display:none;" class="input'+value.sid+value.t_id+
+                                     '" type="number" name="" class="form-control form-control-sm" required/></td>'+
+                                     '<td>'+ value.r_name +'</td>'+
+                                     '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
+                                     '<td>'+ value.m_data.substring(10, 19) + '</td>'+
+                                     '<td class="text-right cancel-edit'+value.sid+value.t_id+'"><a type="button" onclick="editpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-primary mr-2"><i class="fas fa-edit mr-1"></i></a></td>'+
+                                     '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="cancelpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-danger mr-2"><i class="fas fa-times mr-1"></i></a></td>'+
+                                     '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="savepurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-save mr-1"></i></a></td>'+
+                                  '</tr>'); 
+
+                              }else{
+                             
+                                 var $row = $('<tr class="fortr">'+
                                      '<td style="cursor:pointer;" onclick="users(`'+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
                                      '<td onclick="orderId('+value.t_id+')"><button type="button" class="btn btn-block btn-outline-primary">'+ 'order'+value.t_id +'</button></td>'+
                                      '<td>'+ value.m_name +'</td>'+
@@ -282,6 +303,8 @@
                                      '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
                                      '<td>'+ curr_hour +':'+curr_minutes+'</td>'+
                                   '</tr>'); 
+                              }
+                      
                 $('#fortbody').append($row);
                 });
                 $('.delil').remove();

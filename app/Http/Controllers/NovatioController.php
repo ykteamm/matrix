@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Session;
 use Carbon\Carbon;
-
+use App\Models\PurchaseJournal;
 class NovatioController extends Controller
 {
     public function region(Request $request)
@@ -910,9 +910,23 @@ class NovatioController extends Controller
         $sid = $request->sid;
         $tid = $request->tid;
         $number = $request->number;
-
+        
+        
+        $first = DB::table('tg_productssold')->where('id',$sid)->first();
+        
         $update = DB::table('tg_productssold')->where('id',$sid)->update([
             'number' => $number,
         ]);
+        $new = new PurchaseJournal([
+            'user_id' => Session::get('user')->id,
+            'sold_id' => $sid,
+            'old' => $first->number,
+            'new' => $number, 
+        ]);
+
+        $new->save();
+         
+        
+
     }
 }

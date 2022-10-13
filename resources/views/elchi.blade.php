@@ -56,7 +56,7 @@
                            
                            <td class="d-none">{{$item->rid}} </td>
                    <td>  {{$item->username}} </td>
-                   <td> <img class="mr-2" src="{{asset('assets/img/'.$item->image)}}" style="border-radius:50%" height="20px"> {{$item->last_name}} {{$item->first_name}}</td>
+                   <td> <img class="mr-2" src="{{$item->image_url}}" style="border-radius:50%" height="20px"> {{$item->last_name}} {{$item->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                            <td>{{$item->v_name}}</td>
                            <td>{{$elchi_work[$item->id]}}</td>

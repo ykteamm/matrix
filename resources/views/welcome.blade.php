@@ -34,7 +34,7 @@
           <div class="card">
              <div class="card-body">
                 <div class="text-center">
-                   <img src="{{asset('assets/img/'.$elchi->image)}}" style="border-radius:50%" height="200px">
+                   <img src="{{$elchi->image_url}}" style="border-radius:50%" height="200px">
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>
@@ -96,7 +96,22 @@
                @foreach ($d_array as $key => $item)
                   <li class="nav-item"><a class="nav-link @if($key == 0) active @endif" href="#solid-justified-tab{{$key+1}}" data-toggle="tab">{{ $item['name'] }} ({{$item['avg']}})</a></li>
                @endforeach
-            {{-- <li class="nav-item"><a class="nav-link" href="#solid-justified-tab2" data-toggle="tab">Profile </a></li> --}}
+               @php
+               $i = 0;
+               $avgs = 0;
+               foreach ($pill_array as $key => $item)
+                  {$i++;
+                  $avgs += $item['avg'];}
+               // @endforeach
+               foreach ($step_array as $key => $item)
+                 { $i++;
+                  $avgs += $item['avg']/$item['count'];}
+               $all_avgs = number_format($avgs/$i,2)
+               @endphp
+            <li class="nav-item"><a class="nav-link" href="#solid-justified-tab-bilim" data-toggle="tab">Bilim 
+               ({{$all_avgs}})
+            </a>
+            </li>
             {{-- <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Messages </a></li> --}}
             </ul>
             <div class="tab-content">
@@ -412,8 +427,47 @@
                </div>
             </div>
          </div>
+         
     </div>
 </div>
+<div class="row align-items-center justify-content-center">
+@foreach ($pill_array as $item)
+
+   <div class="col-12 col-md-6 col-lg-4 d-flex flex-wrap delregion">
+      <div class="card detail-box1">
+         <div class="card-body">
+         <div class="dash-contetnt">
+            <h2 style="color:#05f705;text-align:center;">{{$item['name']}}</h2>
+            <h3 style="color:#ffffff;text-align:center;margin-left:12px;">
+            <span title="0">{{$item['avg']}}</span>
+            </h3>
+         </div>
+         </div>
+      </div>
+   </div>
+@endforeach
+
+
+</div>
+<div class="row align-items-center justify-content-center">
+
+@foreach ($step_array as $item)
+
+   <div class="col-12 col-md-4 col-lg-3 d-flex flex-wrap delregion">
+      <div class="card detail-box1">
+         <div class="card-body">
+         <div class="dash-contetnt">
+            <h2 style="color:#05f705;text-align:center;">{{$item['name']}}</h2>
+            <h3 style="color:#ffffff;text-align:center;margin-left:12px;">
+            <span title="0">{{ number_format($item['avg']/$item['count'],2) }} </span>
+            </h3>
+         </div>
+         </div>
+      </div>
+   </div>
+@endforeach
+</div>
+
 </div>
 @endsection
 @section('admin_script')

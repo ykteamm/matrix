@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKnowledgeTable extends Migration
+class CreatePurchaseJournalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateKnowledgeTable extends Migration
      */
     public function up()
     {
-        Schema::create('tg_knowledge', function (Blueprint $table) {
+        Schema::create('tg_purchase_journals', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('number');
-            $table->integer('level');
+            $table->foreignId('user_id');
+            $table->foreignId('sold_id');
+            $table->integer('old');
+            $table->integer('new');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateKnowledgeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('knowledge');
+        Schema::dropIfExists('purchase_journals');
     }
 }

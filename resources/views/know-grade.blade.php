@@ -13,6 +13,8 @@
             <div class="card-body">
                <form id="step_button" action="{{route('know-grade.store')}}" method="post">
                   @csrf
+                  {{-- <input class="stepclass" style="display: none;" type="number" name="step1_{{$item->id}}" id="step1_{{$item->id}}"> --}}
+
                <div class="table-responsive">
                   <table class="table mb-0">
                      {{-- <thead>

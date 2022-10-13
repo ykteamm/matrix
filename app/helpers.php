@@ -107,6 +107,7 @@ if(!function_exists('wordSimilarity')){
             'know_ques' => 'Bilim savollar',
             'know_grade' => 'Bilim baholash',
             'edit_purchase' => 'Xaridlarni o\'zgartirish',
+            'show_purchase' => 'Taxrirlash tarixi',
             'setting' => 'Sozlamalar',
             'User' => 'User',
             'rol' => 'Rol',
