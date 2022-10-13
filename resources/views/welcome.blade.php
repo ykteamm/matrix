@@ -105,7 +105,14 @@
                // @endforeach
                foreach ($step_array as $key => $item)
                  { $i++;
-                  $avgs += $item['avg']/$item['count'];}
+                  if($item['count'] == 0)
+                  {
+                     $avgs += 0;
+                  }else{
+                     $avgs += $item['avg']/$item['count'];
+                  }
+                  
+               }
                $all_avgs = number_format($avgs/$i,2)
                @endphp
             <li class="nav-item"><a class="nav-link" href="#solid-justified-tab-bilim" data-toggle="tab">Bilim 
