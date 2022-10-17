@@ -9,7 +9,7 @@
           <div class="btn-group mr-5 ml-auto">
             <div class="row">
                <div class="col-md-12" align="center">
-                        Sana
+                        Sana123
                </div>
                <div class="col-md-12">
                   <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
@@ -35,7 +35,11 @@
              <div class="card-body">
                 <div class="text-center">
                    <img src="{{$elchi->image_url}}" style="border-radius:50%" height="200px">
+<<<<<<< HEAD
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
+=======
+                   <h4>{{$elchi->last_name}} {{$elchi->first_name}}rewrwerwerwerwer </h4>
+>>>>>>> 24ab80de5c33b940c83f16ae7140cb43500c9a24
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>
                    @if($plan)
