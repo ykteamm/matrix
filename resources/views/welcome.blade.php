@@ -3,9 +3,9 @@
 <div class="content mt-1 main-wrapper">
    <div class="row gold-box">
       @include('admin.components.logo')
-  
+
         <div class="card flex-fill">
-         
+
           <div class="btn-group mr-5 ml-auto">
             <div class="row">
                <div class="col-md-12" align="center">
@@ -26,7 +26,7 @@
           </div>
        </div>
       </div>
-    
+
 
 <div class="content headbot">
     <div class="row">
@@ -35,7 +35,7 @@
              <div class="card-body">
                 <div class="text-center">
                    <img src="{{$elchi->image_url}}" style="border-radius:50%" height="200px">
-                   <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
+                   <h4>{{$elchi->last_name}} {{$elchi->first_name}}ABC </h4>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>
                    @if($plan)
@@ -79,7 +79,7 @@
                         <span class="ml-auto">{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $elchi->birthday) ))}}</span>
                      </div>
 
-                      
+
                       <div>
                          <h6>Viloyat</h6>
                          <span class="ml-auto">{{$elchi->v_name}} </span>
@@ -184,7 +184,7 @@
                   }else{
                      $avgs += $item['avg']/$item['count'];
                   }
-                  
+
                }
                if($i == 0)
                   {
@@ -194,7 +194,7 @@
 
                   }
                @endphp
-            <li class="nav-item"><a class="nav-link" href="#solid-justified-tab-bilim" data-toggle="tab">Bilim 
+            <li class="nav-item"><a class="nav-link" href="#solid-justified-tab-bilim" data-toggle="tab">Bilim
                ({{$all_avgs}})
             </a>
             </li>
@@ -205,13 +205,13 @@
 
                <div class="tab-pane show @if($key==0) active @endif" id="solid-justified-tab{{$key+1}}">
                   <div class="tab-left">
-                  
+
                      @foreach ($d_for_user as $ite)
                      @if($ite['depid'] == $item['id'])
                      <div class="d-flex mb-3">
                         <div class="medicne d-flex">
                            <a style="cursor: pointer" onclick="getQuestion(`qd{{$ite['uid']}}{{$item['id']}}`)"> {{$ite['username']}}</a>
-                          
+
                         </div>
                         <div class="medicne-time ml-auto">
                            {{$ite['avg']}}
@@ -219,7 +219,7 @@
                      </div>
                      @endif
                      @endforeach
-                     
+
                   </div>
                   @foreach ($allquestion as $ite)
 
@@ -237,7 +237,7 @@
                         </div>
                      </div>
                      @endif
-                     
+
                   </div>
                   @endforeach
 
@@ -251,7 +251,7 @@
 
    </div>
    <div class="row" id="forcollapsegrade2" style="display: none;">
-      
+
       <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
             <div class="card bg-white">
             <div class="card-body">
@@ -261,7 +261,7 @@
                   <span class="badge">{{$item['count']}}</span>
                 </button>
                @endforeach
-               
+
             </div>
             </div>
       </div>
@@ -287,10 +287,10 @@
                   '/mobile/i'  => 'Safari Browser',
                );
 
-               
+
             @endphp
                <h4> <span> </span> </h4>
-               
+
                      <div class="table-responsive">
                         <table class="table mb-0" id="dtBasicExample">
                            <thead>
@@ -323,7 +323,7 @@
                            </tbody>
                         </table>
                      </div>
-            
+
          </div>
          </div>
    </div>
@@ -332,7 +332,7 @@
     <div class="row">
       <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap" onclick="tabNone('solid-tab1')"
       onmouseover="$(this)
-       .css('cursor','pointer')"  
+       .css('cursor','pointer')"
       >
          <div class="card" style="background-color: #3b3d83">
             <div class="card-body">
@@ -348,7 +348,7 @@
       @foreach ($cateory as $key => $item)
        <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap nav-link solid-tab{{$i}} dborder" onclick="tabNone('solid-tab{{$i}}')"
        onmouseover="$(this)
-       .css('cursor','pointer')" 
+       .css('cursor','pointer')"
       style="border-bottom: 3px solid #3b3d83"
 
        >
@@ -361,9 +361,9 @@
             </div>
          </div>
       </div>
-       
+
        @php $i = $i + 1 @endphp
-      
+
 
 
       @endforeach
@@ -453,7 +453,7 @@
                                  </div>
                               </div>
                            </div>
-                            
+
                         {{-- </div> --}}
                      </div>
                     @foreach ($cateory as $key => $item)
@@ -489,7 +489,7 @@
                                                  $t += $mitem['number']
                                              @endphp
                                                 @endif
-                                               
+
                                             @endforeach
                                             {{-- <tr>
                                                 <td>Jami</td>
@@ -513,7 +513,7 @@
                </div>
             </div>
          </div>
-         
+
     </div>
 </div>
 <div class="row align-items-center justify-content-center">
@@ -582,7 +582,7 @@
          $('.allqd').css('display','none')
          // alert(id)
          $(`.${id}`).css('display','')
-         
+
       }
        function collapseGrade()
     {
@@ -623,7 +623,7 @@ var id = <?php echo json_encode($elchi->id); ?>;
        .css('border-left','none')
        .css('border-right','none')
        .css('border-bottom','3px solid #3b3d83');
-       
+
          $(`.${tab}`).css('border-top','3px solid #3b3d83')
        .css('border-left','3px solid #3b3d83')
        .css('border-top-left-radius','30px')
@@ -650,7 +650,7 @@ var id = <?php echo json_encode($elchi->id); ?>;
          // $('#age_button2').click()
          $('#aftertime').after(`<a href='{{route('elchi',['id' => $elchi->id,'time' => 'week'])}}' class='dropdown-item'>Hammasi</a>`)
 
-         // region(date1);    
+         // region(date1);
 
       }
    </script>
