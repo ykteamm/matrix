@@ -6,6 +6,7 @@ use App\Http\Controllers\PillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
+use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,6 +115,13 @@ Route::post('all-grade-step3', [App\Http\Controllers\GradeController::class,'all
 Route::get('journal-purchase', [App\Http\Controllers\JournalController::class,'purchase'])->name('purchase.journal');
 
 #end-position
+#bro
+Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');
+Route::post('plan/create/{id}', [PlanController::class,'store'])->name('plan.store');
+Route::get('plan/{id}/edit', [PlanController::class,'edit'])->name('plan.edit');
+Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
+Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
+#end-bro
 
 });
 

@@ -38,7 +38,16 @@
                    <h4>{{$elchi->last_name}} {{$elchi->first_name}} </h4>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>
-                </div>
+                   @if($plan)
+                   <h5> <a href="{{route('plan.edit',['id'=>$elchi->id])}}" type="button" class="btn btn-info" >Planni Tahrirlash</a> </h5>
+                   <h5> <a onclick="show_weeks()"  type="button" class="open-plan text-white btn btn-info" >Planni Ko'rish</a> </h5>
+                   <h5> <a onclick="close_weeks()" type="button" style="display: none" class="close-plan text-white btn btn-info" >Planni Ko'rish</a> </h5>
+                  @else
+                     <h5> <a href="{{route('plan',['id'=>$elchi->id])}}" type="button" class="btn btn-info" >Plan Qo'shish</a> </h5>
+
+
+                  @endif
+               </div>
              </div>
           </div>
        </div>
@@ -85,6 +94,70 @@
           </div>
        </div>
     </div>
+
+    <div class="row d-flex justify-content-between p-5"  id="catid">
+      @if($plan)
+          @php $t=0;  @endphp
+
+          @foreach($ps[0]->planweek as $pw)
+
+<div style="display: none" onclick="show_week(`{{substr($pw->startday,8)}}`)" class="table-plans container btn col-12 col-md-6 col-lg-3 d-flex flex-wrap delcat">
+  <div style="display: none" style="border-radius:26px;" class="card table-plans detail-box13">
+      <div class="card-body"><div class="dash-contetnt">
+              <h2 style="color:#ffffff;text-align:center;font-size:20px;font-family:Gilroy;">
+                  <span>{{$numbers[$t]}}</span>/
+                  <span>{{$allweekplan[$t]}}</span>
+              </h2>
+              <h1 style="color:#ffffff;text-align:center;margin-left:0px;">
+                  <span title="5.203.100">
+                      <span style="font-size: 15px" class="numberkm">{{substr($pw->startday,5)}}</span>
+                      <span style="width: 4px; height: 20px; margin-top: 2px"><img style="color: white; margin-top: 10px; height: 25px; width: 60px;" src="{{asset('assets/img/whiteArrow.png')}}"></span>
+                      <span style="font-size: 15px" class="numberkm">{{substr($pw->endday,5)}}</span>
+                  </span>
+              </h1>
+
+          </div>
+      </div>
+  </div>
+</div>
+      @php $t++; @endphp
+  @endforeach
+@endif
+</div>
+
+<div id="maindata1" class="row d-flex justify-content-between p-2">
+   @if($plan)
+
+       <table class="table table-striped plan">
+           <thead class="plan">
+           <tr class="plan" style="display: none">
+               <th scope="col">#</th>
+               <th scope="col">Dori nomi</th>
+               <th scope="col">Sotildi</th>
+           </tr>
+           </thead>
+           <tbody>
+
+           @php $t=0;  @endphp
+
+           @foreach($ps[0]->planweek as $pw)
+           @foreach($plan_product as $p)
+               @if($pw->startday==$p['begin'])
+               <tr style="display: none" class="alldatebegin plan{{substr($pw->startday,8)}}">
+                   <td>{{$loop->index+1}}</td>
+                   <td>{{$p['name']}}</td>
+                   <td>{{$p['count']}}/{{$p['plan']}}</td>
+               </tr>
+               @endif
+           @endforeach
+
+           @php $t++; @endphp
+           @endforeach
+           </tbody>
+       </table>
+   @endif
+</div>
+
     <div class="row" id="forcollapsegrade" style="display: none;">
       <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
             <div class="card bg-white">
@@ -485,6 +558,25 @@
 @endsection
 @section('admin_script')
    <script>
+      function show_weeks()
+       {
+           $('.open-plan').css('display','none');
+           $(`.close-plan`).css('display','');
+           $(`.table-plans`).css('display','');
+       }
+       function close_weeks()
+       {
+           $('.open-plan').css('display','');
+           $(`.close-plan`).css('display','none');
+           $(`.table-plans`).css('display','none');
+           $(`.plan`).css('display','none');
+       }
+       function show_week(id)
+       {
+           $('.alldatebegin').css('display','none');
+           $(`.plan${id}`).css('display','');
+           $(`.plan`).css('display','');
+       }
       function getQuestion(id)
       {
          $('.allqd').css('display','none')
