@@ -28,13 +28,22 @@
                            <td>{{$elchi->v_name}}</td>
                            <td>
                             @foreach ($departments as $department)
+                            @isset(Session::get('per')['d'.$department->id])
+                            @if(Session::get('per')['d'.$department->id] == 'true')
                               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dep{{$elchi->user_id}}{{$department->id}}">
                                 {{$department->name}}
                               </button>
+                            @endif
+                            @endisset
                             @endforeach
+
+                            @isset(Session::get('per')['bilim'])
+                            @if(Session::get('per')['bilim'] == 'true')
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bilim{{$elchi->user_id}}">
                                 Bilim
                               </button>
+                              @endif
+                            @endisset
                            </td>
                            
                         </tr>

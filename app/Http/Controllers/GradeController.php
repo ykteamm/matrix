@@ -46,37 +46,27 @@ class GradeController extends Controller
         $question_step1 = [];
         $know_questions = [];
 
-        foreach($all_elchi as $items)
-        {
-            $user_question = UserQuestion::where('user_id',$items->user_id)->first();
-            // return $user_question;
-            // $question_step3 = [];
-            foreach(json_decode($user_question->step1) as $key => $value)
-            {
-                foreach($value as $item)
-                {
-                    $ids = $items->user_id.$item;
-                    $question_step1[$ids] = PillQuestion::where('id',$item)->first();
-                }
-            }
-            // foreach(json_decode($user_question->step3) as $key => $value)
-            // {
-            //     foreach($value as $item)
-            //     {
+        // foreach($all_elchi as $items)
+        // {
+        //     $user_question = UserQuestion::where('user_id',$items->user_id)->first();
+        //     foreach(json_decode($user_question->step1) as $key => $value)
+        //     {
+        //         foreach($value as $item)
+        //         {
+        //             $ids = $items->user_id.$item;
+        //             $question_step1[$ids] = PillQuestion::where('id',$item)->first();
+        //         }
+        //     }
+        //     foreach(json_decode($user_question->question_step) as $key => $value)
+        //     {
+        //         foreach($value as $item)
+        //         {
+        //             $ids = $items->user_id.$item;
+        //             $know_questions[$ids] = KnowledgeQuestion::where('id',$item)->first();
+        //         }
+        //     }
+        // }
 
-            //         $question_step3[] = PillQuestion::where('id',$item)->first();
-            //     }
-            // }
-            foreach(json_decode($user_question->question_step) as $key => $value)
-            {
-                foreach($value as $item)
-                {
-                    $ids = $items->user_id.$item;
-                    $know_questions[$ids] = KnowledgeQuestion::where('id',$item)->first();
-                }
-            }
-        }
-        // return $questions;
         return view('all-grade',compact('departments','all_elchi','questions','grades','question_step1','know_questions'));
     }
     public function allGradeStore(Request $request)

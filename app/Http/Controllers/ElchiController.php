@@ -41,8 +41,7 @@ class ElchiController extends Controller
             }
         }
         // return $question_step3;
-        $asd = 123; 
-        return view('know-grade',compact('asd','question_step1','question_step3','questions','id'));
+        return view('know-grade',compact('question_step1','question_step3','questions','id'));
     }
 
     public function knowGradeStore(Request $request)

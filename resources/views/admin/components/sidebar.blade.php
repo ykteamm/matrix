@@ -63,15 +63,8 @@
             @endif
             @endisset
 
-            @isset(Session::get('per')['know_grade'])
-             @if(Session::get('per')['know_grade'] == 'true')
-            {{-- <li><a href="{{route('know.grade')}}"><i class="feather-filter"></i>  <span>Bilim baholash </span></a> --}}
-            {{-- </li> --}}
-            @endif
-            @endisset
-
-            @isset(Session::get('per')['know_grade'])
-             @if(Session::get('per')['know_grade'] == 'true')
+            @isset(Session::get('per')['grade'])
+             @if(Session::get('per')['grade'] == 'true')
             <li><a href="{{route('all.grade')}}"><i class="feather-filter"></i>  <span>Baholash </span></a>
             </li>
             @endif
