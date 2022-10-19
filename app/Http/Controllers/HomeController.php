@@ -1475,18 +1475,21 @@ class HomeController extends Controller
         $dates = []; 
     
         $ym = DB::table('tg_calendar')->where('year_month',$month)->value('day_json');
-        // return $ym;
-        // if($ym)
-        // {
+       
+        if($ym)
+        {
             $ym_json = json_decode($ym);
             $ary=[];
             foreach($ym_json as $key => $val)
             {
                 $ary[$key] = $val;
             }
-        // }else{
-        //     $ym_json = 1;
-        // }
+            $ym_json = $ary;
+
+        }else{
+            $ym_json = NULL;
+        }
+            
     for($i=1; $i < $maxday + 1; ++$i) {
         $dayName = \Carbon\Carbon::createFromDate($year,$months, $i)->format('l');
         $day = \Carbon\Carbon::createFromDate($year, $months, $i)->format('d');
@@ -1502,7 +1505,6 @@ class HomeController extends Controller
         $minusmonth = date('m.Y',(strtotime ( '-1 month' , strtotime ( '01.'.$month) ) ));
         $weeks = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
         $key = array_search($dates[1],$weeks);
-        $ym_json = $ary;
 
         return view('settings',compact('dates','monthname','minusmonth','plusmonth','month','ym_json','key'));
     }
