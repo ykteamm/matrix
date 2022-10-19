@@ -88,38 +88,73 @@
                         <h6>Tuman</h6>
                         <span class="ml-auto">{{$elchi->d_name}} </span>
                      </div>
+                     <div>
+                        <h6>Dorixona</h6>
+                        <span class="ml-auto">{{$pharmacy_user->name}} </span>
+                     </div>
+                     
                    </div>
+                   
                 </div>
+                
              </div>
+             <div class="content container-fluid headbot">
+               <div class="row">
+                   <div class="col-md-12">
+                       <div class="card">
+                           <div class="card-body">
+                               <form action="{{ route('pharma-user.store',$elchi->id) }}" method="POST">
+                                   {{-- {{ method_field('PATCH') }} --}}
+                                   @csrf
+                                   <div class="row">
+                                       <div class="form-group col-md-8">
+                                           <select class="form-control form-control-sm" name='pharma_id' required>
+                                             <option value="" disabled selected hidden></option>
+                                               @foreach ($pharmacy as $pharma)
+                                                   <option value='{{$pharma->id}}'>{{$pharma->name}}</option>
+                                               @endforeach
+                                           </select>
+                                       </div>
+                                       <div class="form-group col-md-4">
+                                               <button type="submit" class="btn btn-primary"> Saqlash </button>
+                                       </div>
+                                       
+                                   </div>
+                               </form>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+            </div>
           </div>
        </div>
     </div>
 
-    <div class="row d-flex justify-content-between p-5"  id="catid">
+    <div class="row d-flex justify-content-between"  id="catid">
       @if($plan)
           @php $t=0;  @endphp
 
           @foreach($ps[0]->planweek as $pw)
 
-<div style="display: none" onclick="show_week(`{{substr($pw->startday,8)}}`)" class="table-plans container btn col-12 col-md-6 col-lg-3 d-flex flex-wrap delcat">
-  <div style="display: none" style="border-radius:26px;" class="card table-plans detail-box13">
-      <div class="card-body"><div class="dash-contetnt">
-              <h2 style="color:#ffffff;text-align:center;font-size:20px;font-family:Gilroy;">
-                  <span>{{$numbers[$t]}}</span>/
-                  <span>{{$allweekplan[$t]}}</span>
-              </h2>
-              <h1 style="color:#ffffff;text-align:center;margin-left:0px;">
-                  <span title="5.203.100">
-                      <span style="font-size: 15px" class="numberkm">{{substr($pw->startday,5)}}</span>
-                      <span style="width: 4px; height: 20px; margin-top: 2px"><img style="color: white; margin-top: 10px; height: 25px; width: 60px;" src="{{asset('assets/img/whiteArrow.png')}}"></span>
-                      <span style="font-size: 15px" class="numberkm">{{substr($pw->endday,5)}}</span>
-                  </span>
-              </h1>
+            <div style="display: none" onclick="show_week(`{{substr($pw->startday,8)}}`)" class="table-plans container btn col-12 col-md-6 col-lg-3 d-flex flex-wrap delcat">
+            <div style="display: none" style="border-radius:26px;" class="card table-plans detail-box13">
+                  <div class="card-body"><div class="dash-contetnt">
+                        <h2 style="color:#ffffff;text-align:center;font-size:20px;font-family:Gilroy;">
+                              <span>{{$numbers[$t]}}</span>/
+                              <span>{{$allweekplan[$t]}}</span>
+                        </h2>
+                        <h1 style="color:#ffffff;text-align:center;margin-left:0px;">
+                              <span title="5.203.100">
+                                 <span style="font-size: 15px" class="numberkm">{{substr($pw->startday,5)}}</span>
+                                 <span style="width: 4px; height: 20px; margin-top: 2px"><img style="color: white; margin-top: 10px; height: 25px; width: 60px;" src="{{asset('assets/img/whiteArrow.png')}}"></span>
+                                 <span style="font-size: 15px" class="numberkm">{{substr($pw->endday,5)}}</span>
+                              </span>
+                        </h1>
 
-          </div>
-      </div>
-  </div>
-</div>
+                     </div>
+                  </div>
+            </div>
+            </div>
       @php $t++; @endphp
   @endforeach
 @endif

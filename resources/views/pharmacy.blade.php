@@ -27,7 +27,7 @@
                         <tr
                            >
                            
-                           <td>{{$item->name}}</td>
+                           <td><a href="{{route('pharmacy',$item->id)}}">{{$item->name}}</a></td>
                            <td> <img src="https://telegra.ph/file/a9d999c0cd458d44ce655.jpg" height="80px" alt=""> </td>
                            <td>{{$item->phone_number}}</td>
                            <td>{{$item->volume}}</td>

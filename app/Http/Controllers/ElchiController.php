@@ -7,6 +7,7 @@ use App\Models\UserQuestion;
 use App\Models\PillQuestion;
 use App\Models\ConditionQuestion;
 use App\Models\KnowledgeQuestion;
+use App\Models\PharmacyUser;
 
 class ElchiController extends Controller
 {
@@ -49,4 +50,5 @@ class ElchiController extends Controller
         return $request;
     }
 
+    
 }

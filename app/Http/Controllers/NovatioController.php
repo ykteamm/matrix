@@ -701,9 +701,11 @@ class NovatioController extends Controller
 
     public function calendar(Request $request)
     {
+        $inputs = $request->all();
+        unset($inputs['day_json'][0]);
         $save = DB::table('tg_calendar')->insert([
             'year_month' => $request->year_month,
-            'day_json' => json_encode($request->day_json),
+            'day_json' => json_encode($inputs['day_json']),
             'work_day' => intval($request->work_day),
             'created_at' => Carbon::now(),
         ]);

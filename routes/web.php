@@ -114,6 +114,10 @@ Route::post('all-grade-step3', [App\Http\Controllers\GradeController::class,'all
 
 Route::get('journal-purchase', [App\Http\Controllers\JournalController::class,'purchase'])->name('purchase.journal');
 
+Route::get('pharmacy/{id}', [App\Http\Controllers\PharmacyController::class,'pharmacy'])->name('pharmacy');
+Route::post('pharma-user/{id}', [App\Http\Controllers\PharmacyController::class,'pharmaUserStore'])->name('pharma-user.store');
+Route::post('user-pharma/{id}', [App\Http\Controllers\PharmacyController::class,'userPharmaStore'])->name('user-pharma.store');
+
 #end-position
 #bro
 Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');

@@ -11,6 +11,7 @@ use App\Services\Sold;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Pharmacy;
+use App\Models\PharmacyUser;
 use App\Models\Position;
 use App\Models\Pill;
 use App\Models\Question;
@@ -31,6 +32,7 @@ use App\Models\Knowledge;
 use App\Models\UserQuestion;
 use App\Models\PillQuestion;
 use App\Models\ConditionQuestion;
+
 class HomeController extends Controller
 {
     /**
@@ -965,7 +967,13 @@ class HomeController extends Controller
             }
         }
         // return $step_array_grade_all;
-        return view('welcome',compact('allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        $pharmacy = Pharmacy::all();
+        $pharmacy_user = PharmacyUser::where('tg_pharmacy_users.user_id',$id)
+        ->select('tg_pharmacy_users.id','tg_pharmacy.name')
+        ->join('tg_pharmacy','tg_pharmacy.id','tg_pharmacy_users.pharma_id')
+        ->orderBy('tg_pharmacy_users.created_at','DESC')->first();
+        // return $pharmacy_user;
+        return view('welcome',compact('pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
@@ -1465,15 +1473,20 @@ class HomeController extends Controller
         $months = substr($month,0,-5);
         $maxday =  Carbon::now()->year($year)->month($months)->daysInMonth;
         $dates = []; 
-
+    
         $ym = DB::table('tg_calendar')->where('year_month',$month)->value('day_json');
         // return $ym;
-        if($ym)
-        {
+        // if($ym)
+        // {
             $ym_json = json_decode($ym);
-        }else{
-            $ym_json = 1;
-        }
+            $ary=[];
+            foreach($ym_json as $key => $val)
+            {
+                $ary[$key] = $val;
+            }
+        // }else{
+        //     $ym_json = 1;
+        // }
     for($i=1; $i < $maxday + 1; ++$i) {
         $dayName = \Carbon\Carbon::createFromDate($year,$months, $i)->format('l');
         $day = \Carbon\Carbon::createFromDate($year, $months, $i)->format('d');
@@ -1489,6 +1502,8 @@ class HomeController extends Controller
         $minusmonth = date('m.Y',(strtotime ( '-1 month' , strtotime ( '01.'.$month) ) ));
         $weeks = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
         $key = array_search($dates[1],$weeks);
+        $ym_json = $ary;
+
         return view('settings',compact('dates','monthname','minusmonth','plusmonth','month','ym_json','key'));
     }
 
