@@ -95,16 +95,16 @@ class ShablonController extends Controller
     }
     public function priceMed($id)
     {
-        $medicine = Medicine::all();
-        foreach($medicine as $med)
-        {
-            $new = new AllProduct([
-                'name' => $med->name,
-                'category_id' => $med->category_id,   
-            ]);
-            $new->save();
-        }
-        return $medicine;
+        // $medicine = Medicine::all();
+        // foreach($medicine as $med)
+        // {
+        //     $new = new AllProduct([
+        //         'name' => $med->name,
+        //         'category_id' => $med->category_id,   
+        //     ]);
+        //     $new->save();
+        // }
+        // return $medicine;
         $products = AllProduct::all();
 
         return view('shablon.price',compact('id','products'));
