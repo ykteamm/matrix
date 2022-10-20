@@ -14,4 +14,9 @@ class Medicine extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+
+    public function shablon()
+    {
+        return $this->belongsTo(Shablon::class,'shablon_id','id');
+    }
 }

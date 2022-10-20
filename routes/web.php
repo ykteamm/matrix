@@ -117,6 +117,12 @@ Route::get('journal-purchase', [App\Http\Controllers\JournalController::class,'p
 Route::get('pharmacy/{id}', [App\Http\Controllers\PharmacyController::class,'pharmacy'])->name('pharmacy');
 Route::post('pharma-user/{id}', [App\Http\Controllers\PharmacyController::class,'pharmaUserStore'])->name('pharma-user.store');
 Route::post('user-pharma/{id}', [App\Http\Controllers\PharmacyController::class,'userPharmaStore'])->name('user-pharma.store');
+Route::post('user-rol', [App\Http\Controllers\PositionController::class,'userRol'])->name('user-rol.store');
+
+
+Route::resource('shablon',ShablonController::class);
+Route::get('prices/{id}', [App\Http\Controllers\ShablonController::class,'priceMed'])->name('price-med');
+Route::post('prices-store', [App\Http\Controllers\ShablonController::class,'priceMedStore'])->name('price-med.store');
 
 #end-position
 #bro

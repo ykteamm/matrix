@@ -26,7 +26,9 @@ class PositionController extends Controller
     {
         
         $positions = DB::table('tg_positions')->get();
-        return view('admin.position.list',compact('positions'));
+        $users = DB::table('tg_user')->select('id','first_name','last_name')->where('admin',TRUE)->get();
+        // return $users;
+        return view('admin.position.list',compact('positions','users'));
         
     }
 
@@ -167,5 +169,16 @@ class PositionController extends Controller
         }else{
             return redirect()->back()->with('message',(__('message.delete_error')));
         }
+    }
+
+    public function userRol(Request $request)
+    {
+        // return $request;
+        $update = DB::table('tg_user')
+        ->where('id',$request->user_id)
+        ->update([
+            'rol_id' => $request->rol_id
+        ]);
+        return redirect()->back();
     }
 }

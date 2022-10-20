@@ -90,7 +90,10 @@
                      </div>
                      <div>
                         <h6>Dorixona</h6>
+                        @if(isset($pharmacy_user->name))
                         <span class="ml-auto">{{$pharmacy_user->name}} </span>
+
+                        @endif
                      </div>
                      
                    </div>

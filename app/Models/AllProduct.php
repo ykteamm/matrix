@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class District extends Model
+class AllProduct extends Model
 {
+    use HasFactory;
+
+    protected $table = 'tg_all_products';
     protected $fillable = [
-        'district_name',       
-        'province_id',       
+        'id',
+        'name',
+        'category_id',
     ];
 }
