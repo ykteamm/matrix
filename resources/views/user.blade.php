@@ -97,7 +97,7 @@
                            @else
                            <td><span class="text-secondary">Offline</span></td>
                            @endif
-                           <td>{{ date('Y.m.d H:i:s',(strtotime ( '0 hours' , strtotime ( $item->last_seen) ) )) }}</td>
+                           <td>{{ date('Y.m.d H:i:s',(strtotime ( '-5 hours' , strtotime ( $item->last_seen) ) )) }}</td>
                            {{-- <td>{{ $item->last_seen }}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">
