@@ -54,19 +54,19 @@
                     @foreach ($dates as $key => $item)
                             
                         @if ($item == 'Monday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                         @elseif($item == 'Tuesday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                             @elseif($item == 'Wednesday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                             @elseif($item == 'Thursday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                             @elseif($item == 'Friday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                             @elseif($item == 'Saturday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                             @elseif($item == 'Sunday')
-                            <li><button type="button" class="btn @if($ym_json[$key] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
+                            <li><button type="button" class="btn @if($ym_json[$key-1] == 'true') btn-outline-info @else btn-danger @endif">{{$key}}</button></li>
                         @endif
                     @endforeach
                   @endif

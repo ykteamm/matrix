@@ -1505,7 +1505,7 @@ class HomeController extends Controller
         $minusmonth = date('m.Y',(strtotime ( '-1 month' , strtotime ( '01.'.$month) ) ));
         $weeks = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
         $key = array_search($dates[1],$weeks);
-
+        // return $ym_json;
         return view('settings',compact('dates','monthname','minusmonth','plusmonth','month','ym_json','key'));
     }
 
