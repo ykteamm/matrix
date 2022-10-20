@@ -1147,7 +1147,14 @@ class HomeController extends Controller
         ->select('tg_user.last_seen','tg_positions.id as pid','tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->leftjoin('tg_positions','tg_positions.id','tg_user.rol_id')
+        ->orderBy('tg_user.last_seen','ASC')
         ->get();
+
+        // $elchi = DB::table('tg_user')
+        // ->where('admin',TRUE)
+        // ->select('last_seen')
+        // ->orderBy('last_seen','ASC')
+        // ->get();
         // return $elchi;
         $posi = DB::table('tg_positions')->get();
         return view('user',compact('elchi','posi'));

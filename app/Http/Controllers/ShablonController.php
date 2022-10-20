@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Shablon;
 use App\Models\AllProduct;
+use App\Models\Medicine;
 use Illuminate\Support\Facades\DB;
 
 class ShablonController extends Controller
@@ -94,7 +95,18 @@ class ShablonController extends Controller
     }
     public function priceMed($id)
     {
+        // $medicine = Medicine::all();
+        // foreach($medicine as $med)
+        // {
+        //     $new = new AllProduct([
+        //         'name' => $med->name,
+        //         'category_id' => $med->category_id,   
+        //     ]);
+        //     $new->save();
+        // }
+        // return $medicine;
         $products = AllProduct::all();
+
         return view('shablon.price',compact('id','products'));
     }
     public function priceMedStore(Request $request)
