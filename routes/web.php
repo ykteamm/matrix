@@ -123,6 +123,7 @@ Route::post('user-rol', [App\Http\Controllers\PositionController::class,'userRol
 Route::resource('shablon',ShablonController::class);
 Route::get('prices/{id}', [App\Http\Controllers\ShablonController::class,'priceMed'])->name('price-med');
 Route::post('prices-store', [App\Http\Controllers\ShablonController::class,'priceMedStore'])->name('price-med.store');
+Route::get('shablon-active/{id}', [App\Http\Controllers\ShablonController::class,'shablonActive'])->name('shablon-active');
 
 #end-position
 #bro

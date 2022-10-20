@@ -703,9 +703,16 @@ class NovatioController extends Controller
     {
         $inputs = $request->all();
         unset($inputs['day_json'][0]);
+        $json = [];
+        foreach($inputs['day_json'] as $val)
+        {
+            $json[]=$val;
+        }
+        // return $json;
+
         $save = DB::table('tg_calendar')->insert([
             'year_month' => $request->year_month,
-            'day_json' => json_encode($inputs['day_json']),
+            'day_json' => json_encode($json),
             'work_day' => intval($request->work_day),
             'created_at' => Carbon::now(),
         ]);

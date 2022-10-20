@@ -53,15 +53,25 @@
                                     @endif
 
                                 </td>
-                                <td>  
+                                <td style="text-align: center;">  
                                     @if (isset($shablon->medicine[0]))
-                                    activ qilish
+                                        @if (!$shablon->active)
+                                        <a href="{{route('shablon-active',$shablon->id)}}">
+                                            <button type="submit" class="btn btn-primary"> Qo'llash </button>                                        
+                                        </a>
+                                        @else
+                                        {{-- <a href="{{route('shablon-active',$shablon->id)}}"> --}}
+                                            <button type="button" class="btn btn-success"> Active </button>                                        
+                                        {{-- </a> --}}
+                                        @endif
+                                    
+                                    
+
                                     @else
                                     ----
                                     @endif
 
                                 </td>
-                                <td style="text-align: center;"> <input style="width: 17px;height: 17px;" type="checkbox" value="true" name=""" /> </td>
 
 
                             </tr>

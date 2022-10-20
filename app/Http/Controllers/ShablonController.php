@@ -26,8 +26,7 @@ class ShablonController extends Controller
      */
     public function create()
     {
-        $shablons = Shablon::with('medicine')->get();
-        // return $shablons[1]->medicine[0];
+        $shablons = Shablon::with('medicine')->orderBy('id')->get();
         return view('shablon.create',compact('shablons'));
     }
 
@@ -99,7 +98,7 @@ class ShablonController extends Controller
         return view('shablon.price',compact('id','products'));
     }
     public function priceMedStore(Request $request)
-    {
+    { 
         $inputs = $request->all();
         $shablon_id = $inputs['shablon_id'];
         unset($inputs['_token']);
@@ -120,7 +119,25 @@ class ShablonController extends Controller
             ]);
             $i++;
         }
-        return route('shablon.create');
+        $shablons = Shablon::with('medicine')->orderBy('id')->get();
+        return view('shablon.create',compact('shablons'));
     }
+
+    public function shablonActive($id)
+    {
+
+        $update = Shablon::where('id','>=',1)->update([
+            'active' => FALSE,
+        ]);
+        // return $id;
+        
+        $update2 = Shablon::where('id',$id)->update([
+            'active' => TRUE,
+        ]);
+        
+        return redirect()->back();
+
+    }
+
     
 }
