@@ -77,18 +77,16 @@
              @endif
              @endisset
 
-             <li>
-               <a href="{{route('shablon.create')}}"><i class="feather-filter"></i>  <span>Shablon</span></a>
-             </li>
+             @isset(Session::get('per')['narx'])
+             @if(Session::get('per')['narx'] == 'true')
              <li class="submenu">
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Shablon </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
                   <li><a href="{{route('shablon.create')}}">Shablon yaratish</a></li>
-                  {{-- <li><a href="{{route('pill-question.create')}}">Asosiy kategoriya</a></li>
-                  <li><a href="{{route('condition-question.create')}}">Ichki kategoriya</a></li>
-                  <li><a href="{{route('knowledge-question.create')}}">Savollar</a></li> --}}
                </ul>
             </li>
+            @endif
+             @endisset
              @isset(Session::get('per')['show_purchase'])
              @if(Session::get('per')['show_purchase'] == 'true')
              <li><a href="{{route('purchase.journal')}}"><i class="feather-filter"></i>  <span>Taxrirlash tarixi </span></a>

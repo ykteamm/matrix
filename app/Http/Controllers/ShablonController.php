@@ -131,13 +131,12 @@ class ShablonController extends Controller
             ]);
             $i++;
         }
-        $shablons = Shablon::with('medicine')->orderBy('id')->get();
-        return view('shablon.create',compact('shablons'));
+        return redirect()->route('shablon.create');
     }
 
-    public function shablonActive($id)
+    public function shablonActive(Request $request,$id)
     {
-
+        // return $id;
         $update = Shablon::where('id','>=',1)->update([
             'active' => FALSE,
         ]);

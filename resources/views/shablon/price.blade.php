@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div> --}}
-            <form action="{{route('price-med.store')}}" method="POST">
+            <form action="{{route('price-medic.store')}}" method="POST">
                 @csrf
             <div class="row" style="overflow-x: scroll;height:700px">
                 <div class="col-md-10 ml-4 mr-4">

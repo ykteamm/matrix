@@ -43,9 +43,9 @@
                                 <td>{{$shablon->name}}</td>
                                 <td>  
                                     @if (isset($shablon->medicine[0]))
-                                    <a href="{{route('price-med',$shablon->id)}}">
-                                        <span class="badge bg-info-light">Narxlarni o'zgartirish</span> 
-                                     </a>
+                                    {{-- <a href="{{route('price-med',$shablon->id)}}"> --}}
+                                        <span class="badge bg-success-light">Narxlar qoshilgna</span> 
+                                     {{-- </a> --}}
                                     @else
                                     <a href="{{route('price-med',$shablon->id)}}">
                                        <span class="badge bg-info-light">Narxlar qo'shish</span> 
