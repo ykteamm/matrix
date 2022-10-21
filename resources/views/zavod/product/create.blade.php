@@ -38,15 +38,35 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('warehouse.store') }}" method="POST">
+                            <form action="{{ route('product.store') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-md-4 col-sm-12">
-                                        <input type="text" placeholder="Sklad nomini kiriting"  name="name" class="form-control form-control-sm"/>
+                                        <input type="text" placeholder="Mahsulot nomini kiriting"  name="p_name" class="form-control form-control-sm"/>
                                     </div>
-                                    <div class="form-group col-md-4 col-sm-12">
-                                        <input type="number" placeholder="Sklad raqamini kiriting"  name="code" class="form-control form-control-sm"/>
+                                    <div class="form-group col-md-4 col-sm-6">
+                                        <input type="number" placeholder="Miqdorini kiriting"  name="amount" class="form-control form-control-sm"/>
                                     </div>
+                                    <div class="form-group col-md-4 col-sm-6">
+                                        <input type="number" placeholder="Miqdorini kodini kiriting"  name="code" class="form-control form-control-sm"/>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6">
+                                        <select class="form-control form-control-sm" name='product_category_id'>
+                                          <option value="" disabled selected hidden>O'lchamni tanlang</option>
+                                            @foreach ($categories as $item)
+                                                <option value='{{$item->id}}'>{{$item->cat_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6">
+                                        <select class="form-control form-control-sm" name='warehouse_id'>
+                                          <option value="" disabled selected hidden>Skladni tanlang</option>
+                                            @foreach ($warehouses as $item)
+                                                <option value='{{$item->id}}'>{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
                                     <div class="form-group col-md-4 col-sm-12">
                                             <button type="submit" style="width:100%;" class="btn btn-primary"> Saqlash </button>
                                     </div>
@@ -68,13 +88,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach ($warehouses as $key => $item)
+                            {{-- @foreach ($warehouses as $key => $item)
                                 <tr>
                                     <td>{{$key+1}}</td>
                                     <td>{{$item->name}}</td>
                                     <td>{{$item->code}}</td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>

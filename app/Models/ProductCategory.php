@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Warehouse extends Model
+class ProductCategory extends Model
 {
     use HasFactory;
 
-    protected $table = 'tg_warehouses';
+    protected $table = 'tg_product_categories';
     protected $fillable = [
         'id',
-        'name',
-        'code',
-        'active',
+        'cat_name',
     ];
 }

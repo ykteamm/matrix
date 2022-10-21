@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Warehouse;
 use Illuminate\Http\Request;
-use App\Http\Requests\WarehouseRequest;
-class WarehouseController extends Controller
+use App\Models\ProductCategory;
+use App\Http\Requests\ProductCategoryRequest;
+
+class ProductCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,8 +25,8 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        $warehouses = Warehouse::all();
-        return view('zavod.warehouse.create',compact('warehouses'));
+        $categories = ProductCategory::all();
+        return view('zavod.category.create',compact('categories'));
     }
 
     /**
@@ -34,11 +35,11 @@ class WarehouseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(WarehouseRequest $request)
+    public function store(ProductCategoryRequest $request)
     {
         $inputs = $request->all();
 
-        $new = new Warehouse($inputs);
+        $new = new ProductCategory($inputs);
         $new->save();
         if($new->id)
         {

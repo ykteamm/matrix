@@ -144,11 +144,20 @@ class PlanController extends Controller
                 $interval++;
             }
         }
+        $qll=0;
         foreach ($r as $key => $item){
+
             $plan=Plan::where('user_id',$id)
                 ->where('medicine_id',substr($key,8))
                 ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->first();
-            if (isset($plan)&&($item!=0)){
+            $new_work_day=0;
+            $month_end= date('d', strtotime('last day of this month', time()));
+            for ($i=date('d');$i<=$month_end;$i++){
+                if ($arr[$i-1]=='true'){
+                    $new_work_day++;
+                }
+            }
+            if (isset($plan)&&($item!=0)&&$item!=null){
             $workday=$cal->work_day;
             $workday1=0;
             for($i=0;$i<date('d');$i++){
@@ -156,21 +165,13 @@ class PlanController extends Controller
                     $workday1++;
                 }
             };
-            $month_end= date('d', strtotime('last day of this month', time()));
             $old_one_day_plan=$plan->number/$cal->work_day;
             $plan->medicine_id= substr($key,8);
             $plan->number=round($item+$old_one_day_plan*$workday1);
             $plan->user_id=$id;
 
             $plan->update();
-            $new_work_day=0;
-            for ($i=date('d');$i<=$month_end;$i++){
-                if ($arr[$i-1]=='true'){
-                    $new_work_day++;
-                }
-            }
-            $new_one_day_plan=
-                $item/$new_work_day;
+            $new_one_day_plan= $item/$new_work_day;
             $pw=PlanWeek::where('plan_id',$plan->id)->where('medicine_id',substr($key,8))->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->get();
             $count=PlanWeek::where('plan_id',$plan->id)->where('medicine_id',substr($key,8))->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->count();
             for ($i=0;$i<$count;$i++){
@@ -213,75 +214,55 @@ class PlanController extends Controller
                     $plan->medicine_id= substr($key,8);
                     $plan->number=$item;
                     $plan->user_id=$id;
+                    $planweekdays=Plan::with('planweek')->latest()->first();
+                    $count=0;
+                    foreach ($planweekdays->planweek as $pweek){
+                        $count++;
+                    }
                     $plan->save();
-                        $workday=$cal->work_day;
-                        $count=0;
-                        $start=0;
-                        $sikl=0;
-                        if($workday>0&&$workday<14){
-                            $count==1;
-                        }elseif ($workday>=14&&$workday<=20){
-                            $count=2;
-                        }elseif ($workday>=21&&$workday<=26){
-                            $count=3;
-                        }else{
-                            $count=4;
-                        }
-//                dd($plan->number);
-                        $planwork=$plan->number/$cal->work_day;
-                        for($i=0;$i<$count;$i++){
-                            $pw=new PlanWeek();
-                            $pw->plan_id=$plan->id;
-                            $pw->user_id=$plan->user_id;
-                            if($workday>13){
-                                $pw->workday=7;
-                                $workday=$workday-7;
-                            }else{
-                                $pw->workday=$workday;
-
-                            }
-                            $ct=0;
-                            $cf=0;
-                            $l=$pw->workday;
-                            for($j=$start;$j<$start+$l;$j++){
-                                if($arr[$j]=='true'){
-                                    $ct++;
+                    $w=0;
+                    foreach ($planweekdays->planweek as $pweek){
+                        $w++;
+                        $pw=new PlanWeek();
+                        $pw->user_id=$id;
+                        $pw->medicine_id=substr($key,8);
+                        $pw->workday=$pweek->workday;
+                        $pw->startday=$pweek->startday;
+                        $pw->endday=$pweek->endday;
+                        $pw->calendar_id=$pweek->calendar_id;
+                        $pw->plan_id=$plan->id;
+                        if(date('d',strtotime($pweek->endday))>=date('d')){
+                            if ($w!=$count) {
+                                if($pw->startday>=date('d')){
+                                    $pw->plan=$new_one_day_plan*$pweek->workday;
                                 }else{
-                                    $cf++;
-                                    $l++;
-                                }
-
-                                if($ct==1){
-                                    $d=$j;
-                                    $d=$d.' day';
-                                    $pw->startday=date("Y-m-d", strtotime($d, strtotime((Carbon::now()->startOfMonth()))));
-                                }
-
-
-                                if($ct==$pw->workday){
-                                    $d=$j;
-                                    $start=$j+1;
-                                    $d=$d.' day';
-
-                                    $pw->endday=date("Y-m-d", strtotime($d, strtotime((Carbon::now()->startOfMonth()))));
-                                    if($i!=$count-1){
-                                        $pw->plan=round($planwork*$pw->workday);
-                                    }else{
-                                        $pw->plan=$plan->number;
+                                    $interval2 = 0;
+                                    for ($j = date('d') - 1; $j < date('d', strtotime($pw->endday)); $j++) {
+                                        if ($arr[$j] == 'true') {
+                                            $interval2++;
+                                        }
                                     }
-
-                                    $plan->number=$plan->number-$pw->plan;
-                                    $pw->calendar_id=$cal->id;
+                                    $pw->plan = round($new_one_day_plan * $interval2);
                                     $pw->save();
-                                    break;
-
+                                    $item = $item - round($new_one_day_plan * $interval2);
                                 }
+
+                            }else{
+                                $pw->plan=$item;
+                                $pw->save();
                             }
 
+                        }else{
+                            $pw->plan=0;
+                            $pw->save();
                         }
+                    }
+
+//
 
                 }
             }
+
         }
         return redirect()->route('elchi',['id'=>$id,'time'=>'today']);
     }

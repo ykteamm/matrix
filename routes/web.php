@@ -127,6 +127,10 @@ Route::get('shablon-active/{id}', [App\Http\Controllers\ShablonController::class
 
 
 Route::resource('warehouse',WarehouseController::class);
+Route::resource('product-category',ProductCategoryController::class);
+Route::resource('product',ProductController::class);
+
+Route::get('database', [App\Http\Controllers\BazaController::class,'database'])->name('database');
 
 #end-position
 #bro

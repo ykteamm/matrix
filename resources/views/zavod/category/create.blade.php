@@ -38,14 +38,11 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('warehouse.store') }}" method="POST">
+                            <form action="{{ route('product-category.store') }}" method="POST">
                                 @csrf
                                 <div class="row">
-                                    <div class="form-group col-md-4 col-sm-12">
-                                        <input type="text" placeholder="Sklad nomini kiriting"  name="name" class="form-control form-control-sm"/>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-12">
-                                        <input type="number" placeholder="Sklad raqamini kiriting"  name="code" class="form-control form-control-sm"/>
+                                    <div class="form-group col-md-8 col-sm-12">
+                                        <input type="text" placeholder="Sklad nomini kiriting"  name="cat_name" class="form-control form-control-sm"/>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-12">
                                             <button type="submit" style="width:100%;" class="btn btn-primary"> Saqlash </button>
@@ -64,15 +61,13 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Sklad nomi</th>
-                            <th scope="col">Sklad raqami</th>
                         </tr>
                         </thead>
                         <tbody>
-                            @foreach ($warehouses as $key => $item)
+                            @foreach ($categories as $key => $item)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{$item->name}}</td>
-                                    <td>{{$item->code}}</td>
+                                    <td>{{$item->cat_name}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
