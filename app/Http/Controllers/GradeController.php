@@ -50,28 +50,28 @@ class GradeController extends Controller
         {
             $user_question = UserQuestion::where('user_id',$items->user_id)->first();
             $d[] = $user_question;
-            return $d;
-            die();
-            $json_arr1 = json_decode($user_question['step1']);
-            $json_arr2 = json_decode($user_question->question_step);
-            foreach($json_arr1 as $key => $value)
-            {
-                foreach($value as $item)
-                {
-                    $ids = $items->user_id.$item;
-                    $question_step1[$ids] = PillQuestion::where('id',$item)->first();
-                }
-            }
-            foreach($json_arr2 as $key => $value)
-            {
-                foreach($value as $item)
-                {
-                    $ids = $items->user_id.$item;
-                    $know_questions[$ids] = KnowledgeQuestion::where('id',$item)->first();
-                }
-            }
+            // return $d;
+            // die();
+            // $json_arr1 = json_decode($user_question['step1']);
+            // $json_arr2 = json_decode($user_question->question_step);
+            // foreach($json_arr1 as $key => $value)
+            // {
+            //     foreach($value as $item)
+            //     {
+            //         $ids = $items->user_id.$item;
+            //         $question_step1[$ids] = PillQuestion::where('id',$item)->first();
+            //     }
+            // }
+            // foreach($json_arr2 as $key => $value)
+            // {
+            //     foreach($value as $item)
+            //     {
+            //         $ids = $items->user_id.$item;
+            //         $know_questions[$ids] = KnowledgeQuestion::where('id',$item)->first();
+            //     }
+            // }
         }
-
+        return $d;
         return view('all-grade',compact('departments','all_elchi','questions','grades','question_step1','know_questions'));
     }
     public function allGradeStore(Request $request)
