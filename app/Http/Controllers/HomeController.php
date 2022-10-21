@@ -905,6 +905,8 @@ class HomeController extends Controller
         for ($s=0;$s<4;$s++){
             $allweekplan[$s]=0;
         }
+        $plan_product = [];
+
         if ($plan){
             foreach ($ps as $p){
                 foreach ($p->planweek as $pw){
@@ -945,8 +947,6 @@ class HomeController extends Controller
                 }
                 $k++;
             }
-        }
-        $plan_product = [];
         foreach ($ps as $p){
 //            dd($p);
             foreach ($p->planweek as $pw) {
@@ -959,7 +959,22 @@ class HomeController extends Controller
                 $plan_product[] = array('plan' => $pw->plan, 'count' => $count, 'name' => $name, 'begin' => $pw->startday, 'end' => $pw->endday);
 //            }
             }
+
         }
+        $numbers=[];
+            $i=0;
+            foreach ($ps[0]->planweek as $item){
+                $numbers[$i]=0;
+                foreach ($plan_product as $t){
+                    if($item->startday==$t['begin']){
+                        $numbers[$i]+=$t['count'];
+                    }
+                }
+                $i++;
+
+            }
+        }
+        
         // return $step_array_grade_all;
         $pharmacy = Pharmacy::all();
         $pharmacy_user = PharmacyUser::where('tg_pharmacy_users.user_id',$id)

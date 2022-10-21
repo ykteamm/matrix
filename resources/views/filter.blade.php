@@ -213,6 +213,16 @@
 
       return date;
       }
+      function formatDate(date) {
+                        var hours = date.getHours();
+                        var minutes = date.getMinutes();
+                        var ampm = hours >= 12 ? 'pm' : 'am';
+                        hours = hours % 12;
+                        hours = hours ? hours : 12; // the hour '0' should be '12'
+                        minutes = minutes < 10 ? '0'+minutes : minutes;
+                        var strTime = hours + ':' + minutes + ' ' + ampm;
+                        return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+                        }
        function ageChart(name,id,ids,cate){
           if(cate){
           var cate = $("#age_button3").attr('title');
@@ -261,17 +271,24 @@
                   var yulduz = <?php echo json_encode( Session::get('per') ) ?>;
                   
                    $.each(response.data, function(index, value){
+
+                     
+                     var dateff = new Date(value.m_data);
+                     var fsdf = addHours(5, dateff);
+
+                     var e = formatDate(fsdf);
+                        
                       var d = new Date(value.m_data);
 
                      // var newd = addHours(5, value.m_data)
                      var dateff = new Date(value.m_data);
-                     var fsdf = addHours(5, dateff);
+                     // var fsdf = addHours(5, dateff);
 
                             var curr_day = d.getDate();
                             var curr_month = d.getMonth();
                             var curr_year = d.getFullYear();
-                            var curr_hour = fsdf.getHours();
-                            var curr_minutes = fsdf.getMinutes();
+                            var curr_hour = dateff.getHours();
+                            var curr_minutes = dateff.getMinutes();
  
                             curr_month++
                             if(curr_month < 10)
@@ -299,7 +316,7 @@
                                      '" type="number" name="" class="form-control form-control-sm" required/></td>'+
                                      '<td>'+ value.r_name +'</td>'+
                                      '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
-                                     '<td>'+ curr_hour + ':' + ddatem + '</td>'+
+                                     '<td>'+ curr_hour + ':' + ddatem +'</td>'+
                                      '<td class="text-right cancel-edit'+value.sid+value.t_id+'"><a type="button" onclick="editpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-primary mr-2"><i class="fas fa-edit mr-1"></i></a></td>'+
                                      '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="cancelpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-danger mr-2"><i class="fas fa-times mr-1"></i></a></td>'+
                                      '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="savepurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-save mr-1"></i></a></td>'+
