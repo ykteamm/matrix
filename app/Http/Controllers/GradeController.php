@@ -49,7 +49,7 @@ class GradeController extends Controller
         {
             $user_question = UserQuestion::where('user_id',$items->user_id)->first();
 
-            if($user_question->id)
+            if($user_question)
             {
             $json_arr1 = json_decode($user_question->step1);
             $json_arr2 = json_decode($user_question->question_step);
