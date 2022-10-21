@@ -27,21 +27,20 @@ class ShablonController extends Controller
      */
     public function create()
     {
-        $asd = DB::table('tg_medicine')->where('id','<',61)->get();
-        $ary = [];
-        foreach($asd as $key => $a)
-        {
-            $ids = ($a->id)+60;
-            $up = DB::table('tg_productssold')
-            ->where('id','>',13487)
-            ->where('medicine_id',$a->id+60)
-            ->update([
-                'medicine_id' => $a->id,
-                'price_product' => $a->price,
-            ]);
-            // $ary[]=$ids;
-        }
-        return $up;
+        // $asd = DB::table('tg_medicine')->where('id','<',61)->get();
+        // $ary = [];
+        // foreach($asd as $key => $a)
+        // {
+        //     $ids = ($a->id)+60;
+        //     $up = DB::table('tg_productssold')
+        //     ->where('id','>',13487)
+        //     ->where('medicine_id',$a->id+60)
+        //     ->update([
+        //         'medicine_id' => $a->id,
+        //         'price_product' => $a->price,
+        //     ]);
+        // }
+        // return $up;
         $shablons = Shablon::with('medicine')->orderBy('id')->get();
         return view('shablon.create',compact('shablons'));
     }
