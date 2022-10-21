@@ -148,7 +148,7 @@ class PlanController extends Controller
             $plan=Plan::where('user_id',$id)
                 ->where('medicine_id',substr($key,8))
                 ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->first();
-            if (isset($plan)){
+            if (isset($plan)&&($item!=0)){
             $workday=$cal->work_day;
             $workday1=0;
             for($i=0;$i<date('d');$i++){
@@ -171,8 +171,8 @@ class PlanController extends Controller
             }
             $new_one_day_plan=
                 $item/$new_work_day;
-            $pw=PlanWeek::where('plan_id',$plan->id)->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->get();
-            $count=PlanWeek::where('plan_id',$plan->id)->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->count();
+            $pw=PlanWeek::where('plan_id',$plan->id)->where('medicine_id',substr($key,8))->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->get();
+            $count=PlanWeek::where('plan_id',$plan->id)->where('medicine_id',substr($key,8))->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->count();
             for ($i=0;$i<$count;$i++){
 
                 if($i==0){

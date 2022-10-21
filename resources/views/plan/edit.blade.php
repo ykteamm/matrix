@@ -31,7 +31,7 @@
                         @endphp
 
                         <td>
-                            <input type="number" name="numbers.{{$medicine->id}}"  value="{{$number}}">
+                            <input type="number" name="numbers.{{$medicine->id}}"  value="0">
                         </td>
                     </tr>
                 @endforeach

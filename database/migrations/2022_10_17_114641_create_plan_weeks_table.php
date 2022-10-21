@@ -18,6 +18,7 @@ class CreatePlanweeksTable extends Migration
             $table->foreignId('plan_id');
             $table->integer('user_id');
             $table->foreignId('calendar_id');
+            $table->foreignId('medicine_id');
             $table->integer('workday');
             $table->integer('plan');
             $table->date('startday');

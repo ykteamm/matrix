@@ -4549,6 +4549,9 @@ table.table-inbox tbody tr.checked {
 .detail-box15 {
 	background: linear-gradient(to top, rgb(148 231 123) 0%, rgb(92 205 61) 30%, rgb(51 169 21) 100%);
 }
+.detail-box17 {
+    background: linear-gradient( 313deg, hsl(62, 96%, 51%) 0%, hsla(65, 80%, 32%, 0.88) 30%, hsl(224deg 95% 8%) 65% );
+}
 .details-box:before {
 	content: "";
 	position: absolute;

@@ -92,7 +92,7 @@
              <li class="submenu">
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Zavod </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
-                  <li><a href="{{route('shablon.create')}}">Sklad yaratish</a></li>
+                  <li><a href="{{route('warehouse.create')}}">Sklad yaratish</a></li>
                </ul>
             </li>
             @endif

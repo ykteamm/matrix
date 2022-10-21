@@ -125,6 +125,9 @@ Route::get('prices/{id}', [App\Http\Controllers\ShablonController::class,'priceM
 Route::post('prices-store', [App\Http\Controllers\ShablonController::class,'priceMedStore'])->name('price-medic.store');
 Route::get('shablon-active/{id}', [App\Http\Controllers\ShablonController::class,'shablonActive'])->name('shablon-active');
 
+
+Route::resource('warehouse',WarehouseController::class);
+
 #end-position
 #bro
 Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');

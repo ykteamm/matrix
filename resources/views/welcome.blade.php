@@ -95,11 +95,11 @@
 
                         @endif
                      </div>
-                     
+
                    </div>
-                   
+
                 </div>
-                
+
              </div>
              <div class="content container-fluid headbot">
                <div class="row">
@@ -121,7 +121,7 @@
                                        <div class="form-group col-md-4">
                                                <button type="submit" class="btn btn-primary"> Saqlash </button>
                                        </div>
-                                       
+
                                    </div>
                                </form>
                            </div>
@@ -139,35 +139,47 @@
 
           @foreach($ps[0]->planweek as $pw)
 
+
             <div style="display: none" onclick="show_week(`{{substr($pw->startday,8)}}`)" class="table-plans container btn col-12 col-md-6 col-lg-3 d-flex flex-wrap delcat">
-            <div style="display: none" style="border-radius:26px;" class="card table-plans detail-box13">
-               <div class="card-body"><div class="dash-contetnt">
-                  <h2 style="background: -webkit-linear-gradient(#ADD100, #7B920A);-webkit-background-clip: text;
+
+            <div style="display: none" style="border-radius:26px;" class="card table-plans
+            @if($numbers[$t] >= $allweekplan[$t])
+            detail-box12
+            @elseif($numbers[$t] < $allweekplan[$t] && $numbers[$t] != 0)
+            detail-box17
+            @else
+            detail-box13
+            @endif
+
+
+            ">
+                <div class="card-body"><div class="dash-content">
+                        <h2 style="    background: -webkit-linear-gradient(#77f9ed, #c649d5);-webkit-background-clip: text;
 -webkit-text-fill-color: transparent;text-align:center;font-size:40px;font-family:Gilroy;"><b>
-                        <span>{{$numbers[$t]}}</span>/
-                        <span>{{$allweekplan[$t]}}</span>
-                      </b>
-                  </h2>
-                  <h1 style="color:#ffffff;margin-left:0px;">
-                     <div class="row">
-                        <div style="font-size:20px; z-index:1000;padding-left: 0px !important;padding-right: 0px !important" class="col-md-4">{{date('d.m',strtotime($pw->startday))}}</div>
-                        <div class="col-md-4" style="position:relative; z-index:1 padding-left: 0px !important;padding-right: 0px !important">
-                           <img style="position: absolute;top:-60%;left:-25%;height:50px; color: white; width:150%; " src="{{asset('assets/img/whiteArrow.png')}}">
+                                <span>{{$numbers[$t]}}</span>/
+                                <span>{{$allweekplan[$t]}}</span>
+                            </b>
+                        </h2>
+                        <h1 style="color:#ffffff;margin-left:0px;">
+                            <div class="row">
+                                <div style="font-size:20px; z-index:1000;padding-left: 0px !important;padding-right: 0px !important" class="col-md-4">{{date('d.m',strtotime($pw->startday))}}</div>
+                                <div class="col-md-4" style="position:relative; z-index:1; padding-left: 0px !important;padding-right: 0px !important">
+                                    <img style="position: absolute;top:-60%;left:-25%;height:50px; color: white; width:150%; " src="{{asset('assets/img/whiteArrow.png')}}">
 
-                        </div>
-                        <div style=" z-index:1000; font-size: 20px;padding-left: 0px !important;padding-right: 0px !important" class="col-md-4">{{date('d.m',strtotime($pw->endday))}}</div>
-                     </div>
-                        {{-- <span class="" title="5.203.100">
-                           <span style="font-size: 15px" class="numberkm">{{date('d.m',strtotime($pw->startday))}}</span>
-                           <span style="width: 4px; height: 20px; margin-top: 2px">
-                              <img style="color: white; margin-top: 0px; height: 50px; width: 130px;" src="{{asset('assets/img/whiteArrow.png')}}">
-                           </span>
-                           <span style="font-size: 15px" class="numberkm">{{date('d.m',strtotime($pw->endday))}}</span>
-                        </span> --}}
-                  </h1>
+                                </div>
+                                <div style=" z-index:1000; font-size: 20px;padding-left: 0px !important;padding-right: 0px !important" class="col-md-4">{{date('d.m',strtotime($pw->endday))}}</div>
+                            </div>
+                            {{-- <span class="" title="5.203.100">
+                               <span style="font-size: 15px" class="numberkm">{{date('d.m',strtotime($pw->startday))}}</span>
+                               <span style="width: 4px; height: 20px; margin-top: 2px">
+                                  <img style="color: white; margin-top: 0px; height: 50px; width: 130px;" src="{{asset('assets/img/whiteArrow.png')}}">
+                               </span>
+                               <span style="font-size: 15px" class="numberkm">{{date('d.m',strtotime($pw->endday))}}</span>
+                            </span> --}}
+                        </h1>
 
-               </div>
-            </div>
+                    </div>
+                </div>
             </div>
             </div>
       @php $t++; @endphp

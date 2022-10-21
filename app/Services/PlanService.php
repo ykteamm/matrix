@@ -15,7 +15,7 @@ class PlanService
         $r=$request->all();
         unset($r['_token']);
         date_default_timezone_set('Asia/Tashkent');
-        $cal=Calendar::where('year_month','10.2022')->first();
+        $cal=Calendar::where('year_month',date('m.Y'))->first();
         $arr=json_decode($cal->day_json);
 
         foreach ($r as $key => $item){
@@ -53,7 +53,7 @@ class PlanService
                     $l=$pw->workday;
                     for($j=$start;$j<$start+$l;$j++){
 
-                        
+
                         if($arr[$j]=='true'){
                             $ct++;
                         }else{
@@ -82,6 +82,7 @@ class PlanService
 
                             $plan->number=$plan->number-$pw->plan;
                             $pw->calendar_id=$cal->id;
+                            $pw->medicine_id=$plan->medicine_id;
                             $pw->save();
                             break;
 

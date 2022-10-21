@@ -45,10 +45,11 @@ class GradeController extends Controller
         }
         $question_step1 = [];
         $know_questions = [];
-
         foreach($all_elchi as $items)
         {
             $user_question = UserQuestion::where('user_id',$items->user_id)->first();
+            return json_decode($user_question->step1);
+            die();
             foreach(json_decode($user_question->step1) as $key => $value)
             {
                 foreach($value as $item)
