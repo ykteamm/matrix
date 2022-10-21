@@ -87,6 +87,16 @@
             </li>
             @endif
              @endisset
+             @isset(Session::get('per')['zavod'])
+             @if(Session::get('per')['zavod'] == 'true')
+             <li class="submenu">
+               <a href="settings.html"><i class="feather-sliders"></i>  <span> Zavod </span><span class="menu-arrow"></span></a>
+               <ul style="display: none;">
+                  <li><a href="{{route('shablon.create')}}">Sklad yaratish</a></li>
+               </ul>
+            </li>
+            @endif
+             @endisset
              @isset(Session::get('per')['show_purchase'])
              @if(Session::get('per')['show_purchase'] == 'true')
              <li><a href="{{route('purchase.journal')}}"><i class="feather-filter"></i>  <span>Taxrirlash tarixi </span></a>

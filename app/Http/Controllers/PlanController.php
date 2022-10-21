@@ -57,7 +57,7 @@ class PlanController extends Controller
     public function store(Request $request,$id)
     {
         $this->service->store($request, $id);
-        return redirect()->back();
+       return redirect()->route('elchi',['id'=>$id,'time'=>'today']);
 
     }
 
@@ -137,83 +137,73 @@ class PlanController extends Controller
         date_default_timezone_set('Asia/Tashkent');
         $cal=Calendar::where('year_month','10.2022')->first();
         $arr=json_decode($cal->day_json);
+
+        $interval=0;
+        for($i=0;$i<date('d');$i++){
+            if($arr[$i]=='true'){
+                $interval++;
+            }
+        }
         foreach ($r as $key => $item){
             $plan=Plan::where('user_id',$id)
                 ->where('medicine_id',substr($key,8))
                 ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->first();
             if (isset($plan)){
+            $workday=$cal->work_day;
+            $workday1=0;
+            for($i=0;$i<date('d');$i++){
+                if ($arr[$i]=='true'){
+                    $workday1++;
+                }
+            };
+            $month_end= date('d', strtotime('last day of this month', time()));
+            $old_one_day_plan=$plan->number/$cal->work_day;
             $plan->medicine_id= substr($key,8);
-            $plan->number=$item;
+            $plan->number=round($item+$old_one_day_plan*$workday1);
             $plan->user_id=$id;
 
             $plan->update();
-            $pw=PlanWeek::where('plan_id',$plan->id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
-                    $workday=$cal->work_day;
-                    $count=0;
-                    $start=0;
-                    $sikl=0;
-                    if($workday>0&&$workday<14){
-                        $count==1;
-                    }elseif ($workday>=14&&$workday<=20){
-                        $count=2;
-                    }elseif ($workday>=21&&$workday<=26){
-                        $count=3;
-                    }else{
-                        $count=4;
-                    }
-//                dd($plan->number);
-                    $planwork=$plan->number/$cal->work_day;
-                    for($i=0;$i<$count;$i++){
+            $new_work_day=0;
+            for ($i=date('d');$i<=$month_end;$i++){
+                if ($arr[$i-1]=='true'){
+                    $new_work_day++;
+                }
+            }
+            $new_one_day_plan=
+                $item/$new_work_day;
+            $pw=PlanWeek::where('plan_id',$plan->id)->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->get();
+            $count=PlanWeek::where('plan_id',$plan->id)->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->count();
+            for ($i=0;$i<$count;$i++){
 
-                        $pw[$i]->plan_id=$plan->id;
-                        $pw[$i]->user_id=$plan->user_id;
-                        if($workday>13){
-                            $pw[$i]->workday=7;
-                            $workday=$workday-7;
-                        }else{
-                            $pw[$i]->workday=$workday;
-
+                if($i==0){
+                    $interval1=0;
+                    $interval2=0;
+//                    dd(date('d',strtotime($pw[$i]->startday)));
+                    for($j=date('d',strtotime($pw[$i]->startday));$j<date('d');$j++){
+                        if($arr[$j]=='true'){
+                            $interval1++;
                         }
-                        $ct=0;
-                        $cf=0;
-                        $l=$pw[$i]->workday;
-                        for($j=$start;$j<$start+$l;$j++){
-                            if($arr[$j]=='true'){
-                                $ct++;
-                            }else{
-                                $cf++;
-                                $l++;
-                            }
-
-                            if($ct==1){
-                                $d=$j;
-                                $d=$d.' day';
-                                $pw[$i]->startday=date("Y-m-d", strtotime($d, strtotime((Carbon::now()->startOfMonth()))));
-                            }
-
-
-                            if($ct==$pw[$i]->workday){
-                                $d=$j;
-                                $start=$j+1;
-                                $d=$d.' day';
-
-                                $pw->endday=date("Y-m-d", strtotime($d, strtotime((Carbon::now()->startOfMonth()))));
-                                if($i!=$count-1){
-                                    $pw[$i]->plan=round($planwork*$pw[$i]->workday);
-                                }else{
-                                    $pw[$i]->plan=$plan->number;
-                                }
-
-                                $plan->number=$plan->number-$pw[$i]->plan;
-                                $pw[$i]->calendar_id=$cal->id;
-                                $pw[$i]->update();
-                                break;
-
-                            }
-                        }
-
                     }
+                    for($j=date('d')-1;$j<date('d',strtotime($pw[$i]->endday));$j++){
+                        if($arr[$j]=='true'){
+                            $interval2++;
+                        }
+                    }
+                    $pw[$i]->plan=round($interval1*$old_one_day_plan)+round($new_one_day_plan*$interval2);
+                    $item=$item-round($new_one_day_plan*$interval2);
+                }else{
+                    if($i!=$count-1){
+                    $pw[$i]->plan=round($pw[$i]->workday*$new_one_day_plan);
+                    $item=$item-round($pw[$i]->workday*$new_one_day_plan);
+                    }
+                }
+                if ($i==$count-1){
+                    $pw[$i]->plan=$item;
+                }
+                $pw[$i]->update();
 
+
+            }
 
             }
             elseif ($item!=null){
@@ -293,7 +283,7 @@ class PlanController extends Controller
                 }
             }
         }
-        return redirect()->back();
+        return redirect()->route('elchi',['id'=>$id,'time'=>'today']);
     }
 
     /**
