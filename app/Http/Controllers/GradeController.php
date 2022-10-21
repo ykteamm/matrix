@@ -48,9 +48,9 @@ class GradeController extends Controller
         foreach($all_elchi as $items)
         {
             $user_question = UserQuestion::where('user_id',$items->user_id)->first();
-            return json_decode($user_question->step1);
-            die();
-            foreach(json_decode($user_question->step1) as $key => $value)
+            $json_arr1 = json_decode($user_question->step1);
+            $json_arr2 = json_decode($user_question->question_step);
+            foreach($json_arr1 as $key => $value)
             {
                 foreach($value as $item)
                 {
@@ -58,7 +58,7 @@ class GradeController extends Controller
                     $question_step1[$ids] = PillQuestion::where('id',$item)->first();
                 }
             }
-            foreach(json_decode($user_question->question_step) as $key => $value)
+            foreach($json_arr2 as $key => $value)
             {
                 foreach($value as $item)
                 {
