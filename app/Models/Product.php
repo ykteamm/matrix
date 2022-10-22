@@ -18,4 +18,19 @@ class Product extends Model
         'warehouse_id',
         'product_category_id',
     ];
+
+    public function journal()
+    {
+        return $this->hasMany(ProductJournal::class, 'product_id', 'id');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class,'warehouse_id','id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class,'product_category_id','id');
+    }
 }

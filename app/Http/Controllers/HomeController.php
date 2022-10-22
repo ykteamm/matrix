@@ -982,7 +982,20 @@ class HomeController extends Controller
         ->join('tg_pharmacy','tg_pharmacy.id','tg_pharmacy_users.pharma_id')
         ->orderBy('tg_pharmacy_users.created_at','DESC')->first();
         // return $pharmacy_user;
-        return view('welcome',compact('pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        $step3_get = DB::table('tg_knowledge_grades')
+                ->select('tg_knowledge_questions.name','tg_user.first_name','tg_user.last_name','tg_knowledge_grades.*')
+                ->where('tg_knowledge_grades.user_id',$id)
+                ->join('tg_knowledge_questions','tg_knowledge_questions.id','tg_knowledge_grades.knowledge_question_id')
+                ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
+                ->get();
+        $step3_get_user = DB::table('tg_knowledge_grades')
+                ->select('tg_user.first_name','tg_user.last_name','tg_user.id')
+                ->where('tg_knowledge_grades.user_id',$id)
+                ->join('tg_knowledge_questions','tg_knowledge_questions.id','tg_knowledge_grades.knowledge_question_id')
+                ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
+                ->distinct()
+                ->get();
+        return view('welcome',compact('step3_get_user','step3_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;

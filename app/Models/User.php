@@ -2,61 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = [
-        'hospital_id',
-        'branch_id',
-        'rol_id',
-        'user_name',
-        'user_phone',
-        'user_adress',
-        'email',
-        'password',
-    ];
+    protected $table = 'tg_user';
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function rol()
+    public function journal()
     {
-        return $this->belongsTo(Position::class,'rol_id','id');
+        return $this->hasMany(ProductJournal::class, 'user_id', 'id');
     }
-    public function hospital()
-    {
-        return $this->belongsTo(Hospital::class,'hospital_id','id');
-    }
-    public function branch()
-    {
-        return $this->belongsTo(Branch::class,'branch_id','id');
-    }
+
+    // public function condition_question()
+    // {
+    //     return $this->hasMany(ConditionQuestion::class,'pill_question_id','id');
+    // }
 }

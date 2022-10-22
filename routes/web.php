@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,6 +130,12 @@ Route::get('shablon-active/{id}', [App\Http\Controllers\ShablonController::class
 Route::resource('warehouse',WarehouseController::class);
 Route::resource('product-category',ProductCategoryController::class);
 Route::resource('product',ProductController::class);
+Route::post('product-plus/{id}', [App\Http\Controllers\ProductController::class,'productPlus'])->name('product.plus');
+Route::post('product-minus/{id}', [App\Http\Controllers\ProductController::class,'productMinus'])->name('product.minus');
+Route::get('product-journal', [App\Http\Controllers\ProductController::class,'productJournal'])->name('product-journal.show');
+Route::get('product/{id?}/trash', [App\Http\Controllers\ProductController::class,'trash'])->name('product.trash');
+Route::get('product/{id?}/delete', [App\Http\Controllers\ProductController::class,'destroy'])->name('product.delete');
+Route::get('product/{id?}/restore', [App\Http\Controllers\ProductController::class,'restore'])->name('product.restore');
 
 Route::get('database', [App\Http\Controllers\BazaController::class,'database'])->name('database');
 
@@ -139,6 +146,10 @@ Route::post('plan/create/{id}', [PlanController::class,'store'])->name('plan.sto
 Route::get('plan/{id}/edit', [PlanController::class,'edit'])->name('plan.edit');
 Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
 Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
+
+Route::get('user-control', [UserController::class,'index'])->name('user-control');
+Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
+Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');
 #end-bro
 
 });

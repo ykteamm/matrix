@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductJournal;
 use App\Models\ProductCategory;
 use App\Models\Warehouse;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -27,10 +29,15 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        $products = Product::with('warehouse','category')->orderBy('id','ASC')
+        ->where('delete',TRUE)
+        ->get();
+        $deletes = Product::with('warehouse','category')->orderBy('id','ASC')
+        ->where('delete',FALSE)
+        ->get();
         $categories = ProductCategory::all();
         $warehouses = Warehouse::all();
-        return view('zavod.product.create',compact('categories','warehouses','products'));
+        return view('zavod.product.create',compact('categories','warehouses','products','deletes'));
     }
 
     /**
@@ -96,6 +103,108 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $update = Product::find($id)->delete();
+        if($update)
+        {
+            return redirect()->back()->with('message',(__('message.save_success')));
+        }else{
+            return redirect()->back()->with('error',(__('message.save_error')));
+
+        }
     }
+    public function restore($id)
+    {
+        $update = Product::where('id',$id)->update([
+            'delete' => TRUE
+        ]);
+        if($update)
+        {
+            return redirect()->back()->with('message',(__('message.save_success')));
+        }else{
+            return redirect()->back()->with('error',(__('message.save_error')));
+
+        }
+    }
+
+    public function trash($id)
+    {
+        $update = Product::where('id',$id)->update([
+            'delete' => FALSE
+        ]);
+        if($update)
+        {
+            return redirect()->back()->with('message',(__('message.save_success')));
+        }else{
+            return redirect()->back()->with('error',(__('message.save_error')));
+
+        }
+    }
+
+    public function productPlus(Request $request,$id)
+    {
+        $amout = Product::find($id);
+        $update = Product::where('id',$id)->update([
+            'amount' => intval($amout->amount) + intval($request->plus)
+        ]);
+
+        if($update)
+        {   
+            $journal = new ProductJournal([
+                'user_id' => Session::get('user')->id,
+                'product_id' => $id,
+                'old' => $amout->amount,
+                'new' => $request->plus,
+                'action' => 1
+            ]);
+
+            $journal->save();
+
+            if($journal->id)
+            {
+                return redirect()->back()->with('message',(__('message.save_success')));
+            }
+
+        }else{
+            return redirect()->back()->with('error',(__('message.save_error')));
+
+        }
+    }
+
+    public function productMinus(Request $request,$id)
+    {
+        $amout = Product::find($id);
+        $update = Product::where('id',$id)->update([
+            'amount' => intval($amout->amount) - intval($request->plus)
+        ]);
+
+        if($update)
+        {   
+            $journal = new ProductJournal([
+                'user_id' => Session::get('user')->id,
+                'product_id' => $id,
+                'old' => $amout->amount,
+                'new' => $request->plus,
+                'action' => 2
+            ]);
+
+            $journal->save();
+
+            if($journal->id)
+            {
+                return redirect()->back()->with('message',(__('message.save_success')));
+            }
+
+        }else{
+            return redirect()->back()->with('error',(__('message.save_error')));
+
+        }
+    }
+    public function productJournal()
+    {
+        $journals = ProductJournal::with('product','user')->orderBy('id','DESC')->get();
+        return view('zavod.journal',compact('journals'));
+    }
+
+    
+
 }

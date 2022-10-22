@@ -106,6 +106,7 @@ if(!function_exists('wordSimilarity')){
         $h_positions['bilim'] = 'Bilim';
         $h_positions['narx'] = 'Narx';
         $h_positions['zavod'] = 'Zavod';
+        $h_positions['control'] = 'User control';
         $department = DB::table('tg_department')->where('status',1)->get();
         foreach ($department as $key => $value) {
             $h_positions['d'.$value->id] = $value->name;

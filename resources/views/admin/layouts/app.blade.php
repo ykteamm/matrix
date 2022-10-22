@@ -131,7 +131,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css">
     
 </head>
-<body onload = "load()">
+<body>
     <div class="main-wrapper">
         @include('admin.components.header')
         @include('admin.components.sidebar')
@@ -174,6 +174,12 @@ $(document).ready(function () {
 
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
+    $("#forware").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "order": [[ 4, "desc" ]]
+    }).buttons().container().appendTo('#for_ware .col-md-6:eq(0)');
+
     $("#example123").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
@@ -182,6 +188,12 @@ $(document).ready(function () {
     }).buttons().container().appendTo('#asdasd .col-md-6:eq(0)');
 
     $(".example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+
+    }).buttons().container().appendTo('#asdasd2 .col-md-6:eq(0)');
+
+    $(".forware").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
 

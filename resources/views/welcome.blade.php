@@ -9,7 +9,7 @@
           <div class="btn-group mr-5 ml-auto">
             <div class="row">
                <div class="col-md-12" align="center">
-                        Sana123
+                        Sana
                </div>
                <div class="col-md-12">
                   <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
@@ -27,7 +27,44 @@
        </div>
       </div>
 
+      @php
+      $i = 0;
+      $avgs = 0;
+      foreach ($pill_array as $key => $item)
+         {$i++;
+         $avgs += $item['avg'];}
+      // @endforeach
+      foreach ($step_array as $key => $item)
+        { $i++;
+         if($item['count'] == 0)
+         {
+            $avgs += 0;
+         }else{
+            $avgs += $item['avg']/$item['count'];
+         }
 
+      }
+      if($i == 0)
+         {
+            $all_avgs = 0;
+         }else{
+            $all_avgs = number_format($avgs/$i,2);
+
+         }
+      @endphp
+      @php
+          if($all_avgs != 0)
+          {
+            if($allavg == 0)
+            {
+               $allavg = $all_avgs;
+            }else{
+            $allavg = ($allavg + $all_avgs)/2;
+
+            }
+          }
+
+      @endphp
 <div class="content headbot">
     <div class="row">
        <div class="col-12 col-xl-4 d-flex flex-wrap">
@@ -231,31 +268,6 @@
                @foreach ($d_array as $key => $item)
                   <li class="nav-item"><a class="nav-link @if($key == 0) active @endif" href="#solid-justified-tab{{$key+1}}" data-toggle="tab">{{ $item['name'] }} ({{$item['avg']}})</a></li>
                @endforeach
-               @php
-               $i = 0;
-               $avgs = 0;
-               foreach ($pill_array as $key => $item)
-                  {$i++;
-                  $avgs += $item['avg'];}
-               // @endforeach
-               foreach ($step_array as $key => $item)
-                 { $i++;
-                  if($item['count'] == 0)
-                  {
-                     $avgs += 0;
-                  }else{
-                     $avgs += $item['avg']/$item['count'];
-                  }
-
-               }
-               if($i == 0)
-                  {
-                     $all_avgs = 0;
-                  }else{
-                     $all_avgs = number_format($avgs/$i,2);
-
-                  }
-               @endphp
             <li class="nav-item"><a class="nav-link" href="#solid-justified-tab-bilim" data-toggle="tab">Bilim
                ({{$all_avgs}})
             </a>
@@ -303,6 +315,70 @@
                   </div>
                   @endforeach
 
+               </div>
+               <div class="tab-pane" id="solid-justified-tab-bilim">
+                  <div class="tab-left">
+                  
+                     @foreach ($step3_get_user as $ite)
+                     {{-- @if($ite['depid'] == $item['id']) --}}
+                     
+                     <div class="d-flex mb-3">
+                        <div class="medicne d-flex">
+                           {{-- <a style="cursor: pointer" onclick="getQuestion(qd{{$ite['uid']}}{{$item['id']}})"> {{$ite['username']}}</a> --}}
+                           <a style="cursor: pointer"> {{$ite->last_name}} {{$ite->first_name}}</a>
+                          
+                        </div>
+                        <div class="medicne-time ml-auto">
+                           {{-- {{$ite->first_name}} --}}
+                        </div>
+                     </div>
+                     {{-- @endif --}}
+                     @foreach ($step3_get as $item)
+   
+                     <div class=" ml-4 allqd qd{{$ite->id}}{{$item->teacher_id}}" style="">
+                        @if($ite->id == $item->teacher_id)
+                        <div class="row">
+                           <div class="d-flex mb-3">
+                              <div class="medicne d-flex mr-4">
+                                 <span>{{$item->name}}</span>
+                              </div>
+                              <div class="medicne-time ml-auto mr-5">
+                                 {{$item->grade}}
+                              </div>
+                              <div class="medicne">
+                                 {{$item->created_at}}
+                              </div>
+                           </div>
+                        </div>
+                        
+
+                        @endif
+                        
+                     </div>
+                     @endforeach
+                     @foreach ($step3_get_user as $item)
+   
+                     {{-- <div class="tab-left ml-4 allqd qd{{$ite->id}}{{$item->teacher_id}}" style="">
+                        @if($ite->id == $item->teacher_id)
+                        <div class="d-flex mb-3">
+                           <div class="medicne d-flex">
+                              <span>{{$item->name}}</span>
+                           </div>
+                           <div class="medicne-time ml-auto mr-5">
+                              {{$item->grade}}
+                           </div>
+                           <div class="medicne">
+                              {{$item->created_at}}
+                           </div>
+                        </div>
+                        @endif
+                        
+                     </div> --}}
+                     @endforeach
+                     
+                     @endforeach
+                     
+                  </div>
                </div>
             @endforeach
 

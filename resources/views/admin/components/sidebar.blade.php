@@ -87,6 +87,14 @@
             </li>
             @endif
              @endisset
+
+             @isset(Session::get('per')['control'])
+             @if(Session::get('per')['control'] == 'true')
+             <li><a href="{{route('user-control')}}"><i class="feather-filter"></i>  <span>User Control</span></a>
+             </li>
+             @endif
+             @endisset
+
              @isset(Session::get('per')['zavod'])
              @if(Session::get('per')['zavod'] == 'true')
              <li class="submenu">
@@ -94,7 +102,8 @@
                <ul style="display: none;">
                   <li><a href="{{route('warehouse.create')}}">Sklad</a></li>
                   <li><a href="{{route('product-category.create')}}">O'lcham</a></li>
-                  <li><a href="{{route('product.create')}}">Mahlusot</a></li>
+                  <li><a href="{{route('product.create')}}">Mahsulot</a></li>
+                  <li><a href="{{route('product-journal.show')}}">Tarix</a></li>
                </ul>
             </li>
             @endif

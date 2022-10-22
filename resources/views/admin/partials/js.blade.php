@@ -14,7 +14,7 @@
  <script type="text/javascript" src="{{ asset('/assets/js/jquery.maskedinput.min.js') }}"></script>
  <script type="text/javascript" src="{{ asset('/assets/js/mask.js') }}"></script>
 
- <script src="{{asset('/assets/plugins/datatables/datatables/jquery.dataTables.min.js')}}"></script>
+ {{-- <script src="{{asset('/assets/plugins/datatables/datatables/jquery.dataTables.min.js')}}"></script> --}}
  <script src="{{asset('/assets/plugins/datatables/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
  <script src="{{asset('/assets/plugins/datatables/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
  <script src="{{asset('/assets/plugins/datatables/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>

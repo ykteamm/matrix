@@ -16,10 +16,11 @@ class CreateProductsTable extends Migration
         Schema::create('tg_products', function (Blueprint $table) {
             $table->id();
             $table->string('p_name');
-            $table->string('amount');
+            $table->double('amount',8,2);
             $table->string('code');
             $table->foreignId('warehouse_id');
             $table->foreignId('product_category_id');
+            $table->boolean('delete')->nullable()->default(true);
             $table->timestamps();
         });
     }
