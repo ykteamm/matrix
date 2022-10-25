@@ -87,15 +87,15 @@ class HomeController extends Controller
         //     'phone' => $phone,
         //     'message' => $message,
         // ];
-        
+
         // $ch = curl_init('https://api.smsfly.uz/send');
         // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        
+
         // // execute!
         // $response = curl_exec($ch);
-        
+
         // curl_close($ch);
 
         // return [
@@ -107,7 +107,7 @@ class HomeController extends Controller
         // dd($request);
         // \File::delete(public_path() . '/assets/img/'.$getimg);
         // $id =2;
-            
+
         $pharmacy = Pharmacy::all();
         // foreach($pharmacy as $item)
         // {
@@ -153,7 +153,7 @@ class HomeController extends Controller
         $user = DB::table('tg_productssold')
         ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price');
         $search = $user->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id');
-               
+
         // $search = $user->addSelect(DB::raw('count(*) as last'));
 
         $search = $user->groupBy('tg_medicine.name','tg_medicine.price')->get();
@@ -172,7 +172,7 @@ class HomeController extends Controller
         // ->where('department_id',DB::table('tg_department')->where('name','Bilim')->where('status',1)->first()->id)
         // ->delete();
         // DB::table('tg_department')->where('name','Bilim')->where('status',1)->delete();
-        
+
         // $deparid = DB::table('tg_productssold')->where('order_id',720)->update([
         //     'number' => 1
         // ]);
@@ -193,7 +193,7 @@ class HomeController extends Controller
         // return $regions;
         // $array = [1, 2, 3, 4, 5];
         // $pluck_id = PillQuestion::where('knowledge_id',3)->pluck('id');
- 
+
         // $random = array_rand($pluck_id,2);
         // return Carbon::now();
         // $users = DB::table('tg_user_questions')->where('id','>',470)->delete();
@@ -206,9 +206,9 @@ class HomeController extends Controller
         // {
         //     $step1_user = json_decode($user->step3);
         //     foreach($step1_user as $key => $value)
-        //     {   
-        //         if ($key == 2) {  
-        //             foreach($value as $v_item) 
+        //     {
+        //         if ($key == 2) {
+        //             foreach($value as $v_item)
         //             {
         //                 $step1_ids[] = $v_item;
         //             }
@@ -221,7 +221,7 @@ class HomeController extends Controller
         // if($pluck_id <= count($step1_ids))
         // {
         //     $max = floor(count($step1_ids) / $pluck_id);
-        //     for ($i=0; $i < $max*$pluck_id; $i++) { 
+        //     for ($i=0; $i < $max*$pluck_id; $i++) {
         //         array_splice($step1_ids,0,1);
         //     }
         // }
@@ -230,7 +230,7 @@ class HomeController extends Controller
 
         #save-bilim-ai
         // $knowledges = Knowledge::with('pill_question')->get();
-        // $users = DB::table('tg_user')->where('admin',FALSE)->get('id'); 
+        // $users = DB::table('tg_user')->where('admin',FALSE)->get('id');
         // $step1 = [];
         // $step3 = [];
         // $question_step = [];
@@ -239,8 +239,8 @@ class HomeController extends Controller
         // {
         //     $user_question = UserQuestion::where('user_id',$user_items->id)->get();
         //     foreach($knowledges as $key => $pills)
-        //     {   
-                
+        //     {
+
         //         if($pills->step == 1)
         //         {
         //             $step1_ids = [];
@@ -248,9 +248,9 @@ class HomeController extends Controller
         //                 {
         //                     $step1_user = json_decode($user->step1);
         //                     foreach($step1_user as $key => $value)
-        //                     {   
+        //                     {
         //                         if ($key == $pills->id) {
-        //                             foreach($value as $v_item) 
+        //                             foreach($value as $v_item)
         //                                 {
         //                                     $step1_ids[] = $v_item;
         //                                 }
@@ -269,8 +269,8 @@ class HomeController extends Controller
         //                             $max = floor(count($step1_ids) / $step1_count);
 
         //                         }
-                            
-        //                     for ($i=0; $i < $max*$step1_count; $i++) { 
+
+        //                     for ($i=0; $i < $max*$step1_count; $i++) {
         //                     unset($step1_ids[$i]);
         //                     }
         //                 }
@@ -291,9 +291,9 @@ class HomeController extends Controller
         //                 {
         //                     $step3_user = json_decode($user->step3);
         //                     foreach($step3_user as $key => $value)
-        //                     {   
+        //                     {
         //                         if ($key == $pills->id) {
-        //                             foreach($value as $v_item) 
+        //                             foreach($value as $v_item)
         //                                 {
         //                                     $step3_ids[] = $v_item;
         //                                 }
@@ -311,7 +311,7 @@ class HomeController extends Controller
         //                         $max = floor(count($step3_ids) / $step3_count);
 
         //                         }
-        //                         for ($i=0; $i < $max*$step3_count; $i++) { 
+        //                         for ($i=0; $i < $max*$step3_count; $i++) {
         //                         unset($step3_ids[$i]);
         //                         }
         //                     }
@@ -327,7 +327,7 @@ class HomeController extends Controller
         //             foreach($step3[$pills->id] as $item_key => $item)
         //             {
         //                 $condition_id = ConditionQuestion::where('pill_question_id',$item)->pluck('id');
-                    
+
         //                 foreach($condition_id as $condition_key => $condition)
         //                 {
         //                     $condition_item_id = KnowledgeQuestion::where('condition_question_id',$condition)->inRandomOrder()
@@ -337,7 +337,7 @@ class HomeController extends Controller
         //                 }
         //             }
         //         }
-                
+
         //     }
         //     $new_user_question = new UserQuestion([
         //         'user_id' => $user_items->id,
@@ -365,7 +365,7 @@ class HomeController extends Controller
         // {
         //     $step1_user = json_decode($user->step1);
         //     foreach($step1_user as $key => $value)
-        //     {   
+        //     {
         //         if ($key == 3) {
         //             $step1_ids[] = $value[0];
         //         }
@@ -413,7 +413,7 @@ class HomeController extends Controller
         {
         $regions = DB::table('tg_region')->get();
         $users = DB::table('tg_user')
-        ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
+        ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->get();
         }else{
@@ -426,7 +426,7 @@ class HomeController extends Controller
             $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
             $users = DB::table('tg_user')
             ->whereIn('tg_region.id',$r_id_array)
-            ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
+            ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->get();
         }
@@ -456,9 +456,9 @@ class HomeController extends Controller
         // $exists = Storage::disk('public_uploads')->exists(substr($getimg,6));
         // // return $exists;
         // if(!$exists) {
-            
+
         // }
-        
+
 
         if ($time == 'today') {
             $date_begin = today();
@@ -490,7 +490,7 @@ class HomeController extends Controller
             $date_end = substr($time,11);
             $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
 
-        }  
+        }
         // return  substr("$time",0,10);
         $elchi = DB::table('tg_user')->where('tg_user.id',$id)
         ->select('tg_user.image_url','tg_specialty.name as lv','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name','tg_district.name as d_name')
@@ -527,7 +527,7 @@ class HomeController extends Controller
             foreach ($medicine_cate as $mkey => $med) {
 
                 $medicineall[$mkey] = array('price' => 0,'number' => 0, 'name' => $med->m_name,'cid'=>$med->c_id);
-                
+
 
             }
             foreach ($medicine_cate as $mkey => $med) {
@@ -581,7 +581,7 @@ class HomeController extends Controller
                     $catesum = 0;
 
             }
-           
+
             if(count($cateory) == 0)
             {
                 foreach ($category as $key => $value) {
@@ -631,7 +631,7 @@ class HomeController extends Controller
             foreach($department as $depar)
             {
         $question = DB::table('tg_question')->where('department_id',$depar->id)->get();
-        
+
 
         foreach($users as $dnam)
         {
@@ -707,13 +707,13 @@ class HomeController extends Controller
         $d_array[] = array('id'=>$depar->id,'name' => $depar->name,'avg' => number_format($allsavguser, 2));
         $d_for_user2 = [];
 
-        
+
 
         }
         $davg = 0;
         $maxnol = 0;
         foreach($d_array as $dr)
-        {   
+        {
             if($dr['avg'] > 0)
             {
                 $maxnol +=1;
@@ -725,7 +725,7 @@ class HomeController extends Controller
             $allavg =0;
         }else{
 
-        
+
         $allavg = $davg/$maxnol;
         }
 
@@ -748,7 +748,7 @@ class HomeController extends Controller
             if(count($tashqi) != 0)
             {
 
-            
+
             foreach($tashqi as $tq)
             {
                 if($cl == $tq->teacher_id)
@@ -758,12 +758,12 @@ class HomeController extends Controller
             }
 
                 $altgarde += $tgrade/count($tashqi);
-            
+
             }else{
                 $altgarde += 0;
 
             }
-            
+
         }
 
         if(count($client) == 0)
@@ -807,7 +807,7 @@ class HomeController extends Controller
         $step_array = [];
         $step_array_counter = [];
         $step_array_grade_all = [];
-        
+
         foreach($knowledges as $knowledge)
         {
             if($knowledge->step == 1){
@@ -855,7 +855,7 @@ class HomeController extends Controller
             if($knowledge->step == 3){
 
                 $condition_step = DB::table('tg_pill_questions')->where('knowledge_id',$knowledge->id)->get();
-                
+
                 foreach($condition_step as $key_con => $con)
                 {
             $pill_counter = 0;
@@ -887,13 +887,13 @@ class HomeController extends Controller
                             }
                         }
                 }
-                        
+
                 }
 
-                
+
             }
-            
-            
+
+
         }
         $plan=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->exists();
         $ps=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->with('planweek')->get();
@@ -974,7 +974,7 @@ class HomeController extends Controller
 
             }
         }
-        
+
         // return $step_array_grade_all;
         $pharmacy = Pharmacy::all();
         $pharmacy_user = PharmacyUser::where('tg_pharmacy_users.user_id',$id)
@@ -1027,7 +1027,7 @@ class HomeController extends Controller
                     foreach ($users as $key => $value) {
                         $userarrayreg[] = $value->id;
                     }
-            
+
         }
 
         $elchi = DB::table('tg_user')
@@ -1070,10 +1070,10 @@ class HomeController extends Controller
         if(isset($date[0]))
         {
 
-        
+
         $all_date=[];
         foreach($cale_date as $key => $value)
-        {   
+        {
             if($value == 'true' && $key <=  date('d',(strtotime ( $date[0] ) )))
             {
                 if (strlen($key) == 1) {
@@ -1094,7 +1094,7 @@ class HomeController extends Controller
             if(date('l',(strtotime ( $d ) )) == 'Sunday')
             {
                 $sunday = $sunday + 1;
-                
+
             }
         }
 
@@ -1102,7 +1102,7 @@ class HomeController extends Controller
         $pr = count($all_date)+$sunday;
         // return $date;
         $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
-        
+
                 $user = DB::table('tg_productssold')
                 ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price')
                 ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
@@ -1238,7 +1238,7 @@ class HomeController extends Controller
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,11)) ) ));
             $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
 
-        }  
+        }
         $r_id_array = [];
 
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
@@ -1307,8 +1307,8 @@ class HomeController extends Controller
 
                         $medic[$mkey] = array('mid'=>$one->m_id,'narx'=>$med->price,'price' => $medisum,'number' => $number, 'name' => $med->name,'cid' => $one->c_id,'nol' => 1);
                     }
-                    
-            
+
+
                 }
                     $medisum = 0;
                     $number = 0;
@@ -1353,8 +1353,8 @@ class HomeController extends Controller
 
                         $medic2[$mkey] = array('mid'=>$one->m_id,'narx'=>$med->price,'price' => $medisum,'number' => $number, 'name' => $med->name,'cid' => $one->c_id,'nol' => 1);
                     }
-                    
-            
+
+
                 }
                     $medisum = 0;
                     $number = 0;
@@ -1378,7 +1378,7 @@ class HomeController extends Controller
             //     unset($alls22[$key]->mid);
             // }
             $medic2 = $alls22;
-            
+
         return view('product',compact('medic','medic2','category','dateText'));
     }
     public function userOnlineStatus()
@@ -1446,7 +1446,7 @@ class HomeController extends Controller
         // $text4 = 'Mozilla/5.0 (Linux; Android 12; M2101K7AG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Mobile Safari/537.36';
         // $text3 = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.50';
         // return wordSimilarity($agent, $text4);
-        
+
         $get_agent = DB::table('tg_client')->get();
         $agent_array = [];
         $max=0;
@@ -1501,10 +1501,10 @@ class HomeController extends Controller
         $year = substr($month,3);
         $months = substr($month,0,-5);
         $maxday =  Carbon::now()->year($year)->month($months)->daysInMonth;
-        $dates = []; 
-    
+        $dates = [];
+
         $ym = DB::table('tg_calendar')->where('year_month',$month)->value('day_json');
-       
+
         if($ym)
         {
             $ym_json = json_decode($ym);
@@ -1518,7 +1518,7 @@ class HomeController extends Controller
         }else{
             $ym_json = NULL;
         }
-            
+
     for($i=1; $i < $maxday + 1; ++$i) {
         $dayName = \Carbon\Carbon::createFromDate($year,$months, $i)->format('l');
         $day = \Carbon\Carbon::createFromDate($year, $months, $i)->format('d');
@@ -1554,6 +1554,6 @@ class HomeController extends Controller
         return view('user.login');
     }
 
-    
+
 
 }
