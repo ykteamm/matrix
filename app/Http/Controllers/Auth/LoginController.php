@@ -53,14 +53,16 @@ class LoginController extends Controller
         ]);
         $user = DB::table('tg_user')->where('username',$request->login)
         ->where('pr',$request->password)
-        ->where('admin',true)->exists();
+        // ->where('admin',true)
+        ->exists();
         // return $user;
 
         if($user)
         {
             $userd = DB::table('tg_user')->where('username',$request->login)
         ->where('pr',$request->password)
-        ->where('admin',true)->first();
+        // ->where('admin',true)
+        ->first();
             $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
             $pcode = json_decode($per->position_json,TRUE);

@@ -13,8 +13,36 @@ class GradeController extends Controller
 {
     public function allGrade()
     {
+        $userarrayreg = [];
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        {
+            $users = DB::table('tg_user')
+                    ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+        }else{
+            $r_id_array = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $r_id_array[] = $key;
+                        }
+                    }
+                    $users = DB::table('tg_user')
+                    ->whereIn('tg_region.id',$r_id_array)
+                    ->select('tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            
+        }
         $all_elchi = DB::table('tg_user')
             ->where('tg_user.admin',FALSE)
+            ->whereIn('tg_user.id',$userarrayreg)
             ->select('tg_region.id','tg_region.name as v_name','tg_user.username','tg_user.id as user_id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->orderBy('tg_user.admin','DESC')->get();
