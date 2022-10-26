@@ -70,14 +70,14 @@
                  <div class="btn-group">
                      <div class="row">
                         <div class="col-md-12" align="center">
-                                 Elchilar
+                                 Elchi
                         </div>
                         <div class="col-md-12">
                            <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button4" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
                            <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
                               <a href="#" onclick="users('Hammasi','all')" class="dropdown-item" id="addregionall"> Hammasi </a>
                               @foreach($users as $user)
-                              <a href="#" onclick="users(`{{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall">{{$user->username}}&nbsp {{$user->last_name}}&nbsp  {{$user->first_name}}</a>
+                              <a href="#" onclick="users(`{{$user->username}} {{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall">{{$user->username}}&nbsp {{$user->last_name}}&nbsp  {{$user->first_name}}</a>
                               @endforeach
                            </div>
                         </div>
@@ -254,12 +254,13 @@
              },
              success:function(response){
                 if(response) {
+                    console.log(response)
                   $('.regionall').remove();
 
                   $.each(response.reid, function(index, value){
 
-                     var $row = $('<a onclick="users(`'+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall" >'
-                                       + value.last_name + value.first_name +
+                     var $row = $('<a onclick="users(`'+value.username +''+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall df" ><strong>'
+                         + value.username +'</strong>'+" | "+ value.last_name +"  "+ value.first_name +
                                   '</a>');
                      $('#addregionall').after($row);
 
@@ -308,7 +309,7 @@
                             if(yulduz.edit_purchase)
                               {
                                  var $row = $('<tr class="fortr">'+
-                                     '<td style="cursor:pointer;" onclick="users(`'+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
+                                     '<td style="cursor:pointer;" onclick="users(`'+value.username+' '+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
                                      '<td onclick="orderId('+value.t_id+')"><button type="button" class="btn btn-block btn-outline-primary">'+ 'order'+value.t_id +'</button></td>'+
                                      '<td>'+ value.m_name +'</td>'+
                                      '<td ><span class="edit'+value.sid+value.t_id+'">'+ value.m_number +'</span>'+
@@ -474,15 +475,16 @@
        }
 
        function users(name,id){
-          $("#age_button4").attr('name',id);
+          $("#age_button4").attr('name ',id);
           $("#age_button4").text(name);
-          var id = $("#age_button").attr('name');
+          $("#age_button4").text('  ');
+          var id = $("#age_button").attr('name ');
           var text = $("#age_button").text();
             // alert(id)
           ageChart(text,id,'all');
        }
        function orderId(ids){
-          var id = $("#age_button").attr('name');
+          var id = $("#age_button").attr('name ');
           var text = $("#age_button").text();
 
           ageChart(text,id,ids);

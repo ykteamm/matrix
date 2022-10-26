@@ -21,23 +21,25 @@
                            <th>Ish kuni </th>
                            <th>Fakt </th>
                            <th>Prognoz </th>
+                           <th>Ichki reyting </th>
+                           <th>Tashqi reyting </th>
                            {{-- <th>Telefon raqami </th> --}}
                            {{-- <th>Email </th>
                            <th class="text-right">Action </th> --}}
                         </tr>
                      </thead>
                      <tbody>
-                        @foreach ($elchi as $item)
-                        @if($item->admin == TRUE)
+                        @foreach ($elchilar as $item)
+                        @if($item['elchi']->admin == TRUE)
                         <tr
                            >
-                           
-                           <td class="d-none">{{$item->rid}} </td>
+
+                           <td class="d-none">{{$item['elchi']->rid}} </td>
                            <td></td>
-                           <td style="text-align: center">{{$item->last_name}} {{$item->first_name}} ( RM )</td>
+                           <td style="text-align: center">{{$item['elchi']->last_name}} {{$item['elchi']->first_name}} ( RM )</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
-                           <td style="color:white;">{{$item->v_name}}</td>
-                           
+                           <td style="color:white;">{{$item['elchi']->v_name}}</td>
+
                            {{-- <td>{{$item->phone_number}}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>
                            <td class="text-right">
@@ -46,22 +48,26 @@
                            </td> --}}
                         </tr>
                         @else
-                        <tr 
+                        <tr
                         onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
-                        .css('color','white');" 
+                        .css('color','white');"
                         onmouseleave="$(this).css('background','white').css('color','black');"
-                           class='clickable-row' data-href='{{route('elchi',['id' => $item->id,'time' => 'today'])}}'
-                           
+                           class='clickable-row' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'
+
                            >
-                           
-                           <td class="d-none">{{$item->rid}} </td>
-                   <td>  {{$item->username}} </td>
-                   <td> <img class="mr-2" src="{{$item->image_url}}" style="border-radius:50%" height="20px"> {{$item->last_name}} {{$item->first_name}}</td>
+
+                           <td class="d-none">{{$item['elchi']->rid}} </td>
+                   <td>  {{$item['elchi']->username}} </td>
+                   <td> <img class="mr-2" src="{{$item['elchi']->image_url}}" style="border-radius:50%" height="20px"> {{$item['elchi']->last_name}} {{$item['elchi']->first_name}}</td>
                            {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
-                           <td>{{$item->v_name}}</td>
-                           <td>{{$elchi_work[$item->id]}}</td>
-                           <td> <span class="badge bg-warning-light">{{$elchi_fact[$item->id]}}</span></td>
-                           <td> <span class="badge bg-success-light">{{$elchi_prognoz[$item->id]}}</span></td>
+                           <td>{{$item['elchi']->v_name}}</td>
+                           <td>{{$elchi_work[$item['elchi']->id]}}</td>
+                           <td> <span class="badge bg-warning-light">{{$elchi_fact[$item['elchi']->id]}}</span></td>
+                           <td> <span class="badge bg-success-light">{{$elchi_prognoz[$item['elchi']->id]}}</span></td>
+                           <td> <span class="badge bg-success-light">{{number_format($item['ichki-reyting'])}}</span></td>
+                           <td> <span class="badge bg-success-light">{{number_format($item['tashqi-reyting'])}}</span></td>
+
+
                            {{-- <td>{{$elchi_prognoz[$item->id]}}</td> --}}
                            {{-- <td>{{$item->phone_number}}</td> --}}
                            {{-- <td>Brandon  <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="de8daab1b0bb9ebba6bfb3aeb2bbf0bdb1b3">[email&#160;protected] </a></td>

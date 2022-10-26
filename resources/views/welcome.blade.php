@@ -51,8 +51,7 @@
             $all_avgs = number_format($avgs/$i,2);
 
          }
-      @endphp
-      @php
+
           if($all_avgs != 0)
           {
             if($allavg == 0)
@@ -318,15 +317,15 @@
                </div>
                <div class="tab-pane" id="solid-justified-tab-bilim">
                   <div class="tab-left">
-                  
+
                      @foreach ($step3_get_user as $ite)
                      {{-- @if($ite['depid'] == $item['id']) --}}
-                     
+
                      <div class="d-flex mb-3">
                         <div class="medicne d-flex">
                            {{-- <a style="cursor: pointer" onclick="getQuestion(qd{{$ite['uid']}}{{$item['id']}})"> {{$ite['username']}}</a> --}}
                            <a style="cursor: pointer"> {{$ite->last_name}} {{$ite->first_name}}</a>
-                          
+
                         </div>
                         <div class="medicne-time ml-auto">
                            {{-- {{$ite->first_name}} --}}
@@ -334,7 +333,7 @@
                      </div>
                      {{-- @endif --}}
                      @foreach ($step3_get as $item)
-   
+
                      <div class=" ml-4 allqd qd{{$ite->id}}{{$item->teacher_id}}" style="">
                         @if($ite->id == $item->teacher_id)
                         <div class="row">
@@ -350,14 +349,14 @@
                               </div>
                            </div>
                         </div>
-                        
+
 
                         @endif
-                        
+
                      </div>
                      @endforeach
                      @foreach ($step3_get_user as $item)
-   
+
                      {{-- <div class="tab-left ml-4 allqd qd{{$ite->id}}{{$item->teacher_id}}" style="">
                         @if($ite->id == $item->teacher_id)
                         <div class="d-flex mb-3">
@@ -372,12 +371,12 @@
                            </div>
                         </div>
                         @endif
-                        
+
                      </div> --}}
                      @endforeach
-                     
+
                      @endforeach
-                     
+
                   </div>
                </div>
             @endforeach

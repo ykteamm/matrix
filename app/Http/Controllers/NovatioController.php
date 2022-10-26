@@ -13,7 +13,7 @@ class NovatioController extends Controller
     {
         $inputs = $request->all();
         $time = $inputs['time'];
-        
+
         // if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         // {
         // $regions = DB::table('tg_region')->get();
@@ -135,15 +135,15 @@ class NovatioController extends Controller
             // {
             //  if(Session::get('per')['region'] == 'true')
             //  {
-                
+
             //     $region = DB::table('tg_region')->where('id')->get();
 
             //  }
-                
+
             // }else
             $reid = DB::table('tg_user')
             ->where('tg_user.admin',FALSE)
-            ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
+            ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->get();
 
@@ -176,7 +176,7 @@ class NovatioController extends Controller
             $reid = DB::table('tg_user')
             ->where('tg_user.admin',FALSE)
             ->where('tg_region.id',$inputs['id'])
-            ->select('tg_region.id as tid','tg_user.id','tg_user.first_name','tg_user.last_name')
+            ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->get();
 
@@ -284,7 +284,7 @@ class NovatioController extends Controller
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
 
         }
-        
+
         elseif ($request->time == 'a_week') {
             $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( today()) ) ));
             $date_end = today()->format('Y-m-d');
@@ -323,7 +323,7 @@ class NovatioController extends Controller
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($request->time,11)) ) ));
         }
 
-        
+
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
         $regions = DB::table('tg_region')->get();
@@ -355,7 +355,7 @@ class NovatioController extends Controller
 
 
         }else{
-            
+
             $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
 
         }
@@ -365,7 +365,7 @@ class NovatioController extends Controller
 
 
         }else{
-            
+
             $regions = DB::table('tg_region')->whereIn('id',$r_id_array)->get();
 
         }
@@ -374,14 +374,14 @@ class NovatioController extends Controller
         {
         $users = DB::table('tg_user')
         ->where('tg_user.admin',FALSE)
-        
+
         ->get();
 
 
         }else{
             $users = DB::table('tg_user')
             ->where('tg_user.admin',FALSE)
-            
+
             ->whereIn('region_id',$r_id_array)->get();
 
         }
@@ -414,7 +414,7 @@ class NovatioController extends Controller
                     ->join('tg_category','tg_category.id','tg_medicine.category_id')
                     ->get();
         }else{
-            
+
                 $sum = DB::table('tg_productssold')
                 ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                 ->whereIn('tg_region.id',$r_id_array)
@@ -471,13 +471,13 @@ class NovatioController extends Controller
                 }
 
             }
-            
+
             if($summa > $fsumma)
             {
                 if($fsumma == 0)
                 {
                     $foiz = 100;
-                    
+
                 }else{
                 $foiz = number_format((($summa-$fsumma)*100)/$summa,2);
                 }
@@ -496,7 +496,7 @@ class NovatioController extends Controller
                 if($summa == 0)
                 {
                     $foiz = 100;
-                    
+
                 }else{
                 $foiz = number_format((($fsumma-$summa)*100)/$fsumma,2);
 
@@ -543,13 +543,13 @@ class NovatioController extends Controller
                 }
 
             }
-            
+
             if($c_summa > $fsumma)
             {
                 if($fsumma == 0)
                 {
                     $foiz = 100;
-                    
+
                 }else{
                 $foiz = number_format((($c_summa-$fsumma)*100)/$c_summa,2);
                 }
@@ -570,7 +570,7 @@ class NovatioController extends Controller
                 if($fsumma == 0)
                 {
                     $foiz = 100;
-                    
+
                 }else{
                 $foiz = number_format((($fsumma-$c_summa)*100)/$fsumma,2);
                 }
@@ -580,7 +580,7 @@ class NovatioController extends Controller
 
 
             }
-           
+
                     $catarray[] = array('detail' => $detail,'summa' => $c_summa,'name' => $valuefa->name,'icon' => $icon);
             $c_summa = 0;
 
@@ -589,7 +589,7 @@ class NovatioController extends Controller
         $sort = $array;
         $sortregionArray=[];
         $sortsummaArray=[];
-        
+
         foreach ($array as $arr) {
             $regionArray[] = $arr['region'];
             $SummaArray[] = $arr['summa'];
@@ -777,15 +777,15 @@ class NovatioController extends Controller
             ]);
 
             return [
-                'status' => 200 
+                'status' => 200
             ];
         }
         else{
             return [
-                'status' => 300 
+                'status' => 300
             ];
 
-        }  
+        }
         }else{
             $save = DB::table('tg_grade')
             ->where('created_at',today())
@@ -813,7 +813,7 @@ class NovatioController extends Controller
         if(count($isset) >= 1)
         {
             return [
-                'status' => 200 
+                'status' => 200
             ];
         }else{
 
@@ -863,11 +863,11 @@ class NovatioController extends Controller
                         }
                     }
                     return [
-                        'status' => 200 
+                        'status' => 200
                     ];
             }else{
                 return [
-                    'status' => 200 
+                    'status' => 200
                 ];
             }
         }else{
@@ -895,23 +895,23 @@ class NovatioController extends Controller
                     }
                 }
                 return [
-                    'status' => 200 
+                    'status' => 200
                 ];
         }
     }
-        
+
         // if(count($isset) > 1)
         // {
 
         // }
 
-        
-        
-        
-        
+
+
+
+
 
         return [
-            'status' => 200 
+            'status' => 200
         ];
     }
     public function editPurchase(Request $request)
@@ -919,10 +919,10 @@ class NovatioController extends Controller
         $sid = $request->sid;
         $tid = $request->tid;
         $number = $request->number;
-        
-        
+
+
         $first = DB::table('tg_productssold')->where('id',$sid)->first();
-        
+
         $update = DB::table('tg_productssold')->where('id',$sid)->update([
             'number' => $number,
         ]);
@@ -930,12 +930,12 @@ class NovatioController extends Controller
             'user_id' => Session::get('user')->id,
             'sold_id' => $sid,
             'old' => $first->number,
-            'new' => $number, 
+            'new' => $number,
         ]);
 
         $new->save();
-         
-        
+
+
 
     }
 }
