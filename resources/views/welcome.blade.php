@@ -559,10 +559,11 @@
                                  <div class="col-lg-12">
                                     <div class="card">
                                        <div class="card-body">
-                                          <div class="table-responsive" id="asdasd2">
-                                             <table class="table mb-0 example1" id="">
+                                          <div class="table-responsive" id="asdasd1">
+                                             <table class="table mb-0" id="example1231">
                                                 <thead>
                                                    <tr>
+                                                      <th>ID</th>
                                                       <th>Mahsulot nomi</th>
                                                       <th>Soni</th>
                                                       {{-- <th>Summasi</th> --}}
@@ -574,7 +575,8 @@
                                                     @endphp
                                                 @foreach ($medicineall as $mkey => $mitem)
                                                     <tr>
-                                                        <td>{{$mitem['name']}} </td>
+                                                        <td style="display: none">{{$mitem['id']}}</td>
+                                                        <td>{{$mitem['name']}}</td>
                                                         <td>{{$mitem['number']}} </td>
                                                         {{-- <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td> --}}
                                                         {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}

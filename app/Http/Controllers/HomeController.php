@@ -523,10 +523,9 @@ class HomeController extends Controller
             $cateory = [];
             $medic = [];
             $medicineall = [];
-
             foreach ($medicine_cate as $mkey => $med) {
 
-                $medicineall[$mkey] = array('price' => 0,'number' => 0, 'name' => $med->m_name,'cid'=>$med->c_id);
+                $medicineall[$mkey] = array('id' => $med->m_id,'price' => 0,'number' => 0, 'name' => $med->m_name,'cid'=>$med->c_id);
                 
 
             }
@@ -538,7 +537,7 @@ class HomeController extends Controller
                         $medisum = $medisum + ($one->m_price * $one->m_number);
                         $number = $number + $one->m_number;
 
-                        $medicineall[$mkey] = array('price' => $medisum,'number' => $number, 'name' => $med->m_name,'cid'=>$one->c_id);
+                        $medicineall[$mkey] = array('id' => $med->m_id,'price' => $medisum,'number' => $number, 'name' => $med->m_name,'cid'=>$one->c_id);
                     }
                 }
                     $medisum = 0;
@@ -995,6 +994,7 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                 ->distinct()
                 ->get();
+                // return $medicineall;
         return view('welcome',compact('step3_get_user','step3_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
