@@ -1,6 +1,6 @@
 <div class="sidebar mt-5"  >
     <div class="sidebar-inner">
-       <div id="sidebar-menu" class="sidebar-menu">
+       <div id="sidebar-menu" style="height: 100vh; overflow-y: scroll" class="sidebar-menu">
           <ul>
             @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
@@ -13,6 +13,12 @@
                <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a>
              @endif
              @endisset
+
+            @isset(Session::get('per')['elchi'])
+                @if(Session::get('per')['elchi'] == 'true')
+                    <li><a href="{{route('elchilar')}}"><i class="feather-filter"></i>  <span>Elchilar kunlik</span></a>
+                @endif
+            @endisset
              @isset(Session::get('per')['elchi'])
              @if(Session::get('per')['elchi'] == 'true')
                <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
@@ -40,7 +46,7 @@
              @endif
              @endisset
 
-             
+
              @isset(Session::get('per')['ques'])
              @if(Session::get('per')['ques'] == 'true')
              <li class="submenu">
@@ -144,14 +150,14 @@
              @endisset
              {{-- @isset(Session::get('per')['User']) --}}
              {{-- @if(Session::get('per')['User'] == 'true') --}}
-               
+
              {{-- @endif --}}
              {{-- @endisset --}}
 
                {{-- </ul>
             </li> --}}
             {{-- <li><a href="{{ route('back') }}"><i class="feather-home"></i>  <span> 2 </span></a> --}}
-             
+
           </ul>
           {{-- <div> --}}
             <ul>
@@ -161,7 +167,7 @@
                  </form>
             </ul>
           {{-- </div> --}}
-          
+
 
        </div>
     </div>

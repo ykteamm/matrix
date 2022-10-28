@@ -35,6 +35,7 @@ class PlanService
                 }else{
                     $count=4;
                 }
+
 //                dd($plan->number);
                 $planwork=$plan->number/$cal->work_day;
                 for($i=0;$i<$count;$i++){

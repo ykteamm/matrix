@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PillController;
@@ -20,10 +21,10 @@ use App\Http\Controllers\UserController;
 |
 */
 // Route::middleware(['web'])->group(function () {
-    
 
 
-   
+
+
     Route::post('region/elchi', [App\Http\Controllers\NovatioController::class,'region']);
     Route::post('region/chart', [App\Http\Controllers\NovatioController::class,'regionChart']);
     Route::post('calendar', [App\Http\Controllers\NovatioController::class,'calendar']);
@@ -58,7 +59,7 @@ Route::middleware([LoginAdmin::class])->group(function () {
 $user = DB::table('tg_user')->where('admin',false)->pluck('username');
 
 foreach ($user as $u) {
-    Route::get($u, [HomeController::class,'nvt']); 
+    Route::get($u, [HomeController::class,'nvt']);
 }
 Route::middleware([LoginAuth::class])->group(function () {
 
@@ -146,6 +147,7 @@ Route::post('plan/create/{id}', [PlanController::class,'store'])->name('plan.sto
 Route::get('plan/{id}/edit', [PlanController::class,'edit'])->name('plan.edit');
 Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
 Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
+Route::get('elchi', [ElchilarController::class,'kunlik'])->name('elchilar');
 
 Route::get('user-control', [UserController::class,'index'])->name('user-control');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');

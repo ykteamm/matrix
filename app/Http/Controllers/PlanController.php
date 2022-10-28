@@ -170,7 +170,7 @@ class PlanController extends Controller
             $plan->number=round($item+$old_one_day_plan*$workday1);
             $plan->user_id=$id;
 
-            $plan->update();
+
             $new_one_day_plan= $item/$new_work_day;
             $pw=PlanWeek::where('plan_id',$plan->id)->where('medicine_id',substr($key,8))->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->get();
             $count=PlanWeek::where('plan_id',$plan->id)->where('medicine_id',substr($key,8))->whereBetween('endday', [Carbon::now(), Carbon::now()->endOfMonth()])->count();
@@ -205,7 +205,12 @@ class PlanController extends Controller
 
 
             }
-
+            $ppp=PlanWeek::where('medicine_id',$plan->medicine_id)->where('user_id',$plan->user_id)->whereBetween('endday', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
+            $plan->number=0;
+            foreach ($ppp as $p){
+                $plan->number+=$p->plan;
+            }
+            $plan->update();
             }
             elseif ($item!=null){
                 $plan=new Plan();

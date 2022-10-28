@@ -64,8 +64,8 @@
                            <td>{{$elchi_work[$item['elchi']->id]}}</td>
                            <td> <span class="badge bg-warning-light">{{$elchi_fact[$item['elchi']->id]}}</span></td>
                            <td> <span class="badge bg-success-light">{{$elchi_prognoz[$item['elchi']->id]}}</span></td>
-                           <td> <span class="badge bg-success-light">{{number_format($item['ichki-reyting'])}}</span></td>
-                           <td> <span class="badge bg-success-light">{{number_format($item['tashqi-reyting'])}}</span></td>
+                           <td> <span class="badge bg-success-light">{{number_format($item['ichki-reyting'],2)}}</span></td>
+                           <td> <span class="badge bg-success-light">{{number_format($item['tashqi-reyting'],2)}}</span></td>
 
 
                            {{-- <td>{{$elchi_prognoz[$item->id]}}</td> --}}
