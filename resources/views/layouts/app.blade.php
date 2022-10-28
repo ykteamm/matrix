@@ -32,30 +32,7 @@ table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
   bottom: .5em;
 }
-        /*#table-wrapper {*/
-        /*    position:relative;*/
-        /*}*/
-        /*#table-scroll {*/
-        /*    height:150px;*/
-        /*    overflow:auto;*/
-        /*    margin-top:20px;*/
-        /*}*/
-        /*#table-wrapper table {*/
-        /*    width:100%;*/
 
-        /*}*/
-        /*#table-wrapper table * {*/
-        /*    background:yellow;*/
-        /*    color:black;*/
-        /*}*/
-        /*#table-wrapper table thead th .text {*/
-        /*    position:absolute;*/
-        /*    top:-20px;*/
-        /*    z-index:2;*/
-        /*    height:20px;*/
-        /*    width:35%;*/
-        /*    border:1px solid red;*/
-        /*}*/
     </style>
 </head>
 <body class="mini-sidebar">
