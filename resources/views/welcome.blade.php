@@ -473,9 +473,15 @@
       >
          <div class="card" style="background-color: #3b3d83">
             <div class="card-body">
+                @php $a=0 @endphp
+                @foreach ($cateory as $key => $item)
+                   @php  $a+=$item['price'];
+                    $i = $i + 1 @endphp
+
+                @endforeach
                <div class="dash-contetnt">
                   <h2 style="color:#ffffff;text-align:center;">Barchasi</h2>
-                  <h3 style="color:#ffffff;text-align:center;">{{ number_format($sum, 0, '', ' ')}} so'm</h3>
+                  <h3 style="color:#ffffff;text-align:center;">{{ number_format($a, 0, '', ' ')}} so'm</h3>
                </div>
             </div>
          </div>

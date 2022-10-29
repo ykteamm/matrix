@@ -77,7 +77,7 @@
                            <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
                               <a href="#" onclick="users('Hammasi','all')" class="dropdown-item" id="addregionall"> Hammasi </a>
                               @foreach($users as $user)
-                              <a href="#" onclick="users(`{{$user->username}} {{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall">{{$user->username}}&nbsp {{$user->last_name}}&nbsp  {{$user->first_name}}</a>
+                              <a href="#" onclick="users(` {{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall"> {{$user->last_name}}{{$user->first_name}}</a>
                               @endforeach
                            </div>
                         </div>
