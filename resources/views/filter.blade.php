@@ -259,7 +259,7 @@
 
                   $.each(response.reid, function(index, value){
 
-                     var $row = $('<a onclick="users(`'+value.username +''+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall df" ><strong>'
+                     var $row = $('<a onclick="users(`'+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall df" ><strong>'
                          + value.username +'</strong>'+" | "+ value.last_name +"  "+ value.first_name +
                                   '</a>');
                      $('#addregionall').after($row);
@@ -309,7 +309,7 @@
                             if(yulduz.edit_purchase)
                               {
                                  var $row = $('<tr class="fortr">'+
-                                     '<td style="cursor:pointer;" onclick="users(`'+value.username+' '+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
+                                     '<td style="cursor:pointer;" onclick="users(`'+value.ul_name+' '+ value.uf_name+'`,`'+value.uid+'`)">'+ value.ul_name + ' ' + value.uf_name +'</td>'+
                                      '<td onclick="orderId('+value.t_id+')"><button type="button" class="btn btn-block btn-outline-primary">'+ 'order'+value.t_id +'</button></td>'+
                                      '<td>'+ value.m_name +'</td>'+
                                      '<td ><span class="edit'+value.sid+value.t_id+'">'+ value.m_number +'</span>'+
