@@ -25,7 +25,7 @@ class ElchilarController extends Controller
         $encane=$this->service->encane($elchi);
         $days=$this->service->checkCalendar();
         $sold=$this->service->sold($elchi,$days);
-
-        return view('elchilar.index',compact('elchi_prognoz','elchi','elchi_work','elchi_fact','plan','plan_day','encane','days','sold'));
+        $elchilar=$this->service->reyting($elchi);
+        return view('elchilar.index',compact('elchi_prognoz','elchilar','elchi_work','elchi_fact','plan','plan_day','encane','days','sold'));
     }
 }
