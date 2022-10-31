@@ -105,7 +105,7 @@
                             @else
 
                         <li class="list-group-item ">
-                            <div>{{$i++}}. {{$quest->qname}}d</div>
+                            <div>{{$i++}}. {{$quest->qname}}</div>
                             <div style="text-align:center;">
                             <fieldset class="rate">
                                 <input type="radio" name="rating" value="5" /><label class="q{{$elchi->user_id}}{{$dep->id}}{{$quest->id}}" for="rating10" title="5 ball" onclick="rateHover(5,`q{{$elchi->user_id}}{{$dep->id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
@@ -130,7 +130,7 @@
                 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="gradeSave(`form{{$elchi->user_id}}{{$dep->id}}`)">Saqlash</button>
+                {{-- <button type="button" class="btn btn-primary" onclick="gradeSave(`form{{$elchi->user_id}}{{$dep->id}}`)">Saqlash</button> --}}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
                 </div>
                 
@@ -160,24 +160,52 @@
                     @foreach ($question_step1 as $key => $quest)
                         @php
                             $ids = $elchi->user_id.$quest->id;
+                            
                         @endphp
                         @if ($key == $ids)
                             
-                        
-                        <li class="list-group-item ">
-                            <div>{{$i++}}. {{$quest->name}}</div>
-                            <div style="text-align:center;">
-                            <fieldset class="rate">
-                                <input type="radio" name="rating" value="5" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating10" title="5 ball" onclick="rateHover(5,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="4" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating8" title="4 ball" onclick="rateHover(4,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="3" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating6" title="3 ball" onclick="rateHover(3,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="2" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating4" title="2 ball" onclick="rateHover(2,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="1" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating2" title="1 ball" onclick="rateHover(1,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                            </fieldset>
-                            <input class="stepclass" style="display: none;" type="textarea"  name="name_q{{$elchi->user_id}}{{$quest->id}}" id="name_q{{$elchi->user_id}}{{$quest->id}}">
+                            @if(isset($grades_step_array1[$ids]))
+                            
+                            <li class="list-group-item ">
+                                <div>{{$i++}}. {{$quest->name}}</div>
+                                <div style="text-align:center;">
+                                <fieldset class="rate">
+                                    <input type="radio" name="rating" value="5" />
+                                    <label class="@if($grades_step_array1[$ids] >= 5) colorrate @endif" for="rating10" title="5 ball"></label>
+                                    <input type="radio" name="rating" value="4" />
+                                    <label class="@if($grades_step_array1[$ids] >= 4) colorrate @endif" for="rating8" title="4 ball"></label>
+                                    <input type="radio" name="rating" value="3" />
+                                    <label class="@if($grades_step_array1[$ids] >= 3) colorrate @endif" for="rating6" title="3 ball"></label>
+                                    <input type="radio" name="rating" value="2" />
+                                    <label class="@if($grades_step_array1[$ids] >= 2) colorrate @endif" for="rating4" title="2 ball"></label>
+                                    <input type="radio" name="rating" value="1" />
+                                    <label class="@if($grades_step_array1[$ids] >= 1) colorrate @endif" for="rating2" title="1 ball"></label>
+                                </fieldset>
+                                <input class="stepclass" style="display: none;" type="textarea"  name="name_q{{$elchi->user_id}}{{$quest->id}}" id="name_q{{$elchi->user_id}}{{$quest->id}}">
 
-                        </div>
-                        </li>
+                            </div>
+                            </li>
+                            @else
+                            <li class="list-group-item ">
+                                <div>{{$i++}}. {{$quest->name}}</div>
+                                <div style="text-align:center;">
+                                <fieldset class="rate">
+                                    <input type="radio" name="rating" value="5" />
+                                    <label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating10" title="5 ball" onclick="rateHover(5,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                    <input type="radio" name="rating" value="4" />
+                                    <label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating8" title="4 ball" onclick="rateHover(4,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                    <input type="radio" name="rating" value="3" />
+                                    <label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating6" title="3 ball" onclick="rateHover(3,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                    <input type="radio" name="rating" value="2" />
+                                    <label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating4" title="2 ball" onclick="rateHover(2,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                    <input type="radio" name="rating" value="1" />
+                                    <label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating2" title="1 ball" onclick="rateHover(1,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                </fieldset>
+                                <input class="stepclass stepsform{{$elchi->user_id}}" style="display: none;" type="textarea"  name="name_q{{$elchi->user_id}}{{$quest->id}}" id="name_q{{$elchi->user_id}}{{$quest->id}}">
+
+                            </div>
+                            </li>
+                            @endif
                         @endif
 
                     @endforeach
@@ -190,21 +218,48 @@
                         @endphp
                         @if ($key == $ids)
                             
+                        @if(isset($grades_step_array3[$ids]))
                         
                         <li class="list-group-item ">
                             <div>{{$i++}}. {{$quest->name}}</div>
                             <div style="text-align:center;">
-                            <fieldset class="rate">
-                                <input type="radio" name="rating" value="5" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating10" title="5 ball" onclick="rateHoverStep(5,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="4" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating8" title="4 ball" onclick="rateHoverStep(4,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="3" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating6" title="3 ball" onclick="rateHoverStep(3,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="2" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating4" title="2 ball" onclick="rateHoverStep(2,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                                <input type="radio" name="rating" value="1" /><label class="q{{$elchi->user_id}}{{$quest->id}}" for="rating2" title="1 ball" onclick="rateHoverStep(1,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
-                            </fieldset>
+                                <fieldset class="rate">
+                                    <input type="radio" name="rating" value="5" />
+                                    <label class="@if($grades_step_array3[$ids] >= 5) colorrate @endif" for="rating10" title="5 ball"></label>
+                                    <input type="radio" name="rating" value="4" />
+                                    <label class="@if($grades_step_array3[$ids] >= 4) colorrate @endif" for="rating8" title="4 ball"></label>
+                                    <input type="radio" name="rating" value="3" />
+                                    <label class="@if($grades_step_array3[$ids] >= 3) colorrate @endif" for="rating6" title="3 ball"></label>
+                                    <input type="radio" name="rating" value="2" />
+                                    <label class="@if($grades_step_array3[$ids] >= 2) colorrate @endif" for="rating4" title="2 ball"></label>
+                                    <input type="radio" name="rating" value="1" />
+                                    <label class="@if($grades_step_array3[$ids] >= 1) colorrate @endif" for="rating2" title="1 ball"></label>
+                                </fieldset>
                             <input class="stepclass" style="display: none;" type="textarea"  name="name_q{{$elchi->user_id}}{{$quest->id}}" id="name_q{{$elchi->user_id}}{{$quest->id}}">
 
                         </div>
                         </li>
+                        @else
+                        <li class="list-group-item ">
+                            <div>{{$i++}}. {{$quest->name}}</div>
+                            <div style="text-align:center;">
+                            <fieldset class="rate">
+                                <input type="radio" name="rating" value="5" />
+                                <label class="q{{$elchi->user_id}}{{$quest->id}}"  title="5 ball" onclick="rateHoverStep(5,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                <input type="radio" name="rating" value="4" />
+                                <label class="q{{$elchi->user_id}}{{$quest->id}}"  title="4 ball" onclick="rateHoverStep(4,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                <input type="radio" name="rating" value="3" />
+                                <label class="q{{$elchi->user_id}}{{$quest->id}}"  title="3 ball" onclick="rateHoverStep(3,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                <input type="radio" name="rating" value="2" />
+                                <label class="q{{$elchi->user_id}}{{$quest->id}}"  title="2 ball" onclick="rateHoverStep(2,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                                <input type="radio" name="rating" value="1" />
+                                <label class="q{{$elchi->user_id}}{{$quest->id}}"  title="1 ball" onclick="rateHoverStep(1,`q{{$elchi->user_id}}{{$quest->id}}`,{{$elchi->user_id}},{{$quest->id}})"></label>
+                            </fieldset>
+                            <input class="stepclass stepsform{{$elchi->user_id}}" style="display: none;" type="textarea"  name="name_q{{$elchi->user_id}}{{$quest->id}}" id="name_q{{$elchi->user_id}}{{$quest->id}}">
+
+                        </div>
+                        </li>
+                        @endif
                         @endif
 
                     @endforeach
@@ -254,7 +309,21 @@
       }
       function gradeSave(form,forms)
       {
+        var j = 0;
+        var i = 0;
+        $(`.steps${form}`).each(function(index)
+        { 
+            i++
+            if($(this).val())
+            {i--}
+        });
+        if(i==0)
+        {
             $(`#${form}`).submit();
+        }else{
+            alert('Barcha savollarga baho qo\'ying')
+        }
+        // console.log(i)
       }
 //       jQuery(document).ready(function($) {
 //     $(".clickable-row").click(function() {

@@ -13,6 +13,9 @@ class GradeController extends Controller
 {
     public function allGrade()
     {
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
         $userarrayreg = [];
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
@@ -75,12 +78,16 @@ class GradeController extends Controller
         $know_questions = [];
         foreach($all_elchi as $items)
         {
-            $user_question = UserQuestion::where('user_id',$items->user_id)->first();
-
-            if($user_question)
+            $user_question = UserQuestion::where('user_id',$items->user_id)
+            ->whereDate('created_at','>=',$weekStartDate)
+            ->whereDate('created_at','<=',$weekEndDate)
+            ->get();
+            // dd($user_question);
+            // die();
+            if($user_question[0])
             {
-            $json_arr1 = json_decode($user_question->step1);
-            $json_arr2 = json_decode($user_question->question_step);
+            $json_arr1 = json_decode($user_question[0]->step1);
+            $json_arr2 = json_decode($user_question[0]->question_step);
             foreach($json_arr1 as $key => $value)
             {
                 foreach($value as $item)
@@ -99,7 +106,27 @@ class GradeController extends Controller
             }
             }
         }
-        return view('all-grade',compact('departments','all_elchi','questions','grades','question_step1','know_questions'));
+        $grades_step_array3=[];
+        $grades_step_array1=[];
+
+        $grades_step_array = DB::table('tg_knowledge_grades')
+        ->whereDate('created_at','>=',$weekStartDate)
+        ->whereDate('created_at','<=',$weekEndDate)
+        ->get();
+        foreach($grades_step_array as $value)
+        {
+            if($value->pill_id == NULL)
+            {
+                $id = $value->user_id.$value->knowledge_question_id;
+                $grades_step_array3[$id] =  $value->grade;
+            }else{
+                $id = $value->user_id.$value->pill_id;
+                $grades_step_array1[$id] =  $value->grade;
+            }
+        }   
+        // return $grades_step_array1;
+       
+        return view('all-grade',compact('grades_step_array3','grades_step_array1','departments','all_elchi','questions','grades','question_step1','know_questions'));
     }
     public function allGradeStore(Request $request)
     {

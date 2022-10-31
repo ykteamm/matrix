@@ -227,134 +227,146 @@ class HomeController extends Controller
         // }
         // return $step1_ids;
 
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+        $get_date = UserQuestion::
+        whereDate('created_at','>=',$weekStartDate)
+        ->whereDate('created_at','<=',$weekEndDate)
+        ->get('created_at');
 
+        // return count($get_date);
         #save-bilim-ai
-        // $knowledges = Knowledge::with('pill_question')->get();
-        // $users = DB::table('tg_user')->where('admin',FALSE)->get('id');
-        // $step1 = [];
-        // $step3 = [];
-        // $question_step = [];
-        // $testarray = [];
-        // foreach($users as $user_items)
-        // {
-        //     $user_question = UserQuestion::where('user_id',$user_items->id)->get();
-        //     foreach($knowledges as $key => $pills)
-        //     {
+        if(count($get_date) == 0)
+        {
+            $knowledges = Knowledge::with('pill_question')->get();
+            $users = DB::table('tg_user')->where('admin',FALSE)->get('id');
+            $step1 = [];
+            $step3 = [];
+            $question_step = [];
+            $testarray = [];
+            foreach($users as $user_items)
+            {
+                $user_question = UserQuestion::where('user_id',$user_items->id)->get();
+                foreach($knowledges as $key => $pills)
+                {
 
-        //         if($pills->step == 1)
-        //         {
-        //             $step1_ids = [];
-        //                 foreach($user_question as $user)
-        //                 {
-        //                     $step1_user = json_decode($user->step1);
-        //                     foreach($step1_user as $key => $value)
-        //                     {
-        //                         if ($key == $pills->id) {
-        //                             foreach($value as $v_item)
-        //                                 {
-        //                                     $step1_ids[] = $v_item;
-        //                                 }
-        //                         }
-        //                     }
-        //                 }
+                    if($pills->step == 1)
+                    {
+                        $step1_ids = [];
+                            foreach($user_question as $user)
+                            {
+                                $step1_user = json_decode($user->step1);
+                                foreach($step1_user as $key => $value)
+                                {
+                                    if ($key == $pills->id) {
+                                        foreach($value as $v_item)
+                                            {
+                                                $step1_ids[] = $v_item;
+                                            }
+                                    }
+                                }
+                            }
 
-        //             $step1_count = PillQuestion::where('knowledge_id',$pills->id)->count();
-        //             if($step1_count <= count($step1_ids))
-        //                 {
-        //                     if($step3_count == 0)
-        //                         {
-        //                         $max = 0;
+                        $step1_count = PillQuestion::where('knowledge_id',$pills->id)->count();
+                        if($step1_count <= count($step1_ids))
+                            {
+                                if($step3_count == 0)
+                                    {
+                                    $max = 0;
 
-        //                         }else{
-        //                             $max = floor(count($step1_ids) / $step1_count);
+                                    }else{
+                                        $max = floor(count($step1_ids) / $step1_count);
 
-        //                         }
+                                    }
 
-        //                     for ($i=0; $i < $max*$step1_count; $i++) {
-        //                     unset($step1_ids[$i]);
-        //                     }
-        //                 }
-        //             $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
-        //             ->whereNotIn('id',$step1_ids)
-        //             ->limit($pills->number)->pluck('id');
-        //             if(count($pluck_id) == 0){
-        //                 $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
-        //                 ->limit($pills->number)->pluck('id');
-        //             }
-        //             $step1[$pills->id] = $pluck_id;
+                                for ($i=0; $i < $max*$step1_count; $i++) {
+                                unset($step1_ids[$i]);
+                                }
+                            }
+                        $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                        ->whereNotIn('id',$step1_ids)
+                        ->limit($pills->number)->pluck('id');
+                        if(count($pluck_id) == 0){
+                            $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                            ->limit($pills->number)->pluck('id');
+                        }
+                        $step1[$pills->id] = $pluck_id;
 
-        //         }
-        //         if($pills->step == 3)
-        //         {
-        //             $step3_ids = [];
-        //                 foreach($user_question as $user)
-        //                 {
-        //                     $step3_user = json_decode($user->step3);
-        //                     foreach($step3_user as $key => $value)
-        //                     {
-        //                         if ($key == $pills->id) {
-        //                             foreach($value as $v_item)
-        //                                 {
-        //                                     $step3_ids[] = $v_item;
-        //                                 }
-        //                         }
-        //                     }
-        //                 }
-        //                 $step3_count = PillQuestion::where('knowledge_id',$pills->id)->count();
-        //                 if($step3_count <= count($step3_ids))
-        //                     {
-        //                         if($step3_count == 0)
-        //                         {
-        //                         $max = 0;
+                    }
+                    if($pills->step == 3)
+                    {
+                        $step3_ids = [];
+                            foreach($user_question as $user)
+                            {
+                                $step3_user = json_decode($user->step3);
+                                foreach($step3_user as $key => $value)
+                                {
+                                    if ($key == $pills->id) {
+                                        foreach($value as $v_item)
+                                            {
+                                                $step3_ids[] = $v_item;
+                                            }
+                                    }
+                                }
+                            }
+                            $step3_count = PillQuestion::where('knowledge_id',$pills->id)->count();
+                            if($step3_count <= count($step3_ids))
+                                {
+                                    if($step3_count == 0)
+                                    {
+                                    $max = 0;
 
-        //                         }else{
-        //                         $max = floor(count($step3_ids) / $step3_count);
+                                    }else{
+                                    $max = floor(count($step3_ids) / $step3_count);
 
-        //                         }
-        //                         for ($i=0; $i < $max*$step3_count; $i++) {
-        //                         unset($step3_ids[$i]);
-        //                         }
-        //                     }
-        //             $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
-        //             ->whereNotIn('id',$step3_ids)
-        //             ->limit($pills->number)->pluck('id');
-        //             if(count($pluck_id) == 0)
-        //             {
-        //                 $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
-        //                  ->limit($pills->number)->pluck('id');
-        //             }
-        //             $step3[$pills->id] = $pluck_id;
-        //             foreach($step3[$pills->id] as $item_key => $item)
-        //             {
-        //                 $condition_id = ConditionQuestion::where('pill_question_id',$item)->pluck('id');
+                                    }
+                                    for ($i=0; $i < $max*$step3_count; $i++) {
+                                    unset($step3_ids[$i]);
+                                    }
+                                }
+                        $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                        ->whereNotIn('id',$step3_ids)
+                        ->limit($pills->number)->pluck('id');
+                        if(count($pluck_id) == 0)
+                        {
+                            $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                            ->limit($pills->number)->pluck('id');
+                        }
+                        $step3[$pills->id] = $pluck_id;
+                        foreach($step3[$pills->id] as $item_key => $item)
+                        {
+                            $condition_id = ConditionQuestion::where('pill_question_id',$item)->pluck('id');
 
-        //                 foreach($condition_id as $condition_key => $condition)
-        //                 {
-        //                     $condition_item_id = KnowledgeQuestion::where('condition_question_id',$condition)->inRandomOrder()
-        //                     ->limit(1)->pluck('id');
-        //                     $question_step[$condition] = $condition_item_id;
+                            foreach($condition_id as $condition_key => $condition)
+                            {
+                                $condition_item_id = KnowledgeQuestion::where('condition_question_id',$condition)->inRandomOrder()
+                                ->limit(1)->pluck('id');
+                                $question_step[$condition] = $condition_item_id;
 
-        //                 }
-        //             }
-        //         }
+                            }
+                        }
+                    }
 
-        //     }
-        //     $new_user_question = new UserQuestion([
-        //         'user_id' => $user_items->id,
-        //         'step1' => json_encode($step1),
-        //         'step3' => json_encode($step3),
-        //         'question_step' => json_encode($question_step),
-        //         'created_at' => '2022-10-02 12:19:21',
-        //         'updated_at' => '2022-10-02 12:19:21',
-        //     ]);
-        //     $new_user_question->save();
-        //     $step1 = [];
-        //         $step3 = [];
-        //         $question_step = [];
-        //             $step1_ids = [];
-        //             $step3_ids = [];
+                }
+                $new_user_question = new UserQuestion([
+                    'user_id' => $user_items->id,
+                    'step1' => json_encode($step1),
+                    'step3' => json_encode($step3),
+                    'question_step' => json_encode($question_step),
+                    'created_at' => date_now(),
+                    'updated_at' => date_now()
+                ]);
+                $new_user_question->save();
+                $step1 = [];
+                    $step3 = [];
+                    $question_step = [];
+                        $step1_ids = [];
+                        $step3_ids = [];
 
-        // }
+            }
+        }
+        
 
         #end-save-bilim-ai
 
