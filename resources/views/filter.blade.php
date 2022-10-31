@@ -77,7 +77,7 @@
                            <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
                               <a href="#" onclick="users('Hammasi','all')" class="dropdown-item" id="addregionall"> Hammasi </a>
                               @foreach($users as $user)
-                              <a href="#" onclick="users(` {{$user->last_name}} {{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall"> {{$user->last_name}}{{$user->first_name}}</a>
+                              <a href="#" onclick="users(`{{$user->last_name}}{{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall"> {{$user->last_name}}{{$user->first_name}}</a>
                               @endforeach
                            </div>
                         </div>
@@ -475,13 +475,12 @@
        }
 
        function users(name,id){
-          $("#age_button4").attr('name ',id);
+         $("#age_button4").attr('name',id);
           $("#age_button4").text(name);
-          $("#age_button4").text('  ');
-          var id = $("#age_button").attr('name ');
+          var id = $("#age_button").attr('name');
           var text = $("#age_button").text();
-            // alert(id)
           ageChart(text,id,'all');
+
        }
        function orderId(ids){
           var id = $("#age_button").attr('name ');
