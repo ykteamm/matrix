@@ -87,7 +87,7 @@ Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
 
-Route::get('pharmacy-list', [HomeController::class,'pharmacyList'])->name('pharmacy-list');
+Route::get('pharmacy-list/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyList'])->name('pharmacy-list');
 
 
 Route::get('image-grade', [App\Http\Controllers\HomeController::class,'imageGrade'])->name('image.grade');
@@ -157,8 +157,7 @@ Route::post('plan/create/{id}', [PlanController::class,'store'])->name('plan.sto
 Route::get('plan/{id}/edit', [PlanController::class,'edit'])->name('plan.edit');
 Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
 Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
-Route::get('elchi', [ElchilarController::class,'kunlik'])->name('elchilar');
-
+Route::get('elchilar-kunlik/{month}', [ElchilarController::class,'kunlik'])->name('elchilar');
 Route::get('user-control', [UserController::class,'index'])->name('user-control');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
 Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');

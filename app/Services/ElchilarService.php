@@ -7,6 +7,7 @@ use App\Models\Calendar;
 use App\Models\Medicine;
 use App\Models\Plan;
 use App\Models\ProductSold;
+use App\Models\Region;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +15,9 @@ use Illuminate\Support\Facades\Session;
 
 class ElchilarService
 {
-    public function elchilar()
+    public function elchilar($month,$endofmonth)
     {
+
         $userarrayreg = [];
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
@@ -54,26 +56,17 @@ class ElchilarService
         $elchi_work=[];
         $elchi_fact=[];
         $elchi_prognoz=[];
-        $cale = DB::table('tg_calendar')->where('year_month',today()->format('m.Y'))->first();
+//        dd($month);
+        $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
+//        dd($cale);
         $cale_date = json_decode($cale->day_json);
-        // return $elchi;
-        $date = DB::table('tg_smena')
-            // ->whereIn(DB::raw('DATE(created_from)'), $all_date)
-            ->whereDate('created_from','>=',today()->format('Y-m').'-01')
-            ->whereDate('created_from','<=',today()->format('Y-m').'-30')
-            ->where('smena',2)
-            ->where('user_id', 35)
-            ->orderBy('created_from','DESC')
-            ->pluck('created_from');
-        // return $date[0];
-        $fsd=[];
+
         foreach($elchi as $elch)
         {
-
             $date = DB::table('tg_smena')
                 // ->whereIn(DB::raw('DATE(created_from)'), $all_date)
-                ->whereDate('created_from','>=',today()->format('Y-m').'-01')
-                ->whereDate('created_from','<=',today()->format('Y-m').'-30')
+                ->whereDate('created_from','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_from','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                 ->where('smena',2)
                 ->where('user_id', $elch->id)
                 ->orderBy('created_from','DESC')
@@ -93,7 +86,7 @@ class ElchilarService
                         if (strlen($key) == 1) {
                             $key = '0'.$key;
                         }
-                        $all_date[] = today()->format('Y-m').'-'.$key;
+                        $all_date[] = date('Y-m',strtotime($month)).'-'.$key;
                     }
                 }
                 $no_day=0;
@@ -167,13 +160,17 @@ class ElchilarService
      return $data;
     }
 
-    public function plan($elchi)
+    public function plan($elchi,$month,$endofmonth)
     {
         $plan_sum=[];
         $i=0;
         foreach ($elchi as $item){
             $plan_sum[$i]=0;
-            $plans=Plan::where('user_id',$item->id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
+            $plans=Plan::where('user_id',$item->id)
+                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
+
+
             foreach ($plans as $plan){
                 $narx=DB::table('tg_medicine')
                     ->select('tg_medicine.price')
@@ -186,15 +183,17 @@ class ElchilarService
         return $plan_sum;
     }
 
-    public function planday($elchi)
+    public function planday($elchi,$month,$endofmonth)
     {
         $plan_sum=[];
-        $cal=Calendar:: select('work_day')->where('year_month',date('m.Y'))->first();
-//        dd($cal->work_day);
+        $cal=Calendar:: select('work_day')->where('year_month',date('m.Y',strtotime($month)))->first();
+//        dd($cal);
         $i=0;
         foreach ($elchi as $item){
             $plan_sum[$i]=0;
-            $plans=Plan::where('user_id',$item->id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
+            $plans=Plan::where('user_id',$item->id)
+                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
             foreach ($plans as $plan){
                 $narx=DB::table('tg_medicine')
                     ->select('tg_medicine.price')
@@ -210,13 +209,14 @@ class ElchilarService
     {
         $encane=[];
         $t=0;
-        $apteka=DB::table('tg_pharmacy')->get();
+        $apteka=DB::table('tg_pharmacy_users')->get();
 //        dd($apteka);
         foreach ($elchi as $item){
             $encane[$t]='nomalum';
             foreach ($apteka as $apt){
-                if ($item->pharmacy_id==$apt->id){
-                    $encane[$t]=$apt->name;
+                if ($item->id==$apt->user_id){
+                    $pharm=DB::table('tg_pharmacy')->where('id',$apt->pharma_id)->first();
+                    $encane[$t]=$pharm->name;
                 }
             }
                 $t++;
@@ -224,26 +224,37 @@ class ElchilarService
         return $encane;
     }
 
-    public function checkCalendar()
+    public function checkCalendar($month,$endofmonth)
     {
-        $startOfMonth=date('d.m.Y',strtotime(Carbon::now()->startOfMonth()));
-        $today=date('d.m.Y',strtotime(Carbon::now()));
-        $difference=date('d',strtotime($today)) - date('d',strtotime($startOfMonth))+1;
-        for($i=0;$i<$difference;$i++){
-            $d=$i.' day';
-            $days[$i]=date("Y-m-d", strtotime($d, strtotime((Carbon::now()->startOfMonth()))));
+        if(date('m',strtotime($month))==date('m')){
+            $startOfMonth = date('d.m.Y', strtotime(date('Y-m', strtotime($month)) . '-01'));
+            $today = date('d.m.Y', strtotime(Carbon::now()));
+            $difference = date('d', strtotime($today)) - date('d', strtotime($startOfMonth)) + 1;
+            for ($i = 0; $i < $difference; $i++) {
+                $d = $i . ' day';
+                $days[$i] = date("Y-m-d", strtotime($d, strtotime(date('Y-m', strtotime($month)) . '-01')));
+            }
+
+        }
+        else {
+            for ($i = 0; $i < $endofmonth; $i++) {
+                $d = $i . ' day';
+                $days[$i] = date("Y-m-d", strtotime($d, strtotime(date('Y-m', strtotime($month)) . '-01')));
+            }
         }
 
 
         return $days;
     }
 
-    public function sold($elchi,$days)
+    public function sold($elchi,$days,$month,$endofmonth)
     {
         $sold=[];
         $i=0;
         foreach ($elchi as $item){
-            $MonthSold=ProductSold::where('user_id',$item->id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()])->get();
+            $MonthSold=ProductSold::where('user_id',$item->id)
+                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
             $j=0;
             foreach ($days as $day){
                 $sold[$i][$j]=0;
@@ -570,6 +581,64 @@ class ElchilarService
             $elchilar[]=array('elchi'=>$item,'ichki-reyting'=>$allavg,'tashqi-reyting'=>$altgardes);
         }
         return $elchilar;
+    }
+
+    public function haftalik($days,$sold,$elchilar)
+    {
+        $i=0;
+        $arr=[];
+        foreach ($elchilar as $elchi){
+            $j=0;
+            $s=0;
+            foreach ($days as $day){
+                if($j==0||$j==7||$j==14||$j==21){
+                    $arr[$i][$s]=0;
+                }
+                $arr[$i][$s]+=$sold[$i][$j];
+                if($j==6||$j==13||$j==20){
+                    $s++;
+                }
+                $j++;
+            }
+            $i++;
+        }
+        return $arr;
+    }
+
+    public function viloyatlar()
+    {
+        $vil=Region::all();
+        return $vil;
+    }
+
+    public function month()
+    {
+        $arr[0]=['id'=>31, 'name'=>'Yanvar'];
+        $arr[1]=['id'=>28, 'name'=>'Fevral'];
+        $arr[2]=['id'=>31, 'name'=> 'Mart'];
+        $arr[3]=['id'=>30, 'name'=>'Aprel'];
+        $arr[4]=['id'=>31, 'name'=>'May'];
+        $arr[5]=['id'=>30, 'name'=>'Iyun'];
+        $arr[6]=['id'=>31, 'name'=>'Iyul'];
+        $arr[7]=['id'=>31, 'name'=>'Avgust'];
+        $arr[8]=['id'=>30, 'name'=>'Sentabr'];
+        $arr[9]=['id'=>31, 'name'=>'Oktabr'];
+        $arr[10]=['id'=>30, 'name'=>'Noyabr'];
+        $arr[11]=['id'=>31, 'name'=>'Dekabr'];
+        return $arr;
+    }
+
+    public function endmonth($month,$months)
+    {
+        $i=1;
+        foreach ($months as $m){
+            if (date('m',strtotime($month))==$i){
+                $endM=$m['id'];
+            }
+            $i++;
+        }
+        return $endM;
+
     }
 
 

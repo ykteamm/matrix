@@ -14,11 +14,11 @@
              @endif
              @endisset
 
-            @isset(Session::get('per')['elchi'])
-                @if(Session::get('per')['elchi'] == 'true')
-                    <li><a href="{{route('elchilar')}}"><i class="feather-filter"></i>  <span>Elchilar kunlik</span></a>
-                @endif
-            @endisset
+             @isset(Session::get('per')['elchi-day'])
+             @if(Session::get('per')['elchi-day'] == 'true')
+                 <li><a href="{{route('elchilar',['month'=>date('Y-m')])}}"><i class="feather-filter"></i>  <span>Elchilar kunlik</span></a>
+               @endif
+               @endisset
              @isset(Session::get('per')['elchi'])
              @if(Session::get('per')['elchi'] == 'true')
                <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
@@ -27,7 +27,7 @@
 
              @isset(Session::get('per')['pharmacy'])
              @if(Session::get('per')['pharmacy'] == 'true')
-             <li><a href="{{route('pharmacy-list')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
+             <li><a href="{{route('pharmacy-list','today')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
              @endif
              @endisset
 
@@ -172,6 +172,10 @@
                   </li>
                @endif
               @endisset
+              <li class="mb-5"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="feather-home"></i>  <span> Chiqish </span></a>
+               <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+              </form>
              {{-- @isset(Session::get('per')['User']) --}}
              {{-- @if(Session::get('per')['User'] == 'true') --}}
 
@@ -185,10 +189,7 @@
           </ul>
           {{-- <div> --}}
             <ul>
-               <li><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="feather-home"></i>  <span> Chiqish </span></a>
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                     @csrf
-                 </form>
+               
             </ul>
           {{-- </div> --}}
 

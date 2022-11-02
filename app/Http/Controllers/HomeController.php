@@ -102,23 +102,7 @@ class HomeController extends Controller
         //     'res' => $response
         // ];
     }
-    public function pharmacyList(Request $request)
-    {
-        // dd($request);
-        // \File::delete(public_path() . '/assets/img/'.$getimg);
-        // $id =2;
-
-        $pharmacy = Pharmacy::all();
-        // foreach($pharmacy as $item)
-        // {
-        //     $response = Http::get('http://128.199.2.165:8100/api/v1/pharm/image/'.$item->id.'/');
-        //     $url = $response['image'];
-        //     $contents = file_get_contents($url);
-        //     $name = substr($url, strrpos($url, '/') + 1);
-        //     Storage::disk('public_uploads')->put($name, $contents);
-        // }
-        return view('pharmacy',compact('pharmacy'));
-    }
+    
     public function imageGrade()
     {
         // $files = Storage::disk('public_grade')->allFiles();

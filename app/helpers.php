@@ -91,6 +91,7 @@ if(!function_exists('wordSimilarity')){
             'dash' => 'Dashboard',
             'filter' => 'Filter',
             'elchi' => 'Elchi',
+            'elchi-day' => 'Elchi kunlik',
             'pro' => 'Mahsulotlar',
             'grade' => 'Baholash',
             'ques' => 'Savollar',
