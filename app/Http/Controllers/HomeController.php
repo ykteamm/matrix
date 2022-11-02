@@ -999,6 +999,12 @@ class HomeController extends Controller
                 ->join('tg_knowledge_questions','tg_knowledge_questions.id','tg_knowledge_grades.knowledge_question_id')
                 ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                 ->get();
+                $step1_get = DB::table('tg_knowledge_grades')
+                ->select('tg_pill_questions.name','tg_user.first_name','tg_user.last_name','tg_knowledge_grades.*')
+                ->where('tg_knowledge_grades.user_id',$id)
+                ->join('tg_pill_questions','tg_pill_questions.id','tg_knowledge_grades.pill_id')
+                ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
+                ->get();
         $step3_get_user = DB::table('tg_knowledge_grades')
                 ->select('tg_user.first_name','tg_user.last_name','tg_user.id')
                 ->where('tg_knowledge_grades.user_id',$id)
@@ -1006,8 +1012,9 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                 ->distinct()
                 ->get();
-                // return $medicineall;
-        return view('welcome',compact('step3_get_user','step3_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        
+                // return $step1_get;
+        return view('welcome',compact('step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
@@ -1482,37 +1489,7 @@ class HomeController extends Controller
 
         return view('elchi-know',compact('elchi'));
     }
-    public function userList(Request $request)
-    {
-        // $getip = UserSystemInfo::get_ip();
-    // $getbrowser = UserSystemInfo::get_browsers();
-    // $getdevice = UserSystemInfo::get_device();
-    // $getos = UserSystemInfo::get_os();
-
-    // echo "<center>$getip <br> $getdevice <br> $getbrowser <br> $getos</center>";
-    // die();
-    //  $agent = new Agent();
-    //  return $agent->device();
-    // $host = request()->getHttpHost();
-    //  return getenv('COMPUTERNAME');
-
-        $elchi = DB::table('tg_user')
-        ->where('admin',TRUE)
-        ->select('tg_user.last_seen','tg_positions.id as pid','tg_positions.rol_name','tg_user.id','tg_user.tg_id','tg_user.username','tg_user.birthday','tg_user.phone_number','tg_user.first_name','tg_user.last_name','tg_region.name as v_name')
-        ->join('tg_region','tg_region.id','tg_user.region_id')
-        ->leftjoin('tg_positions','tg_positions.id','tg_user.rol_id')
-        ->orderBy('tg_user.last_seen','ASC')
-        ->get();
-
-        // $elchi = DB::table('tg_user')
-        // ->where('admin',TRUE)
-        // ->select('last_seen')
-        // ->orderBy('last_seen','ASC')
-        // ->get();
-        // return $elchi;
-        $posi = DB::table('tg_positions')->get();
-        return view('user',compact('elchi','posi'));
-    }
+    
     public function proList($time)
     {
         // $time = '02.09.2022/02.09.2022';

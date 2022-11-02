@@ -104,6 +104,7 @@ if(!function_exists('wordSimilarity')){
         ];
         // $knowledge = Knowledge::first();
         $h_positions['pharmacy'] = 'Dorixona';
+        $h_positions['team'] = 'Jamoa';
         $h_positions['narx'] = 'Narx';
         $h_positions['zavod'] = 'Zavod';
         $h_positions['control'] = 'User control';
@@ -118,6 +119,10 @@ if(!function_exists('wordSimilarity')){
             $h_positions[$value->id] = $value->name;
         }
         
+        $perm = DB::table('tg_perm')->get();
+        foreach ($perm as $key => $value) {
+            $h_positions[$value->key] = $value->name;
+        }
         return $h_positions;
         
     }

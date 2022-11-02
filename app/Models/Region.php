@@ -14,4 +14,9 @@ class Region extends Model
         'name',
         'sort'
     ];
+
+    public function team()
+    {
+        return $this->hasMany(Team::class,'region_id','id');
+    }
 }

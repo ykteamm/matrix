@@ -332,9 +332,28 @@
                         </div>
                      </div>
                      {{-- @endif --}}
-                     @foreach ($step3_get as $item)
+                     @foreach ($step1_get as $item)
 
-                     <div class=" ml-4 allqd qd{{$ite->id}}{{$item->teacher_id}}" style="">
+                     <div class=" ml-4  qd{{$ite->id}}{{$item->teacher_id}}" style="">
+                        @if($ite->id == $item->teacher_id)
+                        <div class="row">
+                           <div class="d-flex mb-3">
+                              <div class="medicne d-flex mr-4">
+                                 <span>{{$item->name}}</span>
+                              </div>
+                              <div class="medicne-time ml-auto mr-5">
+                                 {{$item->grade}}
+                              </div>
+                              <div class="medicne">
+                                 {{$item->created_at}}
+                              </div>
+                           </div>
+                        </div>
+                        @endif
+                     </div>
+                     @endforeach
+                     @foreach ($step3_get as $item)
+                     <div class=" ml-4  qd{{$ite->id}}{{$item->teacher_id}}" style="">
                         @if($ite->id == $item->teacher_id)
                         <div class="row">
                            <div class="d-flex mb-3">
@@ -355,25 +374,7 @@
 
                      </div>
                      @endforeach
-                     @foreach ($step3_get_user as $item)
-
-                     {{-- <div class="tab-left ml-4 allqd qd{{$ite->id}}{{$item->teacher_id}}" style="">
-                        @if($ite->id == $item->teacher_id)
-                        <div class="d-flex mb-3">
-                           <div class="medicne d-flex">
-                              <span>{{$item->name}}</span>
-                           </div>
-                           <div class="medicne-time ml-auto mr-5">
-                              {{$item->grade}}
-                           </div>
-                           <div class="medicne">
-                              {{$item->created_at}}
-                           </div>
-                        </div>
-                        @endif
-
-                     </div> --}}
-                     @endforeach
+                     
 
                      @endforeach
 

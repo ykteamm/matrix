@@ -15,7 +15,10 @@ class User extends Model
     {
         return $this->hasMany(ProductJournal::class, 'user_id', 'id');
     }
-
+    public function member()
+    {
+        return $this->hasMany(Member::class,'user_id','id');
+    }
     // public function condition_question()
     // {
     //     return $this->hasMany(ConditionQuestion::class,'pill_question_id','id');

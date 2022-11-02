@@ -67,7 +67,12 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('/search',[HomeController::class,'filter']);
 Route::get('elchi/{id}/{time?}', [HomeController::class,'elchi'])->name('elchi');
 Route::get('elchi-list', [HomeController::class,'elchiList'])->name('elchi-list');
-Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
+Route::get('admin-list', [UserController::class,'adminList'])->name('admin-list');
+Route::get('rm-list', [UserController::class,'rmList'])->name('rm-list');
+Route::get('cap-list', [UserController::class,'capList'])->name('cap-list');
+Route::get('user-list', [UserController::class,'userList'])->name('user-list');
+
+
 Route::get('/status', [HomeController::class,'userOnlineStatus']);
 #position
 Route::resource('position', PositionController::class);
@@ -75,7 +80,7 @@ Route::resource('bolim', BolimController::class);
 Route::resource('question', QuestionController::class);
 Route::get('question/{id?}/delete', [App\Http\Controllers\QuestionController::class,'destroy'])->name('question.delete');
 Route::get('position/{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
-Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
+// Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
 Route::get('pro-list/{time}', [HomeController::class,'proList'])->name('pro-list');
 Route::post('permission', [HomeController::class,'permission'])->name('permissions');
 Route::get('reg', [HomeController::class,'reg']);
@@ -140,6 +145,11 @@ Route::get('product/{id?}/restore', [App\Http\Controllers\ProductController::cla
 
 Route::get('database', [App\Http\Controllers\BazaController::class,'database'])->name('database');
 
+
+Route::resource('team',TeamController::class);
+Route::resource('member',MemberController::class);
+Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus'])->name('member.minus');
+
 #end-position
 #bro
 Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');
@@ -152,6 +162,9 @@ Route::get('elchi', [ElchilarController::class,'kunlik'])->name('elchilar');
 Route::get('user-control', [UserController::class,'index'])->name('user-control');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
 Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');
+Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');
+Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
+
 #end-bro
 
 });
