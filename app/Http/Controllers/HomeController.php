@@ -802,7 +802,7 @@ class HomeController extends Controller
         $step_array = [];
         $step_array_counter = [];
         $step_array_grade_all = [];
-
+        $sdf=[];
         foreach($knowledges as $knowledge)
         {
             if($knowledge->step == 1){
@@ -822,10 +822,11 @@ class HomeController extends Controller
 
                 $step_array_grade_all[] = $questions_grade;
 
-                $questions_count = DB::table('tg_knowledge_grades')
-                ->whereIn('pill_id',$condition)
-                ->where('user_id',$id)
-                ->where('teacher_id',$teachers)->count();
+                // $questions_count = DB::table('tg_knowledge_grades')
+                // ->whereIn('pill_id',$condition)
+                // ->where('user_id',$id)
+                // ->where('teacher_id',$teachers)->count();
+                // $sdf[]=$questions_count;
 
                 $step_array_grade = [];
 
@@ -834,7 +835,7 @@ class HomeController extends Controller
                     $pill_avg = 0;
 
                 }else{
-                    $pill_avg = $questions/$questions_count;
+                    $pill_avg = $questions;
                 }
 
                 $pill_counter += $pill_avg;
@@ -843,7 +844,7 @@ class HomeController extends Controller
                 {
                     $all_avg = 0;
                 }else{
-                    $all_avg = $pill_counter/count($know_teachers);
+                    $all_avg = $pill_counter;
                 }
                 $pill_array[] = array('avg' => number_format($all_avg,2),'name' =>$knowledge->name);
             }
@@ -853,8 +854,8 @@ class HomeController extends Controller
 
                 foreach($condition_step as $key_con => $con)
                 {
-            $pill_counter = 0;
-            $pill_counter_count = 0;
+                $pill_counter = 0;
+                $pill_counter_count = 0;
 
                 foreach($know_teachers as $teachers)
                 {
@@ -890,6 +891,8 @@ class HomeController extends Controller
 
 
         }
+        // return $sdf;
+
         $plan=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->exists();
         $ps=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->with('planweek')->get();
 
@@ -997,7 +1000,6 @@ class HomeController extends Controller
                 ->distinct()
                 ->get();
         
-                // return $step1_get;
         return view('welcome',compact('step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));

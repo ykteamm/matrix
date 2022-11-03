@@ -34,7 +34,7 @@
                      <thead>
                         <tr>
                            <th>Nomi</th>
-                           {{-- <th>Rasmi</th> --}}
+                           <th>Rasmi</th>
                            <th>Telefon raqami</th>
                            <th>Joyi m<sup>2</sup></th>
                            <th>Viloyat</sup></th>
@@ -50,7 +50,7 @@
                            
                            <td><a href="{{route('pharmacy',$item['id'])}}">{{$item['name']}}</a></td>
                            {{-- @isset($item['image']) --}}
-                           {{-- <td> <img src="{{$item['img']}}" height="80px" alt=""> </td> --}}
+                           <td> <img src="{{$item['img']}}" height="80px" alt=""> </td>
                                
                            {{-- @endisset --}}
                            {{-- <td> <img src="{{$item['image']}}" height="80px" alt=""> </td> --}}

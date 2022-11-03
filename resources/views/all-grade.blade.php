@@ -291,8 +291,6 @@
 
         // console.log(myItems)
         $(`#name_${step}`).val(JSON.stringify(myItems));
-
-         
       }
       function rateHoverStep(grade,step,elchi,quest)
       {
@@ -313,8 +311,8 @@
         var i = 0;
         $(`.steps${form}`).each(function(index)
         { 
-            i++
-            if($(this).val())
+            i++;
+            if($(this).val());
             
         });
         if(i==0)
