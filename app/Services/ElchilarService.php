@@ -250,22 +250,14 @@ class ElchilarService
     public function sold($elchi,$days,$month,$endofmonth)
     {
         $sold=[];
-        $i=0;
-        foreach ($elchi as $item){
-            $MonthSold=ProductSold::where('user_id',$item->id)
-                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
-            $j=0;
-            foreach ($days as $day){
-                $sold[$i][$j]=0;
-                foreach ($MonthSold as $daysold){
-                    if(date('d',strtotime($daysold->created_at))==date('d',strtotime($day))){
-                        $sold[$i][$j]+=$daysold->price_product*$daysold->number;
-                    }
-                }
-                $j++;
+        $sold2=[];
+        foreach ($elchi as $key => $item){
+            foreach ($days as $keys => $day) {
+                $MonthSold=ProductSold::where('user_id',$item->id)
+                    ->whereDate('created_at','=', $day)->sum(DB::raw('price_product*number'));
+                $sold2[$keys]=$MonthSold;
             }
-            $i++;
+            $sold[$key]=$sold2;
         }
         return $sold;
     }

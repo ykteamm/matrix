@@ -13,7 +13,7 @@
           <div class="card">
              <div class="card-body">
                 <div class="text-center">
-                   <img src="{{$pharma->image_url}}" style="border-radius:50%" height="200px">
+                   <img src="{{$pharma->image}}" style="border-radius:50%" height="200px">
                </div>
              </div>
           </div>

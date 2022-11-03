@@ -33,7 +33,7 @@
                     <th class="fixed"><strong>Garb/Sharq</strong></th>
                     <th class="fixed"><strong>Viloyat</strong> </th>
                     <th class="fixed"><strong>Elchi</strong> </th>
-                    <th class="fixed" onclick="yashir()" ><strong>Encane</strong> </th>
+                    <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
                     <th class="yashir"><strong>Plan </strong></th>
                     <th class="yashir"><strong>Kunlik plan </strong></th>
                     <th class="yashir"><strong>Fakt </strong></th>
