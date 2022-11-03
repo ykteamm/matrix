@@ -76,14 +76,13 @@ class GradeController extends Controller
         }
         $question_step1 = [];
         $know_questions = [];
-        $sd=[];
         foreach($all_elchi as $items)
         {
             $user_question = UserQuestion::where('user_id',$items->user_id)
             ->whereDate('created_at','>=',$weekStartDate)
             ->whereDate('created_at','<=',$weekEndDate)
             ->get();
-            
+
             if($user_question[0])
             {
             $json_arr1 = json_decode($user_question[0]->step1);
@@ -106,7 +105,6 @@ class GradeController extends Controller
             }
             }
         }
-        return $sd;
         $grades_step_array3=[];
         $grades_step_array1=[];
 
