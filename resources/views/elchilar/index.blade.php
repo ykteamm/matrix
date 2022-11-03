@@ -4,9 +4,9 @@
 
 
 
-    <div id="table-wrapper" class="card-body mt-5">
-        <div id="table-scroll" class="table-responsive" style="height: 90vh; overflow-y: scroll">
-            <div class="row  d-flex">
+    <div id="table-wrapper"  class="card-body mt-5">
+        <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 90vh; overflow-y: scroll">
+            <div class="row   d-flex justify-content-between">
 
 
                 <div class="col-md-2 mb-2  justify-content-end">
@@ -23,8 +23,23 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="col-md-2 mb-2  justify-content-end">
+                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
+                    <div class="dropdown-menu" style="left:150px !important">
+                        @php $i=1 @endphp
+                        @foreach($months as $m)
+                            @if($i<10)
+                            <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                            @else
+                            <a href="{{route('elchilar',['month'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                            @endif
+                                @php $i++ @endphp
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
-            <table class="table mb-0 table-striped "  >
+            <table class="table mb-0 table-striped "   >
                 <thead >
                 <tr onmouseover="$(this).css('cursor','pointer')";
                     onmouseleave="$(this).css('color','black');"
@@ -61,12 +76,12 @@
                 <tbody  >
                 @php $t=0; @endphp
                 @foreach($elchilar as $item)
-                    @if($item['elchi']->admin !=TRUE)
+                    @if($item['elchi']->status ==1)
                 <tr >
-                    <td class="fixed ">{{$t+1}} </td>
-                    <td class="fixed " >@if($item['elchi']->v_name=='Namangan viloyati'||$item['elchi']->v_name=='Farg‘ona viloyati'||$item['elchi']->v_name=='Andijon viloyati'||$item['elchi']->v_name=='Toshkent viloyati'||$item['elchi']->v_name=='Toshkent shahri')Sharq @else G‘arb @endif </td>
-                    <td class="fixed ">{{$item['elchi']->v_name}} </td>
-                    <td class="fixed ">
+                    <td>{{$t+1}} </td>
+                    <td>@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
+                    <td>{{$item['elchi']->v_name}} </td>
+                    <th class="fixed">
                         <div class="mb-1">
                             <strong>
                                 <img class="mr-2 mb-1" src="{{$item['elchi']->image_url}}" style="border-radius:50%" height="20px"> {{ $item['elchi']->last_name}} {{$item['elchi']->first_name}} ( Elchi )
@@ -76,8 +91,8 @@
                             <span class="badge bg-success-light">Ichki reyting:  <span class="text-danger">{{$item['ichki-reyting']}} </span> </span>
                             <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>
                         </div>
-                    </td>
-                    <td class="fixed ">{{$encane[$t]}} </td>
+                    </th>
+                    <th class="fixed">{{$encane[$t]}} </th>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
                     <td class="yashir "> <span class="badge bg-warning-light">{{$elchi_fact[$item['elchi']->id]}}</span></td>
@@ -128,6 +143,13 @@
     </div>
 </div>
     <script>
+        let x = 0;
+        function myFunction() {
+            document.getElementById("demo").innerHTML = x += 1;
+        }
+    </script>
+    <script>
+
 
         function yashir(){
             let a=document.querySelectorAll('.yashir');

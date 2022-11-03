@@ -896,7 +896,7 @@ class HomeController extends Controller
         $plan=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->exists();
         $ps=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->with('planweek')->get();
 
-
+        
         $allplans=0;
         $allweekplan=[];
         $numbers=[];

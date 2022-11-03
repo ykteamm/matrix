@@ -48,12 +48,12 @@ class ElchilarService
 
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
-            ->where('tg_user.admin',FALSE)
-            ->select('tg_user.pharmacy_id','tg_user.image_url','tg_user.admin','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->where('tg_user.status',1)
+            ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
-            ->orderBy('tg_user.admin','DESC')->get();
-
+            ->orderBy('tg_region.side','ASC')->get();
         $elchi_work=[];
+
         $elchi_fact=[];
         $elchi_prognoz=[];
 //        dd($month);
@@ -248,6 +248,28 @@ class ElchilarService
     }
 
     public function sold($elchi,$days,$month,$endofmonth)
+    {
+        $sold=[];
+        $i=0;
+        foreach ($elchi as $item){
+            $MonthSold=ProductSold::where('user_id',$item->id)
+                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
+            $j=0;
+            foreach ($days as $day){
+                $sold[$i][$j]=0;
+                foreach ($MonthSold as $daysold){
+                    if(date('d',strtotime($daysold->created_at))==date('d',strtotime($day))){
+                        $sold[$i][$j]+=$daysold->price_product*$daysold->number;
+                    }
+                }
+                $j++;
+            }
+            $i++;
+        }
+        return $sold;
+    }
+    public function mysold($elchi,$days,$month,$endofmonth)
     {
         $sold=[];
         $sold2=[];
