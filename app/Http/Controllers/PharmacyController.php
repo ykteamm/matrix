@@ -243,12 +243,11 @@ class PharmacyController extends Controller
     public function pharmacyUser()
     {
         $pharmacy = Region::with('pharmacy')->get();
-        $region = Pharmacy::distinct()->pluck('region');
         $pusers = PharmacyUser::select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_pharmacy_users.*')
         ->join('tg_user','tg_user.id','tg_pharmacy_users.user_id')
         ->get();
         $users = DB::table('tg_user')->where('admin',FALSE)->get();
         // return $pharmacy;
-        return view('pharmacy.index',compact('pharmacy','users','pusers','region'));
+        return view('pharmacy.index',compact('pharmacy','users','pusers'));
     }
 }

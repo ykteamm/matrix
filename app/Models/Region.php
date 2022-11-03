@@ -22,6 +22,6 @@ class Region extends Model
 
     public function pharmacy()
     {
-        return $this->hasMany(Pharmacy::class,'region','id');
+        return $this->hasMany(Pharmacy::class,'region_id','id');
     }
 }
