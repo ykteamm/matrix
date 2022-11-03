@@ -84,7 +84,7 @@ class GradeController extends Controller
             ->get();
             // dd($user_question);
             // die();
-            if($user_question[0])
+            if($user_question)
             {
             $json_arr1 = json_decode($user_question[0]->step1);
             $json_arr2 = json_decode($user_question[0]->question_step);
