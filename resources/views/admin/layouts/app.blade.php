@@ -129,13 +129,17 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     </style>
 
     {{-- <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css"> --}}
-    
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=7a4a276f-4b19-448d-877b-1c87a0b350c3&lang=ru_RU" type="text/javascript">
+    </script>
 </head>
 <body>
     <div class="main-wrapper">
         @include('admin.components.header')
         @include('admin.components.sidebar')
         <div class="page-wrapper" style="padding-top: 0px !important">
+            {{-- <body>
+                <div id="map" style="width: 600px; height: 400px"></div>
+            </body> --}}
         @yield('admin_content')
         </div>
     </div>
@@ -144,6 +148,15 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
 
     @include('admin.partials.js')
     @yield('admin_script')
+    {{-- <script type="text/javascript">
+    ymaps.ready(init);
+    function init(){
+        var myMap = new ymaps.Map("map", {.
+            center: [55.76, 37.64],
+            zoom: 7
+        });
+    }
+</script> --}}
     <script>
 //         function httpGetAsync(url, callback) {
 //     var xmlHttp = new XMLHttpRequest();

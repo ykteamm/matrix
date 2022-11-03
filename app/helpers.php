@@ -105,6 +105,8 @@ if(!function_exists('wordSimilarity')){
         ];
         // $knowledge = Knowledge::first();
         $h_positions['pharmacy'] = 'Dorixona';
+        $h_positions['user_pharmacy'] = 'Dorixona - user';
+        $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';
         $h_positions['narx'] = 'Narx';
         $h_positions['zavod'] = 'Zavod';

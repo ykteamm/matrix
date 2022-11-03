@@ -30,6 +30,11 @@
              <li><a href="{{route('pharmacy-list','today')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
              @endif
              @endisset
+             @isset(Session::get('per')['user_pharmacy'])
+             @if(Session::get('per')['user_pharmacy'] == 'true')
+             <li><a href="{{route('pharmacy-user','today')}}"><i class="feather-filter"></i>  <span>Dorixona - elchi</span></a>
+             @endif
+             @endisset
 
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')

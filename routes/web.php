@@ -87,7 +87,9 @@ Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
 
+Route::get('pharmacy-user/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyUser'])->name('pharmacy-user');
 Route::get('pharmacy-list/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyList'])->name('pharmacy-list');
+Route::post('farm/chart', [App\Http\Controllers\PharmacyController::class,'chart']);
 
 
 Route::get('image-grade', [App\Http\Controllers\HomeController::class,'imageGrade'])->name('image.grade');
@@ -124,6 +126,8 @@ Route::get('journal-purchase', [App\Http\Controllers\JournalController::class,'p
 Route::get('pharmacy/{id}', [App\Http\Controllers\PharmacyController::class,'pharmacy'])->name('pharmacy');
 Route::post('pharma-user/{id}', [App\Http\Controllers\PharmacyController::class,'pharmaUserStore'])->name('pharma-user.store');
 Route::post('user-pharma/{id}', [App\Http\Controllers\PharmacyController::class,'userPharmaStore'])->name('user-pharma.store');
+Route::post('user-add-pharma', [App\Http\Controllers\PharmacyController::class,'userPharma'])->name('user-add-pharma.store');
+Route::post('user-delete-pharma', [App\Http\Controllers\PharmacyController::class,'userPharmaDelete'])->name('user-delete-pharma.store');
 Route::post('user-rol', [App\Http\Controllers\PositionController::class,'userRol'])->name('user-rol.store');
 
 
