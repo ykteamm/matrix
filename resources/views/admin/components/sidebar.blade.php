@@ -19,11 +19,11 @@
                  <li><a href="{{route('elchilar',['month'=>date('Y-m')])}}"><i class="feather-filter"></i>  <span>Elchilar kunlik</span></a>
                @endif
                @endisset
-             {{-- @isset(Session::get('per')['elchi'])
+             @isset(Session::get('per')['elchi'])
              @if(Session::get('per')['elchi'] == 'true')
                <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
                   @endif
-             @endisset --}}
+             @endisset
 
              {{-- @isset(Session::get('per')['pharmacy'])
              @if(Session::get('per')['pharmacy'] == 'true')

@@ -109,8 +109,6 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
         </div>
         </form>
-
-        8600500480529755
     </div>
     </div>
 </div>

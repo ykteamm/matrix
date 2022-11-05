@@ -90,7 +90,7 @@ if(!function_exists('wordSimilarity')){
         $h_positions = [
             'dash' => 'Dashboard',
             'filter' => 'Filter',
-            // 'elchi' => 'Elchi',
+            'elchi' => 'Elchi',
             'elchi-day' => 'Elchi kunlik',
             'pro' => 'Mahsulotlar',
             'grade' => 'Baholash',
