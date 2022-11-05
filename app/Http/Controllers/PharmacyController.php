@@ -120,39 +120,78 @@ class PharmacyController extends Controller
             ->delete();
         return redirect()->back();
     }
-    public function pharmacy($id)
+    public function pharmacy($id,$time)
     {
-        $pharma = Pharmacy::find($id);
-
-
-        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
-        {
-        $regions = DB::table('tg_region')->get();
-
-        }else{
-            $r_id_array = [];
-            foreach (Session::get('per') as $key => $value) {
-                if (is_numeric($key)){
-               $r_id_array[] = $key;
-                }
-            }
-
+        if ($time == 'today') {
+            $date_begin = date_now();
+            $date_end = date_now();
+            $dateText = 'Bugun';
         }
-        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
-        {
-        $users = DB::table('tg_user')
-        ->where('tg_user.admin',FALSE)
+        elseif ($time == 'week') {
+            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( date_now()) ) ));
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hafta';
+        }
+        elseif ($time == 'month') {
+            $date_begin = date_now()->format('Y-m-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Oy';
+        }
+        elseif ($time == 'year') {
+            $date_begin = date_now()->format('Y-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Yil';
+        }
+        elseif ($time == 'all') {
+            $date_begin = date_now()->format('1790-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hammasi';
+        }
+        else{
+            $date_begin = substr($time,0,10);
+            $date_end = substr($time,11);
+            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+        }
+
+
+        // if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        // {
+        // $regions = DB::table('tg_region')->get();
+
+        // }else{
+        //     $r_id_array = [];
+        //     foreach (Session::get('per') as $key => $value) {
+        //         if (is_numeric($key)){
+        //        $r_id_array[] = $key;
+        //         }
+        //     }
+
+        // }
+        // if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        // {
+        // $users = DB::table('tg_user')
+        // ->where('tg_user.admin',FALSE)
         
-        ->get();
+        // ->get();
 
 
-        }else{
-            $users = DB::table('tg_user')
-            ->where('tg_user.admin',FALSE)
-            ->whereIn('region_id',$r_id_array)->get();
+        // }else{
+        //     $users = DB::table('tg_user')
+        //     ->where('tg_user.admin',FALSE)
+        //     ->whereIn('region_id',$r_id_array)->get();
 
-        }
-        return view('pharmacy-index',compact('pharma','users'));
+        // }
+        $pharma = Pharmacy::with('region')->find($id);
+        $user_sold = DB::table('tg_productssold')
+        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id,tg_user.first_name,tg_user.last_name')
+        ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        ->whereDate('tg_productssold.created_at','<=',$date_end)
+        ->where('tg_productssold.pharm_id',$id)
+        ->join('tg_user','tg_user.id','tg_productssold.user_id')
+        // ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+        ->groupBy('tg_productssold.user_id','tg_user.first_name','tg_user.last_name')->get();
+        // return $user_sold;
+        return view('pharmacy-index',compact('pharma','user_sold','dateText'));
     }
 
     public function chart(Request $request)
@@ -240,14 +279,60 @@ class PharmacyController extends Controller
         
         return $day;
     }
-    public function pharmacyUser()
+    public function pharmacyUser($time)
     {
+        if ($time == 'today') {
+            $date_begin = date_now();
+            $date_end = date_now();
+            $dateText = 'Bugun';
+        }
+        elseif ($time == 'week') {
+            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( date_now()) ) ));
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hafta';
+        }
+        elseif ($time == 'month') {
+            $date_begin = date_now()->format('Y-m-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Oy';
+        }
+        elseif ($time == 'year') {
+            $date_begin = date_now()->format('Y-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Yil';
+        }
+        elseif ($time == 'all') {
+            $date_begin = date_now()->format('1790-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hammasi';
+        }
+        else{
+            $date_begin = substr($time,0,10);
+            $date_end = substr($time,11);
+            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+        }
         $pharmacy = Region::with('pharmacy')->get();
         $pusers = PharmacyUser::select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_pharmacy_users.*')
         ->join('tg_user','tg_user.id','tg_pharmacy_users.user_id')
         ->get();
         $users = DB::table('tg_user')->where('admin',FALSE)->get();
-        // return $pharmacy;
-        return view('pharmacy.index',compact('pharmacy','users','pusers'));
+
+        $farm_sold = DB::table('tg_productssold')
+        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.pharm_id')
+        ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        ->whereDate('tg_productssold.created_at','<=',$date_end)
+        ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+        ->groupBy('tg_productssold.pharm_id')->pluck('allprice','tg_productssold.pharm_id');
+
+        $user_sold = DB::table('tg_productssold')
+        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id')
+        ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        ->whereDate('tg_productssold.created_at','<=',$date_end)
+        ->join('tg_user','tg_user.id','tg_productssold.user_id')
+        ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+        ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id');
+
+        // return $farm_sold;
+        return view('pharmacy.index',compact('pharmacy','users','pusers','farm_sold','user_sold','dateText'));
     }
 }

@@ -126,6 +126,10 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
   background-color: #0eee59;
   color: white;
 }
+/* .daterangepicker .ltr .show-calendar .opensright {
+    top: 115px !important;
+    left: 790px !important;
+} */
     </style>
 
     {{-- <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css"> --}}
@@ -137,9 +141,6 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
         @include('admin.components.header')
         @include('admin.components.sidebar')
         <div class="page-wrapper" style="padding-top: 0px !important">
-            {{-- <body>
-                <div id="map" style="width: 600px; height: 400px"></div>
-            </body> --}}
         @yield('admin_content')
         </div>
     </div>
@@ -148,15 +149,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
 
     @include('admin.partials.js')
     @yield('admin_script')
-    {{-- <script type="text/javascript">
-    ymaps.ready(init);
-    function init(){
-        var myMap = new ymaps.Map("map", {.
-            center: [55.76, 37.64],
-            zoom: 7
-        });
-    }
-</script> --}}
+    
     <script>
 //         function httpGetAsync(url, callback) {
 //     var xmlHttp = new XMLHttpRequest();
@@ -184,6 +177,12 @@ $(document).ready(function () {
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         "order": [[ 4, "desc" ]]
+
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    $(".example22").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,
+      "buttons": ["excel", "pdf", "print", "colvis"],
 
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 

@@ -3,7 +3,27 @@
 <div class="content main-wrapper ">
    <div class="row gold-box">
       @include('admin.components.logo')
+      <div class="card flex-fill mt-5">
 
+        <div class="btn-group mr-5 ml-auto">
+          <div class="row">
+             <div class="col-md-12" align="center">
+                      Sana
+             </div>
+             <div class="col-md-12">
+                <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                <div class="dropdown-menu timeclass">
+                   <a href="{{route('pharmacy-user',['time' => 'today'])}}" class="dropdown-item">Bugun</a>
+                   <a href="{{route('pharmacy-user',['time' => 'week'])}}" class="dropdown-item">Hafta</a>
+                   <a href="{{route('pharmacy-user',['time' => 'month'])}}" class="dropdown-item">Oy</a>
+                   <a href="{{route('pharmacy-user',['time' => 'year'])}}" class="dropdown-item">Yil</a>
+                   <a href="{{route('pharmacy-user',['time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
+                   <input type="text" name="datetimes" class="form-control"/>
+                </div>
+             </div>
+          </div>
+        </div>
+     </div>
         <div class="content container-fluid headbot">
             <div class="row">
                 @foreach ($pharmacy as $item)
@@ -17,13 +37,28 @@
                                 @foreach ($item->pharmacy as $pharma)
                                     {{-- @if ($pharma->region == $item) --}}
                                     <div class="col-4 col-md-4 col-lg-4 d-flex flex-wrap">
-                                        <div class="card detail-box2 details-box">
+                                        <div class="card detail-box2">
                                             <div class="card-body">
                                                 <div class="dash-contetnt">
-                                                    <h4 class="text-white" style="text-align: center"> {{$pharma->name}} </h4>
+                                                    <h1 class="text-white" style="text-align: center">  
+                                                        <a href="{{route('pharmacy',['id' => $pharma->id,'time' => 'today'])}}">
+                                                            {{$pharma->name}}
+                                                        </a>
+                                                        @isset($farm_sold[$pharma->id]) 
+                                                        <span class="badge bg-primary">
+                                                            {{ number_format($farm_sold[$pharma->id], 0, '', '.') }} 
+                                                        </span>
+                                                        @endisset
+                                                    </h1>
                                                     @foreach ($pusers as $user)
                                                         @if ($user->pharma_id == $pharma->id)
-                                                            <h2 class="text-white">{{$user->last_name}} {{$user->first_name}}</h2>
+                                                            <h2 class="text-white">{{$user->last_name}} {{$user->first_name}}
+                                                                @isset($user_sold[$user->user_id]) 
+                                                                    <span class="badge bg-primary">
+                                                                        {{ number_format($user_sold[$user->user_id], 0, '', '.') }} 
+                                                                    </span>
+                                                                @endisset
+                                                            </h2>
                                                         @endif     
                                                     @endforeach
                                                     @isset(Session::get('per')['farm_pm'])

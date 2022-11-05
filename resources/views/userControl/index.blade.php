@@ -23,7 +23,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                <div class="table-responsive">
-                                                <table class="table mb-0" id="example1" style="height: 100px;overflow-y: scroll">
+                                                <table class="table mb-0" style="height: 100px;overflow-y: scroll">
                                                     <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
@@ -49,8 +49,8 @@
                                                                 <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input" id="check1.{{$user->id}}" name="id.{{$user->id}}" value="id" >
                                                                     <label class="form-check-label" for="check1.{{$user->id}}">Ishdan olish</label>
-                                                                </div>
-                                                            </td>
+                                                              </div>
+                                                            </td  >
                                                             <td>
                                                                 <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input" @if($user->status==3) checked @endif id="check1test.{{$user->id}}" name="test.{{$user->id}}" value="test" >
@@ -167,7 +167,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                <div class="table-responsive">
-                                                <table class="table mb-0" id="example1" style="height: 100px;overflow-y: scroll">
+                                                <table class="table mb-0 example22" style="height: 100px;overflow-y: scroll">
                                                     <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
@@ -219,7 +219,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                <div class="table-responsive">
-                                                <table class="table mb-0" id="example1" style="height: 100px;overflow-y: scroll">
+                                                <table class="table mb-0 example22" style="height: 100px;overflow-y: scroll">
                                                     <thead>
                                                     <tr>
                                                         <th scope="col">#</th>

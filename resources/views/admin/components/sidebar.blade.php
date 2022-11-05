@@ -19,17 +19,17 @@
                  <li><a href="{{route('elchilar',['month'=>date('Y-m')])}}"><i class="feather-filter"></i>  <span>Elchilar kunlik</span></a>
                @endif
                @endisset
-             @isset(Session::get('per')['elchi'])
+             {{-- @isset(Session::get('per')['elchi'])
              @if(Session::get('per')['elchi'] == 'true')
                <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
                   @endif
-             @endisset
+             @endisset --}}
 
-             @isset(Session::get('per')['pharmacy'])
+             {{-- @isset(Session::get('per')['pharmacy'])
              @if(Session::get('per')['pharmacy'] == 'true')
              <li><a href="{{route('pharmacy-list','today')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
              @endif
-             @endisset
+             @endisset --}}
              @isset(Session::get('per')['user_pharmacy'])
              @if(Session::get('per')['user_pharmacy'] == 'true')
              <li><a href="{{route('pharmacy-user','today')}}"><i class="feather-filter"></i>  <span>Dorixona - elchi</span></a>
@@ -110,12 +110,12 @@
 
              @isset(Session::get('per')['control'])
              @if(Session::get('per')['control'] == 'true')
-             <li><a href="{{route('user-control')}}"><i class="feather-filter"></i>  <span>User Control</span></a>
+             <li><a href="{{route('user-control')}}"><i class="feather-filter"></i>  <span>User boshqaruvi</span></a>
              </li>
              @endif
              @endisset
 
-             @isset(Session::get('per')['zavod'])
+             {{-- @isset(Session::get('per')['zavod'])
              @if(Session::get('per')['zavod'] == 'true')
              <li class="submenu">
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Zavod </span><span class="menu-arrow"></span></a>
@@ -127,19 +127,22 @@
                </ul>
             </li>
             @endif
-             @endisset
+             @endisset --}}
+
              @isset(Session::get('per')['show_purchase'])
              @if(Session::get('per')['show_purchase'] == 'true')
              <li><a href="{{route('purchase.journal')}}"><i class="feather-filter"></i>  <span>Taxrirlash tarixi </span></a>
              </li>
              @endif
              @endisset
-                  @isset(Session::get('per')['User'])
+
+                  {{-- @isset(Session::get('per')['User'])
              @if(Session::get('per')['User'] == 'true')
                <li><a href="{{route('user-list')}}"><i class="feather-filter"></i>  <span>Adminlar </span></a>
              </li>
              @endif
-             @endisset
+             @endisset --}}
+
              @isset(Session::get('per')['rol'])
              @if(Session::get('per')['rol'] == 'true')
                   <li class="submenu">

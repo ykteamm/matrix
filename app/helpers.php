@@ -90,7 +90,7 @@ if(!function_exists('wordSimilarity')){
         $h_positions = [
             'dash' => 'Dashboard',
             'filter' => 'Filter',
-            'elchi' => 'Elchi',
+            // 'elchi' => 'Elchi',
             'elchi-day' => 'Elchi kunlik',
             'pro' => 'Mahsulotlar',
             'grade' => 'Baholash',
@@ -104,7 +104,7 @@ if(!function_exists('wordSimilarity')){
             'region' => 'Barcha viloyat',
         ];
         // $knowledge = Knowledge::first();
-        $h_positions['pharmacy'] = 'Dorixona';
+        // $h_positions['pharmacy'] = 'Dorixona';
         $h_positions['user_pharmacy'] = 'Dorixona - user';
         $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';

@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users=User::get();
+        $users=User::orderBy('id','ASC')->get();
         $new_users=NewUsers::all();
         $arr=[];
         foreach ($new_users as $user){
@@ -21,8 +21,6 @@ class UserController extends Controller
             if (isset($d->data )){
                 $arr[]=array('id'=>$user->id,'tg_id'=>$user->tg_id,'data'=>$d->data);
             }
-
-
         }
 
         return view('userControl.index',compact('users','arr'));

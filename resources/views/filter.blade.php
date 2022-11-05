@@ -189,7 +189,7 @@
   $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
 
   var tim = picker.startDate.format('DD.MM.YYYY')+'/'+picker.endDate.format('DD.MM.YYYY');
-  console.log(tim)
+//   console.log(tim)
 
   $("#age_button2").text(tim);
           $("#age_button2").attr('name',tim);
