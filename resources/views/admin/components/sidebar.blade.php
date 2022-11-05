@@ -38,7 +38,7 @@
 
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')
-             <li><a href="{{route('team.index')}}"><i class="feather-filter"></i>  <span>Jamoalar</span></a>
+             <li><a href="{{route('team',['time'=>'today'])}}"><i class="feather-filter"></i>  <span>Jamoalar</span></a>
              @endif
              @endisset
 
