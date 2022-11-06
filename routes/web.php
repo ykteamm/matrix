@@ -151,6 +151,8 @@ Route::get('database', [App\Http\Controllers\BazaController::class,'database'])-
 
 
 Route::get('team/{time}',[App\Http\Controllers\TeamController::class,'index'])->name('team');
+Route::get('teamwars',[App\Http\Controllers\TeamWarsController::class,'index'])->name('team.wars');
+Route::post('teamwars/store',[App\Http\Controllers\TeamWarsController::class,'store'])->name('team.wars.store');
 Route::post('team',[TeamController::class,'store'])->name('team.store');
 Route::resource('member',MemberController::class);
 Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus'])->name('member.minus');

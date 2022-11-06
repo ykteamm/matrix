@@ -25,6 +25,7 @@
                   @endif
              @endisset
 
+
              {{-- @isset(Session::get('per')['pharmacy'])
              @if(Session::get('per')['pharmacy'] == 'true')
              <li><a href="{{route('pharmacy-list','today')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
@@ -41,6 +42,11 @@
              <li><a href="{{route('team',['time'=>'today'])}}"><i class="feather-filter"></i>  <span>Jamoalar</span></a>
              @endif
              @endisset
+                @isset(Session::get('per')['elchi'])
+                    @if(Session::get('per')['elchi'] == 'true')
+                        <li><a href="{{route('team.wars')}}"><i class="feather-filter"></i>  <span>Jamoalar jangi</span></a>
+                    @endif
+                @endisset
 
              @isset(Session::get('per')['pro'])
              @if(Session::get('per')['pro'] == 'true')
@@ -197,7 +203,7 @@
           </ul>
           {{-- <div> --}}
             <ul>
-               
+
             </ul>
           {{-- </div> --}}
 
