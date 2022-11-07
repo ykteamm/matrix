@@ -25,6 +25,7 @@
                   @endif
              @endisset
 
+
              {{-- @isset(Session::get('per')['pharmacy'])
              @if(Session::get('per')['pharmacy'] == 'true')
              <li><a href="{{route('pharmacy-list','today')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
@@ -201,7 +202,7 @@
           </ul>
           {{-- <div> --}}
             <ul>
-               
+
             </ul>
           {{-- </div> --}}
 

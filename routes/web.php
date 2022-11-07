@@ -152,10 +152,12 @@ Route::get('database', [App\Http\Controllers\BazaController::class,'database'])-
 
 
 Route::get('team/{time}',[App\Http\Controllers\TeamController::class,'index'])->name('team');
+
 Route::get('team-battle',[App\Http\Controllers\TeamController::class,'teamBattle'])->name('team-battle');
 Route::post('team-battle-store',[App\Http\Controllers\TeamController::class,'teamBattleStore'])->name('team-battle.store');
 
 Route::post('team',[App\Http\Controllers\TeamController::class,'store'])->name('team.store');
+
 Route::resource('member',MemberController::class);
 Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus'])->name('member.minus');
 
