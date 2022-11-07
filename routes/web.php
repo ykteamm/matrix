@@ -9,6 +9,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TrendController;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,9 +152,15 @@ Route::get('database', [App\Http\Controllers\BazaController::class,'database'])-
 
 
 Route::get('team/{time}',[App\Http\Controllers\TeamController::class,'index'])->name('team');
-Route::post('team',[TeamController::class,'store'])->name('team.store');
+Route::get('team-battle',[App\Http\Controllers\TeamController::class,'teamBattle'])->name('team-battle');
+Route::post('team-battle-store',[App\Http\Controllers\TeamController::class,'teamBattleStore'])->name('team-battle.store');
+
+Route::post('team',[App\Http\Controllers\TeamController::class,'store'])->name('team.store');
 Route::resource('member',MemberController::class);
 Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus'])->name('member.minus');
+
+Route::get('trend-region/{range}',[App\Http\Controllers\TrendController::class,'region'])->name('trend.region');
+Route::get('trend-product/{range}',[App\Http\Controllers\TrendController::class,'product'])->name('trend.product');
 
 #end-position
 #bro

@@ -6,6 +6,7 @@ use App\Services\ElchiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Team;
+use App\Models\TeamBattle;
 use App\Models\Region;
 use App\Models\User;
 use App\Models\Member;
@@ -122,5 +123,77 @@ class TeamController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function teamBattle()
+    {
+        $teams = Team::all();
+        // $regions = Region::all();
+        // $teams = Region::with('team')->get();
+        // $users = User::whereNotIn('level',[1])->get();
+        // $members = Member::with('user')->get();
+        
+
+//
+        $battles = TeamBattle::all();
+        $team1=[];
+        $users=[];
+    foreach($battles as $batle)
+    {
+        $teams22=DB::table('tg_members')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.team_id')
+            ->whereDate('tg_productssold.created_at','>=',$batle->begin)
+            ->where('tg_members.team_id',$batle->team1_id)
+            ->leftjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
+            ->groupBy('tg_members.team_id')->pluck('allprice','tg_members.team_id');
+        foreach($teams22 as $key => $team)
+            {
+                $team1[$key] = $team;
+            }
+        $teams22=DB::table('tg_members')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.team_id')
+            ->whereDate('tg_productssold.created_at','>=',$batle->begin)
+            ->where('tg_members.team_id',$batle->team2_id)
+            ->leftjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
+            ->groupBy('tg_members.team_id')->pluck('allprice','tg_members.team_id');
+        foreach($teams22 as $key => $team)
+            {
+                $team1[$key] = $team;
+            }
+        $members = DB::table('tg_members')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.id, tg_members.team_id,tg_user.first_name as f_name,tg_user.last_name as l_name,tg_user.level as level')
+            ->whereDate('tg_productssold.created_at','>=',$batle->begin)
+            ->where('tg_members.team_id',$batle->team1_id)
+            ->rightjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
+            ->join('tg_user','tg_user.id','tg_members.user_id')
+            ->groupBy('tg_members.id','tg_members.team_id','tg_user.first_name','tg_user.last_name','tg_user.level')->get();
+         
+            $users[]=$members;
+            $members = DB::table('tg_members')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.id, tg_members.team_id,tg_user.first_name as f_name,tg_user.last_name as l_name,tg_user.level as level')
+            ->whereDate('tg_productssold.created_at','>=',$batle->begin)
+            ->where('tg_members.team_id',$batle->team2_id)
+            ->rightjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
+            ->join('tg_user','tg_user.id','tg_members.user_id')
+            ->groupBy('tg_members.id','tg_members.team_id','tg_user.first_name','tg_user.last_name','tg_user.level')->get();
+         
+            $users[]=$members;
+
+    }
+
+        // return $users;
+        return view('team.battle',compact('team1','teams','battles','users'));
+    }
+
+    public function teamBattleStore(Request $request)
+    {
+        $inputs = $request->all();
+        // unset($inputs['_token']);
+        $new_battle = new TeamBattle($inputs);
+        $new_battle->save();
+        if($new_battle->id)
+        {
+            return redirect()->back();
+        }
     }
 }
