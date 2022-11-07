@@ -139,7 +139,7 @@ class PlanController extends Controller
         $arr=json_decode($cal->day_json);
 
         $interval=0;
-        for($i=0;$i<date('d');$i++){
+        for($i=0;$i<date('d')*1;$i++){
             if($arr[$i]=='true'){
                 $interval++;
             }
@@ -152,7 +152,7 @@ class PlanController extends Controller
                 ->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->first();
             $new_work_day=0;
             $month_end= date('d', strtotime('last day of this month', time()));
-            for ($i=date('d');$i<=$month_end;$i++){
+            for ($i=date('d')*1;$i<=$month_end;$i++){
                 if ($arr[$i-1]=='true'){
                     $new_work_day++;
                 }
@@ -180,7 +180,7 @@ class PlanController extends Controller
                     $interval1=0;
                     $interval2=0;
 //                    dd(date('d',strtotime($pw[$i]->startday)));
-                    for($j=date('d',strtotime($pw[$i]->startday));$j<date('d');$j++){
+                    for($j=date('d',strtotime($pw[$i]->startday))*1;$j<date('d')*1;$j++){
                         if($arr[$j]=='true'){
                             $interval1++;
                         }
@@ -236,13 +236,13 @@ class PlanController extends Controller
                         $pw->endday=$pweek->endday;
                         $pw->calendar_id=$pweek->calendar_id;
                         $pw->plan_id=$plan->id;
-                        if(date('d',strtotime($pweek->endday))>=date('d')){
+                        if(date('d',strtotime($pweek->endday))*1>=date('d')*1){
                             if ($w!=$count) {
-                                if($pw->startday>=date('d')){
+                                if($pw->startday>=date('d')*1){
                                     $pw->plan=$new_one_day_plan*$pweek->workday;
                                 }else{
                                     $interval2 = 0;
-                                    for ($j = date('d') - 1; $j < date('d', strtotime($pw->endday)); $j++) {
+                                    for ($j = date('d') - 1; $j < date('d', strtotime($pw->endday))*1; $j++) {
                                         if ($arr[$j] == 'true') {
                                             $interval2++;
                                         }
