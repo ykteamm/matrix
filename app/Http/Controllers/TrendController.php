@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Region;
 use App\Models\Medicine;
 use App\Models\User;
+use App\Models\Pharmacy;
 
 class TrendController extends Controller
 {
@@ -98,5 +99,32 @@ class TrendController extends Controller
                 }
         }
         return view('trend.user',compact('json','date_array','regions'));
+    }
+    public function pharmacy($range)
+    {
+        $date_array = $this->service->range($range);
+        $json = array();
+        $regions = Pharmacy::orderBy('id','ASC')->get();
+        foreach($date_array as $date)
+        {
+            foreach($regions as $key => $region)
+                {
+                    $region_chart = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_pharmacy.id')
+                    ->whereDate('tg_productssold.created_at','=',$date)
+                    ->where('tg_pharmacy.id','=',$region->id)
+                    ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+                    ->orderBy('tg_pharmacy.id','ASC')
+                    ->groupBy('tg_pharmacy.id')->first();
+
+                    if(isset($region_chart->allprice))
+                    {
+                    $json[$region->id][] = $region_chart->allprice;
+                    }else{
+                    $json[$region->id][] = 0;
+                    }
+                }
+        }
+        return view('trend.pharmacy',compact('json','date_array','regions'));
     }
 }

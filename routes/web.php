@@ -164,6 +164,7 @@ Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus
 Route::get('trend-region/{range}',[App\Http\Controllers\TrendController::class,'region'])->name('trend.region');
 Route::get('trend-product/{range}',[App\Http\Controllers\TrendController::class,'product'])->name('trend.product');
 Route::get('trend-user/{range}',[App\Http\Controllers\TrendController::class,'user'])->name('trend.user');
+Route::get('trend-pharmacy/{range}',[App\Http\Controllers\TrendController::class,'pharmacy'])->name('trend.pharmacy');
 
 #end-position
 #bro
