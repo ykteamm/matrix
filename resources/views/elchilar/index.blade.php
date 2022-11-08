@@ -77,7 +77,10 @@
                 @php $t=0; @endphp
                 @foreach($elchilar as $item)
                     @if($item['elchi']->status ==1)
-                <tr >
+                <tr onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
+                .css('color','white');"
+                onmouseleave="$(this).css('background','white').css('color','black');" 
+                class='clickable-row' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
                     <td>{{$t+1}} </td>
                     <td>@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
                     <td>{{$item['elchi']->v_name}} </td>
@@ -142,6 +145,7 @@
         </div>
     </div>
 </div>
+@section('admin_script')
     <script>
         let x = 0;
         function myFunction() {
@@ -149,7 +153,11 @@
         }
     </script>
     <script>
-
+            $(document).ready(function($) {
+                $(".clickable-row").click(function() {
+                    window.location = $(this).data("href");
+                });
+            });
 
         function yashir(){
             let a=document.querySelectorAll('.yashir');
@@ -224,4 +232,5 @@
 
         }
     </script>
+@endsection
 @endsection

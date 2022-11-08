@@ -46,11 +46,16 @@
              <li><a href="{{route('team',['time'=>'today'])}}"><i class="feather-filter"></i>  <span>Jamoalar</span></a>
              @endif
              @endisset
-                @isset(Session::get('per')['elchi'])
-                    @if(Session::get('per')['elchi'] == 'true')
-                        <li><a href="{{route('team.wars')}}"><i class="feather-filter"></i>  <span>Jamoalar jangi</span></a>
-                    @endif
-                @endisset
+
+             <li><a href="{{route('team-battle')}}"><i class="feather-filter"></i>  <span>Jamoalar jangi</span></a>
+            
+               <li class="submenu">
+                  <a href="settings.html"><i class="feather-sliders"></i>  <span> Trend </span><span class="menu-arrow"></span></a>
+                  <ul style="display: none;">
+                     <li><a href="{{route('trend.region','three')}}">Viloyat</a></li>
+                     <li><a href="{{route('trend.product','three')}}">Mahsulot</a></li>
+                  </ul>
+               </li>
 
              @isset(Session::get('per')['pro'])
              @if(Session::get('per')['pro'] == 'true')
@@ -165,23 +170,17 @@
              @endif
              @endisset --}}
 
-             @isset(Session::get('per')['rol'])
+             {{-- @isset(Session::get('per')['rol'])
              @if(Session::get('per')['rol'] == 'true')
                   <li class="submenu">
-                  {{-- @if(isset(Session::get('per')['rol_create']) || isset(Session::get('per')['rol_read'])) --}}
                      <a href="settings.html"><i class="feather-sliders"></i>  <span> Ro'l </span><span class="menu-arrow"></span></a>
-                  {{-- @endisset --}}
                      <ul style="display: none;">
-                     {{-- @isset(Session::get('per')['rol_create']) --}}
                         <li><a href="{{route('position.create')}}">Rol qo'shish</a></li>
-                     {{-- @endisset --}}
-                     {{-- @isset(Session::get('per')['rol_read']) --}}
                         <li><a href="{{route('position.index')}}">Rollar ro'yhati</a></li>
-                     {{-- @endisset --}}
                      </ul>
                   </li>
                   @endif
-             @endisset
+             @endisset --}}
 
              @isset(Session::get('per')['rol'])
              @if(Session::get('per')['rol'] == 'true')
@@ -195,7 +194,7 @@
                      {{-- @endisset --}}
                      {{-- @isset(Session::get('per')['rol_read']) --}}
                         <li><a href="{{route('rm-list')}}">RM</a></li>
-                        <li><a href="{{route('cap-list')}}">Capitan</a></li>
+                        <li><a href="{{route('cap-list')}}">         </a></li>
                         <li><a href="{{route('user-list')}}">Elchi</a></li>
                      {{-- @endisset --}}
                      </ul>
