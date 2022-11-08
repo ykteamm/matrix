@@ -50,6 +50,7 @@
                   <ul style="display: none;">
                      <li><a href="{{route('trend.region','three')}}">Viloyat</a></li>
                      <li><a href="{{route('trend.product','three')}}">Mahsulot</a></li>
+                     <li><a href="{{route('trend.user','three')}}">Elchi</a></li>
                   </ul>
                </li>
 

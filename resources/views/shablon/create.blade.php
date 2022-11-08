@@ -47,9 +47,9 @@
                                         <span class="badge bg-success-light">Narxlar qoshilgna</span> 
                                      {{-- </a> --}}
                                     @else
-                                    {{-- <a href="{{route('price-med',$shablon->id)}}"> --}}
+                                    <a href="{{route('price-med',$shablon->id)}}">
                                        <span class="badge bg-info-light">Narxlar qo'shish</span> 
-                                    {{-- </a> --}}
+                                    </a>
                                     @endif
 
                                 </td>

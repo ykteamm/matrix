@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Region;
 use App\Models\Medicine;
+use App\Models\User;
 
 class TrendController extends Controller
 {
@@ -70,5 +71,32 @@ class TrendController extends Controller
                 }
         }
         return view('trend.product',compact('json','date_array','regions'));
+    }
+    public function user($range)
+    {
+        $date_array = $this->service->range($range);
+        $json = array();
+        $regions = User::where('admin',FALSE)->orderBy('id','ASC')->get();
+        foreach($date_array as $date)
+        {
+            foreach($regions as $key => $region)
+                {
+                    $region_chart = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
+                    ->whereDate('tg_productssold.created_at','=',$date)
+                    ->where('tg_user.id','=',$region->id)
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->orderBy('tg_user.id','ASC')
+                    ->groupBy('tg_user.id')->first();
+
+                    if(isset($region_chart->allprice))
+                    {
+                    $json[$region->id][] = $region_chart->allprice;
+                    }else{
+                    $json[$region->id][] = 0;
+                    }
+                }
+        }
+        return view('trend.user',compact('json','date_array','regions'));
     }
 }
