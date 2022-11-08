@@ -179,6 +179,13 @@ Route::post('user-control/delete/{action}', [UserController::class,'controlWorke
 Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');
 Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
 
+Route::get('medicine/accept',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
+Route::post('medicine/accept/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
+Route::post('medicine/stock/store',[\App\Http\Controllers\AcceptProductController::class,'store2'])->name('stock.med.store');
+Route::get('medicine/stock',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('stock.med');
+Route::get('pharm/users',[\App\Http\Controllers\PharmUsersController::class,'index'])->name('pharm.users');
+Route::post('pharm/users/store',[\App\Http\Controllers\PharmUsersController::class,'store'])->name('pharm.users.store');
+
 #end-bro
 
 });

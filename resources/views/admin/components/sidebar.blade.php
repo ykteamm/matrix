@@ -36,7 +36,11 @@
              <li><a href="{{route('pharmacy-user','today')}}"><i class="feather-filter"></i>  <span>Dorixona - elchi</span></a>
              @endif
              @endisset
-
+                @isset(Session::get('per')['team'])
+                    @if(Session::get('per')['team'] == 'true')
+                        <li><a href="{{route('pharm.users')}}"><i class="feather-filter"></i>  <span>User Dorixona</span></a>
+                    @endif
+                @endisset
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')
              <li><a href="{{route('team',['time'=>'today'])}}"><i class="feather-filter"></i>  <span>Jamoalar</span></a>
@@ -80,6 +84,18 @@
                </li>
                @endif
              @endisset
+
+            @isset(Session::get('per')['ques'])
+                @if(Session::get('per')['ques'] == 'true')
+                    <li class="submenu">
+                        <a href="settings.html"><i class="feather-sliders"></i>  <span> Mahsulot kirim/qoldiq </span><span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{route('accept.med')}}">Mahsulot Kiritish</a></li>
+                            <li><a href="{{route('stock.med')}}">Qoldiq</a></li>
+                        </ul>
+                    </li>
+                @endif
+            @endisset
 
              @isset(Session::get('per')['know_ques'])
              @if(Session::get('per')['know_ques'] == 'true')
