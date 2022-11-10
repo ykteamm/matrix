@@ -539,7 +539,6 @@ class HomeController extends Controller
                     $number = 0;
 
             }
-            return  $medicineall;
             foreach ($medicine as $mkey => $med) {
                 foreach ($oneuser as $key => $one) {
 
@@ -803,6 +802,7 @@ class HomeController extends Controller
         $step_array_counter = [];
         $step_array_grade_all = [];
         $sdf=[];
+        
         foreach($knowledges as $knowledge)
         {
             if($knowledge->step == 1){
@@ -999,7 +999,6 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                 ->distinct()
                 ->get();
-        return $medicineall;
         return view('welcome',compact('step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
