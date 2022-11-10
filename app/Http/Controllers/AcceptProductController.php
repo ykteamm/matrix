@@ -93,10 +93,10 @@ class AcceptProductController extends Controller
         return redirect()->route('accept.med.show',['id'=>$pharmacy_id]);
     }
 
-    public function edit($id,$pharmacy_id)
+    public function edit(Request $request, $pharmacy_id)
     {
 
-        $accept=Accept::where('id',$id)->with('medicine')->first();
+        $accept=Accept::where('pharmacy_id',$pharmacy_id)->where()->with('medicine')->first();
         return view('acceptProduct.edit',compact('accept',$pharmacy_id));
     }
 

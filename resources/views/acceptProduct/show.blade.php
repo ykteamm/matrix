@@ -86,8 +86,10 @@
                                                         <td>{{$med->updated_at}}</td>
 
                                                         <td>
-                                                            <form action="{{route('accept.med.edit',['id'=>$pharmacy_id])}}">
-                                                                <button ty ><i class="fas fa-edit text-primary"></i></button>
+                                                            <form action="{{route('accept.med.edit',['id'=>$pharmacy_id])}}" method="post">
+                                                                @csrf
+                                                                <input name="id{{$med->id}}" style="display: none" value="{{$med->id}}">
+                                                                <button type="submit" ><i class="fas fa-edit text-primary"></i></button>
                                                             </form>
                                                         </td>
 

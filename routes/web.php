@@ -191,7 +191,7 @@ Route::get('medicine/accept/{id}/show',[\App\Http\Controllers\AcceptProductContr
 Route::get('medicine/accept/{time}',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
 Route::get('medicine/accept/all/{time}',[\App\Http\Controllers\AcceptProductController::class,'index_all'])->name('accept.med.all');
 Route::post('medicine/accept/{id}/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
-Route::get('medicine/accept/{pharmacy_id}/edit/{id}',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
+Route::post('medicine/accept/{pharmacy_id}/edit',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
 Route::post('medicine/accept/{id}/update',[\App\Http\Controllers\AcceptProductController::class,'update'])->name('accept.med.update');
 
 
