@@ -22,4 +22,9 @@ class Pharmacy extends Model
     {
         return $this->belongsTo(Region::class,'region_id','id');
     }
+
+    public function shablon_pharmacy()
+    {
+        return $this->hasMany(ShablonPharmacy::class,'pharmacy_id','id');
+    }
 }

@@ -23,27 +23,45 @@ class TrendController extends Controller
         $date_array = $this->service->range($range);
         $json = array();
         $regions = Region::orderBy('id','ASC')->get();
-        foreach($date_array as $date)
+        $allprice = 0; 
+        $region_chart = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product*0) as allprice,tg_region.id')
+            // ->whereDate('tg_productssold.created_at','=',$date)
+            // ->where('tg_region.id','=',5)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->rightjoin('tg_region','tg_region.id','tg_user.region_id')
+            ->orderBy('tg_region.id','ASC')
+            ->groupBy('tg_region.id');
+            if($allprice){
+                $region_chart = $region_chart->where('allprice', $allprice);
+            }
+            $region_chart->pluck('allprice');
+        return $region_chart;
+        foreach($date_array as $key => $date)
         {
-            foreach($regions as $key => $region)
-                {
-                    $region_chart = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.id')
-                    ->whereDate('tg_productssold.created_at','=',$date)
-                    ->where('tg_region.id','=',$region->id)
-                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->join('tg_region','tg_region.id','tg_user.region_id')
-                    ->orderBy('tg_region.id','ASC')
-                    ->groupBy('tg_region.id')->first();
+            
+                    $json[] = $region_chart;
+                
+            // foreach($regions as $key => $region)
+            //     {
+            //         $region_chart = DB::table('tg_productssold')
+            //         ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.id')
+            //         ->whereDate('tg_productssold.created_at','=',$date)
+            //         ->where('tg_region.id','=',$region->id)
+            //         ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            //         ->join('tg_region','tg_region.id','tg_user.region_id')
+            //         ->orderBy('tg_region.id','ASC')
+            //         ->groupBy('tg_region.id')->first();
 
-                    if(isset($region_chart->allprice))
-                    {
-                    $json[$region->id][] = $region_chart->allprice;
-                    }else{
-                    $json[$region->id][] = 0;
-                    }
-                }
+            //         if(isset($region_chart->allprice))
+            //         {
+            //         $json[$region->id][] = $region_chart->allprice;
+            //         }else{
+            //         $json[$region->id][] = 0;
+            //         }
+            //     }
         }
+        return $json;
         return view('trend.region',compact('json','date_array','regions'));
     }
     public function product($range)

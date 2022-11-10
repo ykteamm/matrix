@@ -152,7 +152,7 @@ class NovatioController extends Controller
             // }
             $all = [];
                 $user = DB::table('tg_productssold')
-                ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+                ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.medicine_id','>=',$medi_begin)
@@ -181,7 +181,7 @@ class NovatioController extends Controller
             ->get();
 
         $user = DB::table('tg_productssold')->where('tg_region.id',$inputs['id'])
-        ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+        ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
         ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.medicine_id','>=',$medi_begin)
@@ -216,7 +216,7 @@ class NovatioController extends Controller
             $category = DB::table('tg_category')->get();
             $medicine = DB::table('tg_medicine')->get();
             $oneuser = DB::table('tg_productssold')
-            ->select('tg_user.id as uid','tg_region.id as tid','tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+            ->select('tg_user.id as uid','tg_region.id as tid','tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$date_end)
                     ->whereIn('tg_user.id',$userarrayreg)
@@ -391,7 +391,7 @@ class NovatioController extends Controller
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
             $sum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                ->select('tg_productssold.price_product as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->whereIn('tg_user.status',[1,2])
@@ -403,7 +403,7 @@ class NovatioController extends Controller
                 ->get();
 
             $fsum = DB::table('tg_productssold')
-                    ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                    ->select('tg_productssold.price_product as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                     ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$f_date_end)
                     ->whereIn('tg_user.status',[1,2])
@@ -416,7 +416,7 @@ class NovatioController extends Controller
         }else{
 
                 $sum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                ->select('tg_productssold.price_product as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                 ->whereIn('tg_region.id',$r_id_array)
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
@@ -429,7 +429,7 @@ class NovatioController extends Controller
                 ->get();
 
             $fsum = DB::table('tg_productssold')
-                    ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
+                    ->select('tg_productssold.price_product as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id','tg_user.id as u_id','tg_category.id as c_id')
                     ->whereIn('tg_region.id',$r_id_array)
                     ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                     ->whereDate('tg_productssold.created_at','<=',$f_date_end)

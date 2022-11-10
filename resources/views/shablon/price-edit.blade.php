@@ -5,7 +5,7 @@
       @include('admin.components.logo')
 
         <div class="content container-fluid headbot">
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
@@ -25,40 +25,45 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 ml-4 mr-4">
+            </div> --}}
+            <form action="{{route('price-medic.update',$shablon->id)}}" method="POST">
+                @csrf
+            <div class="row" style="overflow-x: scroll;height:700px">
+                <div class="col-md-4 ml-4 mr-4">
+                    <input type="text" class="form-control form-control-lg" value="{{$shablon->name}}" name="shablon_name">
+                </div>
+                    <div class="col-md-10 ml-4 mr-4">
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Dori nomi</th>
-                            {{-- <th scope="col">O'zgartirish</th> --}}
                         </tr>
                         </thead>
                         <tbody>
-        
-                        @foreach($shablons as $key => $shablon)
+                        @foreach($medicines as $key => $pro)
                             <tr>
                                 <th scope="row">{{$key+1}}</th>
-                                <td>{{$shablon->name}}</td>
-                                <td>
-                                    @if (isset($shablon->price[0]))
-                                    <a href="{{route('price-med.edit',$shablon->id)}}">
-                                        <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> </button>
-                                    </a>
-                                    @else
+                                <td>{{$pro->medicine->name}}</td>
+                                <td><input type="number" class="form-control form-control-sm" value="{{$pro->price}}" name="{{$pro->medicine_id}}"></td>
+
+                                {{-- <td>  
                                     <a href="{{route('price-med',$shablon->id)}}">
-                                        <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i> </button>
+                                       <span class="badge bg-info-light">Narxlar</span> 
                                     </a>
-                                    @endif
-                                </td>
+                                </td> --}}
+
                             </tr>
                         @endforeach
+                        
                         </tbody>
                     </table>
                 </div>
-        </div>
+            </div>
+            <div class="col-md-2 m-auto">
+                <button type="submit" class="btn btn-primary">O'zgartirish </button>
+            </div>
+            </form>
         </div>
     </div>
 

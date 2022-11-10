@@ -135,12 +135,12 @@ class HomeController extends Controller
     {
         // $email = DB::table('tg_user')->where('id', '36')->value('pr');
         $user = DB::table('tg_productssold')
-        ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price');
+        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_productssold.price_product');
         $search = $user->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id');
 
         // $search = $user->addSelect(DB::raw('count(*) as last'));
 
-        $search = $user->groupBy('tg_medicine.name','tg_medicine.price')->get();
+        $search = $user->groupBy('tg_medicine.name','tg_productssold.price_product')->get();
 
 
         return $search;
@@ -378,7 +378,7 @@ class HomeController extends Controller
         $regions = DB::table('tg_region')->get();
 
         $sum = DB::table('tg_productssold')
-                ->select('tg_medicine.price as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id')
+                ->select('tg_productssold.price_product as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id')
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -498,11 +498,11 @@ class HomeController extends Controller
             $category = DB::table('tg_category')->get();
             $medicine = DB::table('tg_medicine')->get();
             $medicine_cate = DB::table('tg_medicine')
-            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price')
+            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name')
             ->join('tg_category','tg_category.id','tg_medicine.category_id')
             ->get();
             $oneuser = DB::table('tg_productssold')
-            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
             ->whereDate('tg_productssold.created_at','<=',$date_end)
             ->where('tg_user.id',$id)
@@ -539,7 +539,7 @@ class HomeController extends Controller
                     $number = 0;
 
             }
-            // return  $medicineall;
+            return  $medicineall;
             foreach ($medicine as $mkey => $med) {
                 foreach ($oneuser as $key => $one) {
 
@@ -999,7 +999,7 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                 ->distinct()
                 ->get();
-        
+        return $medicineall;
         return view('welcome',compact('step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
@@ -1109,12 +1109,12 @@ class HomeController extends Controller
         $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
 
                 $user = DB::table('tg_productssold')
-                ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price')
+                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_productssold.price_product')
                 ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
                 ->where('tg_user.id', $elch->id)
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                ->groupBy('tg_medicine.name','tg_medicine.price')->get();
+                ->groupBy('tg_medicine.name','tg_productssold.price_product')->get();
                 $user_sum=0;
                 foreach($user as $key)
                 {
@@ -1548,7 +1548,7 @@ class HomeController extends Controller
 
         }
         $products = DB::table('tg_productssold')
-                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
+                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->whereIn('tg_region.id',$r_id_array)
@@ -1558,7 +1558,7 @@ class HomeController extends Controller
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->get();
         $products_range = DB::table('tg_productssold')
-                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
+                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$f_date_end)
                 ->whereIn('tg_region.id',$r_id_array)

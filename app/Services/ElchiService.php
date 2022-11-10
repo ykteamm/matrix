@@ -56,7 +56,7 @@ class ElchiService
             ->join('tg_category','tg_category.id','tg_medicine.category_id')
             ->get();
         $oneuser = DB::table('tg_productssold')
-            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_medicine.price as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
+            ->select('tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
             ->whereDate('tg_productssold.created_at','<=',$date_end)
             ->where('tg_user.id',$id)

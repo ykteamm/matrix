@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Shablon;
 use App\Models\AllProduct;
 use App\Models\Medicine;
+use App\Models\Pharmacy;
+use App\Models\ShablonPharmacy;
+use App\Models\Price;
 use Illuminate\Support\Facades\DB;
 
 class ShablonController extends Controller
@@ -41,7 +44,8 @@ class ShablonController extends Controller
         //     ]);
         // }
         // return $up;
-        $shablons = Shablon::with('medicine')->orderBy('id')->get();
+        $shablons = Shablon::with('price')->orderBy('id')->get();
+        // return $shablons;
         return view('shablon.create',compact('shablons'));
     }
 
@@ -119,8 +123,7 @@ class ShablonController extends Controller
         //     $new->save();
         // }
         // return $medicine;
-        $products = AllProduct::all();
-
+        $products = Medicine::orderBy('id')->get();
         return view('shablon.price',compact('id','products'));
     }
     public function priceMedStore(Request $request)
@@ -129,25 +132,42 @@ class ShablonController extends Controller
         $shablon_id = $inputs['shablon_id'];
         unset($inputs['_token']);
         unset($inputs['shablon_id']);
-        $i=1;
         foreach($inputs as $key => $value)
         {
-            $name = AllProduct::find($key);
-            $new = DB::table('tg_medicine')->insert([
-                'name' => $name->name,
-                'code' => 'P0'.$i,
+            $new = new Price([
                 'price' => $value,
-                'sort' => $i,
-                'created_at' => date_now(),
-                'old_price' => 0,
+                'medicine_id' => $key,
                 'shablon_id' => $shablon_id,
-                'category_id' => $name->category_id
             ]);
-            $i++;
+            $new->save();
         }
         return redirect()->route('shablon.create');
     }
+    public function priceMedUpdate(Request $request,$id)
+    {
+        $inputs = $request->all();
+        unset($inputs['_token']);
+        $new = Shablon::where('id',$id)->update([
+            'name' => $inputs['shablon_name'],
+        ]);
+        unset($inputs['shablon_name']);
 
+        foreach($inputs as $key => $value)
+        {
+            $new = Price::where('shablon_id',$id)->where('medicine_id',$key)->update([
+                'price' => $value,
+            ]);
+        }
+        return redirect()->route('shablon.create');
+
+    }
+    public function priceMedEdit($id)
+    {
+        $medicines = Price::with('medicine')->where('shablon_id',$id)->orderBy('id')->get();    
+        $shablon = Shablon::find($id);
+        return view('shablon.price-edit',compact('medicines','shablon'));
+
+    }
     public function shablonActive(Request $request,$id)
     {
         // return $id;
@@ -164,5 +184,59 @@ class ShablonController extends Controller
 
     }
 
-    
+    public function shablonPharmacy()
+    {
+        $pharmacies = Pharmacy::all();
+        $shablons = Shablon::with('shablon_pharmacy')->get();
+        return view('shablon.pharmacy',compact('pharmacies','shablons'));
+    }
+
+    public function shablonPharmacyStore(Request $request)
+    {
+        $request->validate([
+            'shablon_id'=>'required',
+            'pharmacy_id'=>'required'
+         ]);
+         $r=$request->all();
+         unset($r['_token']);
+         $id=$r['shablon_id'];
+         foreach ($r['pharmacy_id'] as $item){
+             $p=new ShablonPharmacy();
+             $p->shablon_id=$id;
+             $p->pharmacy_id=$item;
+             $p->save();
+         }
+         return redirect()->back();
+    }
+    public function shablonPharmacyEdit($id)
+    {
+        $shablons = Shablon::all();
+        $pharmacies = Pharmacy::all();
+        $shablon = Shablon::with('shablon_pharmacy')->where('id',$id)->first();
+        $inarray=[];
+        foreach($shablon->shablon_pharmacy as $item)
+        {
+            $inarray[] = $item->pharmacy_id;
+        }
+        return view('shablon.pharmacy-edit',compact('shablons','shablon','pharmacies','inarray'));
+
+    }
+    public function shablonPharmacyUpdate(Request $request,$id)
+    {
+        $request->validate([
+            'shablon_id'=>'required',
+            'pharmacy_id'=>'required'
+         ]);
+         $r=$request->all();
+         unset($r['_token']);
+         $id=$r['shablon_id'];
+         $del = ShablonPharmacy::where('shablon_id',$id)->delete();
+         foreach ($r['pharmacy_id'] as $item){
+             $p=new ShablonPharmacy();
+             $p->shablon_id=$id;
+             $p->pharmacy_id=$item;
+             $p->save();
+         }
+         return redirect()->route('shablon.pharmacy');
+    }
 }
