@@ -4,7 +4,7 @@
         <div class="col-sm-12">
             <div class="card" >
                 <div class="card-body">
-                    <form action="{{route('accept.med.update',['id'=>$pharmacy_id])}}" method="post">
+                    <form action="{{route('stock.med.update',['id'=>$pharmacy_id])}}" method="post">
                         @csrf
 
                         <div class="row">
@@ -26,8 +26,8 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>{{1}} </td>
-                                                        <td>{{$accept->medicine->name}} </td>
-                                                        <td><input name="number" value="{{$accept->number}}"><input name="id" style="display: none" value="{{$accept->id}}">  </td>
+                                                        <td>{{$stock->medicine->name}} </td>
+                                                        <td><input name="number" value="{{$stock->number}}"><input name="id" style="display: none" value="{{$stock->id}}">  </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

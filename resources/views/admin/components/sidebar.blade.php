@@ -119,6 +119,12 @@
                     </li>
                 @endif
             @endisset
+                @isset(Session::get('per')['grade'])
+                    @if(Session::get('per')['grade'] == 'true')
+                        <li><a href="{{route('compare')}}"><i class="feather-filter"></i>  <span>Taqqoslash </span></a>
+                        </li>
+                    @endif
+                @endisset
 
              @isset(Session::get('per')['know_ques'])
              @if(Session::get('per')['know_ques'] == 'true')

@@ -195,12 +195,13 @@ Route::post('medicine/accept/{pharmacy_id}/edit',[\App\Http\Controllers\AcceptPr
 Route::post('medicine/accept/{id}/update',[\App\Http\Controllers\AcceptProductController::class,'update'])->name('accept.med.update');
 
 
-Route::post('medicine/stock/store',[\App\Http\Controllers\AcceptProductController::class,'store2'])->name('stock.med.store');
-Route::get('medicine/stock/{time}',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('stock.med');
-Route::get('medicine/stock/all/{time}',[\App\Http\Controllers\AcceptProductController::class,'index_all'])->name('stock.med.all');
-Route::get('medicine/stock/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('stock.med.create');
-Route::get('medicine/stock/{id}/show',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('stock.med.show');
-
+Route::get('medicine/stock/{id}/create',[\App\Http\Controllers\StockController::class,'create'])->name('stock.med.create');
+Route::get('medicine/stock/{id}/show',[\App\Http\Controllers\StockController::class,'show'])->name('stock.med.show');
+Route::get('medicine/stock/{time}',[\App\Http\Controllers\StockController::class,'index'])->name('stock.med');
+Route::get('medicine/stock/all/{time}',[\App\Http\Controllers\StockController::class,'index_all'])->name('stock.med.all');
+Route::post('medicine/stock/{id}/store',[\App\Http\Controllers\StockController::class,'store'])->name('stock.med.store');
+Route::post('medicine/stock/{pharmacy_id}/edit',[\App\Http\Controllers\StockController::class,'edit'])->name('stock.med.edit');
+Route::post('medicine/stock/{id}/update',[\App\Http\Controllers\StockController::class,'update'])->name('stock.med.update');
 
 
 Route::get('pharm/users',[\App\Http\Controllers\PharmUsersController::class,'index'])->name('pharm.users');
@@ -213,6 +214,9 @@ Route::post('pharm/users/{id}/update-by',[\App\Http\Controllers\PharmUsersContro
 Route::get('pharm/users/{id}/show',[\App\Http\Controllers\PharmUsersController::class,'oneshow'])->name('pharm.users.one');
 Route::post('pharm/users/store',[\App\Http\Controllers\PharmUsersController::class,'store'])->name('pharm.users.store');
 
+
+Route::get('compare-stocks',[\App\Http\Controllers\CompareController::class,'index'])->name('compare');
+Route::get('compare-stocks/{id}',[\App\Http\Controllers\CompareController::class,'show'])->name('compare.pharm');
 #end-bro
 
 });

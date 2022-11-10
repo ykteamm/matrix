@@ -4,21 +4,16 @@
         <div class="col-sm-12">
             <div class="card" >
                 <div class="card-header">
-                    <h4 class="card-title">Dorixonada qolgan dorilar sonini kiriting </h4>
+                    <h4 class="card-title row d-flex justify-content-between"> <span> Dorilar qo'shish </span><span>{{$user->first_name}} {{$user->last_name}}</span>  </h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('stock.med.store')}}" method="post">
+                    <form action="{{route('stock.med.store',['id'=>$pharmacy_id])}}" method="post">
                         @csrf
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-6 ">
                                 <div class="form-group">
                                     <input style="display:none;" name="created_by" value="{{$id}}">
-                                    <select class="select" name="pharmacy_id" required >
-                                        <option value="">Select</option>
-                                        @foreach($pharmacies as $p)
-                                            <option value="{{$p->pharmacy_id}}" />{{$p->slug}}  {{$p->name}} {{$p->region}}
-                                        @endforeach
-                                    </select>
+
                                 </div>
                             </div>
                         </div>
@@ -64,5 +59,4 @@
         </div>
     </div>
 @endsection
-
 

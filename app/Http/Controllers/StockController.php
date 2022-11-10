@@ -5,16 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Accept;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
-use App\Models\PharmUser;
 use App\Models\Stock;
 use App\Models\User;
 use App\Services\AcceptService;
-use App\Services\ElchiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class AcceptProductController extends Controller
+class StockController extends Controller
 {
     public $service;
 
@@ -35,7 +33,7 @@ class AcceptProductController extends Controller
         $pharmacies=User::where('id',$id)->with('admin_pharmacies')->get();
 //        dd($pharmacies[0]->admin_pharmacies[0]);
         $user=User::where('id',$id)->first();
-        return view('acceptProduct.index',compact('pharmacies','user'));
+        return view('stockProduct.index',compact('pharmacies','user'));
     }
 
     public function show($pharmacy_id)
@@ -43,18 +41,18 @@ class AcceptProductController extends Controller
 
         $pharm=Pharmacy::where('id',$pharmacy_id)->first();
 
-        $accept=Accept::where('pharmacy_id',$pharmacy_id)->get();
-        $pharmacy=DB::table('tg_accepts')
-            ->selectRaw('SUM(tg_accepts.number) as amount,medicine_id,pharmacy_id, tg_medicine.name as name,tg_pharmacy.name as pharmacy_name')
-            ->join('tg_pharmacy','tg_pharmacy.id','tg_accepts.pharmacy_id')
-            ->join('tg_medicine','tg_medicine.id','tg_accepts.medicine_id')
+        $stock=Stock::where('pharmacy_id',$pharmacy_id)->get();
+        $pharmacy=DB::table('tg_stocks')
+            ->selectRaw('SUM(tg_stocks.number) as amount,medicine_id,pharmacy_id, tg_medicine.name as name,tg_pharmacy.name as pharmacy_name')
+            ->join('tg_pharmacy','tg_pharmacy.id','tg_stocks.pharmacy_id')
+            ->join('tg_medicine','tg_medicine.id','tg_stocks.medicine_id')
             ->groupBy('pharmacy_id','medicine_id','tg_medicine.name','tg_pharmacy.name')->get();
 
-        $accepts=Accept::where('pharmacy_id',$pharmacy_id)->with('medicine','user_created','user_updated')->orderBy('created_at','DESC')->get();
+        $stocks=Stock::where('pharmacy_id',$pharmacy_id)->with('medicine','user_created','user_updated')->orderBy('created_at','DESC')->get();
 //        dd($pharmacies);
 //        dd($pharmacy);
 //        dd($accepts);
-        return view('acceptProduct.show',compact('accepts','pharmacy_id','pharmacy','accept','pharm'));
+        return view('stockProduct.show',compact('stocks','pharmacy_id','pharmacy','stock','pharm'));
 
     }
 
@@ -70,7 +68,7 @@ class AcceptProductController extends Controller
             ->join('tg_pharmacy','tg_pharmacy.id','tg_pharm_users.pharmacy_id')
             ->get();
 //        dd($pharmacies);
-        return view('acceptProduct.create',compact('id','pharmacy_id','medicines','pharmacies','user'));
+        return view('stockProduct.create',compact('id','pharmacy_id','medicines','pharmacies','user'));
     }
 
     public function store(Request $request,$pharmacy_id)
@@ -81,25 +79,24 @@ class AcceptProductController extends Controller
         $created_by=$r['created_by'];
         foreach ($r as $key=>$item){
             if($item!=null &&$key!='created_by'&&$key!='pharmacy_id' ){
-               $accept =new Accept();
-               $accept->medicine_id=substr($key,3);
-               $accept->number=$item;
-               $accept->created_by=$created_by;
-               $accept->updated_by=$created_by;
-               $accept->pharmacy_id=$pharmacy_id;
-               $accept->save();
+                $accept =new Stock();
+                $accept->medicine_id=substr($key,3);
+                $accept->number=$item;
+                $accept->created_by=$created_by;
+                $accept->updated_by=$created_by;
+                $accept->pharmacy_id=$pharmacy_id;
+                $accept->save();
             }
         }
-        return redirect()->route('accept.med.show',['id'=>$pharmacy_id]);
+        return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
     }
 
     public function edit(Request $request, $pharmacy_id)
     {
 
-        $accept=Accept::where('id',$request->id)->with('medicine')->first();
-        return view('acceptProduct.edit',compact('accept','pharmacy_id'));
+        $stock=Stock::where('id',$request->id)->with('medicine')->first();
+        return view('stockProduct.edit',compact('stock','pharmacy_id'));
     }
-
     public function update(Request $request,$pharmacy_id)
     {
 //        dd($request->all());
@@ -110,12 +107,12 @@ class AcceptProductController extends Controller
         $r=$request->all();
         unset($r['_token']);
 //        dd($r);
-        $a=Accept::where('id',$r['id'])->first();
+        $a=Stock::where('id',$r['id'])->first();
         $a->number=$r['number'];
         $a->updated_by=$user_id;
         $a->update();
 
-        return redirect()->route('accept.med.show',['id'=>$pharmacy_id]);
+        return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
     }
 
 

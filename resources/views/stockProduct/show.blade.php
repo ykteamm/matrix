@@ -9,7 +9,7 @@
                 <div class="card-body">
                         <div class="row d-flex justify-content-between">
                             <div class="col-md-1 ">
-                                <a href="{{route('accept.med.create',['id'=>$pharmacy_id])}}" class="btn btn-primary" ><span>+ create</span></a>
+                                <a href="{{route('stock.med.create',['id'=>$pharmacy_id])}}" class="btn btn-primary" ><span>+ create</span></a>
                             </div>
                             <div class="col-md-1 ">
 
@@ -75,7 +75,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($accepts as $med)
+                                            @foreach($stocks as $med)
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
                                                         <td>{{$med->medicine->name}} </td>
@@ -86,7 +86,7 @@
                                                         <td>{{$med->updated_at}}</td>
 
                                                         <td>
-                                                            <form action="{{route('accept.med.edit',['pharmacy_id'=>$pharmacy_id])}}" method="post">
+                                                            <form action="{{route('stock.med.edit',['pharmacy_id'=>$pharmacy_id])}}" method="post">
                                                                 @csrf
                                                                 <input name="id" style="display: none" value="{{$med->id}}">
                                                                 <button type="submit" ><i class="fas fa-edit text-primary"></i></button>
