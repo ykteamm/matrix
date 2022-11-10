@@ -93,6 +93,7 @@ if(!function_exists('wordSimilarity')){
             'elchi' => 'Elchi',
             'elchi-day' => 'Elchi kunlik',
             'pro' => 'Mahsulotlar',
+            'trend' => 'Trend',
             'grade' => 'Baholash',
             'ques' => 'Savollar',
             'know_ques' => 'Bilim savollar',

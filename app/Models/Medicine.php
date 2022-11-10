@@ -19,4 +19,9 @@ class Medicine extends Model
     {
         return $this->belongsTo(Shablon::class,'shablon_id','id');
     }
+
+    public function price()
+    {
+        return $this->hasMany(Price::class,'medicine_id','id');
+    }
 }

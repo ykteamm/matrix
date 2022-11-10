@@ -135,7 +135,13 @@ Route::post('user-rol', [App\Http\Controllers\PositionController::class,'userRol
 Route::resource('shablon',ShablonController::class);
 Route::get('prices/{id}', [App\Http\Controllers\ShablonController::class,'priceMed'])->name('price-med');
 Route::post('prices-store', [App\Http\Controllers\ShablonController::class,'priceMedStore'])->name('price-medic.store');
+Route::post('prices-store-update/{id}', [App\Http\Controllers\ShablonController::class,'priceMedUpdate'])->name('price-medic.update');
+Route::get('prices-store-edit/{id}', [App\Http\Controllers\ShablonController::class,'priceMedEdit'])->name('price-med.edit');
 Route::get('shablon-active/{id}', [App\Http\Controllers\ShablonController::class,'shablonActive'])->name('shablon-active');
+Route::get('shablon-pharmacy', [App\Http\Controllers\ShablonController::class,'shablonPharmacy'])->name('shablon.pharmacy');
+Route::post('shablon-pharmacy-store', [App\Http\Controllers\ShablonController::class,'shablonPharmacyStore'])->name('shablon.pharmacy.store');
+Route::post('shablon-pharmacy-update/{id}', [App\Http\Controllers\ShablonController::class,'shablonPharmacyUpdate'])->name('shablon.pharmacy.update');
+Route::get('shablon-pharmacy-edit/{id}', [App\Http\Controllers\ShablonController::class,'shablonPharmacyEdit'])->name('shablon.pharmacy.edit');
 
 
 Route::resource('warehouse',WarehouseController::class);
@@ -163,6 +169,8 @@ Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus
 
 Route::get('trend-region/{range}',[App\Http\Controllers\TrendController::class,'region'])->name('trend.region');
 Route::get('trend-product/{range}',[App\Http\Controllers\TrendController::class,'product'])->name('trend.product');
+Route::get('trend-user/{range}',[App\Http\Controllers\TrendController::class,'user'])->name('trend.user');
+Route::get('trend-pharmacy/{range}',[App\Http\Controllers\TrendController::class,'pharmacy'])->name('trend.pharmacy');
 
 #end-position
 #bro

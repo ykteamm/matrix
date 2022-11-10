@@ -20,4 +20,14 @@ class Shablon extends Model
     {
         return $this->hasMany(Medicine::class,'shablon_id','id');
     }
+
+    public function shablon_pharmacy()
+    {
+        return $this->hasMany(ShablonPharmacy::class,'shablon_id','id');
+    }
+
+    public function price()
+    {
+        return $this->hasMany(Price::class,'shablon_id','id');
+    }
 }

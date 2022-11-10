@@ -81,12 +81,13 @@ class GradeController extends Controller
             $user_question = UserQuestion::where('user_id',$items->user_id)
             ->whereDate('created_at','>=',$weekStartDate)
             ->whereDate('created_at','<=',$weekEndDate)
-            ->get();
+            ->first();
 
-            if($user_question[0])
+            if(isset($user_question))
             {
-            $json_arr1 = json_decode($user_question[0]->step1);
-            $json_arr2 = json_decode($user_question[0]->question_step);
+
+            $json_arr1 = json_decode($user_question->step1);
+            $json_arr2 = json_decode($user_question->question_step);
             foreach($json_arr1 as $key => $value)
             {
                 foreach($value as $item)

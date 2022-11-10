@@ -63,6 +63,8 @@
              @endif
              @endisset
 
+             @isset(Session::get('per')['trend'])
+             @if(Session::get('per')['trend'] == 'true')
              <li><a href="{{route('team-battle')}}"><i class="feather-filter"></i>  <span>Jamoalar jangi</span></a>
 
                <li class="submenu">
@@ -70,8 +72,12 @@
                   <ul style="display: none;">
                      <li><a href="{{route('trend.region','three')}}">Viloyat</a></li>
                      <li><a href="{{route('trend.product','three')}}">Mahsulot</a></li>
+                     <li><a href="{{route('trend.user','three')}}">Elchi</a></li>
+                     <li><a href="{{route('trend.pharmacy','three')}}">Dorixona</a></li>
                   </ul>
                </li>
+               @endif
+             @endisset
 
              @isset(Session::get('per')['pro'])
              @if(Session::get('per')['pro'] == 'true')
@@ -145,9 +151,10 @@
              @isset(Session::get('per')['narx'])
              @if(Session::get('per')['narx'] == 'true')
              <li class="submenu">
-               <a href="settings.html"><i class="feather-sliders"></i>  <span> Shablon </span><span class="menu-arrow"></span></a>
+               <a href="settings.html"><i class="feather-sliders"></i>  <span> Narx </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
-                  <li><a href="{{route('shablon.create')}}">Shablon yaratish</a></li>
+                  <li><a href="{{route('shablon.create')}}">Narx yaratish</a></li>
+                  <li><a href="{{route('shablon.pharmacy')}}">Dorixona biriktirish</a></li>
                </ul>
             </li>
             @endif

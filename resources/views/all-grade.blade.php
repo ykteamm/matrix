@@ -315,12 +315,16 @@
             if($(this).val());
             
         });
-        if(i==0)
-        {
-            $(`#${form}`).submit();
-        }else{
-            alert('Barcha savollarga baho qo\'ying')
-        }
+        $(`#${form}`).submit();
+
+        // if(i==0)
+        // {
+        //     $(`#${form}`).submit();
+
+        // }
+        // else{
+        //     alert('Barcha savollarga baho qo\'ying')
+        // }
         // console.log(i)
       }
 //       jQuery(document).ready(function($) {

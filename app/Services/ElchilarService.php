@@ -111,12 +111,12 @@ class ElchilarService
                 $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
 
                 $user = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_medicine.price) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_medicine.price')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_productssold.price_product')
                     ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
                     ->where('tg_user.id', $elch->id)
                     ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->groupBy('tg_medicine.name','tg_medicine.price')->get();
+                    ->groupBy('tg_medicine.name','tg_productssold.price_product')->get();
                 $user_sum=0;
                 foreach($user as $key)
                 {

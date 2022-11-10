@@ -42,7 +42,7 @@
                             <tr>
                                 <th scope="row">{{$key+1}}</th>
                                 <td>{{$pro->name}}</td>
-                                <td><input type="number" value="0" name="{{$pro->id}}"></td>
+                                <td><input type="number" value="0" class="form-control form-control-sm" name="{{$pro->id}}"></td>
 
                                 {{-- <td>  
                                     <a href="{{route('price-med',$shablon->id)}}">
@@ -59,7 +59,7 @@
             </div>
             <input style="display: none;" type="text" value="{{$id}}" name="shablon_id">
             <div class="col-md-2 m-auto">
-                <button type="submit" class="btn btn-primary"> {{ __('app.add_data') }} </button>
+                <button type="submit" class="btn btn-primary"> Qo'shish </button>
             </div>
             </form>
         </div>
