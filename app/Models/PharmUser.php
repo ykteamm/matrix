@@ -16,6 +16,15 @@ class PharmUser extends Model
 
     public function pharmacy()
     {
-        $this->belongsTo(Pharmacy::class,'pharmacy_id','id');
+        $this->hasMany(Pharmacy::class,'pharmacy_id','id');
+    }
+
+    public function pharmacies()
+    {
+        return $this->belongsTo(Pharmacy::class,'pharmacy_id','id');
+    }
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

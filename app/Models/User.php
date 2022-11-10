@@ -19,6 +19,15 @@ class User extends Model
     {
         return $this->hasMany(Member::class,'user_id','id');
     }
+    public function admin_pharmacies()
+    {
+        return $this->hasMany(PharmUser::class,'user_id','id');
+    }
+//
+//    public function tools()
+//    {
+//        return $this->morphToMany(Tool::class, 'toolable');
+//    }
     // public function condition_question()
     // {
     //     return $this->hasMany(ConditionQuestion::class,'pill_question_id','id');

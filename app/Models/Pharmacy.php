@@ -22,4 +22,15 @@ class Pharmacy extends Model
     {
         return $this->belongsTo(Region::class,'region_id','id');
     }
+
+
+    public function pharm_users()
+    {
+        return $this->hasmany(PharmUser::class,'pharmacy_id','id');
+    }
+
+    public function accept_product()
+    {
+        return $this->hasMany(Accept::class,'pharmacy_id','id');
+    }
 }

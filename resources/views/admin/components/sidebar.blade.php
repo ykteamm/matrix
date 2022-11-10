@@ -36,11 +36,27 @@
              <li><a href="{{route('pharmacy-user','today')}}"><i class="feather-filter"></i>  <span>Dorixona - elchi</span></a>
              @endif
              @endisset
-                @isset(Session::get('per')['team'])
-                    @if(Session::get('per')['team'] == 'true')
-                        <li><a href="{{route('pharm.users')}}"><i class="feather-filter"></i>  <span>User Dorixona</span></a>
-                    @endif
-                @endisset
+
+            @isset(Session::get('per')['ques'])
+                @if(Session::get('per')['ques'] == 'true')
+                    <li class="submenu">
+                        <a href="settings.html"><i class="feather-sliders"></i>  <span>User Dorixona</span><span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{route('pharm.users')}}"> <span> Dorixona biriktirish</span></a></li>
+                            <li class="submenu">
+                                <a href="settings.html"> <span>Biriktirilganlar</span><span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a href="{{route('pharm.users.bypharm')}}"> <span> Dorixona bo'yicha</span></a></li>
+                                    <li><a href="{{route('pharm.users.all')}}"><span> Userlar bo'yicha</span></a></li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+            @endif
+            @endisset
+
+
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')
              <li><a href="{{route('team',['time'=>'today'])}}"><i class="feather-filter"></i>  <span>Jamoalar</span></a>
@@ -48,7 +64,7 @@
              @endisset
 
              <li><a href="{{route('team-battle')}}"><i class="feather-filter"></i>  <span>Jamoalar jangi</span></a>
-            
+
                <li class="submenu">
                   <a href="settings.html"><i class="feather-sliders"></i>  <span> Trend </span><span class="menu-arrow"></span></a>
                   <ul style="display: none;">
@@ -89,8 +105,10 @@
                     <li class="submenu">
                         <a href="settings.html"><i class="feather-sliders"></i>  <span> Mahsulot kirim/qoldiq </span><span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="{{route('accept.med')}}">Mahsulot Kiritish</a></li>
-                            <li><a href="{{route('stock.med')}}">Qoldiq</a></li>
+                            <li><a href="{{route('accept.med',['time'=>'month'])}}">Kiritilganlar</a></li>
+                            <li><a href="{{route('stock.med',['time'=>'month'])}}">Qoldiqlar</a></li>
+                            <li><a href="{{route('accept.med.all',['time'=>'month'])}}">Kiritilganlar Hammasi</a></li>
+                            <li><a href="{{route('stock.med.all',['time'=>'month'])}}">Qoldiqlar Hammasi</a></li>
                         </ul>
                     </li>
                 @endif

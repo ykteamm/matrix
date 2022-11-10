@@ -178,11 +178,31 @@ Route::post('user-control/delete/{action}', [UserController::class,'controlWorke
 Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');
 Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
 
-Route::get('medicine/accept',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
-Route::post('medicine/accept/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
+Route::get('medicine/accept/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('accept.med.create');
+Route::get('medicine/accept/{id}/show',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('accept.med.show');
+Route::get('medicine/accept/{time}',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
+Route::get('medicine/accept/all/{time}',[\App\Http\Controllers\AcceptProductController::class,'index_all'])->name('accept.med.all');
+Route::post('medicine/accept/{id}/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
+Route::get('medicine/accept/{pharmacy_id}/edit/{id}',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
+Route::post('medicine/accept/{id}/update',[\App\Http\Controllers\AcceptProductController::class,'update'])->name('accept.med.update');
+
+
 Route::post('medicine/stock/store',[\App\Http\Controllers\AcceptProductController::class,'store2'])->name('stock.med.store');
-Route::get('medicine/stock',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('stock.med');
+Route::get('medicine/stock/{time}',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('stock.med');
+Route::get('medicine/stock/all/{time}',[\App\Http\Controllers\AcceptProductController::class,'index_all'])->name('stock.med.all');
+Route::get('medicine/stock/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('stock.med.create');
+Route::get('medicine/stock/{id}/show',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('stock.med.show');
+
+
+
 Route::get('pharm/users',[\App\Http\Controllers\PharmUsersController::class,'index'])->name('pharm.users');
+Route::get('pharm/users/all/show',[\App\Http\Controllers\PharmUsersController::class,'allshow'])->name('pharm.users.all');
+Route::get('pharm/users/all/show-by-pharmacy',[\App\Http\Controllers\PharmUsersController::class,'allshowbypharm'])->name('pharm.users.bypharm');
+Route::get('pharm/users/{id}/edit',[\App\Http\Controllers\PharmUsersController::class,'edit'])->name('pharm.users.edit');
+Route::get('pharm/users/{id}/edit-by-pharmacy',[\App\Http\Controllers\PharmUsersController::class,'editby'])->name('pharm.users.editby');
+Route::post('pharm/users/{id}/update',[\App\Http\Controllers\PharmUsersController::class,'updateby'])->name('pharm.users.update');
+Route::post('pharm/users/{id}/update-by',[\App\Http\Controllers\PharmUsersController::class,'updateby'])->name('pharm.users.updateby');
+Route::get('pharm/users/{id}/show',[\App\Http\Controllers\PharmUsersController::class,'oneshow'])->name('pharm.users.one');
 Route::post('pharm/users/store',[\App\Http\Controllers\PharmUsersController::class,'store'])->name('pharm.users.store');
 
 #end-bro
