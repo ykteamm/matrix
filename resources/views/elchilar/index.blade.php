@@ -77,14 +77,14 @@
                 @php $t=0; @endphp
                 @foreach($elchilar as $item)
                     @if($item['elchi']->status ==1)
-                <tr onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
+                <tr id="{{$item['elchi']->id}}" class="tr " onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
                 .css('color','white');"
                 onmouseleave="$(this).css('background','white').css('color','black');" 
-                class='clickable-row' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
-                    <td>{{$t+1}} </td>
-                    <td>@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
+                >
+                    <td onclick="myf({{$item['elchi']->id}})">{{$t+1}} </td>
+                    <td onclick="myf({{$item['elchi']->id}})" >@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
                     <td>{{$item['elchi']->v_name}} </td>
-                    <th class="fixed">
+                    <th  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
                         <div class="mb-1">
                             <strong>
                                 <img class="mr-2 mb-1" src="{{$item['elchi']->image_url}}" style="border-radius:50%" height="20px"> {{ $item['elchi']->last_name}} {{$item['elchi']->first_name}} ( Elchi )
@@ -146,6 +146,21 @@
     </div>
 </div>
 @section('admin_script')
+<script>
+    function myf(id){
+        let a=document.querySelectorAll('.tr');
+        let b=document.getElementById(id);
+        console.log(id);
+            a.forEach(e=>{
+                if(e.style.display=='none') {
+                    e.style.display = ''    
+                }else{
+                    e.style.display='none';
+                    b.style.display='';
+                }
+            })
+    }
+</script>
     <script>
         let x = 0;
         function myFunction() {
