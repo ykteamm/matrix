@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users=User::orderBy('id','ASC')->get();
+        $users=User::orderBy('id')->get();
         $new_users=NewUsers::all();
         $arr=[];
         foreach ($new_users as $user){
@@ -22,7 +22,6 @@ class UserController extends Controller
                 $arr[]=array('id'=>$user->id,'tg_id'=>$user->tg_id,'data'=>$d->data);
             }
         }
-
         return view('userControl.index',compact('users','arr'));
     }
 
@@ -166,6 +165,22 @@ class UserController extends Controller
         }
         return redirect()->back();
 
+    }
+    public function userExit(Request $request)
+    {
+        $r=$request->all();
+        unset($r['_token']);
+        foreach ($r as $key=> $item){
+            if ($item=='exit'){
+                $test=substr($key,5);
+                $rm = DB::table('tg_user')
+                    ->where('id',$test)->update([
+                        'status' => 1
+                    ]);
+            }
+
+        }
+        return redirect()->back();
     }
     public function addUser(Request $request)
     {

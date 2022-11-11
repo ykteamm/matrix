@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Models\Medicine;
 use App\Models\User;
 use App\Models\Pharmacy;
+use Carbon\Carbon;
 
 class TrendController extends Controller
 {
@@ -20,48 +21,33 @@ class TrendController extends Controller
     }
     public function region($range)
     {
+        
         $date_array = $this->service->range($range);
         $json = array();
         $regions = Region::orderBy('id','ASC')->get();
-        $allprice = 0; 
-        $region_chart = DB::table('tg_productssold')
-            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product*0) as allprice,tg_region.id')
-            // ->whereDate('tg_productssold.created_at','=',$date)
-            // ->where('tg_region.id','=',5)
-            ->join('tg_user','tg_user.id','tg_productssold.user_id')
-            ->rightjoin('tg_region','tg_region.id','tg_user.region_id')
-            ->orderBy('tg_region.id','ASC')
-            ->groupBy('tg_region.id');
-            if($allprice){
-                $region_chart = $region_chart->where('allprice', $allprice);
-            }
-            $region_chart->pluck('allprice');
-        return $region_chart;
         foreach($date_array as $key => $date)
         {
-            
-                    $json[] = $region_chart;
-                
-            // foreach($regions as $key => $region)
-            //     {
-            //         $region_chart = DB::table('tg_productssold')
-            //         ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.id')
-            //         ->whereDate('tg_productssold.created_at','=',$date)
-            //         ->where('tg_region.id','=',$region->id)
-            //         ->join('tg_user','tg_user.id','tg_productssold.user_id')
-            //         ->join('tg_region','tg_region.id','tg_user.region_id')
-            //         ->orderBy('tg_region.id','ASC')
-            //         ->groupBy('tg_region.id')->first();
+            foreach($regions as $key => $region)
+                {
+                    $region_chart = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.id')
+                    ->whereDate('tg_productssold.created_at','=',$date)
+                    ->where('tg_region.id','=',$region->id)
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->orderBy('tg_region.id','ASC')
+                    ->groupBy('tg_region.id')->first();
 
-            //         if(isset($region_chart->allprice))
-            //         {
-            //         $json[$region->id][] = $region_chart->allprice;
-            //         }else{
-            //         $json[$region->id][] = 0;
-            //         }
-            //     }
+                    if(isset($region_chart->allprice))
+                    {
+                    $json[$region->id][] = $region_chart->allprice;
+                    }else{
+                    $json[$region->id][] = 0;
+                    }
+                }
         }
-        return $json;
+        $date_array = $this->service->format($date_array);
+        
         return view('trend.region',compact('json','date_array','regions'));
     }
     public function product($range)
@@ -89,6 +75,8 @@ class TrendController extends Controller
                     }
                 }
         }
+        $date_array = $this->service->format($date_array);
+
         return view('trend.product',compact('json','date_array','regions'));
     }
     public function user($range)
@@ -116,6 +104,8 @@ class TrendController extends Controller
                     }
                 }
         }
+        $date_array = $this->service->format($date_array);
+
         return view('trend.user',compact('json','date_array','regions'));
     }
     public function pharmacy($range)
@@ -143,6 +133,8 @@ class TrendController extends Controller
                     }
                 }
         }
+        $date_array = $this->service->format($date_array);
+
         return view('trend.pharmacy',compact('json','date_array','regions'));
     }
 }

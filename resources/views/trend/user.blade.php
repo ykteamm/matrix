@@ -74,16 +74,16 @@
                     curve: 'smooth'
                     },
                     xaxis: {
-                     show: false,
-                     labels: {
-                        show: false
-                     },
-                     axisBorder: {
-                        show: false
-                     },
-                     axisTicks: {
-                        show: false
-                     },
+                     // show: false,
+                     // labels: {
+                     //    show: false
+                     // },
+                     // axisBorder: {
+                     //    show: false
+                     // },
+                     // axisTicks: {
+                     //    show: false
+                     // },
                     categories: date_array
                     },
                 };
