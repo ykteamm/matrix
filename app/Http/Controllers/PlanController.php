@@ -37,7 +37,7 @@ class PlanController extends Controller
      */
     public function create($id)
     {
-        $med=Medicine::all();
+        $med=Medicine::orderBy('id')->get();
 
         $plans=Plan::where('user_id',$id)->get();
 
@@ -113,7 +113,8 @@ class PlanController extends Controller
     public function edit($id)
     {
 
-        $med=Medicine::all();
+        $med=Medicine::orderBy('id')->get();
+
         $plans=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->get();
 //        dd($plans);
         return view('plan.edit',[
