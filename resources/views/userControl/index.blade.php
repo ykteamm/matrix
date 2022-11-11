@@ -10,7 +10,7 @@
                     <ul class="nav nav-tabs nav-tabs-solid nav-justified">
                         <li class="nav-item"><a class="nav-link active" href="#solid-justified-tab1" data-toggle="tab">Ishchilar </a></li>
                         <li class="nav-item"><a class="nav-link" href="#solid-justified-tab2" data-toggle="tab">Ishdan ketganlar </a></li>
-                        <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Yangilar</a></li>
+                        {{-- <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Yangilar</a></li> --}}
                         <li class="nav-item"><a class="nav-link" href="#solid-justified-tab4" data-toggle="tab">RMlar</a></li>
                         <li class="nav-item"><a class="nav-link" href="#solid-justified-tab5" data-toggle="tab">Capitanlar</a></li>
                     </ul>
@@ -99,6 +99,9 @@
                             </form>
                         </div>
                         <div class="tab-pane" id="solid-justified-tab2">
+                            <form  method="post" action="{{route('user-exit')}}">
+                                @csrf
+
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -116,13 +119,22 @@
                                     <th scope="row">{{$t3}}</th>
                                     <td>{{$user->first_name}}</td>
                                     <td>{{$user->last_name}}</td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="exit.{{$user->id}}" value="exit" >
+                                        </div>
+                                    </td>
                                 </tr>
                                     @endif
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div>
+                                <button type="submit" class="w-100 btn btn-primary">Saqlash</button>
+                            </div>
+                            </form>
                         </div>
-                        <div class="tab-pane" id="solid-justified-tab3">
+                        {{-- <div class="tab-pane" id="solid-justified-tab3">
                             <form  method="post" action="{{route('user-add')}}">
                                 @csrf
                                 <table class="table table-striped">
@@ -158,7 +170,7 @@
                                     <button type="submit" class="w-100 btn btn-primary">Saqlash</button>
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
                         <div class="tab-pane" id="solid-justified-tab4">
                             <form  method="post" action="{{route('user-rm')}}">
                                 @csrf
