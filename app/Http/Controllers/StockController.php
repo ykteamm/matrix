@@ -36,11 +36,10 @@ class StockController extends Controller
         return view('stockProduct.index',compact('pharmacies','user'));
     }
 
-    public function show($pharmacy_id)
+    public function show1($pharmacy_id)
     {
 
         $pharm=Pharmacy::where('id',$pharmacy_id)->first();
-
         $stock=Stock::where('pharmacy_id',$pharmacy_id)->get();
         $pharmacy=DB::table('tg_stocks')
             ->selectRaw('SUM(tg_stocks.number) as amount,medicine_id,pharmacy_id, tg_medicine.name as name,tg_pharmacy.name as pharmacy_name')
@@ -54,6 +53,21 @@ class StockController extends Controller
 //        dd($accepts);
         return view('stockProduct.show',compact('stocks','pharmacy_id','pharmacy','stock','pharm'));
 
+    }
+
+    public function show($pharmacy_id)
+    {
+        $med=Medicine::orderBy('id')->get();
+
+//        dd($med[0]->name);\
+        $stock_date=DB::table('tg_stocks')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->get();
+//        dd($stock_date);
+        $stock=DB::table('tg_stocks')
+            ->select('number','medicine_id','date')
+            ->where('pharmacy_id',$pharmacy_id)->get();
+//        dd($pharm);
+        $count=$stock_date->count();
+        return view('stockProduct.show',compact('med','stock','pharmacy_id','stock_date','count'));
     }
 
     public function create($pharmacy_id)
@@ -82,6 +96,7 @@ class StockController extends Controller
                 $accept =new Stock();
                 $accept->medicine_id=substr($key,3);
                 $accept->number=$item;
+                $accept->date=date('Y-m-d');
                 $accept->created_by=$created_by;
                 $accept->updated_by=$created_by;
                 $accept->pharmacy_id=$pharmacy_id;

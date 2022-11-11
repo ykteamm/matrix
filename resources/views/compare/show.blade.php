@@ -34,17 +34,23 @@
                                             <tbody>
                                             @foreach($pharmacy as $med)
                                                 @if($med->pharmacy_id==$pharmacy_id)
-                                                    @foreach($stocks as $stock)
-                                                        @if($stock->medicine_id==$med->medicine_id)
+
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
                                                         <td>{{$med->name}} </td>
                                                         <td>{{$med->amount}}</td>
-
-                                                        <td>{{$stock->number}}</td>
-                                                    </tr>
+                                                        @php $i=0;@endphp
+                                                        @foreach($stocks as $stock)
+                                                            @if($stock->medicine_id==$med->medicine_id)
+                                                                @php $i++;@endphp
+                                                                <td>{{$stock->number}}</td>
+                                                            @endif
+                                                        @endforeach
+                                                        @if($i==0)
+                                                            <td>Stock olinmagan</td>
                                                         @endif
-                                                    @endforeach
+                                                    </tr>
+
                                                 @endif
                                             @endforeach
                                             </tbody>

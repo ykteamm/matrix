@@ -18,6 +18,7 @@ class CreateStocksTable extends Migration
             $table->foreignId('pharmacy_id');
             $table->foreignId('medicine_id');
             $table->integer('number');
+            $table->date('date');
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->timestamps();

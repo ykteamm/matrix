@@ -18,6 +18,7 @@ class CreateAcceptsTable extends Migration
             $table->foreignId('pharmacy_id');
             $table->foreignId('medicine_id');
             $table->integer('number');
+            $table->date('date');
             $table->foreignId('created_by');
             $table->foreignId('updated_by');
             $table->timestamps();

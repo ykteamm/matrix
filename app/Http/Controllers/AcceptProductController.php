@@ -77,13 +77,20 @@ class AcceptProductController extends Controller
     {
         $id=Session::get('user')->id;
         $r=$request->all();
+//        dd($r);
         unset($r['_token']);
         $created_by=$r['created_by'];
+        $date_time=$r['meeting-time'];
+        unset($r['meeting-time']);
+        unset($r['created_by']);
+//        dd($r);
         foreach ($r as $key=>$item){
-            if($item!=null &&$key!='created_by'&&$key!='pharmacy_id' ){
+//            dd($item);
+            if($item!=null ){
                $accept =new Accept();
                $accept->medicine_id=substr($key,3);
                $accept->number=$item;
+               $accept->date=$date_time;
                $accept->created_by=$created_by;
                $accept->updated_by=$created_by;
                $accept->pharmacy_id=$pharmacy_id;

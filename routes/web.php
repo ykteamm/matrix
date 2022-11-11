@@ -216,7 +216,7 @@ Route::post('pharm/users/store',[\App\Http\Controllers\PharmUsersController::cla
 
 
 Route::get('compare-stocks',[\App\Http\Controllers\CompareController::class,'index'])->name('compare');
-Route::get('compare-stocks/{id}',[\App\Http\Controllers\CompareController::class,'show'])->name('compare.pharm');
+Route::get('compare-stocks/{id}/time/{time?}',[\App\Http\Controllers\CompareController::class,'show'])->name('compare.pharm');
 #end-bro
 
 });
