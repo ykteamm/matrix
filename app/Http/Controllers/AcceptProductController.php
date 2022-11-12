@@ -40,22 +40,18 @@ class AcceptProductController extends Controller
 
     public function show($pharmacy_id)
     {
+        $med=Medicine::orderBy('id')->get();
 
-        $pharm=Pharmacy::where('id',$pharmacy_id)->first();
-
-        $accept=Accept::where('pharmacy_id',$pharmacy_id)->get();
-        $pharmacy=DB::table('tg_accepts')
-            ->selectRaw('SUM(tg_accepts.number) as amount,medicine_id,pharmacy_id, tg_medicine.name as name,tg_pharmacy.name as pharmacy_name')
-            ->join('tg_pharmacy','tg_pharmacy.id','tg_accepts.pharmacy_id')
-            ->join('tg_medicine','tg_medicine.id','tg_accepts.medicine_id')
-            ->groupBy('pharmacy_id','medicine_id','tg_medicine.name','tg_pharmacy.name')->get();
-
-        $accepts=Accept::where('pharmacy_id',$pharmacy_id)->with('medicine','user_created','user_updated')->orderBy('created_at','DESC')->get();
-//        dd($pharmacies);
-//        dd($pharmacy);
-//        dd($accepts);
-        return view('acceptProduct.show',compact('accepts','pharmacy_id','pharmacy','accept','pharm'));
-
+//        dd($med[0]->name);\
+        $accept_date=DB::table('tg_accepts')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->orderBy('date')->get();
+//        dd($stock_date);
+        $accept=DB::table('tg_accepts')
+            ->select('number','medicine_id','date')
+            ->where('pharmacy_id',$pharmacy_id)->orderBy('date')->get();
+//        dd($pharm);
+        $count=$accept_date->count();
+        $id=Session::get('user')->id;
+        return view('acceptProduct.show',compact('med','accept','pharmacy_id','accept_date','count','id'));
     }
 
     public function create($pharmacy_id)
@@ -81,24 +77,32 @@ class AcceptProductController extends Controller
         unset($r['_token']);
         $created_by=$r['created_by'];
         $date_time=$r['meeting-time'];
-        unset($r['meeting-time']);
-        unset($r['created_by']);
+        $q=Accept::where('date',$r['meeting-time'])->first();
+//        dd($r['meeting-time']);
+        if(!isset($q)){
+            unset($r['meeting-time']);
+            unset($r['created_by']);
 //        dd($r);
-        foreach ($r as $key=>$item){
+            foreach ($r as $key=>$item){
 //            dd($item);
-            if($item!=null ){
-               $accept =new Accept();
-               $accept->medicine_id=substr($key,3);
-               $accept->number=$item;
-               $accept->date=$date_time;
-               $accept->created_by=$created_by;
-               $accept->updated_by=$created_by;
-               $accept->pharmacy_id=$pharmacy_id;
-               $accept->save();
+
+                    $accept =new Accept();
+                    $accept->medicine_id=substr($key,3);
+                    $accept->number=$item;
+                    $accept->date=$date_time;
+                    $accept->date_time=$date_time;
+                    $accept->created_by=$created_by;
+                    $accept->updated_by=$created_by;
+                    $accept->pharmacy_id=$pharmacy_id;
+                    $accept->save();
+
             }
         }
+
         return redirect()->route('accept.med.show',['id'=>$pharmacy_id]);
     }
+
+
 
     public function edit(Request $request, $pharmacy_id)
     {

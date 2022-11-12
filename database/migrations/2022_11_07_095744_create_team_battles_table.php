@@ -31,6 +31,6 @@ class CreateTeamBattlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('team_battles');
+        Schema::dropIfExists('tg_team_battles');
     }
 }

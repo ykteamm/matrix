@@ -201,7 +201,7 @@ Route::get('medicine/stock/{id}/show',[\App\Http\Controllers\StockController::cl
 Route::get('medicine/stock/{time}',[\App\Http\Controllers\StockController::class,'index'])->name('stock.med');
 Route::get('medicine/stock/all/{time}',[\App\Http\Controllers\StockController::class,'index_all'])->name('stock.med.all');
 Route::post('medicine/stock/{id}/store',[\App\Http\Controllers\StockController::class,'store'])->name('stock.med.store');
-Route::post('medicine/stock/{pharmacy_id}/edit',[\App\Http\Controllers\StockController::class,'edit'])->name('stock.med.edit');
+Route::get('medicine/stock/{pharmacy_id}/edit/{date}',[\App\Http\Controllers\StockController::class,'edit'])->name('stock.med.edit');
 Route::post('medicine/stock/{id}/update',[\App\Http\Controllers\StockController::class,'update'])->name('stock.med.update');
 
 

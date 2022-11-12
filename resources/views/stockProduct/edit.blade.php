@@ -24,11 +24,13 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
+                                                @foreach($stocks as $s)
                                                     <tr>
-                                                        <td>{{1}} </td>
-                                                        <td>{{$stock->medicine->name}} </td>
-                                                        <td><input name="number" value="{{$stock->number}}"><input name="id" style="display: none" value="{{$stock->id}}">  </td>
+                                                        <td>{{$loop->index+1}} </td>
+                                                        <td>{{$s->medicine->name}} </td>
+                                                        <td><input name="number[]" value="{{$s->number}}"><input name="id[]" style="display: none" value="{{$s->id}}">  </td>
                                                     </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

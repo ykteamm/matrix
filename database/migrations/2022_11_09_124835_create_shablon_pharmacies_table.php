@@ -28,6 +28,6 @@ class CreateShablonPharmaciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shablon_pharmacies');
+        Schema::dropIfExists('tg_shablon_pharmacies');
     }
 }

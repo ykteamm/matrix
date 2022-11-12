@@ -60,14 +60,15 @@ class StockController extends Controller
         $med=Medicine::orderBy('id')->get();
 
 //        dd($med[0]->name);\
-        $stock_date=DB::table('tg_stocks')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->get();
+        $stock_date=DB::table('tg_stocks')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->orderBy('date')->get();
 //        dd($stock_date);
         $stock=DB::table('tg_stocks')
             ->select('number','medicine_id','date')
-            ->where('pharmacy_id',$pharmacy_id)->get();
+            ->where('pharmacy_id',$pharmacy_id)->orderBy('date')->get();
 //        dd($pharm);
         $count=$stock_date->count();
-        return view('stockProduct.show',compact('med','stock','pharmacy_id','stock_date','count'));
+        $id=Session::get('user')->id;
+        return view('stockProduct.show',compact('med','stock','pharmacy_id','stock_date','count','id'));
     }
 
     public function create($pharmacy_id)
@@ -89,6 +90,37 @@ class StockController extends Controller
     {
         $id=Session::get('user')->id;
         $r=$request->all();
+//        dd($r);
+        unset($r['_token']);
+        $created_by=$r['created_by'];
+        $q=Stock::where('date',$r['meeting-time'])->first();
+        if(!isset($q)){
+            $date_time=$r['meeting-time'];
+            unset($r['meeting-time']);
+            unset($r['created_by']);
+//        dd($r);
+            foreach ($r as $key=>$item){
+//            dd($item);
+                $stock =new Stock();
+                $stock->medicine_id=substr($key,3);
+                $stock->number=$item;
+                $stock->date=$date_time;
+                $stock->date_time=$date_time;
+                $stock->created_by=$created_by;
+                $stock->updated_by=$created_by;
+                $stock->pharmacy_id=$pharmacy_id;
+                $stock->save();
+
+            }
+        }
+
+        return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
+    }
+
+    public function store1(Request $request,$pharmacy_id)
+    {
+        $id=Session::get('user')->id;
+        $r=$request->all();
         unset($r['_token']);
         $created_by=$r['created_by'];
         foreach ($r as $key=>$item){
@@ -106,26 +138,25 @@ class StockController extends Controller
         return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
     }
 
-    public function edit(Request $request, $pharmacy_id)
+    public function edit($pharmacy_id, $date)
     {
-
-        $stock=Stock::where('id',$request->id)->with('medicine')->first();
-        return view('stockProduct.edit',compact('stock','pharmacy_id'));
+        $stocks=Stock::where('pharmacy_id',$pharmacy_id)
+            ->where('date',$date)->with('medicine')
+            ->get();
+        return view('stockProduct.edit',compact('stocks','pharmacy_id','date'));
     }
     public function update(Request $request,$pharmacy_id)
     {
-//        dd($request->all());
-        $request->validate([
-            'number'=>'required'
-        ]);
+        $i=0;
         $user_id=Session::get('user')->id;
-        $r=$request->all();
-        unset($r['_token']);
-//        dd($r);
-        $a=Stock::where('id',$r['id'])->first();
-        $a->number=$r['number'];
-        $a->updated_by=$user_id;
-        $a->update();
+
+        foreach ($request['number'] as $item){
+            $s=Stock::where('id',$request['id'][$i])->first();
+            $s->number=$item;
+            $s->updated_by=$user_id;
+            $s->update();
+            $i++;
+        }
 
         return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
     }

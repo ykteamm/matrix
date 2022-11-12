@@ -21,6 +21,8 @@
                                     <div class="card-body" style="height: 80vh; overflow-y: scroll">
                                         <div class="table-responsive">
                                             <table class="table table-striped mb-0 border">
+                                                <form action="{{route('stock.med.store',['id'=>$pharmacy_id])}}" method="post">
+                                                    @csrf
                                                 <thead>
 
                                                 <tr class="border">
@@ -28,22 +30,22 @@
                                                     <th>Dori nomi </th>
                                                     @foreach($stock_date as $p)
                                                         <th class="text-center">
-                                                            {{$p->date}}<span class="mx-1"><i class="fas fa-edit "></i></span>
+                                                            {{$p->date}}<a href="{{route('stock.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->date])}}" class="mx-1"><i class="fas fa-edit "></i></a>
                                                         </th>
                                                     @endforeach
 {{--                                                    href="{{route('stock.med.create',['id'=>$pharmacy_id])}}"--}}
-                                                    <th class=" d-flex text-center text-white">
-                                                        <a  style="font-size: 1.5rem;display: none" class="w-100 p-0  bg-success">+</a>
-                                                        <input type="datetime-local" id="meeting-time"
+                                                    <th class=" d-flex text-center text-white justify-content-center">
+                                                        <input style="display: none" name="created_by" value="{{$id}}">
+                                                        <a  style="font-size: 1.5rem;" onclick="yashir()" class= "w-100 p-0 yashir  bg-success">+</a>
+                                                        <input type="datetime-local" id="meeting-time" style="display: none" class="yashir"
                                                                name="meeting-time" value="{{date("Y-m-d H:i", time())}}"
                                                                min="2018-06-07T00:00" >
-                                                        <a type="submit" style="font-size: 1.5rem; " class=" px-2 py-1 text-white border-none bg-success">Saqlash</a>
+                                                        <button type="submit" style="font-size: 1.5rem;display: none " class="yashir px-2 py-1 text-white border-none bg-success">Saqlash</button>
 
                                                     </th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <form action="{{route('accept.med.store',['id'=>$pharmacy_id])}}" method="post">
                                                 @foreach($med as $m)
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
@@ -58,13 +60,14 @@
                                                         @if($i==0)
                                                             <td></td>
                                                         @endif
-                                                        <td><input  name="med{{$m->id}}"></td>
+                                                        <td class="d-flex justify-content-center"><input style="display: none"  class="yashir" name="med{{$m->id}}"></td>
                                                     </tr>
 
                                                 @endforeach
-                                                </form>
 
                                                 </tbody>
+                                                </form>
+
                                             </table>
                                         </div>
                                     </div>
