@@ -79,7 +79,7 @@
                     @if($item['elchi']->status ==1)
                 <tr id="{{$item['elchi']->id}}" class="tr " onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
                 .css('color','white');"
-                onmouseleave="$(this).css('background','white').css('color','black');" 
+                onmouseleave="$(this).css('background','white').css('color','black');"
                 >
                     <td onclick="myf({{$item['elchi']->id}})">{{$t+1}} </td>
                     <td onclick="myf({{$item['elchi']->id}})" >@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
@@ -98,7 +98,7 @@
                     <th class="fixed">{{$encane[$t]}} </th>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
-                    <td class="yashir "> <span class="badge bg-warning-light">{{$elchi_fact[$item['elchi']->id]}}</span></td>
+                    <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item['elchi']->id], 2, ',', ' ') }}</span></td>
                     <td class="yashir "> <span class="badge bg-success-light">{{$elchi_prognoz[$item['elchi']->id]}}</span></td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                     @foreach($days as $day)
@@ -153,7 +153,7 @@
         console.log(id);
             a.forEach(e=>{
                 if(e.style.display=='none') {
-                    e.style.display = ''    
+                    e.style.display = ''
                 }else{
                     e.style.display='none';
                     b.style.display='';

@@ -147,9 +147,31 @@ class ElchilarService
 
             }
         }
+        $fact=[];
+//        dd(date('Y-m',strtotime($month)).'-01');
+        $i=0;
+        foreach ($elchi as $item){
+
+            $s=DB::table('tg_productssold')
+                ->where('user_id',$item->id)
+                ->selectRaw('SUM(tg_productssold.number*tg_productssold.price_product) as all_price,user_id')
+                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->groupBy('user_id')
+                ->first();
+            if(isset($s->all_price)){
+                $fact[$item->id]=$s->all_price;
+
+            }
+            else{
+                $fact[$item->id]=0;
+            }
+            $i++;
+        }
+
         $data=new ElchilarKunlikItems();
         $data->elchi=$elchi;
-        $data->elchi_fact=$elchi_fact;
+        $data->elchi_fact=$fact;
         $data->elchi_work=$elchi_work;
         $data->elchi_prognoz=$elchi_prognoz;
 

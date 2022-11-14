@@ -93,9 +93,13 @@ class StockController extends Controller
 //        dd($r);
         unset($r['_token']);
         $created_by=$r['created_by'];
-        $q=Stock::where('date',$r['meeting-time'])->first();
-        if(!isset($q)){
+        if(isset($r['meeting-time'])){
             $date_time=$r['meeting-time'];
+        }else{
+            $date_time=date('Y-m-d H-i-s');
+        }
+        $q=Stock::where('date',$date_time)->first();
+        if(!isset($q)){
             unset($r['meeting-time']);
             unset($r['created_by']);
 //        dd($r);

@@ -42,7 +42,6 @@ class AcceptProductController extends Controller
     {
         $med=Medicine::orderBy('id')->get();
 
-//        dd($med[0]->name);\
         $accept_date=DB::table('tg_accepts')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->orderBy('date')->get();
 //        dd($stock_date);
         $accept=DB::table('tg_accepts')
@@ -76,8 +75,12 @@ class AcceptProductController extends Controller
 //        dd($r);
         unset($r['_token']);
         $created_by=$r['created_by'];
-        $date_time=$r['meeting-time'];
-        $q=Accept::where('date',$r['meeting-time'])->first();
+        if(isset($r['meeting-time'])){
+            $date_time=$r['meeting-time'];
+        }else{
+            $date_time=date('Y-m-d H-i-s');
+        }
+        $q=Accept::where('date',$date_time)->first();
 //        dd($r['meeting-time']);
         if(!isset($q)){
             unset($r['meeting-time']);
