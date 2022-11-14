@@ -98,7 +98,7 @@
                     <th class="fixed">{{$encane[$t]}} </th>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
-                    <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item['elchi']->id], 2, ',', ' ') }}</span></td>
+                    <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item['elchi']->id], 0, ',', ' ') }}</span></td>
                     <td class="yashir "> <span class="badge bg-success-light">{{$elchi_prognoz[$item['elchi']->id]}}</span></td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                     @foreach($days as $day)
