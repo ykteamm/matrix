@@ -25,7 +25,7 @@
                                                     <tr>
                                                         <th><strong>No</strong> </th>
                                                         <th><strong>Dori nomi</strong> </th>
-{{--                                                        <th><strong>Avvalgisi soni</strong> </th>--}}
+                                                        <th><strong>Avvalgisi soni</strong> </th>
                                                         <th><strong>sotildi</strong> </th>
                                                         <th><strong>kirib kelgan</strong> </th>
                                                         <th><strong>Jami</strong> </th>
@@ -37,25 +37,21 @@
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
                                                         <td>{{$m->name}} </td>
-{{--                                                        @if($i==0)--}}
-{{--                                                            <td>0 </td>--}}
-{{--                                                        @else--}}
-{{--                                                            @if(isset($stocks[$i-1][$m->id]))--}}
-{{--                                                            <td>{{$stocks[$i-1][$m->id-1]->number}} </td>--}}
-{{--                                                            @else--}}
-{{--                                                                <td>0</td>--}}
-{{--                                                            @endif--}}
-{{--                                                        @endif--}}
+                                                        @if($i==0)
+                                                        <td>{{$arr_qol_all[$i][$m->id]}}</td>
+                                                        @else
+                                                            <td>{{$stock_all[$i-1][$m->id]}}</td>
+                                                        @endif
                                                         @if($i==0)
                                                             <td>0 ta sotildi </td>
 
                                                         @else
                                                             <td>
                                                             @php $w=0; @endphp
-                                                            @foreach($arr_sold[$i-1] as $k)
-                                                                @if($k->medicine_id==$m->id)
+                                                            @foreach($arr_sold[$i-1] as $key=>$val)
+                                                                @if($key==$m->id)
                                                                     @php $w++; @endphp
-                                                            {{$k->sold}}
+                                                            {{$val}}
                                                                 @endif
                                                             @endforeach
                                                                 @if($w==0)
@@ -70,11 +66,11 @@
                                                             <td>0 ta kelgan</td>
                                                         @else
 
-{{--                                                            @if(isset($arr_accepts[$i-1][$m->id-1]->sold))--}}
-{{--                                                            <td>{{$arr_accepts[$i-1][$m->id-1]->sold}} ta kelgan </td>--}}
-{{--                                                            @else--}}
+                                                            @if(isset($arr_accepts[$i-1][$m->id]))
+                                                            <td>{{$arr_accepts[$i-1][$m->id]}} ta kelgan </td>
+                                                            @else
                                                                 <td>0 ta kelgan</td>
-{{--                                                            @endif--}}
+                                                            @endif
                                                         @endif
 
                                                         <td>{{$arr_qol_all[$i][$m->id]}}</td>

@@ -32,25 +32,39 @@ class CompareController extends Controller
         $arr_qol_all=[];
         $arr_accepts=[];
         $compare=[];
+        $stock_all=[];
         foreach ($stock as $s){
 
 
             $arr_qol=[];
             $st=Stock::where('date_time',$s->date_time)->get();
-            foreach ($st as $item){
-                if($item->number==null){
-                    $arr_qol[$item->medicine_id]=0;
 
-                }else{
-                    $arr_qol[$item->medicine_id]=$item->number;
-                }
-
-            }
 //            dd($arr_qol);
             if($i==0){
+                foreach ($st as $item){
+                    if($item->number==null){
+                        $arr_qol[$item->medicine_id]=0;
+
+                    }else{
+                        $arr_qol[$item->medicine_id]=$item->number;
+                    }
+
+                }
                 $a=$s->date_time;
             }
             else{
+                $st=Stock::where('date_time',$a)->get();
+                foreach ($st as $item){
+                    if($item->number==null){
+                        $arr_qol[$item->medicine_id]=0;
+
+                    }else{
+                        $arr_qol[$item->medicine_id]=$item->number;
+                    }
+
+                }
+                $stock_all[]=$arr_qol;
+
 
                 $arr_sold[]=DB::table('tg_productssold')
                     ->selectRaw('SUM(number) as sold,medicine_id')
@@ -58,10 +72,15 @@ class CompareController extends Controller
                     ->whereDate('created_at','>=',$a)
                     ->whereDate('created_at','<=',$s->date_time)
                     ->orderBy('medicine_id')
-                    ->groupBy('medicine_id')->get();
+                    ->groupBy('medicine_id')->pluck('sold','medicine_id');
+//                dd($arr_sold);
+//                dd($arr_qol);
                 if(isset($arr_sold[$i-1])){
-                    foreach ($arr_sold[$i-1] as $item2){
-                        $arr_qol[$item2->medicine_id]=$arr_qol[$item2->medicine_id]-$item2->sold;
+                    foreach ($arr_sold[$i-1] as $key=> $item2){
+//                        dd($arr_sold[$i-1]);
+
+//                        dd($arr_qol[$item2]);
+                        $arr_qol[$key]=$arr_qol[$key]-$item2;
                     }
                 }
 
@@ -72,16 +91,16 @@ class CompareController extends Controller
                     ->whereDate('date_time','>=',$a)
                     ->whereDate('date_time','<=',$s->date_time)
                     ->orderBy('medicine_id')
-                    ->groupBy('medicine_id')->get();
-
-
+                    ->groupBy('medicine_id')->pluck('sold','medicine_id');
+//                dd($arr_accept);
                 if(isset($arr_accept)){
-                    foreach ($arr_accept as $item3){
+                    foreach ($arr_accept as $key=>$item3){
 
-                        $arr_qol[$item3->medicine_id]=$arr_qol[$item3->medicine_id]+$item3->sold;
+                        $arr_qol[$key]=$arr_qol[$key]+$item3;
                     }
 
                 }
+//                dd($arr_qol);
                 $arr_accepts[]=$arr_accept;
 
 
@@ -120,7 +139,6 @@ class CompareController extends Controller
 //        dd($arr_qol_all);
 
 
-
-        return view('compare.show',compact('compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
+        return view('compare.show',compact('stock_all','compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
     }
 }

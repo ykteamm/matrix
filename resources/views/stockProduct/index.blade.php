@@ -23,7 +23,7 @@
                                 <td>{{$loop->index+1}}</td>
                                 <td>{{$p->pharmacies->slug}} </td>
                                 <td><a href="{{route('stock.med.show',['id'=>$p->pharmacies->id])}}">{{$p->pharmacies->name}}</a> </td>
-                                <td>{{$p->pharmacies->region}}</td>
+                                <td>{{$p->pharmacies->region->name}}</td>
                             </tr>
                             @endforeach
                             </tbody>

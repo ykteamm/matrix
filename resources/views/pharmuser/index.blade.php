@@ -45,7 +45,7 @@
                                                     <td>{{$loop->index+1}} </td>
                                                     <td>{{$pharmacy->slug}} </td>
                                                     <td>{{$pharmacy->name}} </td>
-                                                    <td>{{$pharmacy->region}} </td>
+                                                    <td>{{$pharmacy->region->name}} </td>
                                                     <td> <input type="checkbox" id="horns" name="pharmacy_id[]" value="{{$pharmacy->id}}"></td>
                                                 </tr>
                                                 @endforeach

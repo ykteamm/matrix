@@ -42,7 +42,7 @@
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
                                                         <td> <a href="{{route('compare.pharm',['id'=>$pharm->id,'time'=>\Carbon\Carbon::now()])}}">{{$pharm->name}}</a> </td>
-                                                        <td>{{$pharm->region}}</td>
+                                                        <td>{{$pharm->region->name}}</td>
                                                     </tr>
 
                                             @endforeach
