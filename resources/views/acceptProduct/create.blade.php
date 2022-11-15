@@ -13,9 +13,9 @@
                             <div class="col-md-6 ">
                                 <div class="form-group">
                                     <input style="display:none;" name="created_by" value="{{$id}}">
-                                    <input type="datetime-local" id="meeting-time"
-                                           name="meeting-time" value="{{date("Y-m-d H:i", time())}}"
-                                           min="2018-06-07T00:00" >
+{{--                                    <input type="datetime-local" id="meeting-time"--}}
+{{--                                           name="meeting-time" value="{{date("Y-m-d H:i", time())}}"--}}
+{{--                                           min="2018-06-07T00:00" >--}}
                                 </div>
                             </div>
                         </div>

@@ -18,9 +18,7 @@ class CreateAcceptsTable extends Migration
             $table->foreignId('pharmacy_id');
             $table->foreignId('medicine_id');
             $table->integer('number')->nullable();
-            $table->integer('price');
-            $table->dateTime('date_time');
-            $table->dateTime('date');
+            $table->integer('price')->nullable();
             $table->foreignId('created_by');
             $table->foreignId('updated_by');
             $table->timestamps();

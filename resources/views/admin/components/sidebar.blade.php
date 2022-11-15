@@ -111,10 +111,8 @@
                     <li class="submenu">
                         <a href="settings.html"><i class="feather-sliders"></i>  <span> Mahsulot kirim/qoldiq </span><span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a href="{{route('accept.med',['time'=>'month'])}}">Kiritilganlar</a></li>
-                            <li><a href="{{route('stock.med',['time'=>'month'])}}">Qoldiqlar</a></li>
-                            <li><a href="{{route('accept.med.all',['time'=>'month'])}}">Kiritilganlar Hammasi</a></li>
-                            <li><a href="{{route('stock.med.all',['time'=>'month'])}}">Qoldiqlar Hammasi</a></li>
+                            <li><a href="{{route('accept.med')}}">Kiritilganlar</a></li>
+                            <li><a href="{{route('stock.med')}}">Qoldiqlar</a></li>
                         </ul>
                     </li>
                 @endif

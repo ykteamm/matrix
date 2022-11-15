@@ -8,6 +8,7 @@ use App\Models\Pharmacy;
 use App\Models\Stock;
 use App\Models\User;
 use App\Services\AcceptService;
+use App\Services\ElchilarService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -20,7 +21,7 @@ class StockController extends Controller
     {
         $this->service=$service;
     }
-    public function index($time)
+    public function index()
     {
         $id=Session::get('user')->id;
 //       $elchi_service=new ElchiService();
@@ -36,39 +37,32 @@ class StockController extends Controller
         return view('stockProduct.index',compact('pharmacies','user'));
     }
 
-    public function show1($pharmacy_id)
+
+
+    public function show($pharmacy_id,$month)
     {
-
-        $pharm=Pharmacy::where('id',$pharmacy_id)->first();
-        $stock=Stock::where('pharmacy_id',$pharmacy_id)->get();
-        $pharmacy=DB::table('tg_stocks')
-            ->selectRaw('SUM(tg_stocks.number) as amount,medicine_id,pharmacy_id, tg_medicine.name as name,tg_pharmacy.name as pharmacy_name')
-            ->join('tg_pharmacy','tg_pharmacy.id','tg_stocks.pharmacy_id')
-            ->join('tg_medicine','tg_medicine.id','tg_stocks.medicine_id')
-            ->groupBy('pharmacy_id','medicine_id','tg_medicine.name','tg_pharmacy.name')->get();
-
-        $stocks=Stock::where('pharmacy_id',$pharmacy_id)->with('medicine','user_created','user_updated')->orderBy('created_at','DESC')->get();
-//        dd($pharmacies);
-//        dd($pharmacy);
-//        dd($accepts);
-        return view('stockProduct.show',compact('stocks','pharmacy_id','pharmacy','stock','pharm'));
-
-    }
-
-    public function show($pharmacy_id)
-    {
+        $ser=new ElchilarService();
+        $months=$ser->month();
+        $endofmonth=$ser->endmonth($month,$months);
+        $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
         $med=Medicine::orderBy('id')->get();
-
-//        dd($med[0]->name);\
-        $stock_date=DB::table('tg_stocks')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->orderBy('date')->get();
-//        dd($stock_date);
+        $stock_date=DB::table('tg_stocks')
+            ->select('date')
+            ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('pharmacy_id',$pharmacy_id)
+            ->groupBy('date')
+            ->orderBy('date')->get();
         $stock=DB::table('tg_stocks')
             ->select('number','medicine_id','date')
-            ->where('pharmacy_id',$pharmacy_id)->orderBy('date')->get();
+            ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('pharmacy_id',$pharmacy_id)
+            ->orderBy('date')->get();
 //        dd($pharm);
         $count=$stock_date->count();
         $id=Session::get('user')->id;
-        return view('stockProduct.show',compact('med','stock','pharmacy_id','stock_date','count','id'));
+        return view('stockProduct.show',compact('month','pharm','months','med','stock','pharmacy_id','stock_date','count','id'));
     }
 
     public function create($pharmacy_id)
@@ -118,7 +112,7 @@ class StockController extends Controller
             }
         }
 
-        return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
+        return redirect()->route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
 
     public function store1(Request $request,$pharmacy_id)

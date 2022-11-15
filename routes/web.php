@@ -188,8 +188,8 @@ Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
 Route::post('user-exit', [UserController::class,'userExit'])->name('user-exit');
 
 Route::get('medicine/accept/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('accept.med.create');
-Route::get('medicine/accept/{id}/show',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('accept.med.show');
-Route::get('medicine/accept/{time}',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
+Route::get('medicine/accept/{id}/show/{time?}',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('accept.med.show');
+Route::get('medicine/accept',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
 Route::get('medicine/accept/all/{time}',[\App\Http\Controllers\AcceptProductController::class,'index_all'])->name('accept.med.all');
 Route::post('medicine/accept/{id}/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
 Route::post('medicine/accept/{pharmacy_id}/edit',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
@@ -197,8 +197,8 @@ Route::post('medicine/accept/{id}/update',[\App\Http\Controllers\AcceptProductCo
 
 
 Route::get('medicine/stock/{id}/create',[\App\Http\Controllers\StockController::class,'create'])->name('stock.med.create');
-Route::get('medicine/stock/{id}/show',[\App\Http\Controllers\StockController::class,'show'])->name('stock.med.show');
-Route::get('medicine/stock/{time}',[\App\Http\Controllers\StockController::class,'index'])->name('stock.med');
+Route::get('medicine/stock/{id}/show/{time}',[\App\Http\Controllers\StockController::class,'show'])->name('stock.med.show');
+Route::get('medicine/stock',[\App\Http\Controllers\StockController::class,'index'])->name('stock.med');
 Route::get('medicine/stock/all/{time}',[\App\Http\Controllers\StockController::class,'index_all'])->name('stock.med.all');
 Route::post('medicine/stock/{id}/store',[\App\Http\Controllers\StockController::class,'store'])->name('stock.med.store');
 Route::get('medicine/stock/{pharmacy_id}/edit/{date}',[\App\Http\Controllers\StockController::class,'edit'])->name('stock.med.edit');

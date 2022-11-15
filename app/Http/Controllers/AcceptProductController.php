@@ -9,6 +9,7 @@ use App\Models\PharmUser;
 use App\Models\Stock;
 use App\Models\User;
 use App\Services\AcceptService;
+use App\Services\ElchilarService;
 use App\Services\ElchiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class AcceptProductController extends Controller
     {
         $this->service=$service;
     }
-    public function index($time)
+    public function index()
     {
         $id=Session::get('user')->id;
 //       $elchi_service=new ElchiService();
@@ -35,74 +36,88 @@ class AcceptProductController extends Controller
         $pharmacies=User::where('id',$id)->with('admin_pharmacies')->get();
 //        dd($pharmacies[0]->admin_pharmacies[0]);
         $user=User::where('id',$id)->first();
-        return view('acceptProduct.index',compact('pharmacies','user'));
+        $count=$pharmacies[0]->admin_pharmacies->count();
+
+        return view('acceptProduct.index',compact('pharmacies','user','count'));
     }
 
-    public function show($pharmacy_id)
+    public function show($pharmacy_id,$month)
     {
-        $med=Medicine::orderBy('id')->get();
+        $ser=new ElchilarService();
+        $months=$ser->month();
+        $endofmonth=$ser->endmonth($month,$months);
+//        dd($months);
+        $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
+        $med=DB::table('tg_medicine')
+            ->selectRaw('tg_medicine.name,tg_medicine.id,tg_prices.price')
+            ->where('tg_shablon_pharmacies.pharmacy_id',$pharmacy_id)
+            ->join('tg_prices','tg_prices.medicine_id','tg_medicine.id')
+            ->join('tg_shablon_pharmacies','tg_shablon_pharmacies.shablon_id','tg_prices.shablon_id')
+            ->groupBy('tg_medicine.id','tg_medicine.name','tg_prices.price')
+            ->orderBy('tg_medicine.id')
+            ->get();
+        $accept_date=DB::table('tg_accepts')
+            ->selectRaw('SUM(price) as all_price,created_at')
+            ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('pharmacy_id',$pharmacy_id)
+            ->groupBy('created_at')
+            ->orderBy('created_at')->get();
 
-        $accept_date=DB::table('tg_accepts')->select('date')->where('pharmacy_id',$pharmacy_id)->groupBy('date')->orderBy('date')->get();
-//        dd($stock_date);
         $accept=DB::table('tg_accepts')
-            ->select('number','medicine_id','date')
-            ->where('pharmacy_id',$pharmacy_id)->orderBy('date')->get();
-//        dd($pharm);
+            ->select('number','medicine_id','created_at','price')
+            ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('pharmacy_id',$pharmacy_id)->orderBy('created_at')->get();
         $count=$accept_date->count();
         $id=Session::get('user')->id;
-        return view('acceptProduct.show',compact('med','accept','pharmacy_id','accept_date','count','id'));
+
+        return view('acceptProduct.show',compact('month','pharm','months','med','accept','pharmacy_id','accept_date','count','id'));
     }
 
-    public function create($pharmacy_id)
-    {
-        $id=Session::get('user')->id;
-        $user=User::where('id',$id)->first();
-        $medicines=Medicine::all();
-        $pharmacies=DB::table('tg_pharm_users')
-            ->where('user_id',$id)
-            ->where('pharmacy_id',$pharmacy_id)
-            ->selectRaw('user_id, pharmacy_id, tg_pharmacy.name as name, tg_pharmacy.region as region,tg_pharmacy.slug as slug')
-            ->join('tg_pharmacy','tg_pharmacy.id','tg_pharm_users.pharmacy_id')
-            ->get();
-//        dd($pharmacies);
-        return view('acceptProduct.create',compact('id','pharmacy_id','medicines','pharmacies','user'));
-    }
 
     public function store(Request $request,$pharmacy_id)
     {
+
+
         $id=Session::get('user')->id;
         $r=$request->all();
+
 //        dd($r);
         unset($r['_token']);
         $created_by=$r['created_by'];
-        if(isset($r['meeting-time'])){
-            $date_time=$r['meeting-time'];
-        }else{
-            $date_time=date('Y-m-d H-i-s');
-        }
-        $q=Accept::where('date',$date_time)->first();
-//        dd($r['meeting-time']);
-        if(!isset($q)){
+
             unset($r['meeting-time']);
             unset($r['created_by']);
-//        dd($r);
+            $i=0;
             foreach ($r as $key=>$item){
-//            dd($item);
 
+                if($i==0){
+                    if($item==null){
+                        $item=0;
+                    }
                     $accept =new Accept();
                     $accept->medicine_id=substr($key,3);
                     $accept->number=$item;
-                    $accept->date=$date_time;
-                    $accept->date_time=$date_time;
                     $accept->created_by=$created_by;
                     $accept->updated_by=$created_by;
                     $accept->pharmacy_id=$pharmacy_id;
+                }
+                if($i==1){
+                    $accept->price=$item*$accept->number;
                     $accept->save();
+                }
+                if($i==0){
+                    $i=1;
+                }else{
+                    $i=0;
+                }
+
 
             }
-        }
 
-        return redirect()->route('accept.med.show',['id'=>$pharmacy_id]);
+
+        return redirect()->route('accept.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
 
 

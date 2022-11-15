@@ -1,25 +1,33 @@
 @extends('admin.layouts.app')
 @section('admin_content')
-    <div class="row mt-5 pt-5">
+    <div class="row mt-5 pt-3">
         <div class="col-sm-12">
             <div class="card" >
 
-                <div class="card-body">
-                        <div class="row d-flex justify-content-between">
-                            <div class="col-md-1 ">
-                            </div>
-                            <div class="col-md-1 ">
+                <div class="card-body p-0">
 
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header no-border">
-                                        <h5 class="card-title">Dorilar ro'yhati </h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header no-border d-flex justify-content-between">
+                                    <h5 class="card-title">{{$pharm->name}} <span class="text-danger">Qoldiqlar ro'yhati</span></h5>
+                                    <div class="col-md-2 mb-2  justify-content-end">
+                                        <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
+                                        <div class="dropdown-menu" style="left:150px !important">
+                                            @php $i=1 @endphp
+                                            @foreach($months as $m)
+                                                @if($i<10)
+                                                    <a href="{{route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                                                @else
+                                                    <a href="{{route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                                                @endif
+                                                @php $i++ @endphp
+                                            @endforeach
+                                        </div>
                                     </div>
-                                    <div class="card-body" style="height: 80vh; overflow-y: scroll">
-                                        <div class="table-responsive">
+                                </div>
+                                <div class="card-body" >
+                                    <div class="table-responsive" style="height: 80vh;overflow-y: scroll ">
                                             <table class="table table-striped mb-0 border">
                                                 <form action="{{route('stock.med.store',['id'=>$pharmacy_id])}}" method="post">
                                                     @csrf
@@ -36,7 +44,7 @@
 {{--                                                    href="{{route('stock.med.create',['id'=>$pharmacy_id])}}"--}}
                                                     <th class=" d-flex text-center text-white justify-content-center">
                                                         <input style="display: none" name="created_by" value="{{$id}}">
-                                                        <a  style="font-size: 1.5rem;" onclick="yashir()" class= "w-100 p-0 yashir  bg-success">+</a>
+                                                        <a  style="font-size: 1.5rem;" onclick="yashir()" class= "w-100 px-5 yashir  bg-success">+</a>
                                                         <input type="datetime-local" id="meeting-time" style="display: none" class="yashir"
                                                                name="meeting-time" value="{{date("Y-m-d H:i", time())}}"
                                                                min="2018-06-07T00:00" >
@@ -57,9 +65,6 @@
                                                                 @php $i++; @endphp
                                                             @endif
                                                         @endforeach
-                                                        @if($i==0)
-                                                            <td></td>
-                                                        @endif
                                                         <td class="d-flex justify-content-center"><input style="display: none"  class="yashir" name="med{{$m->id}}"></td>
                                                     </tr>
 
@@ -69,11 +74,11 @@
                                                 </form>
 
                                             </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 {{--                    <div class="row">--}}
 {{--                        <a onclick="yashir()" class="btn btn-primary text-white w-100 ">Har bitta kiritilganni alohida ko'rish</a>--}}
 {{--                    </div>--}}

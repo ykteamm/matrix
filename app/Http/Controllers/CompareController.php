@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Accept;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
+use App\Models\ProductSold;
 use App\Models\Stock;
+use App\Models\User;
+use App\Services\ElchilarService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,13 +21,19 @@ class CompareController extends Controller
         return view('compare.index',compact('pharmacies'));
     }
 
-    public function show($pharmacy_id,$time)
+    public function show($pharmacy_id,$month)
     {
-        $date_begin=Accept::orderBy('date')->first('date');
-//        dd($date_begin->date);
-        $stock=Stock::where('pharmacy_id',$pharmacy_id)->select('date_time')->orderBy('date_time')->groupBy('date_time')->get();
+        $ser=new ElchilarService();
+        $months=$ser->month();
+        $endofmonth=$ser->endmonth($month,$months);
+        $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
+        $stock=Stock::where('pharmacy_id',$pharmacy_id)
+            ->select('date_time')
+            ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->orderBy('date_time')
+            ->groupBy('date_time')->get();
         $med=Medicine::orderBy('id')->get();
-//        dd($stock);
         $arr_sold=[];
         $i=0;
         $stocks=[];
@@ -73,26 +82,19 @@ class CompareController extends Controller
                     ->whereDate('created_at','<=',$s->date_time)
                     ->orderBy('medicine_id')
                     ->groupBy('medicine_id')->pluck('sold','medicine_id');
-//                dd($arr_sold);
-//                dd($arr_qol);
                 if(isset($arr_sold[$i-1])){
                     foreach ($arr_sold[$i-1] as $key=> $item2){
-//                        dd($arr_sold[$i-1]);
-
-//                        dd($arr_qol[$item2]);
                         $arr_qol[$key]=$arr_qol[$key]-$item2;
                     }
                 }
 
-//                $arr_accept=Accept::whereDate('date_time','>=',$a)->whereDate('date_time','<=',$s->date_time)->get();
                 $arr_accept=DB::table('tg_accepts')
                     ->selectRaw('SUM(number) as sold,medicine_id')
                     ->where('pharmacy_id',$pharmacy_id)
-                    ->whereDate('date_time','>=',$a)
-                    ->whereDate('date_time','<=',$s->date_time)
+                    ->whereDate('created_at','>=',$a)
+                    ->whereDate('created_at','<=',$s->date_time)
                     ->orderBy('medicine_id')
                     ->groupBy('medicine_id')->pluck('sold','medicine_id');
-//                dd($arr_accept);
                 if(isset($arr_accept)){
                     foreach ($arr_accept as $key=>$item3){
 
@@ -100,14 +102,11 @@ class CompareController extends Controller
                     }
 
                 }
-//                dd($arr_qol);
                 $arr_accepts[]=$arr_accept;
 
 
                 $a=$s->date_time;
 
-//                $k=\App\Models\Stock::where('medicine_id',7)->where('pharmacy_id',$pharmacy_id)->where('date_time',$s->date_time)->first('number');
-//                dd($k->number);
             }
             $ss=Stock::where('pharmacy_id',$pharmacy_id)->where('date_time',$s->date_time)->with('medicine')->orderBy('medicine_id')->get();
             $stocks[$i]=$ss;
@@ -125,20 +124,14 @@ class CompareController extends Controller
                 $compare[$i]='bg-success';
             }
             else{
-                $compare[$i]='bg-danger';
+                $compare[$i]='bg-danger text-white';
             }
           $i++;
 
         }
-//        dd($arr_accepts[2]);
-//        foreach ($arr_sold[0] as $s){
-//            dd($s->medicine_id);
-//        }
-//        dd($arr_sold);
-
-//        dd($arr_qol_all);
 
 
-        return view('compare.show',compact('stock_all','compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
+
+        return view('compare.show',compact('pharm','month','months','stock_all','compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
     }
 }
