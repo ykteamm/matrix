@@ -25,7 +25,7 @@
                     @if($i!=0)
                     <div class="row">
                         <div class="col-2"></div>
-                        <div class="col-8 m-1  d-flex justify-content-center text-center {{$compare[$i]}}">
+                        <div class="col-8 m-1  d-flex justify-content-center text-center shadow {{$compare[$i]}}">
                             <span><h3 class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($last))}}</strong><small>{{date('H:i',strtotime($last))}}</small> &nbsp</h3></span>
                             <span><h3 class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($s->date_time))}}</strong><small>{{date('H:i',strtotime($s->date_time))}}</small></h3></span>
                         </div>

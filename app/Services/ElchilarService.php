@@ -174,11 +174,6 @@ class ElchilarService
         $data->elchi_fact=$fact;
         $data->elchi_work=$elchi_work;
         $data->elchi_prognoz=$elchi_prognoz;
-
-
-
-
-
      return $data;
     }
 
@@ -189,10 +184,8 @@ class ElchilarService
         foreach ($elchi as $item){
             $plan_sum[$i]=0;
             $plans=Plan::where('user_id',$item->id)
-                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
                 ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
-
-
             foreach ($plans as $plan){
                 $narx=DB::table('tg_medicine')
                     ->select('tg_medicine.price')
