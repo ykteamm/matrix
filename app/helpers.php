@@ -1,4 +1,4 @@
-<?php 
+<?php
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Artisan;
@@ -10,7 +10,7 @@ if(!function_exists('date_now')){
     function date_now() {
 
         return Carbon::now();
-    
+
     }
 }
 
@@ -21,15 +21,15 @@ if(!function_exists('wordSimilarity')){
         $words2 = preg_split('/\s+/',$s2);
         $diffs1 = array_diff($words2,$words1);
         $diffs2 = array_diff($words1,$words2);
-    
+
         $diffsLength = strlen(join("",$diffs1).join("",$diffs2));
         $wordsLength = strlen(join("",$words1).join("",$words2));
         if(!$wordsLength) return 0;
-    
+
         $differenceRate = ( $diffsLength / $wordsLength );
         $similarityRate = 1 - $differenceRate;
         return $similarityRate;
-    
+
     }
 }
     if(!function_exists('setArt')){
@@ -41,7 +41,7 @@ if(!function_exists('wordSimilarity')){
         Artisan::call('migrate:refresh', [
             '--force' => true,
         ]);
-        
+
     }
 }
     if(!function_exists('setPublic')){
@@ -50,7 +50,7 @@ if(!function_exists('wordSimilarity')){
         Config::set("database.connections.pgsql.schema", $db);
         $query = 'SET search_path TO ' . '"'.$db.'"';
         DB::statement($query);
-        
+
     }
 }
 
@@ -60,7 +60,7 @@ if(!function_exists('wordSimilarity')){
             Config::set("database.connections.pgsql.schema", $db);
             $query = 'SET search_path TO ' . '"'.$db.'"';
             DB::statement($query);
-            
+
         }
     }
     if(!function_exists('positions')){
@@ -80,7 +80,7 @@ if(!function_exists('wordSimilarity')){
                 'exit' => 'Исход',
             ];
             return $positions;
-            
+
         }
     }
 
@@ -103,6 +103,9 @@ if(!function_exists('wordSimilarity')){
             'User' => 'User',
             'rol' => 'Rol',
             'region' => 'Barcha viloyat',
+            'accept'=> 'Kirimlar',
+            'stock'=>'Qoldiqlar',
+            'user-pharm'=>'User Dorixona'
         ];
         // $knowledge = Knowledge::first();
         // $h_positions['pharmacy'] = 'Dorixona';
@@ -117,18 +120,18 @@ if(!function_exists('wordSimilarity')){
         foreach ($department as $key => $value) {
             $h_positions['d'.$value->id] = $value->name;
         }
-        
+
         $region = DB::table('tg_region')->get();
         foreach ($region as $key => $value) {
             $h_positions[$value->id] = $value->name;
         }
-        
+
         $perm = DB::table('tg_perm')->get();
         foreach ($perm as $key => $value) {
             $h_positions[$value->key] = $value->name;
         }
         return $h_positions;
-        
+
     }
 }
 
@@ -147,7 +150,7 @@ if(!function_exists('b_positions')){
         'exit' => 'Исход',
     ];
     return $b_positions;
-    
+
 }
 }
 
@@ -161,7 +164,7 @@ if(!function_exists('b_positions')){
                 'hospital_delete',
             ];
             return $actions;
-            
+
         }
     }
     if(!function_exists('b_actions')){
@@ -178,7 +181,7 @@ if(!function_exists('b_positions')){
                 'branch_delete',
             ];
             return $actions;
-            
+
         }
     }
     if (! function_exists('get_visitor_IP'))
@@ -202,7 +205,7 @@ if(!function_exists('b_positions')){
            return $ip;
         }
 
-        // Sometimes the `HTTP_X_FORWARDED_FOR` can contain more than IPs 
+        // Sometimes the `HTTP_X_FORWARDED_FOR` can contain more than IPs
         $forward_ips = @$_SERVER['HTTP_X_FORWARDED_FOR'];
         if ($forward_ips) {
             $all_ips = explode(',', $forward_ips);
@@ -217,7 +220,7 @@ if(!function_exists('b_positions')){
         return $_SERVER['REMOTE_ADDR'];
     }
 }
-    
+
 
 
 

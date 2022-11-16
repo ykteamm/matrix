@@ -7,6 +7,7 @@ use App\Models\Medicine;
 use App\Models\Plan;
 use App\Models\PlanWeek;
 use App\Models\ProductSold;
+use App\Models\Shablon;
 use App\Models\Sold;
 use App\Services\PlanService;
 use Carbon\Carbon;
@@ -38,10 +39,11 @@ class PlanController extends Controller
     public function create($id)
     {
         $med=Medicine::orderBy('id')->get();
-
+        $shablons=Shablon::all();
         $plans=Plan::where('user_id',$id)->get();
 
         return view('plan.create',[
+            'shablons'=>$shablons,
             'user_id'=>$id,
             'plans'=>$plans,
             'medicines'=>$med
@@ -74,29 +76,6 @@ class PlanController extends Controller
      */
     public function show($id,$startday)
     {
-//        $d=Sold::all();
-//        foreach($d as $item){
-//            Sold::where('user_id',$id)->delete();
-//        }
-//        return 'aa';
-//        $ps=ProductSold::whereNotNull('user_id')->whereNotNull('order_id')->whereBetween('created_at', [date("Y-m-d", strtotime('-1 month', strtotime((Carbon::now()->startOfMonth())))), date("Y-m-d", strtotime('-1 month', strtotime((Carbon::now()->endOfMonth()))))])->get();
-//        foreach ($ps as $item){
-//            $sold=new Sold();
-//            $item->created_at=date("Y-m-d", strtotime('1 month', strtotime(($item->created_at))));
-////            dd($item->user_id);
-//            $sold->number=$item->number;
-//            $sold->created_at=$item->created_at;
-//            $sold->medicine_id=$item->medicine_id;
-//            $sold->user_id=$item->user_id;
-//            $sold->order_id=$item->order_id;
-//            $sold->price_product=$item->price_product;
-//            $sold->is_active=$item->is_active;
-//            $sold->save();
-//        }
-
-        dd($id);
-
-        return redirect()->back();
     }
 
     /**

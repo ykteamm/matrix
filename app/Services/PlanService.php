@@ -14,13 +14,15 @@ class PlanService
 
         $r=$request->all();
         unset($r['_token']);
+        $shablon_id=$r['shablon_id'];
+        unset($r['shablon_id']);
         date_default_timezone_set('Asia/Tashkent');
         $cal=Calendar::where('year_month',date('m.Y'))->first();
         $arr=json_decode($cal->day_json);
 
         foreach ($r as $key => $item){
             if($item!=0){
-                $plan=$this->save($key,$item,$id);
+                $plan=$this->save($key,$item,$id,$shablon_id);
 
                 $workday=$cal->work_day;
                 $count=0;
@@ -99,11 +101,12 @@ class PlanService
         }
     }
 
-    public function save($key,$item,$id)
+    public function save($key,$item,$id,$shablon_id)
     {
         $plan=new Plan();
         $plan->medicine_id= substr($key,8);
         $plan->number=$item;
+        $plan->shablon_id=$shablon_id;
         $plan->user_id=$id;
         $plan->save();
         return $plan;

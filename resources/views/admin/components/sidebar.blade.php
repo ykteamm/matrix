@@ -37,8 +37,8 @@
              @endif
              @endisset
 
-            @isset(Session::get('per')['ques'])
-                @if(Session::get('per')['ques'] == 'true')
+            @isset(Session::get('per')['user-pharm'])
+                @if(Session::get('per')['user-pharm'] == 'true')
                     <li class="submenu">
                         <a href="settings.html"><i class="feather-sliders"></i>  <span>User Dorixona</span><span class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -106,17 +106,22 @@
                @endif
              @endisset
 
-            @isset(Session::get('per')['ques'])
-                @if(Session::get('per')['ques'] == 'true')
                     <li class="submenu">
                         <a href="settings.html"><i class="feather-sliders"></i>  <span> Mahsulot kirim/qoldiq </span><span class="menu-arrow"></span></a>
                         <ul style="display: none;">
+                            @isset(Session::get('per')['accept'])
+                                @if(Session::get('per')['accept'] == 'true')
                             <li><a href="{{route('accept.med')}}">Kiritilganlar</a></li>
-                            <li><a href="{{route('stock.med')}}">Qoldiqlar</a></li>
+                                @endif
+                            @endisset
+                            @isset(Session::get('per')['stock'])
+                                @if(Session::get('per')['stock'] == 'true')
+                                        <li><a href="{{route('stock.med')}}">Qoldiqlar</a></li>
+                                @endif
+                            @endisset
+
                         </ul>
                     </li>
-                @endif
-            @endisset
                 @isset(Session::get('per')['grade'])
                     @if(Session::get('per')['grade'] == 'true')
                         <li><a href="{{route('compare')}}"><i class="feather-filter"></i>  <span>Taqqoslash </span></a>

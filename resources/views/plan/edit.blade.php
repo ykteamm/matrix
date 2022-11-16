@@ -37,7 +37,9 @@
                 @endforeach
                 </tbody>
             </table>
-            <button type="submit" href="" class="btn btn-primary my-2 w-100">O'zgarishlarni saqlash</button>
+            <div class="text-right " style="position: fixed;right: 1rem;top: 95vh; width: 100%"  >
+                <button type="submit" style="width: 83.5%;" class="btn btn-primary">O'zgarishlarni saqlash </button>
+            </div>
         </form>
 
     </div>

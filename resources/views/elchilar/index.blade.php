@@ -23,20 +23,6 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="col-md-2 mb-2  justify-content-end">
-                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
-                    <div class="dropdown-menu" style="left:150px !important">
-                        @php $i=1 @endphp
-                        @foreach($months as $m)
-                            @if($i<10)
-                            <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                            @else
-                            <a href="{{route('elchilar',['month'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                            @endif
-                                @php $i++ @endphp
-                        @endforeach
-                    </div>
-                </div>
 
             </div>
             <table class="table mb-0 table-striped "   >
