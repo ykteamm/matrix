@@ -45,8 +45,8 @@
                                                 <th><strong>Avvalgisi soni</strong> </th>
                                                 <th><strong>sotildi</strong> </th>
                                                 <th><strong>kirib kelgan</strong> </th>
-                                                <th  ><strong>Jami</strong> </th>
-                                                <th  ><strong>Qoldiq</strong> </th>
+                                                <th style="background-color: #00d285;" ><strong style="font-weight: 800; color: #b21f2d">Jami</strong> </th>
+                                                <th style="background-color: #3d50c5"  ><strong style="color: #fff">Qoldiq</strong> </th>
                                             </tr>
                                             </thead>
                                             <tbody>

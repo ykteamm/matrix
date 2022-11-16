@@ -187,37 +187,17 @@ class ElchilarService
                 ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
                 ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
             foreach ($plans as $plan){
-                $narx=DB::table('tg_medicine')
-                    ->select('tg_medicine.price')
-                    ->where('id',$plan->medicine_id)->first();
+                $narx=DB::table('tg_prices')
+                    ->select('tg_prices.price')
+                    ->where('tg_prices.shablon_id',$plan->shablon_id)
+                    ->where('tg_prices.medicine_id',$plan->medicine_id)->first();
                 $plan_sum[$i]+=$plan->number*$narx->price;
             }
             $i++;
         }
-//        dd($plan_sum);
         return $plan_sum;
     }
-    public function plan2($elchi,$month,$endofmonth)
-    {
-        $plan=[];
-        $i=0;
-        foreach ($elchi as $item){
-            $plan_sum[$i]=0;
-//           $plan[$item->id]=DB::table('tg_plans')
-//               ->whereDate('tg_plans.created_at','>=',date('Y-m',strtotime($month)).'-01')
-//               ->whereDate('tg_plans.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
-//               ->where('tg_plans.user_id',$item->id)
-//               ->selectRaw('SUM(tg_prices.price*tg_plans.number) as all_price')
-//               ->join('tg_shablons','tg_shablons.id','tg_plans.shablon_id')
-//               ->join('tg_prices','tg_prices.medicine_id','tg_plans.medicine_id')
-//               ->groupBy('tg_plans.user_id')->first();
-           if($i==10)
-           dd($plan);
-            $i++;
-        }
-//        dd($plan_sum);
-        return $plan_sum;
-    }
+
 
     public function planday($elchi,$month,$endofmonth)
     {

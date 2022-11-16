@@ -1,9 +1,6 @@
 @extends('admin.layouts.app')
 @section('admin_content')
 
-
-
-
     <div id="table-wrapper"  class="card-body mt-5">
         <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 90vh; overflow-y: scroll">
             <div class="row   d-flex justify-content-between">
