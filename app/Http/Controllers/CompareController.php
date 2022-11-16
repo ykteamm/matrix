@@ -42,6 +42,7 @@ class CompareController extends Controller
         $arr_accepts=[];
         $compare=[];
         $stock_all=[];
+        $comp=[];
         foreach ($stock as $s){
 
 
@@ -110,14 +111,30 @@ class CompareController extends Controller
             }
             $ss=Stock::where('pharmacy_id',$pharmacy_id)->where('date_time',$s->date_time)->with('medicine')->orderBy('medicine_id')->get();
 //            dd($ss[1]);
+            $t=1;
+
+//            foreach ($ss as $item){
+//                if($item->number==$arr_qol[$t]){
+//
+//                }
+//                $t++;
+//            }
             $stocks[$i]=$ss;
             $arr_qol_all[]=$arr_qol;
             $count=0;
             foreach ($med as $l){
                 foreach ($ss as $item){
-                    if($arr_qol[$l->id]==$item->number && $item->medicine_id==$l->id){
-                        $count++;
+                    if($item->medicine_id==$l->id){
+
+                        if($arr_qol[$l->id]==$item->number  ){
+                            $count++;
+                            $comp[$i][$l->id]='background-color: #1a73e8';
+                        }
+                        else{
+                            $comp[$i][$l->id]='background-color:red';
+                        }
                     }
+
                 }
             }
             $c=$med->count();
@@ -133,6 +150,6 @@ class CompareController extends Controller
 
 
 
-        return view('compare.show',compact('pharm','month','months','stock_all','compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
+        return view('compare.show',compact('comp','pharm','month','months','stock_all','compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
     }
 }

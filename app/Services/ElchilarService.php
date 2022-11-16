@@ -49,7 +49,7 @@ class ElchilarService
         $elchi = DB::table('tg_user')
             ->whereIn('tg_user.id',$userarrayreg)
             ->where('tg_user.status',1)
-            ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+            ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->orderBy('tg_region.side','ASC')->get();
         $elchi_work=[];
@@ -191,7 +191,10 @@ class ElchilarService
                     ->select('tg_prices.price')
                     ->where('tg_prices.shablon_id',$plan->shablon_id)
                     ->where('tg_prices.medicine_id',$plan->medicine_id)->first();
-                $plan_sum[$i]+=$plan->number*$narx->price;
+//                dd($narx->price);
+                if(isset($narx->price)){
+                    $plan_sum[$i]+=$plan->number*$narx->price;
+                }
             }
             $i++;
         }

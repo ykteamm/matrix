@@ -21,6 +21,18 @@
                     </div>
                 </div>
 
+                <div class="col-md-2 mb-2  justify-content-end">
+                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+
+                    <div class="dropdown-menu" style="left:150px !important">
+                        @php $i=1 @endphp
+                        @foreach($viloyatlar as $m)
+                            <a onclick="func({{$m->id}})"  class="dropdown-item" > {{$m->name}} </a>
+                            @php $i++ @endphp
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
             <table class="table mb-0 table-striped "   >
                 <thead >
@@ -60,13 +72,13 @@
                 @php $t=0; @endphp
                 @foreach($elchilar as $item)
                     @if($item['elchi']->status ==1)
-                <tr id="{{$item['elchi']->id}}" class="tr " onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
+                <tr id="{{$item['elchi']->id}}" class="tr tr{{$item['elchi']->v_id}}" onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
                 .css('color','white');"
                 onmouseleave="$(this).css('background','white').css('color','black');"
                 >
                     <td onclick="myf({{$item['elchi']->id}})">{{$t+1}} </td>
                     <td onclick="myf({{$item['elchi']->id}})" >@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
-                    <td>{{$item['elchi']->v_name}} </td>
+                    <td >{{$item['elchi']->v_name}} </td>
                     <th  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
                         <div class="mb-1">
                             <strong>
@@ -114,10 +126,6 @@
                     @endif
                     @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
                     @endforeach
-{{--                    <td class="text-right">--}}
-{{--                        <a href="#" class="btn btn-sm btn-white text-success mr-2"><i class="far fa-edit mr-1"></i> Edit </a>--}}
-{{--                        <a href="javascript:void(0);" class="btn btn-sm btn-white text-danger mr-2"><i class="far fa-trash-alt mr-1"></i>Delete </a>--}}
-{{--                    </td>--}}
                 </tr>
                 @php $t++; @endphp
 
@@ -133,7 +141,6 @@
     function myf(id){
         let a=document.querySelectorAll('.tr');
         let b=document.getElementById(id);
-        console.log(id);
             a.forEach(e=>{
                 if(e.style.display=='none') {
                     e.style.display = ''
@@ -142,6 +149,24 @@
                     b.style.display='';
                 }
             })
+    }
+    function func(id){
+        let a=document.querySelectorAll('.tr');
+        var x='.tr'+id;
+        let b=document.querySelectorAll(x);
+        console.log(b);
+        a.forEach(e=>{
+            if(e.style.display=='none') {
+                b.forEach(t=>{
+                    t.style.display=''
+                })
+            }else{
+                e.style.display='none';
+                b.forEach(t=>{
+                    t.style.display=''
+                })
+            }
+        })
     }
 </script>
     <script>

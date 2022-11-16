@@ -37,9 +37,10 @@ class ElchilarController extends Controller
         $sold=$this->service->sold($elchi,$days,$month,$endofmonth);
         $elchilar=$this->service->reyting($elchi);
         $haftalik=$this->service->haftalik($days,$sold,$elchilar);
-        $viloyatlar=$this->service->viloyatlar($elchi);
+        $viloyatlar=$this->service->viloyatlar();
+//        dd($viloyatlar[0]->name);
 
 //        dd($haftalik);
-        return view('elchilar.index',compact('years','endofmonth','month','elchi_prognoz','months','elchilar','elchi_work','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+        return view('elchilar.index',compact('viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchilar','elchi_work','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
     }
 }

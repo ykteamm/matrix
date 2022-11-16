@@ -45,8 +45,8 @@
                                                 <th><strong>Avvalgisi soni</strong> </th>
                                                 <th><strong>sotildi</strong> </th>
                                                 <th><strong>kirib kelgan</strong> </th>
-                                                <th style="background-color: #00d285;" ><strong style="font-weight: 800; color: #b21f2d">Jami</strong> </th>
-                                                <th style="background-color: #3d50c5"  ><strong style="color: #fff">Qoldiq</strong> </th>
+                                                <th  style="background-color: #00d285;"><strong style="font-weight: 800; color: red">Jami</strong> </th>
+                                                <th  style="background-color: #1a73e8"  class=""><strong style="color: #fff">Qoldiq</strong> </th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -91,11 +91,10 @@
                                                         @endif
                                                     @endif
 
-                                                    <td class="text-end">{{$arr_qol_all[$i][$m->id]}}</td>
+                                                    <td class="text-end" style="background-color: #00d285;color: white" >{{$arr_qol_all[$i][$m->id]}}</td>
                                                 @foreach($stocks[$i] as $key=>$s)
                                                     @if($m->id==$key+1)
-                                                            <td>{{$s->number}}</td>
-
+                                                            <td class="text-white" style="{{$comp[$i][$m->id]}}">{{$s->number}}</td>
                                                     @endif
 
                                                     @endforeach
