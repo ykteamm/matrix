@@ -45,7 +45,8 @@
                                                 <th><strong>Avvalgisi soni</strong> </th>
                                                 <th><strong>sotildi</strong> </th>
                                                 <th><strong>kirib kelgan</strong> </th>
-                                                <th class="text-center" colspan="2"><strong>Jami/Qoldiq</strong> </th>
+                                                <th  ><strong>Jami</strong> </th>
+                                                <th  ><strong>Qoldiq</strong> </th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -91,13 +92,10 @@
                                                     @endif
 
                                                     <td class="text-end">{{$arr_qol_all[$i][$m->id]}}</td>
-                                                @foreach($stocks[$i] as $s)
-                                                    @if($m->id==$s->medicine_id)
-                                                        @if(!$m->number==null)
-                                                            <td>{{$m->number}}</td>
-                                                        @else
-                                                            <td>0</td>
-                                                        @endif
+                                                @foreach($stocks[$i] as $key=>$s)
+                                                    @if($m->id==$key+1)
+                                                            <td>{{$s->number}}</td>
+
                                                     @endif
 
                                                     @endforeach

@@ -109,6 +109,7 @@ class CompareController extends Controller
 
             }
             $ss=Stock::where('pharmacy_id',$pharmacy_id)->where('date_time',$s->date_time)->with('medicine')->orderBy('medicine_id')->get();
+//            dd($ss[1]);
             $stocks[$i]=$ss;
             $arr_qol_all[]=$arr_qol;
             $count=0;

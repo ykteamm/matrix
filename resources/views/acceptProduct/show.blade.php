@@ -50,7 +50,6 @@
                                             <th class="  text-center text-white ">
                                                 <input style="display: none" name="created_by" value="{{$id}}">
                                                 <a  style="font-size: 1.5rem;" onclick="yashir()" class= "w-100 px-5 yashir  bg-success">+</a>
-                                                <button type="submit" style="font-size: 1.5rem;display: none " class="yashir px-2 py-1 text-white border-none bg-success">Saqlash</button>
 
                                             </th>
                                         </tr>
@@ -75,6 +74,9 @@
 
                                         @endforeach
                                         </tbody>
+                                            <div class="text-right " style="position: fixed;right: 1rem;top: 95vh; width: 100%"  >
+                                                <button type="submit" style="width: 83.5%; display: none" class="yashir btn btn-primary">Saqlash </button>
+                                            </div>
                                         </form>
                                     </table>
                                 </div>
