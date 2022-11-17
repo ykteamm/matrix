@@ -11,9 +11,9 @@
                             @php $i=1 @endphp
                             @foreach($months as $m)
                                 @if($i<10)
-                                    <a href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                                    <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
                                 @else
-                                    <a href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                                    <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
                                 @endif
                                 @php $i++ @endphp
                             @endforeach
@@ -23,11 +23,11 @@
                 @php $i=0;@endphp
                 @foreach($stock as $s)
                     @if($i!=0)
-                    <div class="row">
+                    <div class="row" onmouseover="$(this).css('cursor','pointer')">
                         <div class="col-2"></div>
                         <div class="col-8 m-1  d-flex justify-content-center text-center shadow {{$compare[$i]}}">
-                            <span><h3 class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($last))}}</strong><small>{{date('H:i',strtotime($last))}}</small> &nbsp</h3></span>
-                            <span><h3 class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($s->date_time))}}</strong><small>{{date('H:i',strtotime($s->date_time))}}</small></h3></span>
+                            <span><h3 onmouseover="$(this).css('cursor','pointer')" class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($last))}}</strong><small>{{date('H:i',strtotime($last))}}</small> &nbsp</h3></span>
+                            <span><h3 onmouseover="$(this).css('cursor','pointer')" class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($s->date_time))}}</strong><small>{{date('H:i',strtotime($s->date_time))}}</small></h3></span>
                         </div>
                         <div class="col-2"></div>
 
@@ -39,20 +39,20 @@
                                     <div class="table-responsive">
                                         <table class="table mb-0">
                                             <thead>
-                                            <tr>
+                                            <tr onmouseover="$(this).css('cursor','pointer')">
                                                 <th><strong>No</strong> </th>
                                                 <th><strong>Dori nomi</strong> </th>
                                                 <th><strong>Avvalgisi soni</strong> </th>
                                                 <th><strong>sotildi</strong> </th>
                                                 <th><strong>kirib kelgan</strong> </th>
-                                                <th  style="background-color: #00d285;"><strong style="font-weight: 800; color: red">Jami</strong> </th>
-                                                <th  style="background-color: #1a73e8"  class=""><strong style="color: #fff">Qoldiq</strong> </th>
+                                                <th onmouseover="$(this).css('cursor','pointer')"  style="background-color: #00d285;"><strong style="font-weight: 800; color: red">Jami</strong> </th>
+                                                <th onmouseover="$(this).css('cursor','pointer')"  style="background-color: #1a73e8"  class=""><strong style="color: #fff">Qoldiq</strong> </th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             @php $j=0;@endphp
                                             @foreach($med as $m)
-                                                <tr>
+                                                <tr onmouseover="$(this).css('cursor','pointer')">
                                                     <td>{{$loop->index+1}} </td>
                                                     <td>{{$m->name}} </td>
                                                     @if($i==0)

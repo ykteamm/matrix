@@ -32,7 +32,7 @@
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
                                                         <td>{{$item->slug}} {{$item->name}} {{$item->last_name}}</td>
-                                                        <td> {{$item->region}}</td>
+                                                        <td> {{$item->region->name}}</td>
                                                         <td>
                                                             @if(isset($item->pharm_users[0]))
                                                             @foreach($item->pharm_users as $p)
