@@ -52,7 +52,11 @@
                                </thead>
                                <tbody>
                                  <tr>
-                                    <td>{{$user['user1']}}</td>
+                                    <td>
+                                       <a href="{{route('get-his',substr($user['id1'],1))}}">
+                                          {{$user['user1']}}
+                                       </a>
+                                    </td>
                                     <td>{{$user['sum1']}}</td>
                                     @foreach ($history_array1[$user['id1']]['day'] as $item)
                                      <td>{{$item}} </td>
@@ -62,7 +66,11 @@
                                     <td>{{$user['ball2']}}</td>
                                  </tr>
                                  <tr>
-                                    <td>{{$user['user2']}}</td>
+                                    <td>
+                                       <a href="{{route('get-his',substr($user['id2'],1))}}">
+                                          {{$user['user2']}}
+                                       </a>
+                                    </td>
                                     <td>{{$user['sum2']}}</td>
                                     @foreach ($history_array1[$user['id2']]['day'] as $item)
                                      <td>{{$item}} </td>

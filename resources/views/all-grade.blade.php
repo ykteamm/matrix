@@ -130,7 +130,7 @@
                 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                {{-- <button type="button" class="btn btn-primary" onclick="gradeSave(`form{{$elchi->user_id}}{{$dep->id}}`)">Saqlash</button> --}}
+                <button type="button" class="btn btn-primary" onclick="gradeSave(`form{{$elchi->user_id}}{{$dep->id}}`)">Saqlash</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>
                 </div>
                 
