@@ -41,9 +41,7 @@ class StockController extends Controller
 
     public function show($pharmacy_id,$month)
     {
-        if($pharmacy_id==8){
-            $s=Stock::where('date_time','2022-11-15 10:50:00')->delete();
-        }
+       
         $ser=new ElchilarService();
         $months=$ser->month();
         $endofmonth=$ser->endmonth($month,$months);
