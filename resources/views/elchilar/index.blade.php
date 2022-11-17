@@ -138,22 +138,22 @@
     </div>
 </div>
 @section('admin_script')
-    <script>
-        $("#table-scroll").scroll(function (){
-            if ($(window).scrollLeft() < 100) {
-                $(".fixed").css({
-                    'position': 'fixed',
-                    'width': '100%',
-                    'background': '#cfcfcf',
-                    'z-index': '99'
-                })
-            }else {
-                $(".fixed").css({
-                    'position': 'relative',
-                    'background': '#FFFFFF',
-                    'width': '100%'
-                })
-        })
+{{--    <script>--}}
+        // $("#table-scroll").scroll(function (){
+        //     if ($(window).scrollLeft() < 100) {
+        //         $(".fixed").css({
+        //             'position': 'fixed',
+        //             'width': '100%',
+        //             'background': '#cfcfcf',
+        //             'z-index': '99'
+        //         })
+        //     }else {
+        //         $(".fixed").css({
+        //             'position': 'relative',
+        //             'background': '#FFFFFF',
+        //             'width': '100%'
+        //         })
+        // })
         // $(window).scroll(function() {
         //     if ($(window).scrollTop() > 100) {
         //         $(".navbar").css({
@@ -171,7 +171,7 @@
         //         })
         //     }
         // });
-    </script>
+{{--    </script>--}}
 <script>
     function myf(id){
         let a=document.querySelectorAll('.tr');

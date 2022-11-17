@@ -93,10 +93,9 @@
 
                                                     <td class="text-end" style="background-color: #00d285;color: white" >{{$arr_qol_all[$i][$m->id]}}</td>
                                                 @foreach($stocks[$i] as $key=>$s)
-                                                    @if($m->id==$key+1)
-                                                            <td class="text-white" style="{{$comp[$i][$m->id]}}">{{$s->number}}</td>
-                                                    @endif
-
+                                                        @if($m->id==$key+1)
+                                                                <td class="text-white" style="{{$comp[$i][$m->id]}}">{{$s->number}}</td>
+                                                        @endif
                                                     @endforeach
 
 

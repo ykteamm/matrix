@@ -50,7 +50,9 @@ class TeamController extends Controller
             ->whereDate('tg_productssold.created_at','<=',$date_end)
             ->leftjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
             ->groupBy('tg_members.team_id')->pluck('allprice','tg_members.team_id');
-//        dd($team1);
+
+//            dd($members);
+//        return $teams;
         return view('team.index',compact('count','team1','members2','dateText','regions','teams','users','members'));
     }
 
