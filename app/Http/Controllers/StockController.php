@@ -47,14 +47,14 @@ class StockController extends Controller
         $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
         $med=Medicine::orderBy('id')->get();
         $stock_date=DB::table('tg_stocks')
-            ->select('date','date_time')
+            ->select('date')
             ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->where('pharmacy_id',$pharmacy_id)
-            ->groupBy('date','date_time')
+            ->groupBy('date')
             ->orderBy('date')->get();
         $stock=DB::table('tg_stocks')
-            ->select('number','medicine_id','date','date_time')
+            ->select('number','medicine_id','date')
             ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->where('pharmacy_id',$pharmacy_id)
