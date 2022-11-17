@@ -424,19 +424,30 @@ class UserController extends Controller
         $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekStartDate ) ) ));
         
         
+        // $get_date = DB::table('tg_battle')
+        // ->whereDate('start_day','>=',$startday)
+        // ->whereDate('end_day','<=',$endday)
+        // ->where('end',1)
+        // ->latest()
+        // ->first();
         $get_date = DB::table('tg_battle')
-        ->whereDate('start_day','>=',$startday)
-        ->whereDate('end_day','<=',$endday)
+        ->whereDate('start_day','>=',date('Y-m-d',strtotime($startday)))
+        ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
         ->where('end',1)
-        ->latest()
-        ->first();
+        ->orderBy('id', 'DESC')->first();
 
         if (!isset($get_date->start_day)) {
-        $exists2 = DB::table('tg_battle')
-        ->whereDate('start_day',$startday)
-        ->whereDate('end_day',$endday)
-        ->pluck('user2_id');
 
+        $exists1 = DB::table('tg_battle')
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
+        ->pluck('user1_id');
+        
+        $exists2 = DB::table('tg_battle')
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
+        ->pluck('user2_id');
+        
         $users = Member::with('user')
         ->whereNotIn('user_id',[60,72])
         ->whereNotIn('user_id',$exists1)
