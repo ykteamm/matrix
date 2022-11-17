@@ -20,11 +20,12 @@
                         @endforeach
                     </div>
                 </div>
-
                 <div class="col-md-2 mb-2  justify-content-end">
-                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+
+                    <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
 
                     <div class="dropdown-menu" style="left:150px !important">
+                        <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
                         @php $i=1 @endphp
                         @foreach($viloyatlar as $m)
                             <a onclick="func({{$m->id}})"  class="dropdown-item" > {{$m->name}} </a>
@@ -137,6 +138,40 @@
     </div>
 </div>
 @section('admin_script')
+    <script>
+        $("#table-scroll").scroll(function (){
+            if ($(window).scrollLeft() < 100) {
+                $(".fixed").css({
+                    'position': 'fixed',
+                    'width': '100%',
+                    'background': '#cfcfcf',
+                    'z-index': '99'
+                })
+            }else {
+                $(".fixed").css({
+                    'position': 'relative',
+                    'background': '#FFFFFF',
+                    'width': '100%'
+                })
+        })
+        // $(window).scroll(function() {
+        //     if ($(window).scrollTop() > 100) {
+        //         $(".navbar").css({
+        //             'position': 'fixed',
+        //             'top': '0px',
+        //             'width': '100%',
+        //             'background': '#cfcfcf',
+        //             'z-index': '99'
+        //         });
+        //     } else {
+        //         $(".navbar").css({
+        //             'position': 'relative',
+        //             'background': '#FFFFFF',
+        //             'width': '100%'
+        //         })
+        //     }
+        // });
+    </script>
 <script>
     function myf(id){
         let a=document.querySelectorAll('.tr');
@@ -151,6 +186,43 @@
             })
     }
     function func(id){
+        let reg=document.getElementById('region');
+        if(id==1){
+            reg.innerText='Qoraqalpog`iston Respublikasi';
+        }
+        if(id==2) {
+            reg.innerText ='Andijon viloyati';
+        }
+        if(id==3) {
+            reg.innerText = 'Buxoro viloyati';
+        }
+        if(id==4){
+            reg.innerText='Jizzax viloyati';
+        }
+        if(id==5) {
+            reg.innerText = 'Qashqadaryo viloyati';
+        }
+        if(id==6) {
+            reg.innerText = 'Navoiy viloyati';
+        }
+        if(id==7) {
+            reg.innerText = 'Surxondaryo viloyati';
+        }
+        if(id==8) {
+            reg.innerText = 'Sirdaryo viloyati';
+        }
+        if(id==9) {
+            reg.innerText = 'Toshkent viloyati';
+        }
+        if(id==10) {
+            reg.innerText = 'Farg`ona viloyati';
+        }
+        if(id==11) {
+            reg.innerText = 'Xorazm viloyati';
+        }
+        if(id==12) {
+            reg.innerText = 'Toshkent shahri';
+        }
         let a=document.querySelectorAll('.tr');
         var x='.tr'+id;
         let b=document.querySelectorAll(x);
@@ -168,6 +240,17 @@
             }
         })
     }
+    function func1(){
+        let reg=document.getElementById('region');
+        reg.innerText='Hammasi';
+        let a=document.querySelectorAll('.tr');
+        a.forEach(e=>{
+            if(e.style.display=='none') {
+                e.style.display='';
+            }
+        })
+    }
+
 </script>
     <script>
         let x = 0;
