@@ -55,7 +55,15 @@
                     </li>
             @endif
             @endisset
-
+                  
+            <li class="submenu">
+               <a href="settings.html"><i class="feather-sliders"></i>  <span> Elchi jang </span><span class="menu-arrow"></span></a>
+               <ul style="display: none;">
+                  <li><a href="{{route('elchi-battle')}}">Jang</a></li>
+                  <li><a href="{{route('elchi-battle-select')}}">Elchi tanlash</a></li>
+                  <li><a href="{{route('elchi-battle-setting')}}">Sozlamalar</a></li>
+               </ul>
+            </li>
 
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')

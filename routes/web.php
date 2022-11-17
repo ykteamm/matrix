@@ -163,6 +163,14 @@ Route::get('team-battle',[App\Http\Controllers\TeamController::class,'teamBattle
 Route::post('team-battle-store',[App\Http\Controllers\TeamController::class,'teamBattleStore'])->name('team-battle.store');
 
 Route::post('team',[App\Http\Controllers\TeamController::class,'store'])->name('team.store');
+#battle
+Route::get('elchi-battle',[App\Http\Controllers\UserController::class,'elchiBattle'])->name('elchi-battle');
+Route::get('get-battle/{start}/{end?}',[App\Http\Controllers\UserController::class,'getBattle'])->name('get-battle');
+Route::get('elchi-battle-setting',[App\Http\Controllers\UserController::class,'elchiBattleSetting'])->name('elchi-battle-setting');
+Route::post('elchi-battle-setting-store',[App\Http\Controllers\UserController::class,'elchiBattleSettingStore'])->name('elchi-battle-setting.store');
+Route::get('elchi-battle-select',[App\Http\Controllers\UserController::class,'elchiBattleSelect'])->name('elchi-battle-select');
+Route::post('elchi-battle-select.store',[App\Http\Controllers\UserController::class,'elchiBattleSelectStore'])->name('elchi-battle-select.store');
+#endbattle
 
 Route::resource('member',MemberController::class);
 Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus'])->name('member.minus');

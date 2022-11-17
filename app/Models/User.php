@@ -23,6 +23,10 @@ class User extends Model
     {
         return $this->hasMany(PharmUser::class,'user_id','id');
     }
+    public function ball()
+    {
+        return $this->hasMany(Ball::class,'user_id','id');
+    }
 //
 //    public function tools()
 //    {
