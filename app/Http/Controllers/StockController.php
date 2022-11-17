@@ -115,34 +115,14 @@ class StockController extends Controller
         return redirect()->route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
 
-    public function store1(Request $request,$pharmacy_id)
-    {
-        $id=Session::get('user')->id;
-        $r=$request->all();
-        unset($r['_token']);
-        $created_by=$r['created_by'];
-        foreach ($r as $key=>$item){
-            if($item!=null &&$key!='created_by'&&$key!='pharmacy_id' ){
-                $accept =new Stock();
-                $accept->medicine_id=substr($key,3);
-                $accept->number=$item;
-                $accept->date=date('Y-m-d');
-                $accept->created_by=$created_by;
-                $accept->updated_by=$created_by;
-                $accept->pharmacy_id=$pharmacy_id;
-                $accept->save();
-            }
-        }
-        return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
-    }
 
-    public function edit($pharmacy_id, $date_time)
+    public function edit($pharmacy_id, $date)
     {
         $stocks=Stock::where('pharmacy_id',$pharmacy_id)
-            ->where('date_time',$date_time)->with('medicine')
+            ->where('date',$date)->with('medicine')
             ->orderBy('medicine_id')
             ->get();
-        return view('stockProduct.edit',compact('stocks','pharmacy_id','date_time'));
+        return view('stockProduct.edit',compact('stocks','pharmacy_id','date'));
     }
     public function update(Request $request,$pharmacy_id)
     {
