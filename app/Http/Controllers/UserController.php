@@ -817,13 +817,13 @@ class UserController extends Controller
     {
         
         $getter = DB::table('tg_battle')
-        ->whereDate('start_day',$start)
-        ->whereDate('end_day',$end)
+        ->whereDate('start_day',date('Y-m-d',strtotime($start)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($end)))
         ->get();
         $history_array1=[];
         $history_array2=[];
-        $history = BattleHistory::whereDate('start_day',$start)
-        ->whereDate('end_day',$end)
+        $history = BattleHistory::whereDate('start_day',date('Y-m-d',strtotime($start)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($end)))
         ->get();    
         foreach ($history as $key => $value) {
             $id1 = $key.$value->win_user_id;
