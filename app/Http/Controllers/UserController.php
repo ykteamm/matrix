@@ -501,8 +501,8 @@ class UserController extends Controller
             if (count($battle)%2 ==0) {
                 for ($i=0; $i < count($battle)/2; $i++) { 
                     $save = DB::table('tg_battle')->insert([
-                        'start_day' => $startday,
-                        'end_day' => $endday,
+                        'start_day' => date('Y-m-d',strtotime($startday)),
+                        'end_day' => date('Y-m-d',strtotime($endday)),
                         'created_at' => date_now()->format('Y-m-d'),
                         'user1_id' => $battle[$i*2]['id'],
                         'user2_id' => $battle[($i*2)+1]['id'],
@@ -517,8 +517,8 @@ class UserController extends Controller
                 unset($battle[count($battle)-1]);
                 for ($i=0; $i < count($battle)/2; $i++) { 
                     $save = DB::table('tg_battle')->insert([
-                        'start_day' => $startday,
-                        'end_day' => $endday,
+                        'start_day' => date('Y-m-d',strtotime($startday)),
+                        'end_day' => date('Y-m-d',strtotime($endday)),
                         'created_at' => date_now()->format('Y-m-d'),
                         'user1_id' => $battle[$i*2]['id'],
                         'user2_id' => $battle[($i*2)+1]['id'],
@@ -529,8 +529,8 @@ class UserController extends Controller
                     ]);
                 }
                 $save = DB::table('tg_battle')->insert([
-                    'start_day' => $startday,
-                    'end_day' => $endday,
+                    'start_day' => date('Y-m-d',strtotime($startday)),
+                        'end_day' => date('Y-m-d',strtotime($endday)),
                     'created_at' => date_now()->format('Y-m-d'),
                     'user1_id' => $last['id'],
                     'user2_id' => $battle[count($battle)-1]['id'],
