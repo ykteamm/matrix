@@ -56,8 +56,8 @@
                                      <td>{{$item}} </td>
                                     @endforeach
                                     <td>{{$user['sum1']}}</td>
-                                    <td>{{$user['win']}}</td>
-                                    <td>{{$user['win']+$user['ball1']}}</td>
+                                    <td>{{$history_array1[$user['id1']]['ball']}}</td>
+                                    <td>{{$user['ball1']}}</td>
                                  </tr>
                                  <tr>
                                     <td>{{$user['user2']}}</td>
@@ -65,8 +65,8 @@
                                      <td>{{$item}} </td>
                                     @endforeach
                                     <td>{{$user['sum2']}}</td>
-                                    <td>{{$user['lose']}}</td>
-                                    <td>{{$user['lose']+$user['ball2']}}</td>
+                                    <td>-{{$history_array1[$user['id2']]['ball']}}</td>
+                                    <td>{{$user['ball2']}}</td>
                                  </tr>
                                 {{-- @foreach ($battleArray as $item)
                                 <tr>
