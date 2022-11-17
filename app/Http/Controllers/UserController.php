@@ -396,12 +396,13 @@ class UserController extends Controller
         $ends = $elchi_battle->battleSetting($end);
 
         $exists1 = DB::table('tg_battle')
-        ->whereDate('start_day',$startdays)
-        ->whereDate('end_day',$enddays)
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
         ->pluck('user1_id');
+        
         $exists2 = DB::table('tg_battle')
-        ->whereDate('start_day',$startdays)
-        ->whereDate('end_day',$enddays)
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
         ->pluck('user2_id');
 
         $usersarray = Member::with('user')
