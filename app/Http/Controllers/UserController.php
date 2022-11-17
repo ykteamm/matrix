@@ -373,7 +373,7 @@ class UserController extends Controller
         ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
         ->where('end',1)
         ->orderBy('id', 'DESC')->first();
-        return $get_date;
+        // return $get_date;
 
         if (isset($get_date->start_day))
         {
