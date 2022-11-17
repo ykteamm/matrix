@@ -38,7 +38,7 @@
                                                     <th>Dori nomi </th>
                                                     @foreach($stock_date as $p)
                                                         <th class="text-center">
-                                                            {{$p->date}}<a href="{{route('stock.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->date])}}" class="mx-1"><i class="fas fa-edit "></i></a>
+                                                            {{$p->date}}<a href="{{route('stock.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->date_time])}}" class="mx-1"><i class="fas fa-edit "></i></a>
                                                         </th>
                                                     @endforeach
 {{--                                                    href="{{route('stock.med.create',['id'=>$pharmacy_id])}}"--}}

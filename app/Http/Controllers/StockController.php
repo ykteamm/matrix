@@ -47,14 +47,14 @@ class StockController extends Controller
         $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
         $med=Medicine::orderBy('id')->get();
         $stock_date=DB::table('tg_stocks')
-            ->select('date')
+            ->select('date','date_time')
             ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->where('pharmacy_id',$pharmacy_id)
-            ->groupBy('date')
+            ->groupBy('date','date_time')
             ->orderBy('date')->get();
         $stock=DB::table('tg_stocks')
-            ->select('number','medicine_id','date')
+            ->select('number','medicine_id','date','date_time')
             ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->where('pharmacy_id',$pharmacy_id)
@@ -136,27 +136,30 @@ class StockController extends Controller
         return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
     }
 
-    public function edit($pharmacy_id, $date)
+    public function edit($pharmacy_id, $date_time)
     {
         $stocks=Stock::where('pharmacy_id',$pharmacy_id)
-            ->where('date',$date)->with('medicine')
+            ->where('date_time',$date_time)->with('medicine')
+            ->orderBy('medicine_id')
             ->get();
-        return view('stockProduct.edit',compact('stocks','pharmacy_id','date'));
+        return view('stockProduct.edit',compact('stocks','pharmacy_id','date_time'));
     }
     public function update(Request $request,$pharmacy_id)
     {
+//        dd($request->all());
         $i=0;
         $user_id=Session::get('user')->id;
 
         foreach ($request['number'] as $item){
             $s=Stock::where('id',$request['id'][$i])->first();
+
             $s->number=$item;
             $s->updated_by=$user_id;
             $s->update();
             $i++;
         }
 
-        return redirect()->route('stock.med.show',['id'=>$pharmacy_id]);
+        return redirect()->route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
 
 
