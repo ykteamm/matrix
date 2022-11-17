@@ -165,6 +165,7 @@ Route::post('team-battle-store',[App\Http\Controllers\TeamController::class,'tea
 Route::post('team',[App\Http\Controllers\TeamController::class,'store'])->name('team.store');
 #battle
 Route::get('elchi-battle',[App\Http\Controllers\UserController::class,'elchiBattle'])->name('elchi-battle');
+Route::get('elchi-his/{id}',[App\Http\Controllers\UserController::class,'elchiHis'])->name('get-his');
 Route::get('get-battle/{start}/{end?}',[App\Http\Controllers\UserController::class,'getBattle'])->name('get-battle');
 Route::get('elchi-battle-setting',[App\Http\Controllers\UserController::class,'elchiBattleSetting'])->name('elchi-battle-setting');
 Route::post('elchi-battle-setting-store',[App\Http\Controllers\UserController::class,'elchiBattleSettingStore'])->name('elchi-battle-setting.store');

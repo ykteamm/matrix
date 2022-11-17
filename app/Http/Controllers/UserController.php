@@ -1011,4 +1011,11 @@ class UserController extends Controller
         return view('elchilar.battle',compact('history_array1','history_array2','user_array1','user_array2','get_battles','battleArray','arrayDate'));
 
     }
+    public function elchiHis($id)
+    {
+        $getter = BattleHistory::where('win_user_id',$id)
+        ->orWhere('lose_user_id',$id)->get();
+        // return $getter;
+        return view('elchilar.history',compact('getter','id'));
+    }
 }
