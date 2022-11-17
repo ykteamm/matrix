@@ -376,8 +376,8 @@ class UserController extends Controller
         // ->first();
 
         $get_date = DB::table('tg_battle')
-        ->whereDate('start_day','>=',$startday)
-        ->whereDate('end_day','<=',$endday)
+        ->whereDate('start_day','>=',date('Y-m-d',strtotime($startday)))
+        ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
         ->get();
 
         return $get_date;
