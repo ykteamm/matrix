@@ -372,9 +372,8 @@ class UserController extends Controller
         ->whereDate('start_day','>=',date('Y-m-d',strtotime($startday)))
         ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
         ->where('end',1)
-        ->latest()
-        ->first();
-
+        ->get();
+        return $get_date;
 
         if (isset($get_date->start_day))
         {
