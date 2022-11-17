@@ -262,6 +262,16 @@ class UserController extends Controller
     }
     public function elchiBattleSetting()
     {
+        $saves = DB::table('tg_user')->get();
+
+        foreach ($saves as $key => $value) {
+            $new = DB::table('tg_balls')->insert([
+                'user_id' => $value->id,
+                'ball' => 1000,
+                'active' => 0,
+            ]);
+        }
+
         $weekStartDate = date_now()->startOfWeek()->format('Y-m-d');
         $weekEndDate = date_now()->endOfWeek()->format('Y-m-d');
         $week_date = DB::table('tg_battle')
