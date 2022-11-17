@@ -17,10 +17,14 @@ class CreateBattleHistoriesTable extends Migration
             $table->id();
             $table->foreignId('win_user_id');
             $table->foreignId('lose_user_id');
+            $table->jsonb('day1');
+            $table->jsonb('day2');
             $table->date('start_day');
             $table->date('end_day');
             $table->integer('ball1');
             $table->integer('ball2');
+            $table->integer('uball1');
+            $table->integer('uball2');
             $table->timestamps();
         });
     }
