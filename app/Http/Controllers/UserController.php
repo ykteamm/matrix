@@ -365,7 +365,7 @@ class UserController extends Controller
         ->distinct()
         ->first();
         $startday = date('d.m.Y',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
-        $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekEndDate ) ) ));
+        $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekStartDate ) ) ));
         
         
         $get_date = DB::table('tg_battle')
@@ -374,7 +374,7 @@ class UserController extends Controller
         ->where('end',1)
         ->latest()
         ->first();
-        return $get_date;
+        
         if (isset($get_date->start_day))
         {
             $start = date('l',(strtotime ( '+'.($settings->start_day+7).' day' , strtotime ( $weekStartDate ) ) ));
