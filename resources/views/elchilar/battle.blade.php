@@ -41,6 +41,7 @@
                                <thead>
                                   <tr>
                                      <th>Elchi</th>
+                                     <th>Taqqoslash</th>
                                      @foreach ($arrayDate as $item)
                                      <th>{{date('d.m.Y',strtotime($item))}} </th>
                                      @endforeach
@@ -52,21 +53,23 @@
                                <tbody>
                                  <tr>
                                     <td>{{$user['user1']}}</td>
-                                    @foreach ($user_array1[$user['id1']] as $item)
+                                    <td>{{$user['sum1']}}</td>
+                                    @foreach ($history_array1[$user['id1']]['day'] as $item)
                                      <td>{{$item}} </td>
                                     @endforeach
-                                    <td>{{$user['sum1']}}</td>
-                                    <td>{{$history_array1[$user['id1']]['ball']}}</td>
-                                    <td>{{$user['ball1']}}</td>
+                                    <td>{{array_sum($history_array1[$user['id1']]['day'])}}</td>
+                                    <td>{{$history_array1[$user['id2']]['ball']}}</td>
+                                    <td>{{$user['ball2']}}</td>
                                  </tr>
                                  <tr>
                                     <td>{{$user['user2']}}</td>
-                                    @foreach ($user_array2[$user['id2']] as $item)
+                                    <td>{{$user['sum2']}}</td>
+                                    @foreach ($history_array1[$user['id2']]['day'] as $item)
                                      <td>{{$item}} </td>
                                     @endforeach
-                                    <td>{{$user['sum2']}}</td>
-                                    <td>-{{$history_array1[$user['id2']]['ball']}}</td>
-                                    <td>{{$user['ball2']}}</td>
+                                    <td>{{array_sum($history_array1[$user['id2']]['day'])}}</td>
+                                    <td>-{{$history_array1[$user['id1']]['ball']}}</td>
+                                    <td>{{$user['ball1']}}</td>
                                  </tr>
                                 {{-- @foreach ($battleArray as $item)
                                 <tr>

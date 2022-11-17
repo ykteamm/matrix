@@ -262,6 +262,16 @@ class UserController extends Controller
     }
     public function elchiBattleSetting()
     {
+        // $saves = DB::table('tg_user')->get();
+
+        // foreach ($saves as $key => $value) {
+        //     $new = DB::table('tg_balls')->insert([
+        //         'user_id' => $value->id,
+        //         'ball' => 1000,
+        //         'active' => 0,
+        //     ]);
+        // }
+
         $weekStartDate = date_now()->startOfWeek()->format('Y-m-d');
         $weekEndDate = date_now()->endOfWeek()->format('Y-m-d');
         $week_date = DB::table('tg_battle')
@@ -367,14 +377,14 @@ class UserController extends Controller
         $startday = date('d.m.Y',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
         $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekStartDate ) ) ));
         
-        return $endday;
         
         $get_date = DB::table('tg_battle')
-        ->whereDate('start_day','>=',$startday)
-        ->whereDate('end_day','<=',$endday)
+        ->whereDate('start_day','>=',date('Y-m-d',strtotime($startday)))
+        ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
         ->where('end',1)
-        ->latest()
-        ->first();
+        ->orderBy('id', 'DESC')->first();
+        // return $get_date;
+
         if (isset($get_date->start_day))
         {
             $start = date('l',(strtotime ( '+'.($settings->start_day+7).' day' , strtotime ( $weekStartDate ) ) ));
@@ -396,12 +406,13 @@ class UserController extends Controller
         $ends = $elchi_battle->battleSetting($end);
 
         $exists1 = DB::table('tg_battle')
-        ->whereDate('start_day',$startdays)
-        ->whereDate('end_day',$enddays)
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
         ->pluck('user1_id');
+        
         $exists2 = DB::table('tg_battle')
-        ->whereDate('start_day',$startdays)
-        ->whereDate('end_day',$enddays)
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
         ->pluck('user2_id');
 
         $usersarray = Member::with('user')
@@ -423,19 +434,30 @@ class UserController extends Controller
         $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekStartDate ) ) ));
         
         
+        // $get_date = DB::table('tg_battle')
+        // ->whereDate('start_day','>=',$startday)
+        // ->whereDate('end_day','<=',$endday)
+        // ->where('end',1)
+        // ->latest()
+        // ->first();
         $get_date = DB::table('tg_battle')
-        ->whereDate('start_day','>=',$startday)
-        ->whereDate('end_day','<=',$endday)
+        ->whereDate('start_day','>=',date('Y-m-d',strtotime($startday)))
+        ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
         ->where('end',1)
-        ->latest()
-        ->first();
+        ->orderBy('id', 'DESC')->first();
 
         if (!isset($get_date->start_day)) {
-        $exists2 = DB::table('tg_battle')
-        ->whereDate('start_day',$startday)
-        ->whereDate('end_day',$endday)
-        ->pluck('user2_id');
 
+        $exists1 = DB::table('tg_battle')
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
+        ->pluck('user1_id');
+        
+        $exists2 = DB::table('tg_battle')
+        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
+        ->pluck('user2_id');
+        
         $users = Member::with('user')
         ->whereNotIn('user_id',[60,72])
         ->whereNotIn('user_id',$exists1)
@@ -489,8 +511,8 @@ class UserController extends Controller
             if (count($battle)%2 ==0) {
                 for ($i=0; $i < count($battle)/2; $i++) { 
                     $save = DB::table('tg_battle')->insert([
-                        'start_day' => $startday,
-                        'end_day' => $endday,
+                        'start_day' => date('Y-m-d',strtotime($startday)),
+                        'end_day' => date('Y-m-d',strtotime($endday)),
                         'created_at' => date_now()->format('Y-m-d'),
                         'user1_id' => $battle[$i*2]['id'],
                         'user2_id' => $battle[($i*2)+1]['id'],
@@ -505,8 +527,8 @@ class UserController extends Controller
                 unset($battle[count($battle)-1]);
                 for ($i=0; $i < count($battle)/2; $i++) { 
                     $save = DB::table('tg_battle')->insert([
-                        'start_day' => $startday,
-                        'end_day' => $endday,
+                        'start_day' => date('Y-m-d',strtotime($startday)),
+                        'end_day' => date('Y-m-d',strtotime($endday)),
                         'created_at' => date_now()->format('Y-m-d'),
                         'user1_id' => $battle[$i*2]['id'],
                         'user2_id' => $battle[($i*2)+1]['id'],
@@ -517,8 +539,8 @@ class UserController extends Controller
                     ]);
                 }
                 $save = DB::table('tg_battle')->insert([
-                    'start_day' => $startday,
-                    'end_day' => $endday,
+                    'start_day' => date('Y-m-d',strtotime($startday)),
+                        'end_day' => date('Y-m-d',strtotime($endday)),
                     'created_at' => date_now()->format('Y-m-d'),
                     'user1_id' => $last['id'],
                     'user2_id' => $battle[count($battle)-1]['id'],
@@ -643,7 +665,6 @@ class UserController extends Controller
         ->whereNotIn('start_day',$pluk)
         ->distinct()
         ->get();
-        // return $get_battles;
         if(count($get_battles) > 0)
         {
             foreach ($get_battles as $key => $gets) {
@@ -651,8 +672,18 @@ class UserController extends Controller
                 ->whereDate('start_day',$gets->start_day)
                 ->whereDate('end_day',$gets->end_day)
                 ->get();
-                
+                $sumarray1 = [];
+                $sumarray2 = [];
                 $d=100;
+
+                $arrayDate = array();
+                $Variable1 = strtotime($gets->start_day);
+                $Variable2 = strtotime($gets->end_day);
+                for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+                {                        
+                $Store = date('Y-m-d', $currentDate);
+                $arrayDate[] = $Store;
+                }
                 foreach ($getter as $keys => $get) {
                     $price1=0;
                     $price2=0;
@@ -672,6 +703,36 @@ class UserController extends Controller
                                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                                 ->orderBy('tg_user.id','ASC')
                                 ->groupBy('tg_user.id')->first();
+                                $sumarray1 = [];
+                                $sumarray2 = [];
+                            foreach ($arrayDate as $key => $value) {
+                                $user11 = DB::table('tg_productssold')
+                                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
+                                ->whereDate('tg_productssold.created_at',$value)
+                                ->where('tg_user.id','=',$get->user1_id)
+                                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                                ->orderBy('tg_user.id','ASC')
+                                ->groupBy('tg_user.id')->first();
+                                $user22 = DB::table('tg_productssold')
+                                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
+                                ->whereDate('tg_productssold.created_at',$value)
+                                ->where('tg_user.id','=',$get->user2_id)
+                                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                                ->orderBy('tg_user.id','ASC')
+                                ->groupBy('tg_user.id')->first();
+                                if(!isset($user11->allprice))
+                                {
+                                    $sumarray1[]=0;
+                                }else{
+                                    $sumarray1[]=$user11->allprice;
+                                }
+                                if(!isset($user22->allprice))
+                                {
+                                    $sumarray2[]=0;
+                                }else{
+                                    $sumarray2[]=$user22->allprice;
+                                }
+                            }
                         if(!isset($user1->allprice))
                         {
                             $price1 += 0;
@@ -684,6 +745,8 @@ class UserController extends Controller
                         }else{
                             $price2 += $user2->allprice;
                         }
+
+                        
 
                     
                     
@@ -702,9 +765,9 @@ class UserController extends Controller
                         $r2 = $d*(0-$e)-round($price2*$d/10000000);
                         if($get->bot == 1)
                         {
-                            $battleArray[]=array('id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>1,'i'=>0);
+                            $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>1,'i'=>0);
                         }else{
-                            $battleArray[]=array('id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>0,'i'=>0);
+                            $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>0,'i'=>0);
                         }
                     }
                     if($price2 > $price1)
@@ -718,9 +781,9 @@ class UserController extends Controller
                         $r1 = $d*(0-$e)-round($price1*$d/10000000);
                         if($get->bot == 1)
                         {
-                            $battleArray[]=array('id1' =>$get->user2_id,'id2' =>$get->user1_id,'win' => $r2,'lose'=>$r1,'bot'=>1,'i'=>1);
+                            $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user2_id,'id2' =>$get->user1_id,'win' => $r2,'lose'=>$r1,'bot'=>1,'i'=>1);
                         }else{
-                            $battleArray[]=array('id1' =>$get->user2_id,'id2' =>$get->user1_id,'win' => $r2,'lose'=>$r1,'bot'=>0,'i'=>0);
+                            $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user2_id,'id2' =>$get->user1_id,'win' => $r2,'lose'=>$r1,'bot'=>0,'i'=>0);
                         }   
                     }
                     if($price2 == $price1)
@@ -732,11 +795,13 @@ class UserController extends Controller
                         $r1 = $d*(0.5-$e)+round($price1*$d/20000000);
                         if($get->bot == 1)
                         {
-                            $battleArray[]=array('id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>1,'i'=>0);
+                            $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>1,'i'=>0);
                         }else{
-                            $battleArray[]=array('id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>0,'i'=>0);
+                            $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>0,'i'=>0);
                         }
                     }
+
+                    
                 }
                 foreach ($battleArray as $key => $value) {
                     if($value['win'] < 0)
@@ -751,13 +816,21 @@ class UserController extends Controller
                     }else{
                         $lose = $value['lose'];
                     }
+                    $balls1 = Ball::where('user_id',$value['id1'])
+                    ->value('ball');
+                    $balls2 = Ball::where('user_id',$value['id2'])
+                    ->value('ball');
                     $new = new BattleHistory([
                         'win_user_id' => $value['id1'],
                         'lose_user_id' => $value['id2'],
-                        'start_day' => $get_battles[0]->start_day,
-                        'end_day' => $get_battles[0]->end_day,
-                        'ball1' => $win,
-                        'ball2' => $lose,
+                        'day1' => json_encode($value['a1']),
+                        'day2' => json_encode($value['a2']),
+                        'start_day' => $get->start_day,
+                        'end_day' => $get->end_day,
+                        'ball1' => round($win),
+                        'ball2' => round($lose),
+                        'uball1' => round($balls1+$value['win']),
+                        'uball2' => round($balls2+$value['lose']),
                     ]);
                     $new->save();
 
@@ -768,25 +841,28 @@ class UserController extends Controller
                             $getball = Ball::where('user_id',$value['id1'])->value('ball');
                             $newball = $getball+$value['win'];
                             $update1 = Ball::where('user_id',$value['id1'])->update([
-                                'ball' => $newball
+                                'ball' => round($newball)
                             ]);
                         }else{
                             $getball = Ball::where('user_id',$value['id1'])->value('ball');
                             $newball = $getball+$value['win'];
                             $update1 = Ball::where('user_id',$value['id1'])->update([
-                                'ball' => $newball
+                                'ball' => round($newball)
                             ]);
                             $getball = Ball::where('user_id',$value['id2'])->value('ball');
                             $newball = $getball+$value['lose'];
                             $update1 = Ball::where('user_id',$value['id2'])->update([
-                                'ball' => $newball
+                                'ball' => round($newball)
                             ]);
                         }
                         
                         
                     }
                 }
+                
             }
+
+            // return $battleArray;
         }
 
         
@@ -805,19 +881,19 @@ class UserController extends Controller
     {
         
         $getter = DB::table('tg_battle')
-        ->whereDate('start_day',$start)
-        ->whereDate('end_day',$end)
+        ->whereDate('start_day',date('Y-m-d',strtotime($start)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($end)))
         ->get();
         $history_array1=[];
         $history_array2=[];
-        $history = BattleHistory::whereDate('start_day',$start)
-        ->whereDate('end_day',$end)
+        $history = BattleHistory::whereDate('start_day',date('Y-m-d',strtotime($start)))
+        ->whereDate('end_day',date('Y-m-d',strtotime($end)))
         ->get();    
         foreach ($history as $key => $value) {
             $id1 = $key.$value->win_user_id;
-            $history_array1[$id1] = array('ball'=>$value->ball1);
+            $history_array1[$id1] = array('ball'=>$value->ball1,'day' => json_decode($value->day1));
             $id2 = $key.$value->lose_user_id;
-            $history_array1[$id2] = array('ball'=>$value->ball2);
+            $history_array1[$id2] = array('ball'=>$value->ball2,'day' => json_decode($value->day2));
         }
         
         $arrayDate = array();
@@ -833,6 +909,7 @@ class UserController extends Controller
         $sum2=0;
         $d=100;
         }
+        // return $getter;
         foreach ($getter as $keys => $get) {
             $id1 = $keys.$get->user1_id;
             $id2 = $keys.$get->user2_id;
@@ -894,7 +971,7 @@ class UserController extends Controller
                 $ball1 = Ball::where('user_id',$get->user1_id)->value('ball');
                 $ball2 = Ball::where('user_id',$get->user2_id)->value('ball');
 
-                $battleArray[]=array('id1' =>$id1,'id2' =>$id2, 'sum1'=>$price1,'sum2'=>$price2,'ball1' => $ball1,'ball2' => $ball2,'user1'=>$user1->last_name.' '.$user1->first_name,'user2'=>$user2->last_name.' '.$user2->first_name);
+                $battleArray[]=array('id1' =>$id1,'id2' =>$id2, 'sum1'=>$get->sum1,'sum2'=>$get->sum2,'ball1' => $ball1,'ball2' => $ball2,'user1'=>$user1->last_name.' '.$user1->first_name,'user2'=>$user2->last_name.' '.$user2->first_name);
 
             }
             if($price2 > $price1)
@@ -915,7 +992,7 @@ class UserController extends Controller
                 ->first();
                 $ball1 = Ball::where('user_id',$get->user1_id)->value('ball');
                 $ball2 = Ball::where('user_id',$get->user2_id)->value('ball');
-                $battleArray[]=array('id1' =>$id1,'id2' =>$id2,'sum1'=>$price2,'sum2'=>$price1,'ball1' => $ball1,'ball2' => $ball2,'user2'=>$user1->last_name.' '.$user1->first_name,'user1'=>$user2->last_name.' '.$user2->first_name);
+                $battleArray[]=array('id1' =>$id1,'id2' =>$id2,'sum1'=>$get->sum1,'sum2'=>$get->sum2,'ball1' => $ball1,'ball2' => $ball2,'user2'=>$user1->last_name.' '.$user1->first_name,'user1'=>$user2->last_name.' '.$user2->first_name);
             }
         }
         
