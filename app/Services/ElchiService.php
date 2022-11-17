@@ -156,4 +156,37 @@ class ElchiService
         $item->category=$category;
         return $item;
     }
+
+    public function battleSetting($date)
+    {
+        if($date == 'Monday')
+        {
+            $date = "Dushanba";
+        }
+        elseif($date == 'Tuesday')
+        {
+            $date = "Seshanba";
+        }
+        elseif($date == 'Wednesday')
+        {
+            $date = "Chorshanba";
+        }
+        elseif($date == 'Thursday')
+        {
+            $date = "Pyshanba";
+        }
+        elseif($date == 'Friday')
+        {
+            $date = "Juma";
+        }
+        elseif($date == 'Saturday')
+        {
+            $date = "Shanba";
+        }
+        else
+        {
+            $date = "Yakshanba";
+        }
+        return $date;
+    }
 }
