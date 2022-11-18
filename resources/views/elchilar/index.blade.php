@@ -82,28 +82,28 @@
                 </thead>
                 <tbody  class="dd">
                 @php $t=0; @endphp
-                @foreach($elchilar as $item)
-                    @if($item['elchi']->status ==1)
-                <tr  id="{{$item['elchi']->id}}" class="tr tr{{$item['elchi']->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
-                    <td onclick="myf({{$item['elchi']->id}})">{{$t+1}} </td>
-                    <td onclick="myf({{$item['elchi']->id}})" >@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
-                    <td >{{$item['elchi']->v_name}} </td>
-                    <td  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
+                @foreach($elchi as $item)
+                    @if($item->status ==1)
+                <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
+                    <td onclick="myf({{$item->id}})">{{$t+1}} </td>
+                    <td onclick="myf({{$item->id}})" >@if($item->side==2)Sharq @else G‘arb @endif </td>
+                    <td >{{$item->v_name}} </td>
+                    <td  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item->id,'time' => 'today'])}}'>
                         <div class="mb-1">
                             <strong>
-                                <img class="mr-2 mb-1" src="{{$item['elchi']->image_url}}" style="border-radius:50%" height="20px"> {{ $item['elchi']->last_name}} {{$item['elchi']->first_name}} ( Elchi )
+                                <img class="mr-2 mb-1" src="{{$item->image_url}}" style="border-radius:50%" height="20px"> {{ $item->last_name}} {{$item->first_name}} ( Elchi )
                             </strong>
                         </div>
                         <div class="mt-1">
-                            <span class="badge bg-success-light">Ichki reyting:  <span class="text-danger">{{$item['ichki-reyting']}} </span> </span>
-                            <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>
+{{--                            <span class="badge bg-success-light">Ichki reyting:  <span class="text-danger">{{$item['ichki-reyting']}} </span> </span>--}}
+{{--                            <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>--}}
                         </div>
                     </td>
                     <td class="fixed">{{$encane[$t]}} </td>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
-                    <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item['elchi']->id], 0, ',', ' ') }}</span></td>
-                    <td class="yashir "> <span class="badge bg-success-light">{{$elchi_prognoz[$item['elchi']->id]}}</span></td>
+                    <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
+                    <td class="yashir "> <span class="badge bg-success-light">{{$elchi_prognoz[$item->id]}}</span></td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                     @foreach($days as $day)
 
@@ -111,12 +111,12 @@
                             @if($haftalik[$t][$s]==0)
                             <td onclick="weeks({{$s}})"  class="week{{$s}}  week hover{{$s}}"
                                 onmouseover="$(`.hover{{$s}}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
-                                onmouseleave="$(`.hover{{$s}}`).css('background','white').css('color','black');"  data-bs-toggle="tooltip" title="{{ $item['elchi']->last_name}} {{$item['elchi']->first_name}}"
+                                onmouseleave="$(`.hover{{$s}}`).css('background','white').css('color','black');"  data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
                             ><span  class="week{{$s}}">{{number_format($haftalik[$t][$s])}} </span></td>
                             @else
                             <td onclick="weeks({{$s}})"   class="week{{$s}} weeks{{$i}}   week hover{{$s}} "
                                 onmouseover="$(`.hover{{$s}}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
-                                onmouseleave="$(`.hover{{$s}}`).css('background','white').css('color','black');"  data-bs-toggle="tooltip" title="{{ $item['elchi']->last_name}} {{$item['elchi']->first_name}}"
+                                onmouseleave="$(`.hover{{$s}}`).css('background','white').css('color','black');"  data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
                             ><span  class="week{{$s}} badge bg-success-light">{{number_format($haftalik[$t][$s])}} </span></td>
                             @endif
                         @endif
@@ -125,12 +125,12 @@
                     @if($sold[$t][$i]==0)
                     <td style="display: none" onclick="days({{$s}})" class="days{{$s}} "
                         onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"
-                        data-bs-toggle="tooltip" title="{{ $item['elchi']->last_name}} {{$item['elchi']->first_name}}"
+                        data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
                         >{{ number_format($sold[$t][$i])}}</span></td>
                     @else
                     <td style="display: none" onclick="days({{$s}})" class=" days{{$s}} "
                         onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"
-                        data-bs-toggle="tooltip" title="{{ $item['elchi']->last_name}} {{$item['elchi']->first_name}}"
+                        data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
                         > <span class="days{{$s}} badge bg-primary-light">{{ number_format($sold[$t][$i])}}</span></td>
                     @endif
                     @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
