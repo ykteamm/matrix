@@ -43,7 +43,7 @@
                                                         </th>
                                                     @endforeach
 {{--                                                    href="{{route('stock.med.create',['id'=>$pharmacy_id])}}"--}}
-                                                    <th class=" d-flex text-center text-white justify-content-center">
+                                                    <th class="  text-center text-white ">
                                                         <input style="display: none" name="created_by" value="{{$id}}">
                                                         <a  style="font-size: 1.5rem;" onclick="yashir()" class= "w-100 px-5 yashir  bg-success">+</a>
                                                         <input type="datetime-local" id="meeting-time" style="display: none" class="yashir"
