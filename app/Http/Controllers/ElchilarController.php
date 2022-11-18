@@ -27,11 +27,11 @@ class ElchilarController extends Controller
         $endofmonth=$this->service->endmonth($month,$months);
         $data=$this->service->elchilar($month,$endofmonth);
         $elchi=$data->elchi;
-        $elchi_work=$data->elchi_work;
         $elchi_fact=$data->elchi_fact;
         $elchi_prognoz=$data->elchi_prognoz;
-        $plan=$this->service->plan($elchi,$month,$endofmonth);
-        $plan_day=$this->service->planday($elchi,$month,$endofmonth);
+        $item=$this->service->plan($elchi,$month,$endofmonth);
+        $plan=$item->plan;
+        $plan_day=$item->planday;
         $encane=$this->service->encane($elchi);
         $days=$this->service->checkCalendar($month,$endofmonth);
         $sold=$this->service->sold($elchi,$days,$month,$endofmonth);
@@ -41,6 +41,6 @@ class ElchilarController extends Controller
 //        dd($viloyatlar[0]->name);
 
 //        dd($haftalik);
-        return view('elchilar.index',compact('viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchilar','elchi_work','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+        return view('elchilar.index',compact('viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchilar','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
     }
 }

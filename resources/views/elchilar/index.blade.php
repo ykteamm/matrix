@@ -10,40 +10,42 @@
             left: 0;
         }
     </style>
+
     <div id="table-wrapper"  class="card-body mt-5">
-        <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 90vh; overflow-y: scroll">
-            <div class="row   d-flex justify-content-between">
+        <div class="row   d-flex justify-content-between">
 
 
-                <div class="col-md-2 mb-2  justify-content-end">
-                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
-                    <div class="dropdown-menu" style="left:150px !important">
-                        @php $i=1 @endphp
-                        @foreach($months as $m)
-                            @if($i<10)
+            <div class="col-md-2 mb-2  justify-content-end">
+                <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
+                <div class="dropdown-menu" style="left:150px !important">
+                    @php $i=1 @endphp
+                    @foreach($months as $m)
+                        @if($i<10)
                             <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                            @else
+                        @else
                             <a href="{{route('elchilar',['month'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                            @endif
-                                @php $i++ @endphp
-                        @endforeach
-                    </div>
+                        @endif
+                        @php $i++ @endphp
+                    @endforeach
                 </div>
-                <div class="col-md-2 mb-2  justify-content-end">
-
-                    <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
-
-                    <div class="dropdown-menu" style="left:150px !important">
-                        <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
-                        @php $i=1 @endphp
-                        @foreach($viloyatlar as $m)
-                            <a onclick="func({{$m->id}})"  class="dropdown-item" > {{$m->name}} </a>
-                            @php $i++ @endphp
-                        @endforeach
-                    </div>
-                </div>
-
             </div>
+            <div class="col-md-2 mb-2  justify-content-end">
+
+                <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+
+                <div class="dropdown-menu" style="left:150px !important">
+                    <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
+                    @php $i=1 @endphp
+                    @foreach($viloyatlar as $m)
+                        <a onclick="func({{$m->id}})"  class="dropdown-item" > {{$m->name}} </a>
+                        @php $i++ @endphp
+                    @endforeach
+                </div>
+            </div>
+
+        </div>
+
+        <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 85vh; overflow-y: scroll">
             <table class="table mb-0 table-striped "   >
                 <thead >
                 <tr onmouseover="$(this).css('cursor','pointer')";
@@ -144,40 +146,6 @@
     </div>
 </div>
 @section('admin_script')
-{{--    <script>--}}
-        // $("#table-scroll").scroll(function (){
-        //     if ($(window).scrollLeft() < 100) {
-        //         $(".fixed").css({
-        //             'position': 'fixed',
-        //             'width': '100%',
-        //             'background': '#cfcfcf',
-        //             'z-index': '99'
-        //         })
-        //     }else {
-        //         $(".fixed").css({
-        //             'position': 'relative',
-        //             'background': '#FFFFFF',
-        //             'width': '100%'
-        //         })
-        // })
-        // $(window).scroll(function() {
-        //     if ($(window).scrollTop() > 100) {
-        //         $(".navbar").css({
-        //             'position': 'fixed',
-        //             'top': '0px',
-        //             'width': '100%',
-        //             'background': '#cfcfcf',
-        //             'z-index': '99'
-        //         });
-        //     } else {
-        //         $(".navbar").css({
-        //             'position': 'relative',
-        //             'background': '#FFFFFF',
-        //             'width': '100%'
-        //         })
-        //     }
-        // });
-{{--    </script>--}}
 <script>
     function myf(id){
         let a=document.querySelectorAll('.tr');

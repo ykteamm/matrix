@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Items\ElchilarKunlikItems;
+use App\Items\ElchiTimeItems;
 use App\Models\Calendar;
 use App\Models\Medicine;
 use App\Models\Plan;
@@ -54,7 +55,6 @@ class ElchilarService
             ->orderBy('tg_region.side','ASC')->get();
         $elchi_work=[];
 
-        $elchi_fact=[];
         $elchi_prognoz=[];
 //        dd($month);
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
@@ -136,7 +136,6 @@ class ElchilarService
 
                     }
                 }
-                $elchi_fact[$elch->id] = number_format($user_sum, 0, '', '.');
 
                 $elchi_prognoz[$elch->id] = $prognoz;
                 $user_sum=0;
@@ -148,7 +147,6 @@ class ElchilarService
             }
         }
         $fact=[];
-//        dd(date('Y-m',strtotime($month)).'-01');
         $i=0;
         foreach ($elchi as $item){
 
@@ -172,7 +170,6 @@ class ElchilarService
         $data=new ElchilarKunlikItems();
         $data->elchi=$elchi;
         $data->elchi_fact=$fact;
-        $data->elchi_work=$elchi_work;
         $data->elchi_prognoz=$elchi_prognoz;
      return $data;
     }
@@ -180,7 +177,9 @@ class ElchilarService
     public function plan($elchi,$month,$endofmonth)
     {
         $plan_sum=[];
+        $planday=[];
         $i=0;
+        $cal=Calendar:: select('work_day')->where('year_month',date('m.Y',strtotime($month)))->first();
         foreach ($elchi as $item){
             $plan_sum[$i]=0;
             $plans=Plan::where('user_id',$item->id)
@@ -196,40 +195,43 @@ class ElchilarService
                     $plan_sum[$i]+=$plan->number*$narx->price;
                 }
             }
+            $planday[$i]=$plan_sum[$i]/$cal->work_day;
             $i++;
         }
-        return $plan_sum;
+        $item=new ElchiTimeItems();
+        $item->plan=$plan_sum;
+        $item->planday=$planday;
+        return $item;
     }
 
-
-    public function planday($elchi,$month,$endofmonth)
-    {
-        $plan_sum=[];
-        $cal=Calendar:: select('work_day')->where('year_month',date('m.Y',strtotime($month)))->first();
-//        dd($cal);
-        $i=0;
-        foreach ($elchi as $item){
-            $plan_sum[$i]=0;
-            $plans=Plan::where('user_id',$item->id)
-                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
-            foreach ($plans as $plan){
-                $narx=DB::table('tg_medicine')
-                    ->select('tg_medicine.price')
-                    ->where('id',$plan->medicine_id)->first();
-                $plan_sum[$i]+=$plan->number*$narx->price/$cal->work_day;
-            }
-            $i++;
-        }
-        return $plan_sum;
-    }
+//
+//    public function planday($elchi,$month,$endofmonth)
+//    {
+//        $plan_sum=[];
+//        $cal=Calendar:: select('work_day')->where('year_month',date('m.Y',strtotime($month)))->first();
+////        dd($cal);
+//        $i=0;
+//        foreach ($elchi as $item){
+//            $plan_sum[$i]=0;
+//            $plans=Plan::where('user_id',$item->id)
+//                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+//                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
+//            foreach ($plans as $plan){
+//                $narx=DB::table('tg_medicine')
+//                    ->select('tg_medicine.price')
+//                    ->where('id',$plan->medicine_id)->first();
+//                $plan_sum[$i]+=$plan->number*$narx->price/$cal->work_day;
+//            }
+//            $i++;
+//        }
+//        return $plan_sum;
+//    }
 
     public function encane($elchi)
     {
         $encane=[];
         $t=0;
         $apteka=DB::table('tg_pharmacy_users')->get();
-//        dd($apteka);
         foreach ($elchi as $item){
             $encane[$t]='nomalum';
             foreach ($apteka as $apt){
@@ -265,30 +267,30 @@ class ElchilarService
 
         return $days;
     }
-
-    public function sold($elchi,$days,$month,$endofmonth)
-    {
-        $sold=[];
-        $i=0;
-        foreach ($elchi as $item){
-            $MonthSold=ProductSold::where('user_id',$item->id)
-                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
-            $j=0;
-            foreach ($days as $day){
-                $sold[$i][$j]=0;
-                foreach ($MonthSold as $daysold){
-                    if(date('d',strtotime($daysold->created_at))==date('d',strtotime($day))){
-                        $sold[$i][$j]+=$daysold->price_product*$daysold->number;
-                    }
-                }
-                $j++;
-            }
-            $i++;
-        }
-        return $sold;
-    }
-    public function mysold($elchi,$days,$month,$endofmonth)
+//
+//    public function mysold($elchi,$days,$month,$endofmonth)
+//    {
+//        $sold=[];
+//        $i=0;
+//        foreach ($elchi as $item){
+//            $MonthSold=ProductSold::where('user_id',$item->id)
+//                ->whereDate('created_at','>=', date('Y-m',strtotime($month)).'-01')
+//                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
+//            $j=0;
+//            foreach ($days as $day){
+//                $sold[$i][$j]=0;
+//                foreach ($MonthSold as $daysold){
+//                    if(date('d',strtotime($daysold->created_at))==date('d',strtotime($day))){
+//                        $sold[$i][$j]+=$daysold->price_product*$daysold->number;
+//                    }
+//                }
+//                $j++;
+//            }
+//            $i++;
+//        }
+//        return $sold;
+//    }
+    public function sold($elchi,$days)
     {
         $sold=[];
         $sold2=[];
@@ -674,7 +676,7 @@ class ElchilarService
 
     }
 
-    
+
 
 
 }
