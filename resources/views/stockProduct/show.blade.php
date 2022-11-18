@@ -39,6 +39,7 @@
                                                     @foreach($stock_date as $p)
                                                         <th class="text-center">
                                                             {{$p->date}}<a href="{{route('stock.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->date])}}" class="mx-1"><i class="fas fa-edit "></i></a>
+                                                            <a href="{{route('stock.med.delete',['pharmacy_id'=>$pharmacy_id,'date'=>$p->date])}}" class="mx-1"><i class="fas fa-trash "></i></a>
                                                         </th>
                                                     @endforeach
 {{--                                                    href="{{route('stock.med.create',['id'=>$pharmacy_id])}}"--}}

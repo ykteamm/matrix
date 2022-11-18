@@ -68,6 +68,12 @@ class StockController extends Controller
         return view('stockProduct.show',compact('month','pharm','months','med','stock','pharmacy_id','stock_date','count','id'));
     }
 
+    public function delete($pharmacy_id,$date)
+    {
+        $t=Stock::where('date',$date)->where('pharmacy_id',$pharmacy_id)->delete();
+        return redirect()->route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
+    }
+
     public function create($pharmacy_id)
     {
         $id=Session::get('user')->id;

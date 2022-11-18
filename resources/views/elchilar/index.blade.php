@@ -1,6 +1,15 @@
 @extends('admin.layouts.app')
 @section('admin_content')
+    <style>
 
+        .dd tr > *:nth-child(4) {
+            background-color: #fff;
+            position: sticky;
+            /*top: 0;*/
+
+            left: 0;
+        }
+    </style>
     <div id="table-wrapper"  class="card-body mt-5">
         <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 90vh; overflow-y: scroll">
             <div class="row   d-flex justify-content-between">
@@ -69,18 +78,15 @@
 {{--                    <th class="text-right">Action </th>--}}
                 </tr>
                 </thead>
-                <tbody  >
+                <tbody  class="dd">
                 @php $t=0; @endphp
                 @foreach($elchilar as $item)
                     @if($item['elchi']->status ==1)
-                <tr id="{{$item['elchi']->id}}" class="tr tr{{$item['elchi']->v_id}}" onmouseover="$(this).css('background','#2e8b57').css('cursor','pointer')
-                .css('color','white');"
-                onmouseleave="$(this).css('background','white').css('color','black');"
-                >
+                <tr  id="{{$item['elchi']->id}}" class="tr tr{{$item['elchi']->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
                     <td onclick="myf({{$item['elchi']->id}})">{{$t+1}} </td>
                     <td onclick="myf({{$item['elchi']->id}})" >@if($item['elchi']->side==2)Sharq @else G‘arb @endif </td>
                     <td >{{$item['elchi']->v_name}} </td>
-                    <th  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
+                    <td  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item['elchi']->id,'time' => 'today'])}}'>
                         <div class="mb-1">
                             <strong>
                                 <img class="mr-2 mb-1" src="{{$item['elchi']->image_url}}" style="border-radius:50%" height="20px"> {{ $item['elchi']->last_name}} {{$item['elchi']->first_name}} ( Elchi )
@@ -90,8 +96,8 @@
                             <span class="badge bg-success-light">Ichki reyting:  <span class="text-danger">{{$item['ichki-reyting']}} </span> </span>
                             <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>
                         </div>
-                    </th>
-                    <th class="fixed">{{$encane[$t]}} </th>
+                    </td>
+                    <td class="fixed">{{$encane[$t]}} </td>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
                     <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item['elchi']->id], 0, ',', ' ') }}</span></td>
