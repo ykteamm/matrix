@@ -34,7 +34,7 @@ class ElchilarController extends Controller
         $plan_day=$item->planday;
         $encane=$this->service->encane($elchi);
         $days=$this->service->checkCalendar($month,$endofmonth);
-        $sold=$this->service->sold($elchi,$days,$month,$endofmonth);
+        $sold=$this->service->sold($elchi,$days);
 
 //        $elchilar=$this->service->reyting($elchi);
 //        dd(1);

@@ -332,7 +332,6 @@ class ElchilarService
                             ->join('tg_question','tg_question.id','tg_grade.question_id')
                             ->join('tg_department','tg_department.id','tg_question.department_id')
                             ->get();
-
                         foreach($quesforuser as $keyd => $valued)
                         {
                             $allquestion[] = $valued;
@@ -343,6 +342,7 @@ class ElchilarService
 
                         }
                         $avg_q += $grade;
+
                     }
                     if($quescount == 0)
                     {
@@ -587,6 +587,7 @@ class ElchilarService
 
             $elchilar[]=array('elchi'=>$item,'ichki-reyting'=>$allavg,'tashqi-reyting'=>$altgardes);
         }
+
         return $elchilar;
     }
 
@@ -614,7 +615,8 @@ class ElchilarService
 
     public function viloyatlar()
     {
-        $vil=Region::all();
+        $vil=Region::orderBy('id')->get();
+//        dd($vil);
         return $vil;
     }
 

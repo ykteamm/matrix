@@ -180,21 +180,27 @@
             reg.innerText = 'Navoiy viloyati';
         }
         if(id==7) {
-            reg.innerText = 'Surxondaryo viloyati';
+            reg.innerText = 'Namangan viloyati';
         }
         if(id==8) {
-            reg.innerText = 'Sirdaryo viloyati';
+            reg.innerText = 'Samarqand viloyati';
         }
         if(id==9) {
-            reg.innerText = 'Toshkent viloyati';
+            reg.innerText = 'Surxondaryo viloyati';
         }
         if(id==10) {
-            reg.innerText = 'Farg`ona viloyati';
+            reg.innerText = 'Sirdaryo viloyati';
         }
         if(id==11) {
-            reg.innerText = 'Xorazm viloyati';
+            reg.innerText = 'Toshkent viloyati';
         }
         if(id==12) {
+            reg.innerText = 'Farg`ona viloyati';
+        }
+        if(id==13) {
+            reg.innerText = 'Xorazm viloyati';
+        }
+        if(id==14) {
             reg.innerText = 'Toshkent shahri';
         }
         let a=document.querySelectorAll('.tr');
