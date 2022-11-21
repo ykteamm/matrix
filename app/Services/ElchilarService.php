@@ -28,7 +28,6 @@ class ElchilarService
         $pos=json_decode($positions->position_json);
 //        dd($pos->region);
         if(isset($pos->region)){
-            dd(1);
             $elchi = DB::table('tg_user')
                 ->where('tg_user.status',1)
                 ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
