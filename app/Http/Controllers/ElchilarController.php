@@ -7,6 +7,7 @@ use App\Models\ProductSold;
 use App\Services\ElchilarService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ElchilarController extends Controller
 {
@@ -25,7 +26,8 @@ class ElchilarController extends Controller
         $years=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032];
         $months=$this->service->month();
         $endofmonth=$this->service->endmonth($month,$months);
-        $data=$this->service->elchilar($month,$endofmonth);
+        $user_id= Session::get('user')->id;
+        $data=$this->service->elchilar($month,$endofmonth,$user_id);
         $elchi=$data->elchi;
         $elchi_fact=$data->elchi_fact;
         $elchi_prognoz=$data->elchi_prognoz;

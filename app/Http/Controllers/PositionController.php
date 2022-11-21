@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Config; 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\Models\Position;
 use App\Models\User;
@@ -16,26 +16,26 @@ class PositionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+//  * @return \Illuminate\Http\Response
      */
     public function __construct()
     {
-        // $this->middleware('auth'); 
+        // $this->middleware('auth');
     }
     public function index()
     {
-        
+
         $positions = DB::table('tg_positions')->get();
         $users = DB::table('tg_user')->select('id','first_name','last_name')->where('admin',TRUE)->get();
         // return $users;
         return view('admin.position.list',compact('positions','users'));
-        
+
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+//  * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -47,16 +47,16 @@ class PositionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+//  * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'rol_name' => 'required|max:255|unique:positions',
-        ]); 
-        $data = $request->all(); 
-        
+        ]);
+        $data = $request->all();
+
         $data['added_by'] = 1;
         $data['position_json'] = $request->all();
         // return $data;
@@ -71,14 +71,14 @@ class PositionController extends Controller
         }else{
             return redirect()->route('position.index')->with('message',(__('message.save_error')));
         }
-        
+
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+//  * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -89,7 +89,7 @@ class PositionController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+////  * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -124,21 +124,22 @@ class PositionController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+//  * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-      
+
         // $request->validate([
         //     'rol_name' => 'required|max:255|unique:positions',
-        // ]); 
-        $data = $request->all(); 
+        // ]);
+        $data = $request->all();
+//        dd($data);
+
     //     $position = Position::where('id', $id)
     //    ->update([
     //        'position_json' => $request->all(),
     //        'rol_name' => $data['rol_name']
     //     ]);
-
         $position = DB::table('tg_positions')->where('id', $id)->update(array(
             'position_json' => json_encode($request->all()),
             'rol_name' => $data['rol_name'],
@@ -159,7 +160,7 @@ class PositionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+//  * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

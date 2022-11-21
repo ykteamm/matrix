@@ -16,15 +16,52 @@ use Illuminate\Support\Facades\Session;
 
 class ElchilarService
 {
-    public function elchilar($month,$endofmonth)
+    public function elchilar($month,$endofmonth,$user_id)
     {
 
+        $positions=DB::table('tg_positions')
+            ->selectRaw('tg_positions.position_json')
+            ->where('tg_user.id',$user_id)
+            ->join('tg_user','tg_user.rol_id','tg_positions.id')
+            ->first();
+//        dd($positions->position_json);
+        $pos=json_decode($positions->position_json);
+//        dd($pos->region);
+        if(isset($pos->region)){
+            dd(1);
+            $elchi = DB::table('tg_user')
+                ->where('tg_user.status',1)
+                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->orderBy('tg_region.side','ASC')->get();
+        }
+        else{
+            $reg=[];
+            foreach ($pos as $key=>$val){
+                if($key==1||
+                    $key==2||
+                    $key==3||
+                    $key==4||
+                    $key==5||
+                    $key==6||
+                    $key==7||
+                    $key==8||
+                    $key==9||
+                    $key==10||
+                    $key==11||
+                    $key==12||
+                    $key==13||
+                    $key==14 )
+                $reg[]=$key;
+            }
+            $elchi = DB::table('tg_user')
+                ->where('tg_user.status',1)
+                ->whereIn('tg_user.region_id',$reg)
+                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->orderBy('tg_region.side','ASC')->get();
+        }
 
-        $elchi = DB::table('tg_user')
-            ->where('tg_user.status',1)
-            ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
-            ->join('tg_region','tg_region.id','tg_user.region_id')
-            ->orderBy('tg_region.side','ASC')->get();
         $elchi_work=[];
 
         $elchi_prognoz=[];
