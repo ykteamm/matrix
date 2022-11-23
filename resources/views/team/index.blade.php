@@ -44,7 +44,7 @@
                                                         <div class="card detail-box2 details-box">
                                                             <div class="card-body">
                                                                 <div class="dash-contetnt">
-                                                                    <h4 class="text-white" style="text-align: center"> {{$item['region_name']}} {{number_format($item['all_price'],0,",",".")}} </h4>
+                                                                    <h4 class="text-white" style="text-align: center"> {{$item['team_name']}} {{number_format($item['all_price'],0,",",".")}} </h4>
                                                                     @php $i=0; @endphp
                                                                     @foreach ($arr as $member)
 {{--                                                                        @php dd($member['team_id']) @endphp--}}
@@ -100,7 +100,7 @@
                                                         <div class="card detail-box2 details-box">
                                                             <div class="card-body">
                                                                 <div class="dash-contetnt">
-                                                                    <h4 class="text-white" style="text-align: center"> {{$team2[$j]['region_name']}} {{number_format($team2[$j]['all_price'],0,",",".")}} </h4>
+                                                                    <h4 class="text-white" style="text-align: center"> {{$team2[$j]['team_name']}} {{number_format($team2[$j]['all_price'],0,",",".")}} </h4>
 
                                                                     @foreach ($arr as $member)
                                                                         {{--                                                                        @php dd($member['team_id']) @endphp--}}
