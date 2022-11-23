@@ -93,7 +93,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                @for($j=$s+1;$item['region_id']==$team2[$j]['region_id'];$j++)
+                                                    @if (isset($team2[$s+1]['region_id']))
+                                                    @for($j=$s+1;$item['region_id']==$team2[$j]['region_id'];$j++)
                                                     @php $cc++; @endphp
                                                     <div class="col-4 col-md-4 col-lg-4 d-flex flex-wrap">
                                                         <div class="card detail-box2 details-box">
@@ -143,6 +144,8 @@
                                                         </div>
                                                     </div>
                                                 @endfor
+                                                    @endif
+                                                
                                             </div>
                                         </div>
 
