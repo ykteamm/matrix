@@ -44,18 +44,35 @@
                                                         <a href="{{route('pharmacy',['id' => $pharma->id,'time' => 'today'])}}">
                                                             {{$pharma->name}}
                                                         </a>
-                                                        @isset($farm_sold[$pharma->id]) 
+                                                        {{-- @isset($farm_sold[$pharma->id]) 
                                                         <span class="badge bg-primary">
-                                                            {{ number_format($farm_sold[$pharma->id], 0, '', '.') }} 
+                                                            {{ number_format($farm_sold[$pharma->id], 0, '', '.') }}
                                                         </span>
-                                                        @endisset
+                                                        @endisset --}}
+                                                        @php
+                                                                $sum_elchi = 0;
+                                                            @endphp
+                                                        @foreach ($pusers as $user)
+                                                            
+                                                            @if ($user->pharma_id == $pharma->id)
+                                                                    @isset($user_sold[$user->user_id]) 
+                                                                        @php
+                                                                            $sum_elchi = $sum_elchi + $user_sold[$user->user_id];
+                                                                        @endphp
+                                                                    @endisset
+                                                            @endif     
+                                                        @endforeach
+                                                        <span class="badge bg-primary">
+                                                            {{ number_format($sum_elchi, 0, '', '.') }}
+                                                        </span>
+
                                                     </h1>
                                                     @foreach ($pusers as $user)
                                                         @if ($user->pharma_id == $pharma->id)
                                                             <h2 class="text-white">{{$user->last_name}} {{$user->first_name}}
                                                                 @isset($user_sold[$user->user_id]) 
                                                                     <span class="badge bg-primary">
-                                                                        {{ number_format($user_sold[$user->user_id], 0, '', '.') }} 
+                                                                        {{ number_format($user_sold[$user->user_id], 0, '', '.') }}
                                                                     </span>
                                                                 @endisset
                                                             </h2>

@@ -65,6 +65,7 @@ foreach ($user as $u) {
 Route::middleware([LoginAuth::class])->group(function () {
 
     Route::get('/',[HomeController::class,'index'])->name('blackjack');
+    Route::get('/capitan/{month}',[HomeController::class,'capitan'])->name('capitan');
     Route::get('/search',[HomeController::class,'filter']);
 Route::get('elchi/{id}/{time?}', [HomeController::class,'elchi'])->name('elchi');
 Route::get('elchi-list', [HomeController::class,'elchiList'])->name('elchi-list');

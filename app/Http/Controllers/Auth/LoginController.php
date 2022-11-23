@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\Models\Position;
+use App\Models\Member;
 
 
 class LoginController extends Controller
@@ -55,7 +56,6 @@ class LoginController extends Controller
         ->where('pr',$request->password)
         // ->where('admin',true)
         ->exists();
-        // return $user;
 
         if($user)
         {
@@ -69,6 +69,12 @@ class LoginController extends Controller
             Session::put('per', $pcode);
             Session::put('user', $userd);
             Session::put('time', time());
+
+            $id = Session::get('user')->id;
+            $cap = Member::where('user_id',Session::get('user')->id)->first();
+            // $rm = DB::table('tg_user')->where('id',$id)->value('rm');
+            Session::put('cap', $cap);
+
             return redirect()->route('blackjack');
 
         }

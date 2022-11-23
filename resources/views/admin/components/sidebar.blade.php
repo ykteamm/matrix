@@ -8,6 +8,12 @@
              </li>
              @endif
              @endisset
+
+             @if(isset(Session::get('cap')->team_id))
+             <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
+             </li>
+             @endif
+
              @isset(Session::get('per')['filter'])
              @if(Session::get('per')['filter'] == 'true')
                <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a>

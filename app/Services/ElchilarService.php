@@ -10,6 +10,8 @@ use App\Models\Plan;
 use App\Models\ProductSold;
 use App\Models\Region;
 use App\Models\User;
+use App\Models\Member;
+use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -24,9 +26,7 @@ class ElchilarService
             ->where('tg_user.id',$user_id)
             ->join('tg_user','tg_user.rol_id','tg_positions.id')
             ->first();
-//        dd($positions->position_json);
         $pos=json_decode($positions->position_json);
-//        dd($pos->region);
         if(isset($pos->region)){
             $elchi = DB::table('tg_user')
                 ->where('tg_user.status',1)
@@ -64,24 +64,18 @@ class ElchilarService
         $elchi_work=[];
 
         $elchi_prognoz=[];
-//        dd($month);
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
-//        dd($cale);
         $cale_date = json_decode($cale->day_json);
 
         foreach($elchi as $elch)
         {
             $date = DB::table('tg_smena')
-                // ->whereIn(DB::raw('DATE(created_from)'), $all_date)
                 ->whereDate('created_from','>=',date('Y-m',strtotime($month)).'-01')
                 ->whereDate('created_from','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                 ->where('smena',2)
                 ->where('user_id', $elch->id)
                 ->orderBy('created_from','DESC')
                 ->pluck('created_from');
-
-            // return $date;
-            // $fsd[]=$date;
             if(isset($date[0]))
             {
 
@@ -115,7 +109,131 @@ class ElchilarService
 
 
                 $pr = count($all_date)+$sunday;
-                // return $date;
+                $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
+
+                $user = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_productssold.price_product')
+                    ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
+                    ->where('tg_user.id', $elch->id)
+                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->groupBy('tg_medicine.name','tg_productssold.price_product')->get();
+                $user_sum=0;
+                foreach($user as $key)
+                {
+                    $user_sum += $key->allprice;
+                }
+                if(count($date) == 0)
+                {
+                    $prognoz = 0;
+
+                }else{
+
+                    if($pr == 0)
+                    {
+                        $prognoz = 0;
+                    }else{
+                        $prognoz = number_format(($user_sum/$pr)*($cale->work_day+$sunday),0,'','.');
+
+                    }
+                }
+
+                $elchi_prognoz[$elch->id] = $prognoz;
+                $user_sum=0;
+            }else{
+                $elchi_prognoz[$elch->id] = 0;
+                $elchi_fact[$elch->id] = 0;
+                $elchi_work[$elch->id] = 0;
+
+            }
+        }
+        $fact=[];
+        $i=0;
+        foreach ($elchi as $item){
+
+            $s=DB::table('tg_productssold')
+                ->where('user_id',$item->id)
+                ->selectRaw('SUM(tg_productssold.number*tg_productssold.price_product) as all_price,user_id')
+                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->groupBy('user_id')
+                ->first();
+            if(isset($s->all_price)){
+                $fact[$item->id]=$s->all_price;
+
+            }
+            else{
+                $fact[$item->id]=0;
+            }
+            $i++;
+        }
+
+        $data=new ElchilarKunlikItems();
+        $data->elchi=$elchi;
+        $data->elchi_fact=$fact;
+        $data->elchi_prognoz=$elchi_prognoz;
+     return $data;
+    }
+    public function capitan($month,$endofmonth,$user_id)
+    {
+        $cap = Member::where('user_id',Session::get('user')->id)->first();
+        $team = Member::where('team_id',$cap->team_id)->pluck('user_id');
+        
+        $elchi = DB::table('tg_user')
+                ->where('tg_user.status',1)
+                ->whereIn('tg_user.id',$team)
+                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->orderBy('tg_region.side','ASC')->get();
+
+        $elchi_work=[];
+
+        $elchi_prognoz=[];
+        $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
+        $cale_date = json_decode($cale->day_json);
+
+        foreach($elchi as $elch)
+        {
+            $date = DB::table('tg_smena')
+                ->whereDate('created_from','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_from','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->where('smena',2)
+                ->where('user_id', $elch->id)
+                ->orderBy('created_from','DESC')
+                ->pluck('created_from');
+            if(isset($date[0]))
+            {
+
+
+                $all_date=[];
+                foreach($cale_date as $key => $value)
+                {
+                    if($value == 'true' && $key <=  date('d',(strtotime ( $date[0] ) )))
+                    {
+                        if (strlen($key) == 1) {
+                            $key = '0'.$key;
+                        }
+                        $all_date[] = date('Y-m',strtotime($month)).'-'.$key;
+                    }
+                }
+                $no_day=0;
+                foreach($date as $item){
+                    if(!in_array($item,$all_date)){
+                        $no_day += 1;
+                    }
+                }
+                $sunday = 0;
+                foreach($date as $d)
+                {
+                    if(date('l',(strtotime ( $d ) )) == 'Sunday')
+                    {
+                        $sunday = $sunday + 1;
+
+                    }
+                }
+
+
+                $pr = count($all_date)+$sunday;
                 $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
 
                 $user = DB::table('tg_productssold')

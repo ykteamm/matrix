@@ -1,0 +1,393 @@
+@extends('admin.layouts.app')
+@section('admin_content')
+<style>
+
+    .dd tr > *:nth-child(4) {
+        background-color: #fff;
+        position: sticky;
+        /*top: 0;*/
+
+        left: 0;
+    }
+</style>
+{{-- @isset(Session::get('per')['dash']) --}}
+             {{-- @if(Session::get('per')['dash'] == 'true') --}}
+<div class="content mt-1 main-wrapper ">
+   <div class="row gold-box">
+    @include('admin.components.logo')
+    </div>
+    <div class="row headbot">
+        <div class="col-12 col-md-6 col-lg-4 d-flex ">
+            <div class="card flex-fill bg-white">
+            <div class="card-body" style="border-radius:12px;">
+                <img src="{{asset('assets/img/dubai2.jpg')}}" width="100%">
+            </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-8 d-flex">
+            <div class="card flex-fill bg-white">
+            <div class="card-header">
+            <h5 class="card-title mb-0" style="color: #000000;font-size:44px;text-align:center;"> 
+                <b style="font-family:Secular One;">MAQSAD  <span style="color:rgb(184, 62, 18)">DUBAI</span></b> </h5>
+            </div>
+            <div class="card-body">
+            <p class="card-text">
+                <h3 style="text-align:center">{{number_format($all->allprice/1000000,0)}}/320 mln</h3>
+            </p>
+            <div class="progress progress-lg">
+                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{(320-($all->allprice/1000000))*100/320}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    {{number_format((320-($all->allprice/1000000))*100/320,0)}}% bajarildi
+                </div>
+                    
+            </div>
+            <p class="card-text">
+                <h3 style="">Maqsad: 320 mln</h3>
+                <h3 style="">Bajarildi: {{number_format($all->allprice/1000000,0)}} mln</h3>
+                <h3 style="">Qoldi: {{320-number_format($all->allprice/1000000,0)}} mln</h3>
+            </p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+           <div class="card">
+              <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap delregion" >
+                        <div class="card detail-box1">
+                            <div class="card-body">
+                                <div class="dash-contetnt">
+                                    <h1 style="color:#ffffff;text-align:center;">Haftalik maqsad</h1>
+                                    <h1 style="color:#f4f3f3;text-align:center;">{{number_format($dayst*6,2)}} mln</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap delregion" >
+                        <div class="card detail-box1">
+                            <div class="card-body">
+                                <div class="dash-contetnt">
+                                    <h1 style="color:#ffffff;text-align:center;">Kunlik maqsad</h1>
+                                    <h1 style="color:#f4f3f3;text-align:center;">@if(isset($day->allprice)){{number_format($all->allprice/77000000,2)}}@else 0 @endif/{{$dayst}} mln</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+           </div>
+        </div>
+     </div>
+</div>
+
+
+<div id="table-wrapper"  class="card-body mt-5">
+    <div class="row   d-flex justify-content-between">
+
+
+        <div class="col-md-2 mb-2  justify-content-end">
+            <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
+            <div class="dropdown-menu" style="left:150px !important">
+                @php $i=1 @endphp
+                @foreach($months as $m)
+                    @if($i<10)
+                        <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                    @else
+                        <a href="{{route('elchilar',['month'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                    @endif
+                    @php $i++ @endphp
+                @endforeach
+            </div>
+        </div>
+        <div class="col-md-2 mb-2  justify-content-end">
+
+            <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+
+            <div class="dropdown-menu" style="left:150px !important">
+                <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
+                @php $i=1 @endphp
+                @foreach($viloyatlar as $m)
+                    <a onclick="func({{$m->id}})"  class="dropdown-item" > {{$m->name}} </a>
+                    @php $i++ @endphp
+                @endforeach
+            </div>
+        </div>
+
+    </div>
+
+    <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 85vh; overflow-y: scroll">
+        <table class="table mb-0 table-striped "   >
+            <thead >
+            <tr onmouseover="$(this).css('cursor','pointer')";
+                onmouseleave="$(this).css('color','black');"
+                >
+                <th class="fixed"><strong>ID</strong> </th>
+                <th class="fixed"><strong>Garb/Sharq</strong></th>
+                <th class="fixed"><strong>Viloyat</strong> </th>
+                <th class="fixed"><strong>Elchi</strong> </th>
+                <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
+                <th class="yashir"><strong>Plan </strong></th>
+                <th class="yashir"><strong>Kunlik plan </strong></th>
+                <th class="yashir"><strong>Fakt </strong></th>
+                <th class="yashir"><strong>Prognoz  </strong></th>
+                @php $i=0; $s=0; @endphp
+                @foreach($days as $day)
+
+
+                <th style="display: none" class="days{{$s}} hover{{$i}}"><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
+                    @if($i==0||$i==7||$i==14||$i==21)
+                        @if($i==21)
+                            <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})"  class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$endofmonth}}.{{date('m',strtotime($day))}} </span></th>
+                        @else
+                            <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})" class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$i+7}}.{{date('m',strtotime($day))}} </span></th>
+                        @endif
+
+                        @endif
+                @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
+
+                @endforeach
+
+{{--                    <th class="text-right">Action </th>--}}
+            </tr>
+            </thead>
+            <tbody  class="dd">
+            @php $t=0; @endphp
+            @foreach($elchi as $item)
+                @if($item->status ==1)
+            <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
+                <td onclick="myf({{$item->id}})">{{$t+1}} </td>
+                <td onclick="myf({{$item->id}})" >@if($item->side==2)Sharq @else G‘arb @endif </td>
+                <td >{{$item->v_name}} </td>
+                <td  class='clickable-row fixed' data-href='{{route('elchi',['id' => $item->id,'time' => 'today'])}}'>
+                    <div class="mb-1">
+                        <strong>
+                            <img class="mr-2 mb-1" src="{{$item->image_url}}" style="border-radius:50%" height="20px"> {{ $item->last_name}} {{$item->first_name}} ( Elchi )
+                        </strong>
+                    </div>
+                    <div class="mt-1">
+{{--                            <span class="badge bg-success-light">Ichki reyting:  <span class="text-danger">{{$item['ichki-reyting']}} </span> </span>--}}
+{{--                            <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>--}}
+                    </div>
+                </td>
+                <td class="fixed">{{$encane[$t]}} </td>
+                <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
+                <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
+                <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
+                <td class="yashir "> <span class="badge bg-success-light">{{$elchi_prognoz[$item->id]}}</span></td>
+                @php $i=0; $s=0;  $arr=0; @endphp
+                @foreach($days as $day)
+
+                    @if($i==0||$i==7||$i==14||$i==21)
+                        @if($haftalik[$t][$s]==0)
+                        <td onclick="weeks({{$s}})"  class="week{{$s}}  week hover{{$s}}"
+                            onmouseover="$(`.hover{{$s}}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
+                            onmouseleave="$(`.hover{{$s}}`).css('background','white').css('color','black');"  data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
+                        ><span  class="week{{$s}}">{{number_format($haftalik[$t][$s])}} </span></td>
+                        @else
+                        <td onclick="weeks({{$s}})"   class="week{{$s}} weeks{{$i}}   week hover{{$s}} "
+                            onmouseover="$(`.hover{{$s}}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
+                            onmouseleave="$(`.hover{{$s}}`).css('background','white').css('color','black');"  data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
+                        ><span  class="week{{$s}} badge bg-success-light">{{number_format($haftalik[$t][$s])}} </span></td>
+                        @endif
+                    @endif
+
+
+                @if($sold[$t][$i]==0)
+                <td style="display: none" onclick="days({{$s}})" class="days{{$s}} "
+                    onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"
+                    data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
+                    >{{ number_format($sold[$t][$i])}}</span></td>
+                @else
+                <td style="display: none" onclick="days({{$s}})" class=" days{{$s}} "
+                    onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"
+                    data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
+                    > <span class="days{{$s}} badge bg-primary-light">{{ number_format($sold[$t][$i])}}</span></td>
+                @endif
+                @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
+                @endforeach
+            </tr>
+            @php $t++; @endphp
+
+                @endif
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+{{-- @endif --}}
+{{-- @endisset --}}
+@endsection
+@section('admin_script')
+<script>
+    function myf(id){
+        let a=document.querySelectorAll('.tr');
+        let b=document.getElementById(id);
+            a.forEach(e=>{
+                if(e.style.display=='none') {
+                    e.style.display = ''
+                }else{
+                    e.style.display='none';
+                    b.style.display='';
+                }
+            })
+    }
+    function func(id){
+        let reg=document.getElementById('region');
+        if(id==1){
+            reg.innerText='Qoraqalpog`iston Respublikasi';
+        }
+        if(id==2) {
+            reg.innerText ='Andijon viloyati';
+        }
+        if(id==3) {
+            reg.innerText = 'Buxoro viloyati';
+        }
+        if(id==4){
+            reg.innerText='Jizzax viloyati';
+        }
+        if(id==5) {
+            reg.innerText = 'Qashqadaryo viloyati';
+        }
+        if(id==6) {
+            reg.innerText = 'Navoiy viloyati';
+        }
+        if(id==7) {
+            reg.innerText = 'Namangan viloyati';
+        }
+        if(id==8) {
+            reg.innerText = 'Samarqand viloyati';
+        }
+        if(id==9) {
+            reg.innerText = 'Surxondaryo viloyati';
+        }
+        if(id==10) {
+            reg.innerText = 'Sirdaryo viloyati';
+        }
+        if(id==11) {
+            reg.innerText = 'Toshkent viloyati';
+        }
+        if(id==12) {
+            reg.innerText = 'Farg`ona viloyati';
+        }
+        if(id==13) {
+            reg.innerText = 'Xorazm viloyati';
+        }
+        if(id==14) {
+            reg.innerText = 'Toshkent shahri';
+        }
+        let a=document.querySelectorAll('.tr');
+        var x='.tr'+id;
+        let b=document.querySelectorAll(x);
+        console.log(b);
+        a.forEach(e=>{
+            if(e.style.display=='none') {
+                b.forEach(t=>{
+                    t.style.display=''
+                })
+            }else{
+                e.style.display='none';
+                b.forEach(t=>{
+                    t.style.display=''
+                })
+            }
+        })
+    }
+    function func1(){
+        let reg=document.getElementById('region');
+        reg.innerText='Hammasi';
+        let a=document.querySelectorAll('.tr');
+        a.forEach(e=>{
+            if(e.style.display=='none') {
+                e.style.display='';
+            }
+        })
+    }
+
+</script>
+    <script>
+        let x = 0;
+        function myFunction() {
+            document.getElementById("demo").innerHTML = x += 1;
+        }
+    </script>
+    <script>
+            $(document).ready(function($) {
+                $(".clickable-row").click(function() {
+                    window.location = $(this).data("href");
+                });
+            });
+
+        function yashir(){
+            let a=document.querySelectorAll('.yashir');
+            a.forEach(e=>{
+                if(e.style.display=='none') {
+                    e.style.display = ''
+                }else{
+                    e.style.display='none';
+                }
+            })
+
+        }
+        function region(region)
+        {
+            let reg=document.querySelector('#tgregion');
+            reg.textContent=region;
+        }
+        function days(id)
+        {
+            let days,week;
+            if(id==0){
+                days=document.querySelectorAll('.days0');
+                week=document.querySelectorAll('.week0');
+            }
+            if(id==1){
+                days=document.querySelectorAll('.days1');
+                week=document.querySelectorAll('.week1');
+            }
+            if(id==2){
+                days=document.querySelectorAll('.days2');
+                week=document.querySelectorAll('.week2');
+            }
+            if(id==3){
+                days=document.querySelectorAll('.days3'),
+                    week=document.querySelectorAll('.week3');
+            }
+
+            week.forEach(element=>{
+                element.style.display=""
+            });
+            days.forEach(element => {
+                element.style.display="none";
+            });
+
+        }
+        // console.log('days'+5);
+        function weeks(id)
+        {
+            let days,week;
+            if(id==0){
+                days=document.querySelectorAll('.days0');
+                week=document.querySelectorAll('.week0');
+            }
+            if(id==1){
+                days=document.querySelectorAll('.days1');
+                week=document.querySelectorAll('.week1');
+            }
+            if(id==2){
+                days=document.querySelectorAll('.days2');
+                week=document.querySelectorAll('.week2');
+            }
+            if(id==3){
+                days=document.querySelectorAll('.days3'),
+                    week=document.querySelectorAll('.week3');
+            }
+            week.forEach(element=>{
+                element.style.display="none"
+            });
+            days.forEach(element => {
+                element.style.display="";
+            });
+
+        }
+    </script>
+@endsection

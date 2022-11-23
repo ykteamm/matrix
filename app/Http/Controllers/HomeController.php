@@ -33,6 +33,9 @@ use App\Models\UserQuestion;
 use App\Models\PillQuestion;
 use App\Models\ConditionQuestion;
 use App\Models\KnowledgeQuestion;
+use App\Models\Member;
+use App\Models\Team;
+use App\Services\ElchilarService;
 
 class HomeController extends Controller
 {
@@ -41,11 +44,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public $service;
+    public function __construct(ElchilarService $service)
     {
-        // $this->middleware('auth');
+        $this->service=$service;
     }
-
     /**
      * Show the application dashboard.
      *
@@ -138,78 +141,24 @@ class HomeController extends Controller
         ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_productssold.price_product');
         $search = $user->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id');
 
-        // $search = $user->addSelect(DB::raw('count(*) as last'));
 
         $search = $user->groupBy('tg_medicine.name','tg_productssold.price_product')->get();
 
 
         return $search;
     }
+    
     public function index()
     {
-        //  DB::table('tg_grade')
-        // ->whereIn('question_id',DB::table('tg_question')
-        // ->where('department_id',DB::table('tg_department')->where('name','Bilim')->where('status',1)->first()->id)
-        // ->pluck('id'))
-        // ->delete();
-        //  DB::table('tg_question')
-        // ->where('department_id',DB::table('tg_department')->where('name','Bilim')->where('status',1)->first()->id)
-        // ->delete();
-        // DB::table('tg_department')->where('name','Bilim')->where('status',1)->delete();
+        $id = Session::get('user')->id;
+        $cap = DB::table('tg_user')->where('id',$id)->value('level');
+        $rm = DB::table('tg_user')->where('id',$id)->value('rm');
+        // return $rm;
+        if($cap == 2 && $rm == 0)
+        {
+            return redirect()->route('capitan',['month'=>date('Y-m')]);
 
-        // $deparid = DB::table('tg_productssold')->where('order_id',720)->update([
-        //     'number' => 1
-        // ]);
-        // $deparid = DB::table('tg_productssold')->where('order_id',720)->get();
-        // return $deparid;
-        // $sesid = [];
-        // foreach(Session::get('per') as $key => $item)
-        // {
-        //     if(strlen($key) == 2)
-        //     {
-        //         $sesid[] = substr($key,0,1);
-        //     }
-        // }
-        // return $sesid;
-        // return Session::get('per');
-
-        // $regions = Question::with('pill')->get();
-        // return $regions;
-        // $array = [1, 2, 3, 4, 5];
-        // $pluck_id = PillQuestion::where('knowledge_id',3)->pluck('id');
-
-        // $random = array_rand($pluck_id,2);
-        // return Carbon::now();
-        // $users = DB::table('tg_user_questions')->where('id','>',470)->delete();
-
-        // $user_question = UserQuestion::where('user_id',59)->get('step3');
-        // // return $user_question;
-        // $pluck_id = PillQuestion::where('knowledge_id',3)->count();
-        // $step1_ids = [];
-        // foreach($user_question as $user)
-        // {
-        //     $step1_user = json_decode($user->step3);
-        //     foreach($step1_user as $key => $value)
-        //     {
-        //         if ($key == 2) {
-        //             foreach($value as $v_item)
-        //             {
-        //                 $step1_ids[] = $v_item;
-        //             }
-        //         }
-        //     }
-        // }
-        // rsort($step1_ids);
-        // return $step1_ids;
-        // $step1_ids_slice = $step1_ids;
-        // if($pluck_id <= count($step1_ids))
-        // {
-        //     $max = floor(count($step1_ids) / $pluck_id);
-        //     for ($i=0; $i < $max*$pluck_id; $i++) {
-        //         array_splice($step1_ids,0,1);
-        //     }
-        // }
-        // return $step1_ids;
+        }
 
         $now = Carbon::now();
         $weekStartDate = $now->startOfWeek()->format('Y-m-d');
@@ -218,9 +167,6 @@ class HomeController extends Controller
         whereDate('created_at','>=',$weekStartDate)
         ->whereDate('created_at','<=',$weekEndDate)
         ->get('created_at');
-
-        // return count($get_date);
-        #save-bilim-ai
         if(count($get_date) == 0)
         {
             $knowledges = Knowledge::with('pill_question')->get();
@@ -255,7 +201,7 @@ class HomeController extends Controller
                         $step1_count = PillQuestion::where('knowledge_id',$pills->id)->count();
                         if($step1_count <= count($step1_ids))
                             {
-                                if($step3_count == 0)
+                                if($step1_count == 0)
                                     {
                                     $max = 0;
 
@@ -350,30 +296,6 @@ class HomeController extends Controller
 
             }
         }
-        
-
-        #end-save-bilim-ai
-
-        // $user_question = UserQuestion::where('user_id',59)->get();
-        // $pluck_id = PillQuestion::where('knowledge_id',2)->pluck('id');
-        // $step1_ids = [];
-        // foreach($user_question as $user)
-        // {
-        //     $step1_user = json_decode($user->step1);
-        //     foreach($step1_user as $key => $value)
-        //     {
-        //         if ($key == 3) {
-        //             $step1_ids[] = $value[0];
-        //         }
-        //     }
-        // }
-        // $pluck_id = PillQuestion::where('knowledge_id',3)
-        // ->whereNotIn('id',$step1_ids)
-        // ->inRandomOrder()
-        //             ->limit(1)->pluck('id');
-        // return $step1_user;
-        // var_dump($pluck_id);
-        // die();
 
         $regions = DB::table('tg_region')->get();
 
@@ -402,7 +324,64 @@ class HomeController extends Controller
         arsort( $array);
         return view('index',compact('array'));
     }
+    public function capitan($month)
+    {
+        $cap = Member::where('user_id',Session::get('user')->id)->first();
+        if(!isset($cap->team_id))
+        {
+            return redirect()->route('blackjack');
+        }
+        $team = Member::where('team_id',$cap->team_id)->pluck('user_id');
+        $all = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+            ->whereDate('tg_productssold.created_at','>=','2022-10-01')
+            ->whereDate('tg_productssold.created_at','<=',date_now())
+            ->whereIn('tg_user.id',$team)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->first();
+        $day = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+            ->whereDate('tg_productssold.created_at','=',date_now())
+            ->whereIn('tg_user.id',$team)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->first();
+            
+            $array = array();
+            $Variable1 = strtotime(date_now());
+            $Variable2 = strtotime('2022-12-31');
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+            {                        
+                $day = date('l', $currentDate);
+                $Store = date('Y-m-d', $currentDate);
+                if($day != 'Sunday'){
+                    $array[] = $Store;
+                }
+            }
+        $dayst = number_format((320-($all->allprice/1000000))/count($array),2);
 
+        $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
+        if ($cale==null){
+            return " Kalendarda ".$month." kiritilmagan";
+        }
+        $years=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027,2028,2029,2030,2031,2032];
+        $months=$this->service->month();
+        $endofmonth=$this->service->endmonth($month,$months);
+        $user_id= Session::get('user')->id;
+        $data=$this->service->capitan($month,$endofmonth,$user_id);
+        $elchi=$data->elchi;
+        $elchi_fact=$data->elchi_fact;
+        $elchi_prognoz=$data->elchi_prognoz;
+        $item=$this->service->plan($elchi,$month,$endofmonth);
+        $plan=$item->plan;
+        $plan_day=$item->planday;
+        $encane=$this->service->encane($elchi);
+        $days=$this->service->checkCalendar($month,$endofmonth);
+        $sold=$this->service->sold($elchi,$days);
+        $haftalik=$this->service->haftalik($days,$sold,$elchi);
+        $viloyatlar=$this->service->viloyatlar();
+         return view('capitan',compact('all','day','dayst','viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+    
+    }
     public function filter()
     {
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
