@@ -331,6 +331,7 @@ class HomeController extends Controller
         {
             return redirect()->route('blackjack');
         }
+        
         $team = Member::where('team_id',$cap->team_id)->pluck('user_id');
         $all = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
@@ -357,7 +358,19 @@ class HomeController extends Controller
                     $array[] = $Store;
                 }
             }
-        $dayst = number_format((320-($all->allprice/1000000))/count($array),2);
+            if($cap->team_id == 7 || $cap->team_id == 8)
+            {
+                $maqsad = 320;
+            }
+            if($cap->team_id == 9 || $cap->team_id == 10)
+            {
+                $maqsad = 260;
+            }
+            if($cap->team_id == 11 || $cap->team_id == 12)
+            {
+                $maqsad = 200;
+            }
+        $dayst = number_format(($maqsad-($all->allprice/1000000))/count($array),2);
 
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         if ($cale==null){
@@ -379,7 +392,7 @@ class HomeController extends Controller
         $sold=$this->service->sold($elchi,$days);
         $haftalik=$this->service->haftalik($days,$sold,$elchi);
         $viloyatlar=$this->service->viloyatlar();
-         return view('capitan',compact('all','day','dayst','viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+         return view('capitan',compact('maqsad','all','day','dayst','viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
     
     }
     public function filter()

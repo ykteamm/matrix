@@ -32,18 +32,18 @@
             </div>
             <div class="card-body">
             <p class="card-text">
-                <h3 style="text-align:center">{{number_format($all->allprice/1000000,0)}}/320 mln</h3>
+                <h3 style="text-align:center">{{number_format($all->allprice/1000000,0)}}/{{$maqsad}} mln</h3>
             </p>
             <div class="progress progress-lg">
-                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{(320-($all->allprice/1000000))*100/320}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                    {{number_format((320-($all->allprice/1000000))*100/320,0)}}% bajarildi
+                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{($maqsad-($all->allprice/1000000))*100/$maqsad}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    {{number_format(($maqsad-($all->allprice/1000000))*100/$maqsad,0)}}% bajarildi
                 </div>
                     
             </div>
             <p class="card-text">
-                <h3 style="">Maqsad: 320 mln</h3>
+                <h3 style="">Maqsad: {{$maqsad}} mln</h3>
                 <h3 style="">Bajarildi: {{number_format($all->allprice/1000000,0)}} mln</h3>
-                <h3 style="">Qoldi: {{320-number_format($all->allprice/1000000,0)}} mln</h3>
+                <h3 style="">Qoldi: {{$maqsad-number_format($all->allprice/1000000,0)}} mln</h3>
             </p>
             </div>
             </div>
