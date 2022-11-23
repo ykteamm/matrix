@@ -72,6 +72,7 @@ class TeamController extends Controller
             $team2=[];
 //            dd($teams);
 //            dd($teams[4]->team[0]);
+            // return $teams;
             foreach ($teams as $item){
                 if(isset($item->team[0])){
                     foreach ($item->team as $team) {
@@ -84,7 +85,7 @@ class TeamController extends Controller
 
                     }
                 }else{
-                    $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>0,'team_name'=>0,'all_price'=>0);
+                    $team2[] = array('region_id' => $item->id,'region_name'=>$item->team->name,'team_id'=>0,'team_name'=>0,'all_price'=>0);
                 }
             }
 //            dd($team2);
