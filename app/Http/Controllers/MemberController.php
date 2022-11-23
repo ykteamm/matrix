@@ -53,9 +53,10 @@ class MemberController extends Controller
     public function minus(Request $request)
     {
         $inputs = $request->all();
-        $del = Member::where('team_id',$inputs['team_id'])
-        ->where('user_id',$inputs['user_id'])
-        ->delete();
+//        dd($inputs['team_id']);
+        $a=Member::where('user_id',$inputs['user_id'])->first();
+//        dd($a);
+        $del = Member::where('user_id',$inputs['user_id'])->delete();
         $level = DB::table('tg_user')->where('id',$inputs['user_id'])
         ->update([
             'level' => 0

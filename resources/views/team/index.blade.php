@@ -27,71 +27,63 @@
             </div>
             <div class="content container-fluid headbot">
                 <div class="row">
-                    @foreach ($teams as $item)
-                        @if (isset($item->team[0]))
+                    @php $s=0;$cc=0; @endphp
+                    @foreach ($team2 as $item)
+                        @if($cc==0)
                             <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
+                                @if($item['team_id']!=0)
+
                                 <div class="card detail-box1">
                                     <div class="card-body">
+
                                         <div class="dash-contetnt">
-                                            <h4 class="text-white" style="text-align: center"> {{$item->name}} </h4>
+                                            <h4 class="text-white" style="text-align: center"> {{$item['region_name']}} </h4>
                                             <div class="row">
-                                                @php $s=0; @endphp
-                                                @foreach ($item->team as $team_item)
+
                                                     <div class="col-4 col-md-4 col-lg-4 d-flex flex-wrap">
                                                         <div class="card detail-box2 details-box">
                                                             <div class="card-body">
                                                                 <div class="dash-contetnt">
-                                                                    <h4 class="text-white" style="text-align: center"> {{$team_item->name}} @if(isset($team1[$team_item->id])){{number_format($team1[$team_item->id],0,",",".")}}@else 0 @endif </h4>
+                                                                    <h4 class="text-white" style="text-align: center"> {{$item['region_name']}} {{number_format($item['all_price'],0,",",".")}} </h4>
                                                                     @php $i=0; @endphp
-                                                                    @foreach ($members as $member)
-                                                                        @if($i>=$count)
-                                                                            @if($team_item->id == $member->team_id)
-                                                                            @if ($member->user->level == 2)
-                                                                                <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}}<i class="fas fa-crown"></i> </h2>
-                                                                                @endif
+                                                                    @foreach ($arr as $member)
+{{--                                                                        @php dd($member['team_id']) @endphp--}}
 
+                                                                        @if($item['team_id'] == $member['team_id'])
+                                                                            @if ($member['level'] == 2)
+                                                                                <h2 class="text-white">{{$member['l_name']}} {{$member['f_name']}}<i class="fas fa-crown"></i> </h2>
                                                                             @endif
-                                                                        @else
-                                                                        @if($team_item->id == $members2[$i]->team_id)
-                                                                                @if ($members2[$i]->level == 2)
 
-                                                                                    <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}} {{$members2[$i]->allprice}} <i class="fas fa-crown"></i> </h2>
-                                                                                @endif
-                                                                            @endif
                                                                         @endif
 
 
-                                                                            @php $i++; @endphp
+
+
+                                                                        @php $i++; @endphp
                                                                     @endforeach
                                                                     @php $i=0; @endphp
-                                                                    @foreach ($members as $member)
-                                                                        @if($i>=$count)
+                                                                    @foreach ($arr as $member)
 
-                                                                            @if($team_item->id == $member->team_id)
 
-                                                                            @if ($member->user->level != 2)
+                                                                        @if($item['team_id'] == $member['team_id'])
 
-                                                                                    <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}} 0 sum</h2>
+                                                                            @if ($member['level'] != 2)
 
-                                                                                @endif
-                                                                            @endif
-                                                                        @else
-                                                                            @if($team_item->id == $members2[$i]->team_id)
-                                                                                @if ($members2[$i]->level != 2)
-                                                                                    <h2 class="text-white justify-content-between"><span>{{$member->user->last_name}} {{$member->user->first_name}}</span>  <span>{{number_format($members2[$i]->allprice,0,",",".")     }}</span> </h2>
-                                                                                @endif
+                                                                                <h2 class="text-white">{{$member['l_name']}} {{$member['f_name']}} {{number_format($member['allprice'],0,",",".")}}</h2>
+
                                                                             @endif
                                                                         @endif
+
                                                                         @php $i++; @endphp
                                                                     @endforeach
                                                                     <div class="row">
                                                                         <div class="col-md-6">
-                                                                            <button type="submit" style="width:100%;" class="btn btn-primary" data-toggle="modal" data-target="#addmember{{$team_item->id}}">
+                                                                            <button type="submit" style="width:100%;" class="btn btn-primary" data-toggle="modal" data-target="#addmember{{$item['team_id']}}">
                                                                                 <i class="fas fa-plus"></i>
                                                                             </button>
                                                                         </div>
                                                                         <div class="col-md-6">
-                                                                            <button type="submit" style="width:100%;" class="btn btn-danger" data-toggle="modal" data-target="#minusmember{{$team_item->id}}">
+                                                                            <button type="submit" style="width:100%;" class="btn btn-danger" data-toggle="modal" data-target="#minusmember{{$item['team_id']}}">
                                                                                 <i class="fas fa-minus"></i>
                                                                             </button>
                                                                         </div>
@@ -101,14 +93,67 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    @php $s++;@endphp
-                                                @endforeach
+                                                @for($j=$s+1;$item['region_id']==$team2[$j]['region_id'];$j++)
+                                                    @php $cc++; @endphp
+                                                    <div class="col-4 col-md-4 col-lg-4 d-flex flex-wrap">
+                                                        <div class="card detail-box2 details-box">
+                                                            <div class="card-body">
+                                                                <div class="dash-contetnt">
+                                                                    <h4 class="text-white" style="text-align: center"> {{$team2[$j]['region_name']}} {{number_format($team2[$j]['all_price'],0,",",".")}} </h4>
+
+                                                                    @foreach ($arr as $member)
+                                                                        {{--                                                                        @php dd($member['team_id']) @endphp--}}
+
+                                                                        @if($team2[$j]['team_id'] == $member['team_id'])
+                                                                            @if ($member['level'] == 2)
+                                                                                <h2 class="text-white">{{$member['l_name']}} {{$member['f_name']}}<i class="fas fa-crown"></i> </h2>
+                                                                            @endif
+
+                                                                        @endif
+
+                                                                    @endforeach
+                                                                    @foreach ($arr as $member)
+
+
+                                                                        @if($team2[$j]['team_id'] == $member['team_id'])
+
+                                                                            @if ($member['level'] != 2)
+
+                                                                                <h2 class="text-white">{{$member['l_name']}} {{$member['f_name']}} {{number_format($member['allprice'],0,",",".")}}</h2>
+
+                                                                            @endif
+                                                                        @endif
+
+                                                                    @endforeach
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <button type="submit" style="width:100%;" class="btn btn-primary" data-toggle="modal" data-target="#addmember{{$item['team_id']}}">
+                                                                                <i class="fas fa-plus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <button type="submit" style="width:100%;" class="btn btn-danger" data-toggle="modal" data-target="#minusmember{{$item['team_id']}}">
+                                                                                <i class="fas fa-minus"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endfor
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
+                                @endif
                             </div>
+                        @else
+                            @php $cc--; @endphp
                         @endif
+                        @php $s++; @endphp
                     @endforeach
                     <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
                         <button type="submit" style="width:100%;" class="btn btn-primary" data-toggle="modal" data-target="#addteam">
@@ -242,38 +287,22 @@
                                                 <select class="form-control form-control-sm" name='user_id' required>
                                                     <option value="" disabled selected hidden>Elchini tanlang</option>
                                                     @php $i=0; @endphp
-                                                    @foreach ($members as $member)
+                                                    @foreach ($arr as $member)
 
-                                                    @if($i>=$count)
-                                                        @if($team_item->id == $member->team_id)
-                                                            @if ($member->user->level == 2)
-                                                                <option value='{{$member->user->id}}'>{{$member->user->last_name}} {{$member->user->first_name}}  </option>
-                                                            @endif
-                                                        @endif
-                                                        @else
-                                                            @if($team_item->id == $members2[$i]->team_id)
-                                                                @if ($members2[$i]->level == 2)
-                                                                    <option value='{{$members2[$i]->id}}'>{{$members2[$i]->l_name}} {{$members2[$i]->f_name}}   {{$members2[$i]->allprice}} sum</option>
-                                                                @endif
+                                                        @if($team_item->id == $member['team_id'])
+                                                            @if ($member['level'] == 2)
+                                                                <option value='{{$member['id']}}'>{{$member['l_name']}} {{$member['f_name']}}  </option>
                                                             @endif
                                                         @endif
                                                     @php $i++; @endphp
                                                     @endforeach
                                                     @php $i=0; @endphp
-                                                    @foreach ($members as $member)
-                                                        @if($i>=$count)
-                                                            @if($team_item->id == $member->team_id)
-                                                                @if ($member->user->level != 2)
-                                                                    <option value='{{$member->user->id}}'>{{$member->user->last_name}} {{$member->user->first_name}}</option>
+                                                    @foreach ($arr as $member)
+                                                            @if($team_item->id == $member['team_id'])
+                                                                @if ($member['level'] != 2)
+                                                                    <option value='{{$member['id']}}'>{{$member['l_name']}} {{$member['f_name']}}</option>
                                                                 @endif
                                                             @endif
-                                                        @else
-                                                            @if($team_item->id == $members2[$i]->team_id)
-                                                                @if ($members2[$i]->level != 2)
-                                                                    <option value='{{$members2[$i]->id}}'>{{$members2[$i]->l_name}} {{$members2[$i]->f_name}}</option>
-                                                                @endif
-                                                            @endif
-                                                        @endif
                                                         @php $i++; @endphp
                                                     @endforeach
                                                 </select>

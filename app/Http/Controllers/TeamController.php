@@ -17,7 +17,7 @@ class TeamController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+//////     * @return \Illuminate\Http\Response
      */
     public function index($time)
     {
@@ -28,11 +28,14 @@ class TeamController extends Controller
         $date_end = $time->date_end;
         $dateText=$time->dateText;
         $regions = Region::all();
-        $teams = Region::with('team')->get();
+        $teams = Region::with('team')
+            ->orderBy('id')->get();
         $users = User::whereNotIn('status',[2])
             ->whereNotIn('level',[1])
             ->get();
-        $members = Member::with('user')->get();
+
+//        dd($users);
+        $members = Member::with('user')->orderBy('team_id')->get();
         $members2 = DB::table('tg_members')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.id, tg_members.team_id,tg_user.first_name as f_name,tg_user.last_name as l_name,tg_user.level as level')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -41,7 +44,6 @@ class TeamController extends Controller
             ->join('tg_user','tg_user.id','tg_members.user_id')
             ->groupBy('tg_members.id','tg_members.team_id','tg_user.first_name','tg_user.last_name','tg_user.level')->get();
 
-
         $count=$members2->count();
 //
         $team1=DB::table('tg_members')
@@ -49,17 +51,50 @@ class TeamController extends Controller
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
             ->whereDate('tg_productssold.created_at','<=',$date_end)
             ->leftjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
+            ->orderBy('tg_members.team_id')
             ->groupBy('tg_members.team_id')->pluck('allprice','tg_members.team_id');
 
-//            dd($members);
-//        return $teams;
-        return view('team.index',compact('count','team1','members2','dateText','regions','teams','users','members'));
+//            dd($members2);
+//        dd($teams[0]->team);
+            $arr=[];
+            foreach ($members as $item1){
+                $c=0;
+                foreach ($members2 as $item2){
+                    if($item1->id==$item2->id){
+                        $c++;
+                        $arr[]=array('id'=>$item2->id,'allprice'=>$item2->allprice,'team_id'=>$item2->team_id,'f_name'=>$item2->f_name,'l_name'=>$item2->l_name,'level'=>$item2->level);
+                    }
+                }
+                if($c==0){
+                    $arr[]=array('id'=>$item1->id,'allprice'=>0,'team_id'=>$item1->team_id,'f_name'=>$item1->user->first_name,'l_name'=>$item1->user->last_name,'level'=>$item1->user->level);
+                }
+            }
+            $team2=[];
+//            dd($teams);
+//            dd($teams[4]->team[0]);
+            foreach ($teams as $item){
+                if(isset($item->team[0])){
+                    foreach ($item->team as $team) {
+                        if(isset($team1[$team->id])){
+                            $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>$team->id,'team_name'=>$team->name,'all_price'=>$team1[$team->id]);
+                        }
+                        else{
+                            $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>$team->id,'team_name'=>$team->name,'all_price'=>0);
+                        }
+
+                    }
+                }else{
+                    $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>0,'team_name'=>0,'all_price'=>0);
+                }
+            }
+//            dd($team2);
+        return view('team.index',compact('count','team2','dateText','regions','teams','users','arr'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+////     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -70,7 +105,7 @@ class TeamController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+////     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -88,7 +123,7 @@ class TeamController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+////     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -99,7 +134,7 @@ class TeamController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+////     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -111,7 +146,7 @@ class TeamController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+////     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
@@ -122,7 +157,7 @@ class TeamController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+////     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
@@ -137,8 +172,6 @@ class TeamController extends Controller
         // $users = User::whereNotIn('level',[1])->get();
         // $members = Member::with('user')->get();
 
-
-//
         $battles = TeamBattle::all();
         $team1=[];
         $users=[];
