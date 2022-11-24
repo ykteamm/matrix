@@ -66,7 +66,6 @@ class ElchilarService
         $elchi_prognoz=[];
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         $cale_date = json_decode($cale->day_json);
-
         foreach($elchi as $elch)
         {
             $date = DB::table('tg_smena')
@@ -133,7 +132,7 @@ class ElchilarService
                     {
                         $prognoz = 0;
                     }else{
-                        $prognoz = number_format(($user_sum/$pr)*($cale->work_day+$sunday),0,'','.');
+                        $prognoz = ($user_sum/$pr)*($cale->work_day+$sunday);
 
                     }
                 }
@@ -178,7 +177,7 @@ class ElchilarService
     {
         $cap = Member::where('user_id',Session::get('user')->id)->first();
         $team = Member::where('team_id',$cap->team_id)->pluck('user_id');
-        
+
         $elchi = DB::table('tg_user')
                 ->where('tg_user.status',1)
                 ->whereIn('tg_user.id',$team)
@@ -803,6 +802,63 @@ class ElchilarService
         return $endM;
 
     }
+
+    public function day_sold($elchi,$days,$sold)
+    {
+        $i=0;
+        $tot_sold=[];
+        foreach ($days as $day){
+            $j=0;
+            $tot_sold[$i]=0;
+            foreach ($elchi as $item){
+                $tot_sold[$i]+=$sold[$j][$i];
+                $j++;
+            }
+            $i++;
+        }
+        return $tot_sold;
+    }
+
+    public function total_fact($fact)
+    {
+        $tot_fact=0;
+        foreach ($fact as $item){
+            $tot_fact+=$item;
+        }
+        return $tot_fact;
+    }
+    public function total_prog($prog)
+    {
+        $tot_prog=0;
+        foreach ($prog as $item){
+
+            $tot_prog+=$item;
+        }
+        return $tot_prog;
+    }
+    public function total_plan($plan)
+    {
+        $tot_plan=0;
+        foreach ($plan as $item){
+            $tot_plan+=$item;
+        }
+        return $tot_plan;
+    }
+    public function total_planday($planday)
+    {
+        $tot_planday=0;
+        foreach ($planday as $item){
+            $tot_planday+=$item;
+        }
+        return $tot_planday;
+
+    }
+//    public function total_week($haftalik,$elchi,$days)
+//    {
+//
+//
+//        return $arr;
+//    }
 
 
 

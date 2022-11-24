@@ -39,7 +39,13 @@ class ElchilarController extends Controller
         $sold=$this->service->sold($elchi,$days);
         $haftalik=$this->service->haftalik($days,$sold,$elchi);
         $viloyatlar=$this->service->viloyatlar();
-        return view('elchilar.index',compact('viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
-    
+        $tot_sold_day=$this->service->day_sold($elchi,$days,$sold);
+        $total_fact=$this->service->total_fact($elchi_fact);
+        $total_prog=$this->service->total_prog($elchi_prognoz);
+        $total_plan=$this->service->total_plan($plan);
+        $total_planday=$this->service->total_planday($plan_day);
+//        dd($tot_sold_day);
+        return view('elchilar.index',compact('total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+
     }
 }
