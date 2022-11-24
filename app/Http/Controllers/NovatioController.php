@@ -630,6 +630,10 @@ class NovatioController extends Controller
             }
             $newcatarray[] = array('detail' => $catar['detail'],'tols'=> number_format($catar['summa'], 0, '', '.'),'summa' => $format,'name' => $catar['name'],'icon' => $catar['icon']);
         }
+        
+        
+
+        // return $minus_users;
         $newarray = [];
         foreach($array as $ar)
         {
@@ -643,8 +647,21 @@ class NovatioController extends Controller
             }else {
                 $format = number_format($number, 0, '', '.');
             }
-            $newarray[] = array('tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
+            $minus_users = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id,tg_user.first_name,tg_user.last_name')
+            ->whereDate('tg_productssold.created_at','>=',$date_begin)
+            ->whereDate('tg_productssold.created_at','<=',$date_end)
+            ->where('tg_region.id',$ar['id'])
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->orderBy('allprice','ASC')
+            ->groupBy('tg_user.id','tg_user.first_name','tg_user.last_name')->get();
+
+
+
+            $newarray[] = array('muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }
+
         $newuserarray = [];
         foreach($userArray as $userar)
         {
@@ -681,6 +698,7 @@ class NovatioController extends Controller
         //     }
         // }
         // fsdfsdf
+        // return $newarray;
         return [
             'regid' => Session::get('user')->region_id,
             'myid' => $myid,
