@@ -166,7 +166,6 @@ class AcceptProductController extends Controller
 
         return redirect()->route('accept.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
-
     public function delete($pharmacy_id,$date)
     {
         $t=Accept::where('created_at',$date)->where('pharmacy_id',$pharmacy_id)->delete();
