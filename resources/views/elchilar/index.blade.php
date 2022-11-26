@@ -33,7 +33,7 @@
             <div class="col-4 d-flex justify-content-end">
                 <div class="mb-2 d-flex  justify-content-end">
                     <div>
-                        <button id="gsh" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> G`arb/Sharq</button>
+                        <button id="garb_sharq" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> G`arb/Sharq</button>
 
                         <div class="dropdown-menu" style="left:150px !important">
                             <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
@@ -51,9 +51,16 @@
                         <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
                         @php $i=1 @endphp
                         @foreach($viloyatlar as $m)
-                            <a  onclick="func({{$m->id}})"  class="dropdown-item gsh{{$m->side}}" > {{$m->name}} </a>
+                            <div class="d-flex">
+                                <a  onclick="func({{$m->id}})"  class="dropdown-item gsh{{$m->side}}" > {{$m->name}} </a>
+                                <input type="checkbox" class="checkbox gsh{{$m->side}}" name="vil{{$m->id}}">
+                            </div>
+
                             @php $i++ @endphp
                         @endforeach
+                        <div class="d-flex justify-content-end">
+                            <button onclick="okbtn()" class="btn btn-primary">ok</button>
+                        </div>
                     </div>
                 </div>
 
@@ -63,41 +70,9 @@
         </div>
 
         <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 85vh; overflow-y: scroll">
-            <table class="table mb-0 table-striped "   >
-                <thead >
-                <tr onmouseover="$(this).css('cursor','pointer')";
-                    onmouseleave="$(this).css('color','black');"
-                    >
-                    <th class="fixed"><strong>ID</strong> </th>
-                    <th class="fixed"><strong>Garb/Sharq</strong></th>
-                    <th class="fixed"><strong>Viloyat</strong> </th>
-                    <th class="fixed"><strong>Elchi</strong> </th>
-                    <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
-                    <th class="yashir"><strong>Plan </strong></th>
-                    <th class="yashir"><strong>Kunlik plan </strong></th>
-                    <th class="yashir"><strong>Fakt </strong></th>
-                    <th class="yashir"><strong>Prognoz  </strong></th>
-                    @php $i=0; $s=0; @endphp
-                    @foreach($days as $day)
-
-
-                    <th style="display: none" class="days{{$s}} "><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
-                        @if($i==0||$i==7||$i==14||$i==21)
-                            @if($i==21)
-                                <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})"  class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$endofmonth}}.{{date('m',strtotime($day))}} </span></th>
-                            @else
-                                <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})" class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$i+7}}.{{date('m',strtotime($day))}} </span></th>
-                            @endif
-                            @endif
-                    @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
-
-                    @endforeach
-
-{{--                    <th class="text-right">Action </th>--}}
-                </tr>
-                </thead>
-                <tbody  class="dd">
-                <tr style="position: sticky;z-index: 1000; top:76vh; color: white" class="bg-success" >
+            <table class="table mb-0 table-striped "   style="margin-top: -3rem;">
+                <thead  >
+                <tr  id="sticky" style="position: sticky;z-index: 1000; top:76vh; color: white" class="bg-success tr" >
                     <td>{{00}}</td>
                     <td>Jami</td>
                     <td class="text-center" style="width: 13rem;">Viloyatlar</td>
@@ -121,15 +96,15 @@
                         @endif
 
 
-                    @if($item==0)
+                        @if($item==0)
                             <td style="display: none;color: white!important;" onclick="days({{$s}})" class="days{{$s}} "
-{{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
-{{--                                data-bs-toggle="tooltip" title="all"--}}
+                                {{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
+                                {{--                                data-bs-toggle="tooltip" title="all"--}}
                             ><span style="color: white">{{number_format($item, 0, ',', ' ')}}</span></td>
                         @else
                             <td style="display: none; color: white!important;" onclick="days({{$s}})" class=" days{{$s}} "
-{{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
-{{--                                data-bs-toggle="tooltip" title="all"--}}
+                                {{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
+                                {{--                                data-bs-toggle="tooltip" title="all"--}}
                             > <span style="color: white" class="days{{$s}} ">{{number_format($item, 0, ',', ' ')}}</span></td>
                         @endif
                         {{--                        @php $tot_sold[$t]+= @endphp--}}
@@ -137,6 +112,43 @@
                         {{--                        <td class="days{{$s}}">{{number_format($item, 0, ',', ' ')}}</td>--}}
                     @endforeach
                 </tr>
+
+                <tr  onmouseover="$(this).css('cursor','pointer')";
+                    onmouseleave="$(this).css('color','black');"
+                    >
+                    <th class="fixed"><strong>ID</strong> </th>
+                    <th class="fixed"><strong>Garb/Sharq</strong></th>
+                    <th class="fixed"><strong>Viloyat</strong> </th>
+                    <th class="fixed"><strong>Elchi</strong> </th>
+                    <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
+                    <th class="yashir"><strong>Plan </strong></th>
+                    <th class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></th>
+                    <th class="yashir">
+                        <a onclick="yashir3()" class="yashir3"><strong>Fakt </strong></a>
+                        <input id="qizil" style="display: none" name="plan" class="yashir3" type="number">
+                        <button onclick="qizil()" style="display: none" class="btn btn-primary yashir3">ok</button>
+                    </th>
+                    <th class="yashir" onclick="yashir3()"><strong>Prognoz  </strong></th>
+                    @php $i=0; $s=0; @endphp
+                    @foreach($days as $day)
+
+
+                    <th style="display: none" class="days{{$s}} "><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
+                        @if($i==0||$i==7||$i==14||$i==21)
+                            @if($i==21)
+                                <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})"  class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$endofmonth}}.{{date('m',strtotime($day))}} </span></th>
+                            @else
+                                <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})" class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$i+7}}.{{date('m',strtotime($day))}} </span></th>
+                            @endif
+                            @endif
+                    @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
+
+                    @endforeach
+
+{{--                    <th class="text-right">Action </th>--}}
+                </tr>
+                </thead>
+                <tbody  class="dd">
                 @php $t=0; @endphp
                 @foreach($elchi as $item)
                     @if($item->status ==1)
@@ -158,7 +170,7 @@
                     <td class="fixed">{{$encane[$t]}} </td>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t], 0, ',', ' ')}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t], 0, ',', ' ')}}</span> </td>
-                    <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
+                    <td class="yashir qizil" name="{{$elchi_fact[$item->id]}}"> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
                     <td class="yashir "> <span class="badge bg-success-light">{{number_format($elchi_prognoz[$item->id], 0, ',', ' ')}}</span></td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                     @foreach($days as $day)
@@ -207,6 +219,39 @@
 </div>
 @section('admin_script')
 <script>
+    function qizil()
+    {
+        let qizil=document.querySelectorAll('.qizil')
+        let input=document.getElementById('qizil')
+        // console.log(input.value)
+        qizil.forEach(e=>{
+            e.style.background='white'
+
+            if(e.attributes.name.value*1<input.value*1){
+                console.log(e.attributes.name.value)
+                e.style.background='red'
+            }
+        })
+    }
+    function okbtn(){
+        let checks=document.querySelectorAll('.checkbox');
+        let tr=document.querySelectorAll('.tr');
+        tr.forEach(e=>{
+            e.style.display='none'
+        })
+        checks.forEach(e=>{
+            if(e.checked==true){
+                a=e.name;
+                x='.tr'+a.substr(3,4)
+                let b=document.querySelectorAll(x)
+                b.forEach(d=>{
+                    d.style.display=''
+                })
+
+            }
+        })
+
+    }
     function myf(id){
         let a=document.querySelectorAll('.tr');
         let b=document.getElementById(id);
@@ -221,6 +266,8 @@
     }
     function gsh(id)
     {
+        btn=document.getElementById('garb_sharq')
+
         if(id==1){
             let side1=document.querySelectorAll('.gsh1');
             let side2=document.querySelectorAll('.gsh2');
@@ -230,7 +277,7 @@
             side2.forEach(s=>{
                 s.style.display='none';
             })
-
+            btn.innerText='G`arb'
         }
         if(id==2){
             let side1=document.querySelectorAll('.gsh1');
@@ -241,6 +288,7 @@
             side2.forEach(s=>{
                 s.style.display='';
             })
+            btn.innerText='Sharq'
         }
     }
     function func(id){
@@ -305,6 +353,8 @@
         })
     }
     function func1(){
+        let btn=document.getElementById('garb_sharq')
+        btn.innerText='G`arb/Sharq'
         let reg=document.getElementById('region');
         reg.innerText='Hammasi';
         let a=document.querySelectorAll('.tr');
@@ -316,12 +366,6 @@
     }
 
 </script>
-    <script>
-        let x = 0;
-        function myFunction() {
-            document.getElementById("demo").innerHTML = x += 1;
-        }
-    </script>
     <script>
             $(document).ready(function($) {
                 $(".clickable-row").click(function() {
@@ -340,6 +384,17 @@
             })
 
         }
+            function yashir3(){
+                let a=document.querySelectorAll('.yashir3');
+                a.forEach(e=>{
+                    if(e.style.display=='none') {
+                        e.style.display = ''
+                    }else{
+                        e.style.display='none';
+                    }
+                })
+
+            }
         function region(region)
         {
             let reg=document.querySelector('#tgregion');
