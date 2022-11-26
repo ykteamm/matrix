@@ -203,8 +203,9 @@ Route::get('medicine/accept/{id}/show/{time?}',[\App\Http\Controllers\AcceptProd
 Route::get('medicine/accept',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');
 Route::get('medicine/accept/all/{time}',[\App\Http\Controllers\AcceptProductController::class,'index_all'])->name('accept.med.all');
 Route::post('medicine/accept/{id}/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
-Route::post('medicine/accept/{pharmacy_id}/edit',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
+Route::get('medicine/accept/{pharmacy_id}/edit/{date}',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
 Route::post('medicine/accept/{id}/update',[\App\Http\Controllers\AcceptProductController::class,'update'])->name('accept.med.update');
+    Route::get('medicine/accept/{pharmacy_id}/delete/{date}',[\App\Http\Controllers\AcceptProductController::class,'delete'])->name('accept.med.delete');
 
 
 Route::get('medicine/stock/{id}/create',[\App\Http\Controllers\StockController::class,'create'])->name('stock.med.create');

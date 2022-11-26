@@ -853,14 +853,27 @@ class ElchilarService
         return $tot_planday;
 
     }
-//    public function total_week($haftalik,$elchi,$days)
-//    {
-//
-//
-//        return $arr;
-//    }
+    public function total_week($haftalik,$days)
+    {
+//       dd($haftalik);
+        $total_week=[];
+       foreach ($haftalik[0] as $key=>$item){
+//           dd($item);
+           $total_week[$key]=0;
+           foreach ($haftalik as $val){
 
+                   $total_week[$key]+=$val[$key];
 
+           }
+       }
+       return $total_week;
+
+    }
+
+    public function gsh($elchi)
+    {
+
+    }
 
 
 }

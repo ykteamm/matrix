@@ -20,6 +20,7 @@
                 <div class="dropdown-menu" style="left:150px !important">
                     @php $i=1 @endphp
                     @foreach($months as $m)
+
                         @if($i<10)
                             <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
                         @else
@@ -80,7 +81,7 @@
                     @foreach($days as $day)
 
 
-                    <th style="display: none" class="days{{$s}} hover{{$i}}"><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
+                    <th style="display: none" class="days{{$s}} "><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
                         @if($i==0||$i==7||$i==14||$i==21)
                             @if($i==21)
                                 <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})"  class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$endofmonth}}.{{date('m',strtotime($day))}} </span></th>
@@ -108,7 +109,19 @@
                     <td>{{number_format($total_prog, 0, ',', ' ')}}</td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                     @foreach($tot_sold_day as $item)
-                        @if($item==0)
+
+                        @if($i==0||$i==7||$i==14||$i==21)
+                            @if($total_haftalik[$s]==0)
+                                <td style="z-index: 1000" onclick="weeks({{$s}})"  class="week{{$s}}  week"
+                                ><span  class="week{{$s}}">{{number_format($total_haftalik[$s])}}</span></td>
+                            @else
+                                <td style="z-index: 1000;color: white" onclick="weeks({{$s}})"   class="week{{$s}} weeks{{$i}}   week "
+                                ><span  class="week{{$s}} ">{{number_format($total_haftalik[$s])}} </span></td>
+                            @endif
+                        @endif
+
+
+                    @if($item==0)
                             <td style="display: none;color: white!important;" onclick="days({{$s}})" class="days{{$s}} "
 {{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
 {{--                                data-bs-toggle="tooltip" title="all"--}}
@@ -117,7 +130,7 @@
                             <td style="display: none; color: white!important;" onclick="days({{$s}})" class=" days{{$s}} "
 {{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
 {{--                                data-bs-toggle="tooltip" title="all"--}}
-                            > <span style="color: white" class="days{{$s}} badge bg-primary-light">{{number_format($item, 0, ',', ' ')}}</span></td>
+                            > <span style="color: white" class="days{{$s}} ">{{number_format($item, 0, ',', ' ')}}</span></td>
                         @endif
                         {{--                        @php $tot_sold[$t]+= @endphp--}}
                         @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp

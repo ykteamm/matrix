@@ -88,7 +88,6 @@ class StockController extends Controller
 //        dd($pharmacies);
         return view('stockProduct.create',compact('id','pharmacy_id','medicines','pharmacies','user'));
     }
-
     public function store(Request $request,$pharmacy_id)
     {
         $id=Session::get('user')->id;
@@ -139,7 +138,8 @@ class StockController extends Controller
         $i=0;
         $user_id=Session::get('user')->id;
 
-        foreach ($request['number'] as $item){
+        foreach ($request['number'] as $item)
+        {
             $s=Stock::where('id',$request['id'][$i])->first();
 
             $s->number=$item;
@@ -147,7 +147,6 @@ class StockController extends Controller
             $s->update();
             $i++;
         }
-
         return redirect()->route('stock.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
 
