@@ -307,31 +307,27 @@
       }
       function gradeSave(form,forms)
       {
+        console.log(form);
         var j = 0;
         var i = 0;
         $(`.steps${form}`).each(function(index)
         { 
-            i++;
-            if($(this).val());
-            
+            console.log($(this).val())
         });
-        $(`#${form}`).submit();
+        if(i==10)
+        {
+            $(`#${form}`).submit();
 
-        // if(i==0)
-        // {
-        //     $(`#${form}`).submit();
-
-        // }
-        // else{
-        //     alert('Barcha savollarga baho qo\'ying')
-        // }
-        // console.log(i)
+        }
+        else{
+            alert('Barcha savollarga baho qo\'ying')
+        }
       }
-//       jQuery(document).ready(function($) {
-//     $(".clickable-row").click(function() {
-//         window.location = $(this).data("href");
-//     });
-// });
+      jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
 
 //       function tdhover()
 //       {

@@ -124,7 +124,7 @@ class GradeController extends Controller
                 $grades_step_array1[$id] =  $value->grade;
             }
         }   
-        // return $grades_step_array1;
+        // return $know_questions;
        
         return view('all-grade',compact('grades_step_array3','grades_step_array1','departments','all_elchi','questions','grades','question_step1','know_questions'));
     }

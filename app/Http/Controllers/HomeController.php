@@ -169,15 +169,41 @@ class HomeController extends Controller
         ->get('created_at');
         if(count($get_date) == 0)
         {
+            $get_con=[];
             $knowledges = Knowledge::with('pill_question')->get();
+            $kirib_ket = PillQuestion::where('knowledge_id',1)->get();
+            foreach ($kirib_ket as $key => $kirib) {
+                $get_count = ConditionQuestion::where('pill_question_id',$kirib->id)->count();
+                // if()
+                if($get_count == 0)
+                {
+                    $get_con[] = $kirib->id;
+
+                }
+                if($get_count != 0)
+                {
+                    // $get_con[] = $kirib->id;
+
+                    $get_con_id = ConditionQuestion::where('pill_question_id',$kirib->id)->pluck('id');
+                    $get_con_nol = KnowledgeQuestion::whereIn('condition_question_id',$get_con_id)->count();
+                    if($get_con_nol == 0)
+                    {
+                        $get_con[] = $kirib->id;
+                    }
+                }
+            }
+            // return $get_con;
             $users = DB::table('tg_user')->where('admin',FALSE)->get('id');
             $step1 = [];
             $step3 = [];
             $question_step = [];
             $testarray = [];
+            // $testarray[] = $knowledges;
+
             foreach($users as $user_items)
             {
                 $user_question = UserQuestion::where('user_id',$user_items->id)->get();
+
                 foreach($knowledges as $key => $pills)
                 {
 
@@ -236,10 +262,16 @@ class HomeController extends Controller
                                         foreach($value as $v_item)
                                             {
                                                 $step3_ids[] = $v_item;
+                                                // foreach($get_con as $key => $value)
+                                                // {
+                                                //     $step3_ids[] = $value;
+                                                // }
                                             }
                                     }
                                 }
                             }
+                            // $testarray[]=$step3_ids;
+
                             $step3_count = PillQuestion::where('knowledge_id',$pills->id)->count();
                             if($step3_count <= count($step3_ids))
                                 {
@@ -257,25 +289,36 @@ class HomeController extends Controller
                                 }
                         $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
                         ->whereNotIn('id',$step3_ids)
+                        ->whereNotIn('id',$get_con)
                         ->limit($pills->number)->pluck('id');
-                        if(count($pluck_id) == 0)
-                        {
-                            $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
-                            ->limit($pills->number)->pluck('id');
-                        }
-                        $step3[$pills->id] = $pluck_id;
-                        foreach($step3[$pills->id] as $item_key => $item)
-                        {
-                            $condition_id = ConditionQuestion::where('pill_question_id',$item)->pluck('id');
 
-                            foreach($condition_id as $condition_key => $condition)
-                            {
-                                $condition_item_id = KnowledgeQuestion::where('condition_question_id',$condition)->inRandomOrder()
-                                ->limit(1)->pluck('id');
-                                $question_step[$condition] = $condition_item_id;
 
-                            }
-                        }
+                                if(count($pluck_id) == 0)
+                                {
+                                    $pluck_id = PillQuestion::where('knowledge_id',$pills->id)->inRandomOrder()
+                                    ->whereNotIn('id',$get_con)
+                                    ->limit($pills->number)->pluck('id');
+
+                                }
+                                $step3[$pills->id] = $pluck_id;
+                                // $testarray[] = $pills->id;
+
+                                foreach($step3[$pills->id] as $item_key => $item)
+                                {
+                                    $condition_id = ConditionQuestion::where('pill_question_id',$item)->pluck('id');
+                                        // $testarray[] = $condition_id;
+
+                                    foreach($condition_id as $condition_key => $condition)
+                                    {
+                                        $condition_item_id = KnowledgeQuestion::where('condition_question_id',$condition)->inRandomOrder()
+                                        ->limit(1)->pluck('id');
+
+                                        $question_step[$condition] = $condition_item_id;
+                                        // $testarray[] = $question_step[$condition];
+
+                                    }
+                                }
+                        
                     }
 
                 }
@@ -288,6 +331,8 @@ class HomeController extends Controller
                     'updated_at' => date_now()
                 ]);
                 $new_user_question->save();
+                                // $testarray[] = $step3;
+
                 $step1 = [];
                     $step3 = [];
                     $question_step = [];
@@ -787,56 +832,63 @@ class HomeController extends Controller
         ->where('user_id',$id)->get();
 
         $knowledges = DB::table('tg_knowledge')->whereIn('step',[1,3])->get();
-        $know_teachers = DB::table('tg_knowledge_grades')->distinct()->pluck('teacher_id');
+        // $know_teachers = DB::table('tg_knowledge_grades')->distinct()->pluck('teacher_id');
         // return $know_teachers;
         $pill_array = [];
         $step_array = [];
         $step_array_counter = [];
         $step_array_grade_all = [];
         $sdf=[];
-
+        $know_teachers = DB::table('tg_knowledge_grades')
+        ->where('user_id',$id)
+        ->distinct()->pluck('teacher_id');
+        // $asd = DB::table('tg_knowledge_grades')
+        // ->where('user_id',$id)
+        // ->get();
+        // return $knowledges;
         foreach($knowledges as $knowledge)
         {
             if($knowledge->step == 1){
-            $pill_counter = 0;
+                $pill_counter = 0;
+                $teacher_count = 0;
+
                 foreach($know_teachers as $teachers)
-            {
-                $condition = DB::table('tg_pill_questions')->where('knowledge_id',$knowledge->id)->pluck('id');
-                $questions = DB::table('tg_knowledge_grades')
-                ->whereIn('pill_id',$condition)
-                ->where('user_id',$id)
-                ->where('teacher_id',$teachers)->avg('grade');
+                    {
+                        $condition = DB::table('tg_pill_questions')->where('knowledge_id',$knowledge->id)->pluck('id');
 
-                $questions_grade = DB::table('tg_knowledge_grades')
-                ->whereIn('pill_id',$condition)
-                ->where('user_id',$id)
-                ->where('teacher_id',$teachers)->first();
+                        $questions = DB::table('tg_knowledge_grades')
+                        ->whereIn('pill_id',$condition)
+                        ->where('user_id',$id)
+                        ->where('teacher_id',$teachers)->avg('grade');
+                        if($questions){
+                            $teacher_count += 1;
+                        }
+                        $sdf[]=$questions;
 
-                $step_array_grade_all[] = $questions_grade;
+                        $questions_grade = DB::table('tg_knowledge_grades')
+                        ->whereIn('pill_id',$condition)
+                        ->where('user_id',$id)
+                        ->where('teacher_id',$teachers)->first();
 
-                // $questions_count = DB::table('tg_knowledge_grades')
-                // ->whereIn('pill_id',$condition)
-                // ->where('user_id',$id)
-                // ->where('teacher_id',$teachers)->count();
-                // $sdf[]=$questions_count;
+                        $step_array_grade_all[] = $questions_grade;
 
-                $step_array_grade = [];
+                        $step_array_grade = [];
 
-                if($questions == 0 )
-                {
-                    $pill_avg = 0;
+                        if($questions == 0 )
+                        {
+                            $pill_avg = 0;
 
-                }else{
-                    $pill_avg = $questions;
-                }
+                        }else{
+                            $pill_avg = $questions;
+                        }
 
-                $pill_counter += $pill_avg;
-            }
+                        $pill_counter += $pill_avg;
+                    }
                 if($pill_counter == 0)
                 {
                     $all_avg = 0;
                 }else{
-                    $all_avg = $pill_counter;
+                    $all_avg = $pill_counter/$teacher_count;
                 }
                 $pill_array[] = array('avg' => number_format($all_avg,2),'name' =>$knowledge->name);
             }
@@ -883,7 +935,7 @@ class HomeController extends Controller
 
 
         }
-        // return $sdf;
+        // return $pill_array; 
 
         $plan=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->exists();
         $ps=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->with('planweek')->get();
@@ -995,7 +1047,6 @@ class HomeController extends Controller
 
         $tasks=DB::table('tg_task')->where('elchi_id',$id)->get();
 //        dd($tasks);
-
         return view('welcome',compact('tasks','step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));

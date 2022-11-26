@@ -38,9 +38,9 @@ class UserController extends Controller
         $r=$request->all();
         // return $r;
         unset($r['_token']);
-        DB::table('tg_user')
-            ->where('status',3)
-            ->update(['status'=>1]);
+        // DB::table('tg_user')
+        //     ->where('status',3)
+        //     ->update(['status'=>1]);
         foreach ($r as $key=> $item){
             if ($item=='id'){
                 $id=substr($key,3);
@@ -165,6 +165,27 @@ class UserController extends Controller
                     ->where('id',$test)
                     ->update(['level'=>1]);
                 }
+                
+                
+            }
+
+        }
+        return redirect()->back();
+
+    }
+    public function userTest(Request $request)
+    {
+        $r=$request->all();
+        unset($r['_token']);
+
+        // return $r;
+        foreach ($r as $key=> $item){
+            if ($item=='test'){
+                $test=substr($key,5);
+
+                DB::table('tg_user')
+                    ->where('id',$test)
+                    ->update(['status'=>1]);
                 
                 
             }

@@ -430,7 +430,7 @@
                                             '<h2 style="color:#05f705;text-align:center;">'+ value.region +'</h2>'+
                                             '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
                                             '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
-                                            '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'rr</h6>'+
+                                            '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -475,7 +475,7 @@
                                             '<h4 style="color:#05f705;height:45px;">'+ value.region +'</h4>'+
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
                                             '</div>'+ muser +
-                                            '<h6 class="mt-2" style="color:#ffffff;text-align:right;">'+value.icon +'ss</h6>'+
+                                            '<h6 class="mt-2" style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+

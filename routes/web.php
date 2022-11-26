@@ -197,6 +197,7 @@ Route::post('user-control/delete/{action}', [UserController::class,'controlWorke
 Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');
 Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
 Route::post('user-exit', [UserController::class,'userExit'])->name('user-exit');
+Route::post('user-test', [UserController::class,'userTest'])->name('user-test');
 
 Route::get('medicine/accept/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('accept.med.create');
 Route::get('medicine/accept/{id}/show/{time?}',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('accept.med.show');
