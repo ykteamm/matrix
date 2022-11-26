@@ -35,7 +35,7 @@
                 <h3 style="text-align:center">{{number_format($all->allprice/1000000,0)}}/{{$maqsad}} mln</h3>
             </p>
             <div class="progress progress-lg">
-                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{($maqsad-($all->allprice/1000000))*100/$maqsad}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{($maqsad-($all->allprice/1000000))*100/$maqsad }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
                     {{number_format(($maqsad-($all->allprice/1000000))*100/$maqsad,0)}}% bajarildi
                 </div>
                     
