@@ -277,45 +277,43 @@ class NovatioController extends Controller
     public function regionChart(Request $request)
     {
         if ($request->time == 'a_today') {
-            $date_begin = today();
-            $date_end = today();
+            $date_begin = date_now();
+            $date_end = date_now();
 
-            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
-            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
-
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date_now()) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date_now()) ) ));
         }
-
         elseif ($request->time == 'a_week') {
-            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( today()) ) ));
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->startOfWeek()->format('Y-m-d');
+            $date_end = date_now()->format('Y-m-d');
 
-            $f_date_begin = date('Y-m-d',(strtotime ( '-2 week' , strtotime ( today()) ) ));
-            $f_date_end = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( today()) ) ));
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( $date_begin) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( $date_end) ) ));
         }
         elseif ($request->time == 'a_month') {
-            $date_begin = today()->format('Y-m-01');
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->startOfMonth()->format('Y-m-d');
+
+            $date_end = date_now()->format('Y-m-d');
 
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_begin) ) ));
-            $f_date_end = today()->format('Y-m-01');
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_end) ) ));
         }
         elseif ($request->time == 'a_year') {
-            $date_begin = today()->format('Y-01-01');
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->startOfYear()->format('Y-m-d');
+            $date_end = date_now()->format('Y-m-d');
 
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_begin) ) ));
-            $f_date_end = today()->format('Y-01-01');
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_end) ) ));
+;
         }
         elseif ($request->time == 'a_all') {
-            $date_begin = today()->format('1790-01-01');
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->format('1790-01-01');
+            $date_end = date_now()->format('Y-m-d');
 
-            $f_date_begin = today()->format('1790-01-01');
-            $f_date_end = today()->format('Y-m-d');
+            $f_date_begin = date_now()->format('1790-01-01');
+            $f_date_end = date_now()->format('Y-m-d');
         }
         else{
-            // $date_begin = $request->time;
-            // $date_end = $request->time;
             $date_begin = date('Y-m-d',(strtotime (substr($request->time,0,10) ) ));
             $date_end = date('Y-m-d',(strtotime ( substr($request->time,11) ) ));
 
@@ -323,6 +321,12 @@ class NovatioController extends Controller
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($request->time,11)) ) ));
         }
 
+        // return [
+        //     'db'=> $date_begin,
+        //     'de'=> $date_end,
+        //     'fdb'=> $f_date_begin,
+        //     'fde'=> $f_date_end,
+        // ];
 
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {

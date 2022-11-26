@@ -312,9 +312,17 @@
         var i = 0;
         $(`.steps${form}`).each(function(index)
         { 
-            console.log($(this).val())
+            j++;
         });
-        if(i==10)
+        $(`.steps${form}`).each(function(index)
+        { 
+            if($(this).val())
+            {
+                j--;
+            }
+        });
+        console.log(j)
+        if(j==0 || j==1)
         {
             $(`#${form}`).submit();
 
