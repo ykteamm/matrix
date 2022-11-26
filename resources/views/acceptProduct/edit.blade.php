@@ -24,11 +24,13 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
+                                                @foreach($accept as $s)
                                                     <tr>
-                                                        <td>{{1}} </td>
-                                                        <td>{{$accept->medicine->name}} </td>
-                                                        <td><input name="number" value="{{$accept->number}}"><input name="id" style="display: none" value="{{$accept->id}}">  </td>
+                                                        <td>{{$loop->index+1}} </td>
+                                                        <td>{{$s->medicine->name}} </td>
+                                                        <td><input name="number[]" value="{{$s->number}}"><input name="id[]" style="display: none" value="{{$s->id}}">  </td>
                                                     </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

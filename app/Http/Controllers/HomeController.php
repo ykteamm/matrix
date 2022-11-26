@@ -105,7 +105,7 @@ class HomeController extends Controller
         //     'res' => $response
         // ];
     }
-    
+
     public function imageGrade()
     {
         // $files = Storage::disk('public_grade')->allFiles();
@@ -147,7 +147,7 @@ class HomeController extends Controller
 
         return $search;
     }
-    
+
     public function index()
     {
         $id = Session::get('user')->id;
@@ -346,12 +346,12 @@ class HomeController extends Controller
             ->whereIn('tg_user.id',$team)
             ->join('tg_user','tg_user.id','tg_productssold.user_id')
             ->first();
-            
+
             $array = array();
             $Variable1 = strtotime(date_now());
             $Variable2 = strtotime('2022-12-31');
-            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
-            {                        
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400))
+            {
                 $day = date('l', $currentDate);
                 $Store = date('Y-m-d', $currentDate);
                 if($day != 'Sunday'){
@@ -393,7 +393,7 @@ class HomeController extends Controller
         $haftalik=$this->service->haftalik($days,$sold,$elchi);
         $viloyatlar=$this->service->viloyatlar();
          return view('capitan',compact('maqsad','all','day','dayst','viloyatlar','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
-    
+
     }
     public function filter()
     {
@@ -794,7 +794,7 @@ class HomeController extends Controller
         $step_array_counter = [];
         $step_array_grade_all = [];
         $sdf=[];
-        
+
         foreach($knowledges as $knowledge)
         {
             if($knowledge->step == 1){
@@ -888,7 +888,7 @@ class HomeController extends Controller
         $plan=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->exists();
         $ps=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->with('planweek')->get();
 
-        
+
         $allplans=0;
         $allweekplan=[];
         $numbers=[];
@@ -991,7 +991,12 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                 ->distinct()
                 ->get();
-        return view('welcome',compact('step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+
+
+        $tasks=DB::table('tg_task')->where('elchi_id',$id)->get();
+//        dd($tasks);
+
+        return view('welcome',compact('tasks','step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
@@ -1466,7 +1471,7 @@ class HomeController extends Controller
 
         return view('elchi-know',compact('elchi'));
     }
-    
+
     public function proList($time)
     {
         // $time = '02.09.2022/02.09.2022';

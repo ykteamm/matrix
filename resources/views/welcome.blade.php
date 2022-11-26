@@ -131,15 +131,78 @@
 
                         @endif
                      </div>
+                       <div>
+                           <button onclick="yashir2()" class="btn btn-primary" >Vazifalar</button>
+                       </div>
+                       <div>
+                           <button onclick="yashir()" class="btn btn-primary" >Vazifa berish</button>
+                       </div>
 
                    </div>
+                    <div class="row yashir" style="display: none">
+                        <div class="col-12">
+                            <form action="{{route('task.store')}}" method="post">
+                                @csrf
+                                <input name="id" style="display: none" value="{{$elchi->id}}">
+                                <div class="form-group d-flex">
+                                    <div class="d-flex mr-2">
+                                        <label class="m-2" for="exampleFormControlTextarea1">Vazifa</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" name="task" required  rows="5" cols="50"></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="t_sana">Tugash Sanasi</label>
+                                        <input id="t_sana" type="date" name="date" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success ">Jo'natish >></button>
+                            </form>
+                        </div>
+                    </div>
+
+
+
 
                 </div>
 
+
              </div>
-             
+
           </div>
        </div>
+    </div>
+    <div class="card yashir2" style="display: none">
+        <div class="card-header no-border">
+            <h4 class="card-title float-left">Topshiriqlar</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                    <tr>
+                        <th>ID </th>
+                        <th>Topshiriq nomi</th>
+                        <th>Tugash sanasi</th>
+                        <th class="text-right">Action </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($tasks as $task)
+                    <tr>
+                        <td>{{$loop->index+1}} </td>
+
+                        <td>{{$task->message}} </td>
+                        <td>{{$task->finish_day}} </td>
+                        <td class="text-right">
+                            <a href="#" class="btn btn-sm btn-white text-success mr-2"><i class="far fa-edit mr-1"></i> Edit </a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-white text-danger mr-2"><i class="far fa-trash-alt mr-1"></i>Delete </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div class="row d-flex justify-content-between"  id="catid">
@@ -347,7 +410,7 @@
 
                      </div>
                      @endforeach
-                     
+
 
                      @endforeach
 
@@ -677,6 +740,28 @@
 @endsection
 @section('admin_script')
    <script>
+       function yashir(){
+           let a=document.querySelectorAll('.yashir');
+           a.forEach(e=>{
+               if(e.style.display=='none') {
+                   e.style.display = ''
+               }else{
+                   e.style.display='none';
+               }
+           })
+
+       }
+       function yashir2(){
+           let a=document.querySelectorAll('.yashir2');
+           a.forEach(e=>{
+               if(e.style.display=='none') {
+                   e.style.display = ''
+               }else{
+                   e.style.display='none';
+               }
+           })
+
+       }
       function show_weeks()
        {
            $('.open-plan').css('display','none');
@@ -729,7 +814,7 @@
          //    $('.opensright').css('top','115px !important');
 
          // });
-   
+
          window.location = $(this).data("href");
          var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
          var id = <?php echo json_encode($elchi->id); ?>;
@@ -739,7 +824,7 @@
             location.href = url;
 
   });
-  
+
 });
       function asdf()
       {

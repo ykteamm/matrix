@@ -122,32 +122,54 @@ class AcceptProductController extends Controller
 
 
 
-    public function edit(Request $request, $pharmacy_id)
+    public function edit($pharmacy_id, $created_at)
     {
 
-        $accept=Accept::where('id',$request->id)->with('medicine')->first();
-        return view('acceptProduct.edit',compact('accept','pharmacy_id'));
+        $accept=Accept::where('pharmacy_id',$pharmacy_id)
+            ->where('created_at',$created_at)->with('medicine')
+            ->orderBy('medicine_id')
+            ->get();
+        return view('acceptProduct.edit',compact('accept','pharmacy_id','created_at'));
     }
 
     public function update(Request $request,$pharmacy_id)
     {
 //        dd($request->all());
-        $request->validate([
-            'number'=>'required'
-        ]);
-        $user_id=Session::get('user')->id;
-        $r=$request->all();
-        unset($r['_token']);
-//        dd($r);
-        $a=Accept::where('id',$r['id'])->first();
-        $a->number=$r['number'];
-        $a->updated_by=$user_id;
-        $a->update();
+//        $request->validate([
+//            'number'=>'required'
+//        ]);
 
-        return redirect()->route('accept.med.show',['id'=>$pharmacy_id]);
+        $i=0;
+
+        $user_id=Session::get('user')->id;
+//        dd($request->all());
+        foreach ($request['number'] as $item){
+            $s=Accept::where('id',$request['id'][$i])->first();
+
+//            dd($s->medicine_id);
+            $med=DB::table('tg_medicine')
+                ->selectRaw('tg_medicine.name,tg_medicine.id,tg_prices.price')
+                ->where('tg_medicine.id',$s->medicine_id)
+                ->where('tg_shablon_pharmacies.pharmacy_id',$pharmacy_id)
+                ->join('tg_prices','tg_prices.medicine_id','tg_medicine.id')
+                ->join('tg_shablon_pharmacies','tg_shablon_pharmacies.shablon_id','tg_prices.shablon_id')
+                ->groupBy('tg_medicine.id','tg_medicine.name','tg_prices.price')
+                ->orderBy('tg_medicine.id')
+                ->first();
+
+            $s->number=$item;
+            $s->price=$item*$med->price;
+            $s->updated_by=$user_id;
+            $s->update();
+            $i++;
+        }
+
+        return redirect()->route('accept.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
     }
 
-
-
-
+    public function delete($pharmacy_id,$date)
+    {
+        $t=Accept::where('created_at',$date)->where('pharmacy_id',$pharmacy_id)->delete();
+        return redirect()->route('accept.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m')]);
+    }
 }

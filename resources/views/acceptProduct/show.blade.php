@@ -41,7 +41,11 @@
                                             <th><strong> Dori nomi </strong></th>
                                             @foreach($accept_date as $p)
                                                 <th class="text-center">
-                                                    <div><strong>{{$p->created_at}}</strong></div>
+                                                    <div>
+                                                        <strong>{{$p->created_at}}</strong>
+                                                        <a href="{{route('accept.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->created_at])}}" class="mx-1"><i class="fas fa-edit "></i></a>
+                                                        <a href="{{route('accept.med.delete',['pharmacy_id'=>$pharmacy_id,'date'=>$p->created_at])}}" class="mx-1"><i class="fas fa-trash "></i></a>
+                                                    </div>
                                                     <div>[{{number_format($p->all_price, 0, ',', ' ')}}]</div>
 
                                                 </th>

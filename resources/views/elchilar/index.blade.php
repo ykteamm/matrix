@@ -20,6 +20,7 @@
                 <div class="dropdown-menu" style="left:150px !important">
                     @php $i=1 @endphp
                     @foreach($months as $m)
+
                         @if($i<10)
                             <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
                         @else
@@ -29,18 +30,34 @@
                     @endforeach
                 </div>
             </div>
-            <div class="col-md-2 mb-2  justify-content-end">
+            <div class="col-4 d-flex justify-content-end">
+                <div class="mb-2 d-flex  justify-content-end">
+                    <div>
+                        <button id="gsh" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> G`arb/Sharq</button>
 
-                <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+                        <div class="dropdown-menu" style="left:150px !important">
+                            <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
+                            <a onclick="gsh(1)"  class="dropdown-item" >G`arb </a>
+                            <a onclick="gsh(2)"  class="dropdown-item" >Sharq </a>
 
-                <div class="dropdown-menu" style="left:150px !important">
-                    <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
-                    @php $i=1 @endphp
-                    @foreach($viloyatlar as $m)
-                        <a onclick="func({{$m->id}})"  class="dropdown-item" > {{$m->name}} </a>
-                        @php $i++ @endphp
-                    @endforeach
+                        </div>
+                    </div>
                 </div>
+                <div class=" mb-2 d-flex  justify-content-end">
+
+                    <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+
+                    <div class="dropdown-menu" style="left:150px !important">
+                        <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
+                        @php $i=1 @endphp
+                        @foreach($viloyatlar as $m)
+                            <a  onclick="func({{$m->id}})"  class="dropdown-item gsh{{$m->side}}" > {{$m->name}} </a>
+                            @php $i++ @endphp
+                        @endforeach
+                    </div>
+                </div>
+
+
             </div>
 
         </div>
@@ -64,14 +81,13 @@
                     @foreach($days as $day)
 
 
-                    <th style="display: none" class="days{{$s}} hover{{$i}}"><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
+                    <th style="display: none" class="days{{$s}} "><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
                         @if($i==0||$i==7||$i==14||$i==21)
                             @if($i==21)
                                 <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})"  class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$endofmonth}}.{{date('m',strtotime($day))}} </span></th>
                             @else
                                 <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})" class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$i+7}}.{{date('m',strtotime($day))}} </span></th>
                             @endif
-
                             @endif
                     @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
 
@@ -81,10 +97,50 @@
                 </tr>
                 </thead>
                 <tbody  class="dd">
+                <tr style="position: sticky;z-index: 1000; top:76vh; color: white" class="bg-success" >
+                    <td>{{00}}</td>
+                    <td>Jami</td>
+                    <td class="text-center" style="width: 13rem;">Viloyatlar</td>
+                    <td style="width: 17rem;" class="bg-success">Elchi</td>
+                    <td style="width: 13rem">Dorixonalar</td>
+                    <td style="width: 6.5rem;">{{number_format($total_plan, 0, ',', ' ')}}</td>
+                    <td style="width:6rem">{{number_format($total_planday, 0, ',', ' ')}}</td>
+                    <td style="width: 8.5rem">{{number_format($total_fact, 0, ',', ' ')}}</td>
+                    <td>{{number_format($total_prog, 0, ',', ' ')}}</td>
+                    @php $i=0; $s=0;  $arr=0; @endphp
+                    @foreach($tot_sold_day as $item)
+
+                        @if($i==0||$i==7||$i==14||$i==21)
+                            @if($total_haftalik[$s]==0)
+                                <td style="z-index: 1000" onclick="weeks({{$s}})"  class="week{{$s}}  week"
+                                ><span  class="week{{$s}}">{{number_format($total_haftalik[$s])}}</span></td>
+                            @else
+                                <td style="z-index: 1000;color: white" onclick="weeks({{$s}})"   class="week{{$s}} weeks{{$i}}   week "
+                                ><span  class="week{{$s}} ">{{number_format($total_haftalik[$s])}} </span></td>
+                            @endif
+                        @endif
+
+
+                    @if($item==0)
+                            <td style="display: none;color: white!important;" onclick="days({{$s}})" class="days{{$s}} "
+{{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
+{{--                                data-bs-toggle="tooltip" title="all"--}}
+                            ><span style="color: white">{{number_format($item, 0, ',', ' ')}}</span></td>
+                        @else
+                            <td style="display: none; color: white!important;" onclick="days({{$s}})" class=" days{{$s}} "
+{{--                                onmouseover="$(`.hover{{$s}}`).css('cursor','pointer');"--}}
+{{--                                data-bs-toggle="tooltip" title="all"--}}
+                            > <span style="color: white" class="days{{$s}} ">{{number_format($item, 0, ',', ' ')}}</span></td>
+                        @endif
+                        {{--                        @php $tot_sold[$t]+= @endphp--}}
+                        @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
+                        {{--                        <td class="days{{$s}}">{{number_format($item, 0, ',', ' ')}}</td>--}}
+                    @endforeach
+                </tr>
                 @php $t=0; @endphp
                 @foreach($elchi as $item)
                     @if($item->status ==1)
-                <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
+                <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}} gsh{{$item->side}}" onmouseover="$(this).css('cursor','pointer') ">
                     <td onclick="myf({{$item->id}})">{{$t+1}} </td>
                     <td onclick="myf({{$item->id}})" >@if($item->side==2)Sharq @else G‘arb @endif </td>
                     <td >{{$item->v_name}} </td>
@@ -100,13 +156,12 @@
                         </div>
                     </td>
                     <td class="fixed">{{$encane[$t]}} </td>
-                    <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
-                    <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
+                    <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t], 0, ',', ' ')}}</span> </td>
+                    <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t], 0, ',', ' ')}}</span> </td>
                     <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
-                    <td class="yashir "> <span class="badge bg-success-light">{{$elchi_prognoz[$item->id]}}</span></td>
+                    <td class="yashir "> <span class="badge bg-success-light">{{number_format($elchi_prognoz[$item->id], 0, ',', ' ')}}</span></td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                     @foreach($days as $day)
-
                         @if($i==0||$i==7||$i==14||$i==21)
                             @if($haftalik[$t][$s]==0)
                             <td onclick="weeks({{$s}})"  class="week{{$s}}  week hover{{$s}}"
@@ -133,13 +188,18 @@
                         data-bs-toggle="tooltip" title="{{ $item->last_name}} {{$item->first_name}}"
                         > <span class="days{{$s}} badge bg-primary-light">{{ number_format($sold[$t][$i])}}</span></td>
                     @endif
+{{--                        @php $tot_sold[$t]+= @endphp--}}
                     @php $i++; if ($i==7||$i==14||$i==21){$s++;}  @endphp
                     @endforeach
                 </tr>
-                @php $t++; @endphp
+
+                @php
+                    $t++;
+                @endphp
 
                     @endif
                 @endforeach
+
                 </tbody>
             </table>
         </div>
@@ -158,6 +218,30 @@
                     b.style.display='';
                 }
             })
+    }
+    function gsh(id)
+    {
+        if(id==1){
+            let side1=document.querySelectorAll('.gsh1');
+            let side2=document.querySelectorAll('.gsh2');
+            side1.forEach(e=>{
+                e.style.display='';
+            })
+            side2.forEach(s=>{
+                s.style.display='none';
+            })
+
+        }
+        if(id==2){
+            let side1=document.querySelectorAll('.gsh1');
+            let side2=document.querySelectorAll('.gsh2');
+            side1.forEach(e=>{
+                e.style.display='none';
+            })
+            side2.forEach(s=>{
+                s.style.display='';
+            })
+        }
     }
     function func(id){
         let reg=document.getElementById('region');
