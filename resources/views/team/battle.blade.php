@@ -12,113 +12,86 @@
                                 <form action="{{ route('team-battle.store') }}" method="POST">
                                     @csrf
                                     <div class="row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <select class="form-control form-control-sm" name='team1_id'>
                                             <option value="" disabled selected hidden></option>
                                                 @foreach ($teams as $team)
                                                     <option value='{{$team->id}}'>{{$team->name}}</option>
-                                                @endforeach 
+                                                @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <select class="form-control form-control-sm" name='team2_id'>
                                             <option value="" disabled selected hidden></option>
                                                 @foreach ($teams as $team)
                                                     <option value='{{$team->id}}'>{{$team->name}}</option>
-                                                @endforeach 
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <input type="date" class="form-control form-control-sm" name="begin">
+                                            <input type="date" class="form-control form-control-sm" name="begin" required>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <input type="date" class="form-control form-control-sm" name="end" required>
                                         </div>
                                         <div class="form-group col-md-2">
                                                 <button type="submit" class="btn btn-primary"> Saqlash </button>
                                         </div>
-                                        
+
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-              
+
             </div>
             <div class="content container-fluid headbot">
                 <div class="row">
-                    @foreach ($battles as $battle)
-                        
-                    <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap">
-                        <div class="card @if($team1[$battle->team1_id] > $team1[$battle->team2_id]) detail-box12 @else detail-box13 @endif">
+                    <div class="col-12 col-md-12 col-lg-12 d-flex flex-wrap">
+                        <div class="card">
                             <div class="card-body">
-                                <div class="dash-contetnt">
-                                    <h4 class="text-white">
-                                        @foreach ($teams as $item)
-                                            @if ($item->id == $battle->team1_id)
-                                            {{$item->name}}  
-                                            (
-                                                @isset($team1[$battle->team1_id])
-                                                {{number_format($team1[$battle->team1_id],0,",",".")}}
-                                                @endisset
-                                            )
-                                            @endif
-                                        @endforeach
-                                    </h4>
-                                    @foreach ($users as $user)
-                                            @foreach ($user as $item)
-                                                @if ($item->team_id == $battle->team1_id)
-                                                <h2 class="text-white">
-                                                    {{$item->l_name}}  {{$item->f_name}}
-                                                (
-                                                {{number_format($item->allprice,0,",",".")}}
-                                                )
-                                                </h2>
-                                                @endif
-                                            @endforeach
-                                        @endforeach
-                                    
-                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table mb-0">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Jamoa 1</th>
+                                                            <th scope="col">Jamoa 2</th>
+                                                            <th scope="col">Boshlanish sanasi</th>
+                                                            <th scope="col">Tugash sanasi</th>
+                                                            <th scope="col">Tugagan</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach( $team_battle as $key => $team)
+                                                        <tr>
+                                                            <td>{{$key+1}}</td>
+                                                            <td>{{$team['team1']}}</td>
+                                                            <td>{{$team['team2']}}</td>
+                                                            <td>{{ date('d.m.Y',strtotime($team['begin'])) }}</td>
+                                                            <td>{{ date('d.m.Y',strtotime($team['end'])) }}</td>
+                                                            @if($team['ended'] == 0)
+                                                                <td>---</td>
+                                                            @else
+                                                            <td>Tugagan</td>
+                                                            @endif
+                                                            <td>
+                                                                <a href="{{ route('battle.view',$team['id']) }}">
+                                                                    <button type="submit"  class="btn btn-md btn-info"><i class="fas fa-eye mr-1"></i></button>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap">
-                        <div class="card @if($team1[$battle->team1_id] < $team1[$battle->team2_id]) detail-box12 @else detail-box13 @endif">
-                            <div class="card-body">
-                                <div class="dash-contetnt">
-                                    <h4 class="text-white">
-                                        @foreach ($teams as $item)
-                                            @if ($item->id == $battle->team2_id)
-                                            {{$item->name}}  
-                                            ( 
-                                                @isset($team1[$battle->team2_id])
-                                                {{number_format($team1[$battle->team2_id],0,",",".")}}
-                                                @endisset 
-                                            )
-                                            @endif
-                                        @endforeach
-                                    </h4>
-                                    @foreach ($users as $user)
-                                            @foreach ($user as $item)
-                                                @if ($item->team_id == $battle->team2_id)
-                                                <h2 class="text-white">
-                                                    {{$item->l_name}}  {{$item->f_name}}
-                                                (
-                                                {{number_format($item->allprice,0,",",".")}}
-                                                )
-                                                </h2>
-                                                @endif
-                                            @endforeach
-                                        @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    @endforeach
-
-                    </div>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 @section('admin_script')

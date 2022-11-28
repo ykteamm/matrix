@@ -17,5 +17,7 @@ class TeamBattle extends Model
         'begin',
         'end',
         'ended',
+        'win_id',
+        'lose_id',
     ];
 }

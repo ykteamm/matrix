@@ -19,7 +19,9 @@ class CreateTeamBattlesTable extends Migration
             $table->foreignId('team2_id');
             $table->date('begin');
             $table->date('end')->nullable();
-            $table->boolean('ended')->default(true);
+            $table->boolean('ended')->default(false);
+            $table->integer('win_id')->nullable();
+            $table->integer('lose_id')->nullable();
             $table->timestamps();
         });
     }
