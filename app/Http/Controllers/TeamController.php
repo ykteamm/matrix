@@ -17,72 +17,29 @@ class TeamController extends Controller
 
     public function index($time)
     {
-        $service=new ElchiService();
-        $time=$service->day($time);
-        $date_begin = $time->date_begin;
-        $date_end = $time->date_end;
-        $dateText=$time->dateText;
         $regions = Region::all();
-        $teams = Region::with('team')
-            ->orderBy('id')->get();
-        $users = User::whereNotIn('status',[2])
-            ->whereNotIn('level',[1])
-            ->get();
-        $members = Member::with('user')->orderBy('team_id')->get();
-        $members2 = DB::table('tg_members')
-            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.id, tg_members.team_id,tg_user.first_name as f_name,tg_user.last_name as l_name,tg_user.level as level')
-            ->whereDate('tg_productssold.created_at','>=',$date_begin)
-            ->whereDate('tg_productssold.created_at','<=',$date_end)
-            ->rightjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
-            ->join('tg_user','tg_user.id','tg_members.user_id')
-            ->groupBy('tg_members.id','tg_members.team_id','tg_user.first_name','tg_user.last_name','tg_user.level')->get();
-
-        $count=$members2->count();
-//
-        $team1=DB::table('tg_members')
-            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_members.team_id')
-            ->whereDate('tg_productssold.created_at','>=',$date_begin)
-            ->whereDate('tg_productssold.created_at','<=',$date_end)
-            ->leftjoin('tg_productssold','tg_productssold.user_id','tg_members.user_id')
-            ->orderBy('tg_members.team_id')
-            ->groupBy('tg_members.team_id')->pluck('allprice','tg_members.team_id');
-
-//            dd($members2);
-//        dd($teams[0]->team);
-            $arr=[];
-            foreach ($members as $item1){
-                $c=0;
-                foreach ($members2 as $item2){
-                    if($item1->id==$item2->id){
-                        $c++;
-                        $arr[]=array('id'=>$item2->id,'allprice'=>$item2->allprice,'team_id'=>$item2->team_id,'f_name'=>$item2->f_name,'l_name'=>$item2->l_name,'level'=>$item2->level);
-                    }
-                }
-                if($c==0){
-                    $arr[]=array('id'=>$item1->id,'allprice'=>0,'team_id'=>$item1->team_id,'f_name'=>$item1->user->first_name,'l_name'=>$item1->user->last_name,'level'=>$item1->user->level);
-                }
-            }
-            $team2=[];
-//            dd($teams);
-//            dd($teams[4]->team[0]);
-            // return $teams;
-            foreach ($teams as $item){
-                if(isset($item->team[0])){
-                    foreach ($item->team as $team) {
-                        if(isset($team1[$team->id])){
-                            $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>$team->id,'team_name'=>$team->name,'all_price'=>$team1[$team->id]);
-                        }
-                        else{
-                            $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>$team->id,'team_name'=>$team->name,'all_price'=>0);
-                        }
-
-                    }
+        $teams = Region::with('team')->get();
+        $users = User::whereNotIn('level',[1])->get();
+        $members = Member::with('user')->get();
+        $sum=[];
+        foreach ($members as $key => $value) {
+                $sums = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+                    ->whereDate('tg_productssold.created_at','>=','2022-10-01')
+                    ->whereDate('tg_productssold.created_at','<=','2022-10-31')
+                    ->where('tg_user.id','=',$value->user_id)
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->value('allprice');
+                if(isset($sums))
+                {
+                    $sum[$value->team_id][$value->user_id]=$sums;
                 }else{
-                    $team2[] = array('region_id' => $item->id,'region_name'=>$item->name,'team_id'=>0,'team_name'=>0,'all_price'=>0);
+                    $sum[$value->team_id][$value->user_id]=0;
                 }
-            }
-        //    return $team2;
-        return view('team.index',compact('count','team2','dateText','regions','teams','users','arr'));
+        }
+        // return $members;
+        return view('team.index',compact('regions','teams','users','members','sum'));
+
     }
 
     /**
