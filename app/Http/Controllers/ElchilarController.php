@@ -17,8 +17,20 @@ class ElchilarController extends Controller
         $this->service=$service;
     }
 
-    public function kunlik($month)
+    public function kunlik($month,$region = null)
     {
+        if(isset($region))
+        {
+            if($region == 'all')
+            {
+                $regions = 1;
+            }else{
+                $regions = explode(",", $region);
+            }
+        }
+        else{
+            $regions = 0;
+        }
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         if ($cale==null){
             return " Kalendarda ".$month." kiritilmagan";
@@ -27,12 +39,14 @@ class ElchilarController extends Controller
         $months=$this->service->month();
         $endofmonth=$this->service->endmonth($month,$months);
         $user_id= Session::get('user')->id;
-        $data=$this->service->elchilar($month,$endofmonth,$user_id);
+        $data=$this->service->elchilar($month,$endofmonth,$user_id,$regions);
         $elchi=$data->elchi;
         $elchi_fact=$data->elchi_fact;
         $elchi_prognoz=$data->elchi_prognoz;
         $item=$this->service->plan($elchi,$month,$endofmonth);
+
         $plan=$item->plan;
+
         $plan_day=$item->planday;
         $encane=$this->service->encane($elchi);
         $days=$this->service->checkCalendar($month,$endofmonth);
@@ -45,7 +59,6 @@ class ElchilarController extends Controller
         $total_plan=$this->service->total_plan($plan);
         $total_planday=$this->service->total_planday($plan_day);
         $total_haftalik=$this->service->total_week($haftalik,$days);
-//        dd($tot_sold_day);
         return view('elchilar.index',compact('total_haftalik','total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
 
     }

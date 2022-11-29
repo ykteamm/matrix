@@ -61,8 +61,8 @@
         }
         .modal-content{
             top: 30px !important;
-            width:160% !important;
-            height:90% !important;
+            /* width:160% !important; */
+            /* height:90% !important; */
         }
         /* Base setup */
 /* @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css); */

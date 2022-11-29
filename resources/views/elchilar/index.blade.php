@@ -21,7 +21,7 @@
                     @php $i=1 @endphp
                     @foreach($months as $m)
 
-                        @if($i<10)
+                        @if($i < 10)
                             <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
                         @else
                             <a href="{{route('elchilar',['month'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
@@ -30,7 +30,7 @@
                     @endforeach
                 </div>
             </div>
-            <div class="col-4 d-flex justify-content-end">
+            <div class="col-4 d-flex">
                 <div class="mb-2 d-flex  justify-content-end">
                     <div>
                         <button id="garb_sharq" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> G`arb/Sharq</button>
@@ -48,12 +48,12 @@
                     <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
 
                     <div class="dropdown-menu" style="left:150px !important">
-                        <a onclick="func1()"  class="dropdown-item" > Hammasi </a>
+                        <a onclick="allRegion()"  class="dropdown-item" > Hammasi </a>
                         @php $i=1 @endphp
                         @foreach($viloyatlar as $m)
-                            <div class="d-flex">
+                            <div class="d-flex mr-2">
                                 <a  onclick="func({{$m->id}})"  class="dropdown-item gsh{{$m->side}}" > {{$m->name}} </a>
-                                <input type="checkbox" class="checkbox gsh{{$m->side}}" name="vil{{$m->id}}">
+                                <input type="checkbox" class="checkbox gsh{{$m->side}}" name="vil{{$m->id}}" value="{{$m->id}}">
                             </div>
 
                             @php $i++ @endphp
@@ -70,7 +70,7 @@
         </div>
 
         <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 85vh; overflow-y: scroll">
-            <table class="table mb-0 table-striped "   style="margin-top: -3rem;">
+            <table class="table mb-0 table-striped"   style="margin-top: -3rem;">
                 <thead  >
                 <tr  id="sticky" style="position: sticky;z-index: 1000; top:76vh; color: white" class="bg-success tr" >
                     <td>{{00}}</td>
@@ -152,7 +152,7 @@
                 @php $t=0; @endphp
                 @foreach($elchi as $item)
                     @if($item->status ==1)
-                <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}} gsh{{$item->side}}" onmouseover="$(this).css('cursor','pointer') ">
+                <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}} gsh{{$item->side}} vil{{$item->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
                     <td onclick="myf({{$item->id}})">{{$t+1}} </td>
                     <td onclick="myf({{$item->id}})" >@if($item->side==2)Sharq @else G‘arb @endif </td>
                     <td >{{$item->v_name}} </td>
@@ -233,23 +233,46 @@
             }
         })
     }
+    function allRegion()
+    {
+        var month = <?php echo json_encode( $month ) ?>;
+        var region = 'all';
+        var url ="{{route('elchilar',['month'=> ':month','region' => ':region']) }}";
+        url = url.replace(':month', month);
+        url = url.replace(':region', region);
+        location.href = url;
+    }
     function okbtn(){
-        let checks=document.querySelectorAll('.checkbox');
-        let tr=document.querySelectorAll('.tr');
-        tr.forEach(e=>{
-            e.style.display='none'
-        })
-        checks.forEach(e=>{
-            if(e.checked==true){
-                a=e.name;
-                x='.tr'+a.substr(3,4)
-                let b=document.querySelectorAll(x)
-                b.forEach(d=>{
-                    d.style.display=''
-                })
+        var array = []
+        var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
-            }
-        })
+        for (var i = 0; i < checkboxes.length; i++) {
+        array.push(checkboxes[i].value)
+        }
+        // console.log(array)
+         var month = <?php echo json_encode( $month ) ?>;
+         var region = array;
+            var url ="{{route('elchilar',['month'=> ':month','region' => ':region']) }}";
+            url = url.replace(':month', month);
+            url = url.replace(':region', region);
+            location.href = url;
+        
+        // let checks=document.querySelectorAll('.checkbox');
+        // let tr=document.querySelectorAll('.tr');
+        // tr.forEach(e=>{
+        //     e.style.display='none'
+        // })
+        // checks.forEach(e=>{
+        //     if(e.checked==true){
+        //         a=e.name;
+        //         x='.tr'+a.substr(3,4)
+        //         let b=document.querySelectorAll(x)
+        //         b.forEach(d=>{
+        //             d.style.display=''
+        //         })
+
+        //     }
+        // })
 
     }
     function myf(id){

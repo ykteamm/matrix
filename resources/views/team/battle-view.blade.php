@@ -73,9 +73,7 @@
                                                 @if ($item->team_id == $battle->team1_id)
                                                     <h2 class="text-white">
                                                         {{$item->l_name}}  {{$item->f_name}}
-                                                        (
-                                                        {{number_format($item->allprice,0,",",".")}}
-                                                        )
+                                                        ({{number_format($item->allprice,0,",",".")}})
                                                     </h2>
                                                 @endif
                                             @endforeach

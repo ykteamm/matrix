@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Session;
 
 class ElchilarService
 {
-    public function elchilar($month,$endofmonth,$user_id)
+    public function elchilar($month,$endofmonth,$user_id,$regions)
     {
 
         $positions=DB::table('tg_positions')
@@ -28,11 +28,23 @@ class ElchilarService
             ->first();
         $pos=json_decode($positions->position_json);
         if(isset($pos->region)){
-            $elchi = DB::table('tg_user')
+            if($regions == 0 || $regions == 1)
+            {
+                $elchi = DB::table('tg_user')
                 ->where('tg_user.status',1)
                 ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->orderBy('tg_region.side','ASC')->get();
+            }else
+            {
+                $elchi = DB::table('tg_user')
+                ->where('tg_user.status',1)
+                ->whereIn('tg_region.id',$regions)
+                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->orderBy('tg_region.side','ASC')->get();
+            }
+            
         }
         else{
             $reg=[];
