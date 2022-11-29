@@ -9,13 +9,13 @@
             @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
 
-               @if($rm == 1 && $cap == 2))
+               @if($rm == 1 && $cap == 2)
 
                <li><a href="/"><i class="feather-home"></i>  <span> Dashboard</span></a>
                </li>
                <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
                </li>
-               @elseif($rm != 1 && $cap == 2))
+               @elseif($rm != 1 && $cap == 2)
                <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
                </li>
                @else

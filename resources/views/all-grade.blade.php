@@ -96,7 +96,7 @@
                                     <label class="@if($grades[$ids]->grade >= 3) colorrate @endif" for="rating6" title="3 ball"></label>
                                     <input type="radio" name="rating" value="2" />
                                     <label  class="@if($grades[$ids]->grade >= 2) colorrate @endif" for="rating4" title="2 ball"></label>
-                                    <input type="radio"" name="rating" value="1" />
+                                    <input type="radio" name="rating" value="1" />
                                     <label class="@if($grades[$ids]->grade >= 1) colorrate @endif" for="rating2" title="1 ball"></label>
                                 </fieldset>
                             </div>
@@ -123,6 +123,8 @@
                         @endif
 
                         @endforeach
+                        <!-- <h4 style="text-align:center;">Komment</h4> -->
+                        <input type="textare" class="form-control mt-1" id="" height="200px" placeholder="Komment yozing ..." name="comment">
                         </form>
 
                     </ul>

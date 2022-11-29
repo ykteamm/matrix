@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Session;
 use Carbon\Carbon;
 use App\Models\PillQuestion;
+use App\Models\GradeComment;
 use App\Models\KnowledgeQuestion;
 use App\Models\UserQuestion;
 class GradeController extends Controller
@@ -133,12 +134,13 @@ class GradeController extends Controller
         $inputs = $request->all();
         $teacher_id = Session::get('user')->id;
         unset($inputs['_token']);
+        $comment = $inputs['comment'];
+        unset($inputs['comment']);
         foreach($inputs as $item)
         {
             if($item != null)
             {
                 $grade = json_decode($item)[0];
-            // return $grade[0];
 
             DB::table('tg_grade')->insert([
                 'grade' => $grade->grade,
@@ -149,10 +151,20 @@ class GradeController extends Controller
                 'save' => FALSE,
 
             ]);
+            // $user_id = $grade->user_id;
             }
             
         }
+        // $user_id=Session::get('user')->id;
 
+        // $response = Http::post('http://128.199.2.165:8100/api/v1/task/create/', [
+        //     'admin' => $user_id,
+        //     'elchi' => $user_id,
+        //     'finish_day' => $request['date'],
+        //     'message' => $request['task']
+        // ]);
+
+        // return $user_id;
         return redirect()->back();
     }
 
@@ -194,9 +206,9 @@ class GradeController extends Controller
     public function allGradeStoreStep3(Request $request)
     {
         $inputs = $request->all();
-        // return $inputs;
         $teacher_id = Session::get('user')->id;
         unset($inputs['_token']);
+        
         foreach($inputs as $item)
         {
             if($item != null)
