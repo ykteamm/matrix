@@ -72,8 +72,11 @@ class LoginController extends Controller
 
             $id = Session::get('user')->id;
             $cap = Member::where('user_id',Session::get('user')->id)->first();
+            $cap = DB::table('tg_user')->where('id',Session::get('user')->id)->value('level');
+            $rm = DB::table('tg_user')->where('id',Session::get('user')->id)->value('rm');
             // $rm = DB::table('tg_user')->where('id',$id)->value('rm');
             Session::put('cap', $cap);
+            Session::put('rm', $rm);
 
             return redirect()->route('blackjack');
 

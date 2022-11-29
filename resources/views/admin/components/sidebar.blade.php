@@ -2,17 +2,30 @@
     <div class="sidebar-inner">
        <div id="sidebar-menu" style="height: 100vh; overflow-y: scroll" class="sidebar-menu">
           <ul>
+
             @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
-             <li><a href="/"><i class="feather-home"></i>  <span> Dashboard</span></a>
-             </li>
+
+               @if(Session::get('rm') == 1 && Session::get('cap') == 2)
+
+               <li><a href="/"><i class="feather-home"></i>  <span> Dashboard</span></a>
+               </li>
+               <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
+               </li>
+               @elseif(Session::get('rm') != 1 && Session::get('cap') == 2)
+               <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
+               </li>
+               @else
+               <li><a href="/"><i class="feather-home"></i>  <span> Dashboard</span></a>
+               </li>
+               @endif
              @endif
              @endisset
 
-             @if(isset(Session::get('cap')->team_id))
+             <!-- @if(Session::get('cap') == 2)
              <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
              </li>
-             @endif
+             @endif -->
 
              @isset(Session::get('per')['filter'])
              @if(Session::get('per')['filter'] == 'true')
