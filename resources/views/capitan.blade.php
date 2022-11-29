@@ -36,7 +36,7 @@
             </p>
             <div class="progress progress-lg">
                 <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{($maqsad-($all->allprice/1000000))*100/$maqsad }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                    {{number_format(($maqsad-($all->allprice/1000000))*100/$maqsad,0)}}% bajarildi
+                    {{number_format((($all->allprice/1000000))*100/$maqsad,0)}}% bajarildi
                 </div>
                     
             </div>
