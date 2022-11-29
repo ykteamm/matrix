@@ -2,17 +2,20 @@
     <div class="sidebar-inner">
        <div id="sidebar-menu" style="height: 100vh; overflow-y: scroll" class="sidebar-menu">
           <ul>
-
+               <?php 
+                  $cap = Session::get('cap');
+                  $rm = Session::get('rm');
+               ?>
             @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
 
-               @if(intval(Session::get('rm')) == 1 && intval(Session::get('cap') == 2))
+               @if($rm == 1 && $cap == 2))
 
                <li><a href="/"><i class="feather-home"></i>  <span> Dashboard</span></a>
                </li>
                <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
                </li>
-               @elseif(intval(Session::get('rm')) != 1 && intval(Session::get('cap') == 2))
+               @elseif($rm != 1 && $cap == 2))
                <li><a href="{{route('capitan',['month'=>date('Y-m')])}}"><i class="feather-home"></i>  <span>Capitan dashboard</span></a>
                </li>
                @else
