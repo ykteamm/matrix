@@ -77,7 +77,9 @@
                     </li>
             @endif
             @endisset
-                  
+                 
+            @isset(Session::get('per')['team'])
+             @if(Session::get('per')['team'] == 'true')
             <li class="submenu">
                <a href="settings.html"><i class="feather-sliders"></i>  <span> Elchi jang </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
@@ -86,6 +88,8 @@
                   <li><a href="{{route('elchi-battle-setting')}}">Sozlamalar</a></li>
                </ul>
             </li>
+            @endif
+             @endisset
 
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')

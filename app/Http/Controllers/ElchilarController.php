@@ -24,13 +24,21 @@ class ElchilarController extends Controller
             if($region == 'all')
             {
                 $regions = 1;
+                $test = 1;
+                $vil = 1;
             }else{
                 $regions = explode(",", $region);
+                $vil = DB::table('tg_region')->whereIn('id',$regions)->pluck('name');
+                $test = 0;
             }
         }
         else{
             $regions = 0;
+            $test = 1;
+            $vil = 1;
+
         }
+
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         if ($cale==null){
             return " Kalendarda ".$month." kiritilmagan";
@@ -59,7 +67,7 @@ class ElchilarController extends Controller
         $total_plan=$this->service->total_plan($plan);
         $total_planday=$this->service->total_planday($plan_day);
         $total_haftalik=$this->service->total_week($haftalik,$days);
-        return view('elchilar.index',compact('total_haftalik','total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+        return view('elchilar.index',compact('test','vil','total_haftalik','total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
 
     }
 }

@@ -45,14 +45,22 @@
                 </div>
                 <div class=" mb-2 d-flex  justify-content-end">
 
-                    <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Viloyatlar</button>
+                    <button id="region" type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button_vil" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        @if($test == 1) 
+                          Viloyatlar
+                        @else
+                            @foreach($vil as $val)
+                             {{$val}}
+                            @endforeach
+                        @endif
+                    </button>
 
                     <div class="dropdown-menu" style="left:150px !important">
-                        <a onclick="allRegion()"  class="dropdown-item" > Hammasi </a>
+                        <a onclick="allRegion()"  class="dropdown-item" > Hammasi</a>
                         @php $i=1 @endphp
                         @foreach($viloyatlar as $m)
                             <div class="d-flex mr-2">
-                                <a  onclick="func({{$m->id}})"  class="dropdown-item gsh{{$m->side}}" > {{$m->name}} </a>
+                                <a  onclick="regFunc({{$m->id}})"  class="dropdown-item gsh{{$m->side}}" > {{$m->name}} </a>
                                 <input type="checkbox" class="checkbox gsh{{$m->side}}" name="vil{{$m->id}}" value="{{$m->id}}">
                             </div>
 
@@ -236,11 +244,19 @@
     function allRegion()
     {
         var month = <?php echo json_encode( $month ) ?>;
-        var region = 'all';
+        var url ="{{route('elchilar',['month'=> ':month']) }}";
+        url = url.replace(':month', month);
+        location.href = url;
+    }
+    function regFunc(id)
+    {
+        var month = <?php echo json_encode( $month ) ?>;
+        var region = id;
         var url ="{{route('elchilar',['month'=> ':month','region' => ':region']) }}";
         url = url.replace(':month', month);
         url = url.replace(':region', region);
         location.href = url;
+
     }
     function okbtn(){
         var array = []
