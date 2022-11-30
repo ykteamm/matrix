@@ -4,11 +4,11 @@
        <p style="font-size: 18px;"><img src="{{asset('nvt/logo2.png')}}" alt="Logo" width="100"/></p>
 
        </a> --}}
-       <a href="/" class="logo logo-small">
+       <!-- <a href="/" class="logo logo-small">
        <img src="{{asset('nvt/logo2.png')}}" alt="Logo" width="130" />
-       </a>
+       </a> -->
     </div>
-    {{-- <a href="javascript:void(0);" id="toggle_btn">  <i class="fas fa-bars"></i> --}}
+    <a href="javascript:void(0);" id="toggle_btn">  <i class="fas fa-bars"></i>
     </a>
 
 

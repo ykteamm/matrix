@@ -36,6 +36,7 @@ use App\Models\KnowledgeQuestion;
 use App\Models\Member;
 use App\Models\Team;
 use App\Services\ElchilarService;
+use GuzzleHttp\Client;
 
 class HomeController extends Controller
 {
@@ -60,29 +61,48 @@ class HomeController extends Controller
     // }
     public function smsfly(Request $request)
     {
-        $data =  $request->all();
-        $phone = $data['phone'];
-        $message = $data['message'];
+        $post = [
+            'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
+            'phone' => '998990821015',
+            'message' => 'text',
+        ];
+        
+        // $client = new \GuzzleHttp\Client();
+        $client = new Client();
+        
+        $response = $client->post(
+            'https://api.smsfly.uz/send',
+            ['key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
+                'phone' => '998990821015',
+                'message' => 'text'
+            ],
+            ['Content-Type' => 'application/json']
+        );
+
+        $responseJSON = json_decode($response->getBody(), true);
+        // $data =  $request->all();
+        // $phone = $data['phone'];
+        // $message = $data['message'];
         // $responses = Http::post('https://api.smsfly.uz/send', [
         //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-        //     'phone' => $phone,
-        //     'message' => $message,
+        //     'phone' => '998990821015',
+        //     'message' => 'text',
         // ]);
 
-        $response = Http::withHeaders([
-            'Accept'        => 'application/json',
-            'Content-Type' => 'application/json',
-        ])
-        ->withOptions([
-          'verify' => true,
-        ])
-        ->post('https://api.smsfly.uz/send', [
-            'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-            'phone' => $phone,
-            'message' => $message,
-        ]);
+        // $response = Http::withHeaders([
+        //     'Accept'        => 'application/json',
+        //     'Content-Type' => 'application/json',
+        // ])
+        // ->withOptions([
+        //   'verify' => true,
+        // ])
+        // ->post('https://api.smsfly.uz/send', [
+        //         'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
+        //     'phone' => '998990821015',
+        //     'message' => 'text',
+        // ]);
         return [
-            'res' => $response['reason']
+            'res' => $responseJSON
         ];
 
         // $post = [

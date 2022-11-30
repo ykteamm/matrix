@@ -1,4 +1,4 @@
-<div class="sidebar mt-5"  >
+<div class="sidebar mt-5">
     <div class="sidebar-inner">
        <div id="sidebar-menu" style="height: 100vh; overflow-y: scroll" class="sidebar-menu">
           <ul>
@@ -32,7 +32,8 @@
 
              @isset(Session::get('per')['filter'])
              @if(Session::get('per')['filter'] == 'true')
-               <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a>
+               <!-- <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a> -->
+               <li><a href="{{route('smsfly')}}"><i class="feather-filter"></i>  <span>Filter </span></a>
              @endif
              @endisset
 

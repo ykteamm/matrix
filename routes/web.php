@@ -33,7 +33,7 @@ use App\Http\Controllers\TrendController;
     Route::post('grade/ball', [App\Http\Controllers\NovatioController::class,'grade']);
     Route::post('grade/save', [App\Http\Controllers\NovatioController::class,'gradeSave']);
     Route::post('grade/tashqi', [App\Http\Controllers\NovatioController::class,'gradeTashqi']);
-    Route::post('/sms',[App\Http\Controllers\HomeController::class, 'smsfly']);
+    Route::get('/sms',[App\Http\Controllers\HomeController::class, 'smsfly'])->name('smsfly');
     Route::post('edit/purchase', [App\Http\Controllers\NovatioController::class,'editPurchase']);
 
 
