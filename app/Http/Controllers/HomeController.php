@@ -36,7 +36,6 @@ use App\Models\KnowledgeQuestion;
 use App\Models\Member;
 use App\Models\Team;
 use App\Services\ElchilarService;
-use GuzzleHttp\Client;
 
 class HomeController extends Controller
 {
@@ -61,33 +60,44 @@ class HomeController extends Controller
     // }
     public function smsfly(Request $request)
     {
-        $post = [
+        // $post = array(
+        //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
+        //     'phone' => '998990821015',
+        //     'message' => 'text'
+        // );
+        $responses = Http::accept('application/json')->post('https://api.smsfly.uz/send', [
             'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
             'phone' => '998990821015',
             'message' => 'text',
+        ]);
+        return [
+            'res' => $response
         ];
-        
-        // $client = new \GuzzleHttp\Client();
-        $client = new Client();
-        
-        $response = $client->post(
-            'https://api.smsfly.uz/send',
-            ['key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-                'phone' => '998990821015',
-                'message' => 'text'
-            ],
-            ['Content-Type' => 'application/json']
-        );
+        // $ch = curl_init();
+        // curl_setopt($ch, CURLOPT_URL, "https://api.smsfly.uz/send");
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        //     "key: 2b45f42d-1d3d-11ed-a71e-0242ac120002",
+        //     "phone:998990821015",
+        //     "message:text",
+        // // ));
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_POST, true);
+        // curl_setopt($ch, CURLOPT_HEADER, 0);
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'DEFAULT@SECLEVEL=1');
 
-        $responseJSON = json_decode($response->getBody(), true);
+        
+        // execute!
+        // $response = curl_exec($ch);
+        
+        // close the connection, release resources used
+        // curl_close($ch);
+        // $jsonArrayResponse - json_decode($response);
         // $data =  $request->all();
         // $phone = $data['phone'];
         // $message = $data['message'];
-        // $responses = Http::post('https://api.smsfly.uz/send', [
-        //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-        //     'phone' => '998990821015',
-        //     'message' => 'text',
-        // ]);
+        
 
         // $response = Http::withHeaders([
         //     'Accept'        => 'application/json',
@@ -101,9 +111,7 @@ class HomeController extends Controller
         //     'phone' => '998990821015',
         //     'message' => 'text',
         // ]);
-        return [
-            'res' => $responseJSON
-        ];
+        
 
         // $post = [
         //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',

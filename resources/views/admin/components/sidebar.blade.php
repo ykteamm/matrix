@@ -32,8 +32,8 @@
 
              @isset(Session::get('per')['filter'])
              @if(Session::get('per')['filter'] == 'true')
-               <!-- <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a> -->
-               <li><a href="{{route('smsfly')}}"><i class="feather-filter"></i>  <span>Filter </span></a>
+               <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a>
+               <!-- <li><a href="{{route('smsfly')}}"><i class="feather-filter"></i>  <span>Filter </span></a> -->
              @endif
              @endisset
 
