@@ -139,7 +139,8 @@
                </li>
                @endif
              @endisset
-
+             @isset(Session::get('per')['accept'])
+                                @if(Session::get('per')['accept'] == 'true')
                     <li class="submenu">
                         <a href="settings.html"><i class="feather-sliders"></i>  <span> Mahsulot kirim/qoldiq </span><span class="menu-arrow"></span></a>
                         <ul style="display: none;">
@@ -156,6 +157,8 @@
 
                         </ul>
                     </li>
+                    @endif
+                            @endisset
                 @isset(Session::get('per')['grade'])
                     @if(Session::get('per')['grade'] == 'true')
                         <li><a href="{{route('compare')}}"><i class="feather-filter"></i>  <span>Taqqoslash </span></a>
