@@ -3,8 +3,28 @@
 <div class="content main-wrapper ">
    <div class="row gold-box">
       @include('admin.components.logo')
+      <div class="card flex-fill headbot">
 
-        <div class="content container-fluid headbot">
+            <div class="btn-group mr-5 ml-auto">
+            <div class="row">
+                <div class="col-md-12" align="center">
+                        Sana
+                </div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                    <div class="dropdown-menu timeclass">
+                    <a href="{{route('team',['time' => 'today'])}}" class="dropdown-item">Bugun</a>
+                    <a href="{{route('team',['time' => 'week'])}}" class="dropdown-item">Hafta</a>
+                    <a href="{{route('team',['time' => 'month'])}}" class="dropdown-item">Oy</a>
+                    <a href="{{route('team',['time' => 'year'])}}" class="dropdown-item">Yil</a>
+                    <a href="{{route('team',['time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
+                    <input type="text" name="datetimes" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        <div class="content container-fluid ">
             <div class="row">
                 @foreach ($teams as $item)
                 @if (isset($item->team[0]))
@@ -21,7 +41,7 @@
                                             <div class="dash-contetnt">
                                                 <h4 class="text-white" style="text-align: center"> {{$team_item->name}}
                                                 @if(isset($sum[$team_item->id]))
-                                                {{ array_sum($sum[$team_item->id]) }}
+                                                {{ number_format(array_sum($sum[$team_item->id]),0,'','.') }}
                                                 @else
                                                 0
                                                 @endif
@@ -29,14 +49,14 @@
                                                 @foreach ($members as $member)
                                                     @if($team_item->id == $member->team_id)
                                                         @if ($member->user->level == 2)
-                                                            <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}} <i class="fas fa-crown"></i> {{  ($sum[$team_item->id][$member->user_id]) }}</h2>
+                                                            <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}} <i class="fas fa-crown"></i> {{  number_format($sum[$team_item->id][$member->user_id],0,'','.') }}</h2>
                                                         @endif
                                                     @endif
                                                 @endforeach
                                                 @foreach ($members as $member)
                                                     @if($team_item->id == $member->team_id)
                                                         @if ($member->user->level != 2)
-                                                            <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}} {{  ($sum[$team_item->id][$member->user_id]) }}</h2>
+                                                            <h2 class="text-white">{{$member->user->last_name}} {{$member->user->first_name}} {{  number_format($sum[$team_item->id][$member->user_id],0,'','.') }}</h2>
                                                         @endif
                                                     @endif
                                                 @endforeach
@@ -238,5 +258,17 @@
 @endsection
 @section('admin_script')
    <script>
+    $('input[name="datetimes"]').daterangepicker({
+        locale: {
+        format: 'DD.MM.YY'
+        }
+    });
+    $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+         window.location = $(this).data("href");
+         var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
+         var url = "{{ route('team',['time' => ':tim']) }}";
+         url = url.replace(':tim', tim);
+         location.href = url;
+    });
    </script>
 @endsection

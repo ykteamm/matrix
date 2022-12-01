@@ -431,6 +431,7 @@
                                             '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
                                             '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
                                             '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
+                                            '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+response.fd_end+'</span></h6>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -476,6 +477,8 @@
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
                                             '</div>'+ muser +
                                             '<h6 class="mt-2" style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
+                                            '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+response.fd_end+'</span></h6>'+
+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -502,6 +505,8 @@
                                             '<h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">'+ value.name +'</h2>'+
                                             '<h3 style="color:#ffffff;text-align:left;margin-left:0px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
                                             '<h6 style="margin-top:-10px;"><span style="text-align:left;">'+value.icon +'</span></h6>'+
+                                            // '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.d_begin +'-'+response.d_end+'</span></h6>'+
+                                            '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+response.fd_end+'</span></h6>'+
                                             // '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                         '</div>'+
                                     '</div>'+

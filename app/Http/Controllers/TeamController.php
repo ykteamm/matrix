@@ -17,6 +17,36 @@ class TeamController extends Controller
 
     public function index($time)
     {
+        if ($time == 'today') {
+            $date_begin = date_now();
+            $date_end = date_now();
+            $dateText = 'Bugun';
+        }
+        elseif ($time == 'week') {
+            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( date_now()) ) ));
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hafta';
+        }
+        elseif ($time == 'month') {
+            $date_begin = date_now()->format('Y-m-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Oy';
+        }
+        elseif ($time == 'year') {
+            $date_begin = date_now()->format('Y-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Yil';
+        }
+        elseif ($time == 'all') {
+            $date_begin = date_now()->format('1790-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hammasi';
+        }
+        else{
+            $date_begin = substr($time,0,10);
+            $date_end = substr($time,11);
+            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+        }
         $regions = Region::all();
         $teams = Region::with('team')->get();
         $users = User::whereNotIn('level',[1])->get();
@@ -25,8 +55,8 @@ class TeamController extends Controller
         foreach ($members as $key => $value) {
                 $sums = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
-                    ->whereDate('tg_productssold.created_at','>=','2022-10-01')
-                    ->whereDate('tg_productssold.created_at','<=','2022-10-31')
+                    ->whereDate('tg_productssold.created_at','>=',$date_begin)
+                    ->whereDate('tg_productssold.created_at','<=',$date_end)
                     ->where('tg_user.id','=',$value->user_id)
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->value('allprice');
@@ -38,7 +68,7 @@ class TeamController extends Controller
                 }
         }
         // return $members;
-        return view('team.index',compact('regions','teams','users','members','sum'));
+        return view('team.index',compact('dateText','regions','teams','users','members','sum'));
 
     }
 

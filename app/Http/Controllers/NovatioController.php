@@ -245,7 +245,7 @@ class NovatioController extends Controller
                     if($cate->id == $one->c_id)
                     {
                         $catesum = $catesum + ($one->m_price * $one->m_number);
-                        $cateory[$ckey] = array('price' => $catesum, 'name' => $cate->name);
+                        $cateory[$ckey] = array('price' => number_format($catesum,0,'','.'), 'name' => $cate->name);
                     }
                 }
                     $catesum = 0;
@@ -258,7 +258,7 @@ class NovatioController extends Controller
                         $medisum = $medisum + ($one->m_price * $one->m_number);
                         $number = $number + $one->m_number;
 
-                        $medic[$mkey] = array('price' => $medisum,'number' => $number, 'name' => $med->name);
+                        $medic[$mkey] = array('price' => number_format($medisum,0,'','.'),'number' => $number, 'name' => $med->name);
                     }
                 }
                     $medisum = 0;
@@ -267,7 +267,7 @@ class NovatioController extends Controller
             }
             return [
                 'data' => $user,
-                'sum' => $sum,
+                'sum' => number_format($sum,0,'','.'),
                 'cateory' => $cateory,
                 'medic' => $medic,
                 'reid' => $reid,
@@ -718,6 +718,10 @@ class NovatioController extends Controller
             'dashboard' => $newarray,
             'userarry' => $newuserarray,
             'catarray' => $newcatarray,
+            'd_begin' => date('d.m.Y',strtotime($date_begin)),
+            'd_end' => date('d.m.Y',strtotime($date_end)),
+            'fd_begin' => date('d.m.Y',strtotime($f_date_begin)),
+            'fd_end' => date('d.m.Y',strtotime($f_date_end))
         ];
     }
 
