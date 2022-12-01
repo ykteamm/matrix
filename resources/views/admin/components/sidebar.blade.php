@@ -32,19 +32,19 @@
 
              @isset(Session::get('per')['filter'])
              @if(Session::get('per')['filter'] == 'true')
-               <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a>
-               <!-- <li><a href="{{route('smsfly')}}"><i class="feather-filter"></i>  <span>Filter </span></a> -->
+               <!-- <li><a href="/search"><i class="feather-filter"></i>  <span>Filter </span></a> -->
+               <li><a href="{{route('smsfly')}}"><i class="feather-filter"></i>  <span>Filter </span></a>
              @endif
              @endisset
 
              @isset(Session::get('per')['elchi-day'])
              @if(Session::get('per')['elchi-day'] == 'true')
-                 <li><a href="{{route('elchilar',['month'=>date('Y-m')])}}"><i class="feather-filter"></i>  <span>Elchilar kunlik</span></a>
+                 <li><a href="{{route('elchilar',['month'=>date('Y-m')])}}"><i class="feather-users"></i>  <span>Elchilar kunlik</span></a>
                @endif
                @endisset
              @isset(Session::get('per')['elchi'])
              @if(Session::get('per')['elchi'] == 'true')
-               <li><a href="{{route('elchi-list')}}"><i class="feather-filter"></i>  <span>Elchilar</span></a>
+               <li><a href="{{route('elchi-list')}}"><i class="feather-users"></i>  <span>Elchilar</span></a>
                   @endif
              @endisset
 
@@ -103,7 +103,7 @@
              <li><a href="{{route('team-battle')}}"><i class="feather-filter"></i>  <span>Jamoalar jangi</span></a>
 
                <li class="submenu">
-                  <a href="settings.html"><i class="feather-sliders"></i>  <span> Trend </span><span class="menu-arrow"></span></a>
+                  <a href="settings.html"><i class="feather-activity"></i>  <span> Trend </span><span class="menu-arrow"></span></a>
                   <ul style="display: none;">
                      <li><a href="{{route('trend.region','three')}}">Viloyat</a></li>
                      <li><a href="{{route('trend.product','three')}}">Mahsulot</a></li>
@@ -190,7 +190,7 @@
 
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')
-             <li><a href="{{route('setting','09.2022')}}"><i class="feather-filter"></i>  <span>Sozlamalar </span></a>
+             <li><a href="{{route('setting','09.2022')}}"><i class="feather-settings"></i>  <span>Sozlamalar </span></a>
              </li>
              @endif
              @endisset

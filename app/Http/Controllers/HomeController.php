@@ -58,80 +58,16 @@ class HomeController extends Controller
     // {
     //     return view('home');
     // }
-    public function smsfly(Request $request)
+    public function smsfly()
     {
-        // $post = array(
-        //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-        //     'phone' => '998990821015',
-        //     'message' => 'text'
-        // );
-        $responses = Http::accept('application/json')->post('https://api.smsfly.uz/send', [
+        $responses = Http::withoutVerifying()->post('https://api.smsfly.uz/send', [
             'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
             'phone' => '998990821015',
             'message' => 'text',
         ]);
         return [
-            'res' => $response
+            'res' => $responses
         ];
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, "https://api.smsfly.uz/send");
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        //     "key: 2b45f42d-1d3d-11ed-a71e-0242ac120002",
-        //     "phone:998990821015",
-        //     "message:text",
-        // // ));
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_POST, true);
-        // curl_setopt($ch, CURLOPT_HEADER, 0);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        // curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'DEFAULT@SECLEVEL=1');
-
-        
-        // execute!
-        // $response = curl_exec($ch);
-        
-        // close the connection, release resources used
-        // curl_close($ch);
-        // $jsonArrayResponse - json_decode($response);
-        // $data =  $request->all();
-        // $phone = $data['phone'];
-        // $message = $data['message'];
-        
-
-        // $response = Http::withHeaders([
-        //     'Accept'        => 'application/json',
-        //     'Content-Type' => 'application/json',
-        // ])
-        // ->withOptions([
-        //   'verify' => true,
-        // ])
-        // ->post('https://api.smsfly.uz/send', [
-        //         'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-        //     'phone' => '998990821015',
-        //     'message' => 'text',
-        // ]);
-        
-
-        // $post = [
-        //     'key' => '2b45f42d-1d3d-11ed-a71e-0242ac120002',
-        //     'phone' => $phone,
-        //     'message' => $message,
-        // ];
-
-        // $ch = curl_init('https://api.smsfly.uz/send');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-        // // execute!
-        // $response = curl_exec($ch);
-
-        // curl_close($ch);
-
-        // return [
-        //     'res' => $response
-        // ];
     }
 
     public function imageGrade()
