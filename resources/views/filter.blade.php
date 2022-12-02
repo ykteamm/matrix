@@ -4,7 +4,6 @@
    <div class="row gold-box">
       @include('admin.components.logo')
       <div class="card flex-fill">
-
          <div style="border-bottom-radius:30px !important;margin-left:auto">
             <div class="justify-content-between align-items-center p-2" >
                  <div class="btn-group">
@@ -96,7 +95,7 @@
                  </div>
             </div>
          </div>
-     </div>
+      </div>
    </div>
     <div>
         <div class="main-wrapper headbot">

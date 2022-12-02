@@ -1487,9 +1487,10 @@ class HomeController extends Controller
         return view('elchi-know',compact('elchi'));
     }
 
-    public function proList($time)
+    public function proList($time,$region)
     {
         // $time = '02.09.2022/02.09.2022';
+        // return $region;
         if ($time == 'today') {
             $date_begin = today();
             $date_end = today();
@@ -1541,23 +1542,32 @@ class HomeController extends Controller
         }
         $r_id_array = [];
 
-        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
-        {
+        // if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+        // {
         $regions = DB::table('tg_region')->get();
-        foreach ($regions as $key => $value) {
-            // if (is_numeric($key)){
-           $r_id_array[] = $value->id;
-            // }
-        }
 
-        }else{
-            foreach (Session::get('per') as $key => $value) {
-                if (is_numeric($key)){
-               $r_id_array[] = $key;
-                }
+        // foreach ($regions as $key => $value) {
+        //    $r_id_array[] = $value->id;
+        // }
+
+        // }else{
+        //     foreach (Session::get('per') as $key => $value) {
+        //         if (is_numeric($key)){
+        //        $r_id_array[] = $key;
+        //         }
+        //     }
+        // }
+        if($region == 'all')
+        {
+            foreach ($regions as $key => $value) {
+                $r_id_array[] = $value->id;
             }
-
+            $regText = 'Hammasi';
+        }else{
+            $r_id_array[] = $region;
+            $regText = DB::table('tg_region')->where('id',$region)->value('name');
         }
+        // return $r_id_array;
         $products = DB::table('tg_productssold')
                 ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -1678,8 +1688,8 @@ class HomeController extends Controller
             //     unset($alls22[$key]->mid);
             // }
             $medic2 = $alls22;
-
-        return view('product',compact('medic','medic2','category','dateText'));
+            $regions = DB::table('tg_region')->get();
+        return view('product',compact('regions','medic','medic2','category','dateText','regText'));
     }
     public function userOnlineStatus()
     {

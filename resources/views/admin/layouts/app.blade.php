@@ -216,6 +216,11 @@ $(document).ready(function () {
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
 
     }).buttons().container().appendTo('#asdasd2 .col-md-6:eq(0)');
+    $(".forexcel").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+
+    }).buttons().container().appendTo('#forexcel123 .col-md-6:eq(0)');
 
     $(".forware").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
@@ -227,8 +232,10 @@ $(document).ready(function () {
   $('.dataTables_length').addClass('bs-select');
 
   $('#dtBasicExample12').DataTable({
-    "order": [[ 2, "desc" ]]
-  });
+    "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+  }).buttons().container().appendTo('#dtBasicExample1212');
+  
   $('.dataTables_length').addClass('bs-select');
 });
         $("#hospital_name").change(function(){

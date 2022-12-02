@@ -6,24 +6,59 @@
   
         <div class="card flex-fill">
          
-          <div class="btn-group mr-5 ml-auto">
-            <div class="row">
-               <div class="col-md-12" align="center">
-                        Sana
-               </div>
-               <div class="col-md-12">
-                  <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
-                  <div class="dropdown-menu timeclass">
-                     <a href="{{route('pro-list',['time' => 'today'])}}" class="dropdown-item">Bugun</a>
-                     <a href="{{route('pro-list',['time' => 'week'])}}" class="dropdown-item">Hafta</a>
-                     <a href="{{route('pro-list',['time' => 'month'])}}" class="dropdown-item">Oy</a>
-                     <a href="{{route('pro-list',['time' => 'year'])}}" class="dropdown-item">Yil</a>
-                     <a href="{{route('pro-list',['time' => 'all'])}}" class="dropdown-item" id="aftertime">Hammasi</a>
-                     <input type="text" name="datetimes" class="form-control"/>
+         <div class="card flex-fill">
+         <div style="border-bottom-radius:30px !important;margin-left:auto">
+            <div class="justify-content-between align-items-center p-2" >
+               <form action="{{route('pro-list-search')}}" method="post">
+                 <div class="btn-group">
+                  <div class="row">
+                     <div class="col-md-12" align="center">
+                              Viloyat
+                     </div>
+                     <div class="col-md-12">
+                        <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$regText}}</button>
+                        <div class="dropdown-menu" style="left:150px !important">
+                           <a href="#" onclick="region('Hammasi','all')" class="dropdown-item" id="tgregion"> Hammasi </a>
+                           @foreach($regions as $region)
+                           <a href="#" onclick="region(`{{$region->name}}`,`{{$region->id}}`)" class="dropdown-item" id="tgregion"> {{$region->name}} </a>
+                           @endforeach
+                        </div>
+                     </div>
                   </div>
-               </div>
+                 </div>
+                 <div class="btn-group">
+                      <div class="row">
+                        <div class="col-md-12" align="center">
+                                 Sana
+                        </div>
+                        <div class="col-md-12">
+                           <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                              <div class="dropdown-menu timeclass">
+                                 <a href="#" onclick="dates('today','Bugun')" class="dropdown-item">Bugun</a>
+                                 <a href="#" onclick="dates('week','Hafta')" class="dropdown-item">Hafta</a>
+                                 <a href="#" onclick="dates('month','Oy')" class="dropdown-item">Oy</a>
+                                 <a href="#" onclick="dates('year','Yil')" class="dropdown-item">Yil</a>
+                                 <a href="#" onclick="dates('all','Hammasi')" class="dropdown-item" id="aftertime">Hammasi</a>
+                                 <input type="text" name="datetimes" class="form-control"/>
+                              </div>
+                        </div>
+                     </div>
+                 </div>
+                 <div class="btn-group" style="margin-right:30px !important;margin-top:20px;">
+                     <div class="row">
+                        <div class="col-md-12" align="center">
+
+                        </div>
+                        <div class="col-md-12">
+                           <button type="button" class="btn btn-block btn-outline-primary" onclick="formButton()">Qidirish</button>
+                        </div>
+                     </div>
+                 </div>
+               </form>
             </div>
-          </div>
+         </div>
+      </div>
+
        </div>
        <div class="card flex-fill">
     
@@ -43,11 +78,11 @@
        
       </div>
 
-      <div class="card-body headbot" id="tartib">
+      <div class="card-body headbot" id="tartib" style="display: none;">
         <ul class="nav nav-tabs nav-tabs-solid nav-justified">
         
         @foreach ($category as $key => $citem)
-        <li class="nav-item"><a class="nav-link @if($key == 0) active @endif " href="#solid-justified-tab{{$key+1}}" data-toggle="tab">{{$citem->name}}</a></li>
+        <li class="nav-item"><a class="nav-link @if($key == 1) active @endif " href="#solid-justified-tab{{$key+1}}" data-toggle="tab">{{$citem->name}}</a></li>
            
         @endforeach
         
@@ -156,13 +191,15 @@
       </div>
 
       
-     <div class="row headbot" id="notartib" style="display: none;">
+     <div class="row headbot" id="notartib">
         <div class="col-sm-12">
            <div class="card">
               <div class="card-body">
+              <div id="dtBasicExample1212"></div>
+
                  <div class="table-responsive">
-                    <table class="table mb-0" id="dtBasicExample12">
-                        
+
+                    <table class="table mb-0 " id="dtBasicExample12">
                        <thead>
                           <tr>
                              {{-- <th>id</th> --}}
@@ -220,34 +257,41 @@
 @endsection
 @section('admin_script')
    <script>
-    function koproq(name){
-        // console.log(name)
-        // if(name == 'Choy')
-        // {
-            $(`.${name}`).css('display','');
-            $(this).css('display','none');
-        // }
-    }
+      function dates(key,text)
+      {
+         $('#age_button2').text(text);
+         $('#age_button2').attr('name',key);
+      }
+      function formButton()
+      {
+         var region = $('#age_button').attr('name');
+         var tim = $('#age_button2').attr('name');
+            var url = "{{ route('pro-list',['time' => ':tim','region' => ':region']) }}";
+            url = url.replace(':tim', tim);
+            url = url.replace(':region', region);
+            location.href = url;
+      }
+      function region(text,id)
+      {
+         $('#age_button').text(text);
+         $('#age_button').attr('name',id);
+      }
+      function koproq(name){
+               $(`.${name}`).css('display','');
+               $(this).css('display','none');
+      }
       $(function() {
-  $('input[name="datetimes"]').daterangepicker({
-   //  timePicker: true,
-   //  startDate: moment().startOf('hour'),
-   //  endDate: moment().startOf('hour').add(32, 'hour'),
-    locale: {
-      format: 'DD.MM.YY'
-    }
-  });
-  $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
-      // $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-  console.log(picker.startDate.format('YYYY-MM-DD'))
-  window.location = $(this).data("href");
-  var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
-	var url = "{{ route('pro-list',['time' => ':tim']) }}";
-	url = url.replace(':tim', tim);
-	location.href = url;
-
-  });
-});
-$(document).on('click','#filter2_search',function(){$('#filter2_inputs').slideToggle("slow");});
+         $('input[name="datetimes"]').daterangepicker({
+            locale: {
+               format: 'DD.MM.YYYY'
+            }
+         });
+         $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+            var tim2 = picker.startDate.format('DD.MM.YYYY')+'-'+picker.endDate.format('DD.MM.YYYY');
+            var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
+            $('#age_button2').text(tim2);
+            $('#age_button2').attr('name',tim);
+         });
+      });
    </script>
 @endsection
