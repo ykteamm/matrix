@@ -32,7 +32,7 @@
                                  Sana
                         </div>
                         <div class="col-md-12">
-                           <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
+                           <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="{{$dateTexte}}"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$dateText}} </button>
                               <div class="dropdown-menu timeclass">
                                  <a href="#" onclick="dates('today','Bugun')" class="dropdown-item">Bugun</a>
                                  <a href="#" onclick="dates('week','Hafta')" class="dropdown-item">Hafta</a>

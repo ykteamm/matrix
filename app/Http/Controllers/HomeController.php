@@ -1492,36 +1492,44 @@ class HomeController extends Controller
         // $time = '02.09.2022/02.09.2022';
         // return $region;
         if ($time == 'today') {
-            $date_begin = today();
-            $date_end = today();
+            $date_begin = date_now();
+            $date_end = date_now();
 
-            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
-            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( today()) ) ));
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date_now()) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date_now()) ) ));
             $dateText = 'Bugun';
+            $dateTexte = 'today';
         }
         elseif ($time == 'week') {
-            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( today()) ) ));
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->startOfWeek()->format('Y-m-d');
+            $date_end = date_now()->format('Y-m-d');
 
-            $f_date_begin = date('Y-m-d',(strtotime ( '-2 week' , strtotime ( today()) ) ));
-            $f_date_end = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( today()) ) ));
+            $f_date_begin = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( $date_begin) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 week' , strtotime ( $date_end) ) ));
             $dateText = 'Hafta';
+            $dateTexte = 'week';
+
         }
         elseif ($time == 'month') {
-            $date_begin = today()->format('Y-m-01');
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->startOfMonth()->format('Y-m-d');
+
+            $date_end = date_now()->format('Y-m-d');
 
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_begin) ) ));
-            $f_date_end = today()->format('Y-m-01');
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_end) ) ));
             $dateText = 'Oy';
+            $dateTexte = 'month';
+
         }
         elseif ($time == 'year') {
-            $date_begin = today()->format('Y-01-01');
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->startOfYear()->format('Y-m-d');
+            $date_end = date_now()->format('Y-m-d');
 
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_begin) ) ));
-            $f_date_end = today()->format('Y-01-01');
+            $f_date_end = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_end) ) ));
             $dateText = 'Yil';
+            $dateTexte = 'year';
+
         }
         elseif ($time == 'all') {
             $date_begin = today()->format('1790-01-01');
@@ -1530,14 +1538,21 @@ class HomeController extends Controller
             $f_date_begin = today()->format('1790-01-01');
             $f_date_end = today()->format('Y-m-d');
             $dateText = 'Hammasi';
+            $dateTexte = 'all';
+
         }
         else{
             $date_begin = substr($time,0,10);
             $date_end = substr($time,11);
 
+            // $date_begin = date('Y-m-d',strtotime($date_begin));
+            // $date_end = date('Y-m-d',strtotime($date_end));
+
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,0,10)) ) ));
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,11)) ) ));
             $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+            $dateTexte = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+
 
         }
         $r_id_array = [];
@@ -1590,7 +1605,7 @@ class HomeController extends Controller
                 ->get();
 
         $category = DB::table('tg_category')->get();
-        $medicine = DB::table('tg_medicine')->get();
+        $medicine = DB::table('tg_medicine')->orderBy('id','ASC')->get();
 
             $sum = 0;
             $catesum = 0;
@@ -1689,7 +1704,7 @@ class HomeController extends Controller
             // }
             $medic2 = $alls22;
             $regions = DB::table('tg_region')->get();
-        return view('product',compact('regions','medic','medic2','category','dateText','regText'));
+        return view('product',compact('regions','medic','medic2','category','dateText','dateTexte','regText'));
     }
     public function userOnlineStatus()
     {
