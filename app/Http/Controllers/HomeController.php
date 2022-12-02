@@ -1542,16 +1542,17 @@ class HomeController extends Controller
 
         }
         else{
-            $date_begin = substr($time,0,10);
-            $date_end = substr($time,11);
+            $date_begins = substr($time,0,10);
+            $date_ends = substr($time,11);
 
-            // $date_begin = date('Y-m-d',strtotime($date_begin));
-            // $date_end = date('Y-m-d',strtotime($date_end));
+            $date_begin = date('Y-m-d',strtotime($date_begins));
+            $date_end = date('Y-m-d',strtotime($date_ends));
 
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,0,10)) ) ));
             $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,11)) ) ));
-            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
-            $dateTexte = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+
+            $dateText = date('d.m.Y',(strtotime ( $date_begins ) )).'-'.date('d.m.Y',(strtotime ( $date_ends ) ));
+            $dateTexte = date('d.m.Y',(strtotime ( $date_begins ) )).'-'.date('d.m.Y',(strtotime ( $date_ends ) ));
 
 
         }
