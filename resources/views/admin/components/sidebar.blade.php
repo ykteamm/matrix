@@ -116,7 +116,7 @@
 
              @isset(Session::get('per')['pro'])
              @if(Session::get('per')['pro'] == 'true')
-             <li><a href="{{route('pro-list',['time'=>'today','region'=>'all'])}}"><i class="feather-filter"></i>  <span>Mahsulotlar </span></a>
+             <li><a href="{{route('pro-list',['time'=>'today','region'=>'all','pharm' => 'all'])}}"><i class="feather-filter"></i>  <span>Mahsulotlar </span></a>
              </li>
             @endif
              @endisset

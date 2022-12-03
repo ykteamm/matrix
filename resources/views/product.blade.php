@@ -27,6 +27,31 @@
                   </div>
                  </div>
                  <div class="btn-group">
+                  <div class="row">
+                     <div class="col-md-12" align="center">
+                              Dorixona
+                     </div>
+                     <div class="col-md-12" style="">
+                        <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button3" name="{{$pkey}}" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$pText}}</button>
+                        <div class="dropdown-menu" style="left:150px !important;overflow-y:scroll; height:400px;">
+                           <a href="#" onclick="pharm('Hammasi','all')" class="dropdown-item" id="tgregion"> Hammasi </a>
+                           @foreach($pharmacy as $p)
+                           @if($regkey == 'all')
+                           <a href="#" onclick="pharm(`{{$p->name}}`,`{{$p->id}}`)" class="dropdown-item pharm{{$p->region_id}} allpharm"> {{$p->name}} </a>
+                           @else
+                           <?php $r = $region; $pa =  $p->region_id?>
+                           @if($regkey == $p->region_id)
+                           <a href="#" onclick="pharm(`{{$p->name}}`,`{{$p->id}}`)" class="dropdown-item pharm{{$p->region_id}} allpharm"> {{$p->name}} </a>
+                           @else
+                           <a style="display:none;" href="#" onclick="pharm(`{{$p->name}}`,`{{$p->id}}`)" class="dropdown-item pharm{{$p->region_id}} allpharm"> {{$p->name}} </a>
+                           @endif
+                           @endif
+                           @endforeach
+                        </div>
+                     </div>
+                  </div>
+                 </div>
+                 <div class="btn-group">
                       <div class="row">
                         <div class="col-md-12" align="center">
                                  Sana
@@ -232,7 +257,13 @@
                               
                            </td>
                              @if($item['price'] > $item2['price'])
-                             <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item['price'],1)}}%</td>
+                              @if($item2['price'] == 0)
+                             <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>0%</td>
+
+                              @else
+                             <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item2['price'],1)}}%</td>
+
+                              @endif 
                              @elseif($item['price'] < $item2['price'])
                             <td><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>{{number_format((($item2['price'] - $item['price'])*100)/$item2['price'],1)}}%</td>
                               @else
@@ -266,15 +297,33 @@
       {
          var region = $('#age_button').attr('name');
          var tim = $('#age_button2').attr('name');
-            var url = "{{ route('pro-list',['time' => ':tim','region' => ':region']) }}";
+         var pharm = $('#age_button3').attr('name');
+            var url = "{{ route('pro-list',['time' => ':tim','region' => ':region','pharm' => ':pharm']) }}";
             url = url.replace(':tim', tim);
             url = url.replace(':region', region);
+            url = url.replace(':pharm', pharm);
             location.href = url;
       }
       function region(text,id)
       {
          $('#age_button').text(text);
          $('#age_button').attr('name',id);
+
+         $('#age_button3').text('Hammasi');
+         $('#age_button3').attr('name','all');
+         if(id == 'all')
+         {
+            $('.allpharm').css('display','');
+         }else{
+            $('.allpharm').css('display','none');
+            $(`.pharm${id}`).css('display','');
+         }
+         
+      }
+      function pharm(text,id)
+      {
+         $('#age_button3').text(text);
+         $('#age_button3').attr('name',id);
       }
       function koproq(name){
                $(`.${name}`).css('display','');

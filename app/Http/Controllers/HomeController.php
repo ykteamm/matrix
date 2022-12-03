@@ -1487,10 +1487,9 @@ class HomeController extends Controller
         return view('elchi-know',compact('elchi'));
     }
 
-    public function proList($time,$region)
+    public function proList($time,$region,$pharm)
     {
         // $time = '02.09.2022/02.09.2022';
-        // return $region;
         if ($time == 'today') {
             $date_begin = date_now();
             $date_end = date_now();
@@ -1532,11 +1531,11 @@ class HomeController extends Controller
 
         }
         elseif ($time == 'all') {
-            $date_begin = today()->format('1790-01-01');
-            $date_end = today()->format('Y-m-d');
+            $date_begin = date_now()->format('1790-01-01');
+            $date_end = date_now()->format('Y-m-d');
 
-            $f_date_begin = today()->format('1790-01-01');
-            $f_date_end = today()->format('Y-m-d');
+            $f_date_begin = date_now()->format('1790-01-01');
+            $f_date_end = date_now()->format('Y-m-d');
             $dateText = 'Hammasi';
             $dateTexte = 'all';
 
@@ -1548,8 +1547,10 @@ class HomeController extends Controller
             $date_begin = date('Y-m-d',strtotime($date_begins));
             $date_end = date('Y-m-d',strtotime($date_ends));
 
-            $f_date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,0,10)) ) ));
-            $f_date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( substr($time,11)) ) ));
+            $farq = intval(date('d',strtotime($date_ends)))-intval(date('d',strtotime($date_begins)))+1;
+
+            $f_date_begin = date('Y-m-d',(strtotime ( '-'.$farq.' day' , strtotime ( substr($time,0,10)) ) ));
+            $f_date_end = date('Y-m-d',(strtotime ( '-'.$farq.' day' , strtotime ( substr($time,11)) ) ));
 
             $dateText = date('d.m.Y',(strtotime ( $date_begins ) )).'-'.date('d.m.Y',(strtotime ( $date_ends ) ));
             $dateTexte = date('d.m.Y',(strtotime ( $date_begins ) )).'-'.date('d.m.Y',(strtotime ( $date_ends ) ));
@@ -1579,11 +1580,13 @@ class HomeController extends Controller
                 $r_id_array[] = $value->id;
             }
             $regText = 'Hammasi';
+            $regkey = "all";
         }else{
             $r_id_array[] = $region;
             $regText = DB::table('tg_region')->where('id',$region)->value('name');
+            $regkey = $region;
         }
-        // return $r_id_array;
+        if($pharm == 'all'){
         $products = DB::table('tg_productssold')
                 ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -1604,7 +1607,37 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->get();
-
+            $pText = 'Hammasi';
+            $pkey = 'all';
+        }else{
+            $products = DB::table('tg_productssold')
+                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
+                ->whereDate('tg_productssold.created_at','>=',$date_begin)
+                ->whereDate('tg_productssold.created_at','<=',$date_end)
+                ->whereIn('tg_region.id',$r_id_array)
+                ->where('tg_pharmacy.id',$pharm)
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->get();
+            $products_range = DB::table('tg_productssold')
+                ->select('tg_medicine.id as m_id','tg_category.id as c_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_productssold.created_at as m_data')
+                ->whereDate('tg_productssold.created_at','>=',$f_date_begin)
+                ->whereDate('tg_productssold.created_at','<=',$f_date_end)
+                ->whereIn('tg_region.id',$r_id_array)
+                ->where('tg_pharmacy.id',$pharm)
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->get();
+                
+                $pText = DB::table('tg_pharmacy')->where('id',$pharm)->value('name');
+                $pkey = $pharm;
+        }
         $category = DB::table('tg_category')->get();
         $medicine = DB::table('tg_medicine')->orderBy('id','ASC')->get();
 
@@ -1705,7 +1738,9 @@ class HomeController extends Controller
             // }
             $medic2 = $alls22;
             $regions = DB::table('tg_region')->get();
-        return view('product',compact('regions','medic','medic2','category','dateText','dateTexte','regText'));
+            $pharmacy = DB::table('tg_pharmacy')->get();
+            // return $medic;
+        return view('product',compact('pText','pkey','pharmacy','regions','regkey','medic','medic2','category','dateText','dateTexte','regText'));
     }
     public function userOnlineStatus()
     {

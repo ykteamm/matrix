@@ -76,38 +76,71 @@ class ElchilarService
         $elchi_work=[];
 
         $elchi_prognoz=[];
+        $cale_date=[];
+        $all_work_day=[];
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
-        $cale_date = json_decode($cale->day_json);
+        $cale_d = json_decode($cale->day_json);
+        foreach($cale_d as $key => $c)
+        {
+            $cale_date[$key+1]=$c;
+            if($c == 'true')
+            {
+                $all_work_day[]=$key+1;
+            }
+        }
+        $old_month = intval(date('m',strtotime($month.'-01')));
+        $now_month = intval(date('m',strtotime(date_now())));
+        // dd($now_month);
+        $begin_date = intval(date('d',strtotime($month.'-01')));
+        $end_date = intval(date('d',strtotime($month.'-'.$endofmonth)));
+        // $end_date = 10;
+        $remain=0;
+
+        if($now_month > $old_month)
+        {
+            for ($i=$begin_date; $i <= $end_date; $i++) { 
+                if(in_array($i,$all_work_day))
+                {
+                    $remain +=1;
+                }
+            }
+        }else{
+            for ($i=$begin_date; $i < $end_date; $i++) { 
+                if(in_array($i,$all_work_day))
+                {
+                    $remain +=1;
+                }
+            }
+        }
+        
+        // dd($remain);
+
         foreach($elchi as $elch)
         {
             $date = DB::table('tg_smena')
                 ->whereDate('created_from','>=',date('Y-m',strtotime($month)).'-01')
                 ->whereDate('created_from','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                 ->where('smena',2)
-                ->where('user_id', $elch->id)
+                ->where('user_id',$elch->id)
                 ->orderBy('created_from','DESC')
                 ->pluck('created_from');
-            if(isset($date[0]))
-            {
 
 
-                $all_date=[];
-                foreach($cale_date as $key => $value)
+            $day_work_array=[];
+            foreach($date as $key => $c)
                 {
-                    if($value == 'true' && $key <=  date('d',(strtotime ( $date[0] ) )))
-                    {
-                        if (strlen($key) == 1) {
-                            $key = '0'.$key;
-                        }
-                        $all_date[] = date('Y-m',strtotime($month)).'-'.$key;
-                    }
+                    $day_work_array[] = intval(date('d',strtotime($c)));
                 }
-                $no_day=0;
-                foreach($date as $item){
-                    if(!in_array($item,$all_date)){
-                        $no_day += 1;
-                    }
-                }
+        $no_day = 0;  
+        // $count_work_array = $all_work_day;
+        // foreach($all_work_day as $h)
+        // {
+        //     if(!in_array($h,$day_work_array))
+        //     {
+        //         $no_day += 1;        
+        //     }
+        // }
+
                 $sunday = 0;
                 foreach($date as $d)
                 {
@@ -118,46 +151,33 @@ class ElchilarService
                     }
                 }
 
-
-                $pr = count($all_date)+$sunday;
-                $elchi_work[$elch->id] = ($cale->work_day+$sunday).'/'.(count($date)).'/'.$pr;
-
                 $user = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,SUM(tg_productssold.number) as allnumber,tg_medicine.name,tg_productssold.price_product')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
                     ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
-                    ->where('tg_user.id', $elch->id)
-                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                    ->where('tg_user.id','=',$elch->id)
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->groupBy('tg_medicine.name','tg_productssold.price_product')->get();
-                $user_sum=0;
-                foreach($user as $key)
+                    ->groupBy('tg_user.id')->first();
+                
+                if(isset($user->allprice))
                 {
-                    $user_sum += $key->allprice;
-                }
-                if(count($date) == 0)
-                {
-                    $prognoz = 0;
-
-                }else{
-
-                    if($pr == 0)
+                    if(count($date) == 0)
                     {
-                        $prognoz = 0;
+                        $prog = 0;
                     }else{
-                        $prognoz = ($user_sum/$pr)*($cale->work_day+$sunday);
-
+                        $prog = (count($all_work_day)/$remain)*$user->allprice;
+                        // $prog = ($user->allprice/count($date))*(count($all_work_day)+$sunday-intval($no_day));
+                        // all_work_day
                     }
                 }
+                    // dd( (count($date) ));
 
-                $elchi_prognoz[$elch->id] = $prognoz;
-                $user_sum=0;
-            }else{
-                $elchi_prognoz[$elch->id] = 0;
-                $elchi_fact[$elch->id] = 0;
-                $elchi_work[$elch->id] = 0;
+                $elchi_prognoz[$elch->id] = $prog;
 
-            }
+
+            
         }
+        // dd($elchi_prognoz);
+
         $fact=[];
         $i=0;
         foreach ($elchi as $item){

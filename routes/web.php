@@ -84,7 +84,7 @@ Route::resource('question', QuestionController::class);
 Route::get('question/{id?}/delete', [App\Http\Controllers\QuestionController::class,'destroy'])->name('question.delete');
 Route::get('position/{id?}/delete', [App\Http\Controllers\PositionController::class,'destroy'])->name('position.delete');
 // Route::get('user-list', [HomeController::class,'userList'])->name('user-list');
-Route::get('pro-list/{time}/{region?}', [HomeController::class,'proList'])->name('pro-list');
+Route::get('pro-list/{time}/{region?}/{pharm?}', [HomeController::class,'proList'])->name('pro-list');
 Route::get('pro-list-search', [HomeController::class,'proList'])->name('pro-list-search');
 Route::post('permission', [HomeController::class,'permission'])->name('permissions');
 Route::get('reg', [HomeController::class,'reg']);
