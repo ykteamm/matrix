@@ -263,7 +263,7 @@
                               @else
                              <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item2['price'],1)}}%</td>
 
-                              @endif 
+                              @endif  
                              @elseif($item['price'] < $item2['price'])
                             <td><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>{{number_format((($item2['price'] - $item['price'])*100)/$item2['price'],1)}}%</td>
                               @else

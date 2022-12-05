@@ -168,6 +168,8 @@ class ElchilarService
                         // $prog = ($user->allprice/count($date))*(count($all_work_day)+$sunday-intval($no_day));
                         // all_work_day
                     }
+                }else{
+                    $prog = 0;
                 }
                     // dd( (count($date) ));
 
