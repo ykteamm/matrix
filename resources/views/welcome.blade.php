@@ -227,7 +227,7 @@
             ">
                 <div class="card-body"><div class="dash-content">
                         <h2 style="    background: -webkit-linear-gradient(#77f9ed, #c649d5);-webkit-background-clip: text;
--webkit-text-fill-color: transparent;text-align:center;font-size:40px;font-family:Gilroy;"><b>
+                        -webkit-text-fill-color: transparent;text-align:center;font-size:40px;font-family:Gilroy;"><b>
                                 <span>{{$numbers[$t]}}</span>/
                                 <span>{{$allweekplan[$t]}}</span>
                             </b>
@@ -298,6 +298,39 @@
             {{-- <div class="card-header">
             <h5 class="card-title">Ball </h5>
             </div> --}}
+            <div class="row row-sm align-items-center mt-3">
+               <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                  <button onclick="lastYear()" type="button" class="btn btn-block btn-outline-success active">
+                     <-
+                  </button>
+               </div>
+               <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                  <button type="button" class="btn btn-block btn-outline-success active year-button">
+                     {{date('Y',strtotime(date_now()))}}
+                  </button>
+               </div>
+               <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
+                  <button onclick="nextYear()" type="button" class="btn btn-block btn-outline-success active">
+                     ->
+                  </button>
+               </div>
+            </div>
+            <div class="row row-sm align-items-center mt-3">
+               @foreach (month_name() as $key => $item)
+               <div class="col-1 col-sm-1 col-md-1 col-xl mb-3 mb-xl-0">
+                  @if(date('m',strtotime(date_now())) == $key)
+                  <button onclick="getMonth(`{{$key}}`)" name="{{$key}}" type="button" class="for-active get-key-code month{{$key}} btn btn-block btn-outline-danger active">
+                     {{$item}}
+                  </button>
+                  @else
+                  <button onclick="getMonth(`{{$key}}`)" name="{{$key}}" type="button" class="for-active month{{$key}} btn btn-block btn-outline-danger">
+                     {{$item}}
+                  </button>
+                  @endif
+               </div>
+               @endforeach
+               
+            </div>
             <div class="card-body">
             <ul class="nav nav-tabs nav-tabs-solid nav-justified">
                @foreach ($d_array as $key => $item)
@@ -739,6 +772,43 @@
 </div>
 @endsection
 @section('admin_script')
+   <script>
+      $(document).ready(function(){
+         var year = $('.year-button').text();
+         var month = $('.get-key-code').attr('name');
+         var _token   = $('meta[name="csrf-token"]').attr('content');
+          $.ajax({
+             url: "/grades",
+             type:"POST",
+             data:{
+               year: year,
+               month: month,
+                _token: _token
+             },
+             success:function(response){
+                if(response) {
+                }
+             }
+            });
+      });
+      function getMonth(id)
+      {
+         $('.for-active').removeClass('active');
+         $('.for-active').removeClass('get-key-code');
+         $(`.month${id}`).addClass('active');
+         $(`.month${id}`).addClass('get-key-code');
+      }
+      function nextYear()
+      {
+         var now = $('.year-button').text();
+         $('.year-button').text(parseInt(now)+1);
+      }
+      function lastYear()
+      {
+         var now = $('.year-button').text();
+         $('.year-button').text(parseInt(now)-1);
+      }
+   </script>
    <script>
        function yashir(){
            let a=document.querySelectorAll('.yashir');

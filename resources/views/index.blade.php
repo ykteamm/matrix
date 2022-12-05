@@ -465,7 +465,11 @@
 
                         if(index == 0 || index == 1)
                         {
-                            muser = muser + '<h6 class="mt-2" style="color:#ffffff;text-align:left;margin-left:12px;"><span>'+value.last_name + '.' + value.first_name.charAt(0) + '</span></h6>';
+                            muser = muser + '<h6 class="mt-2" style="color:#ffffff;text-align:left;margin-left:12px;"><span>'+
+                                value.last_name + '.' + value.first_name.charAt(0) + 
+                                '</span></h6>'+
+                                '<h6 style="color:#e96d6d;margin-top:1px;text-align:right;"><span style="">Qizil elchialar</span></h6>';
+
                         }
                     });
                     var $row = $('<div class="col-12 col-md-'+md+' col-lg-'+lg+' d-flex flex-wrap delregion">'+
@@ -473,11 +477,23 @@
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
                                             '<div class="d-flex justify-content-between">'+
+
                                             '<h4 style="color:#05f705;height:45px;">'+ value.region +'</h4>'+
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
+
+                                            // '<h4 style="color:#05f705;height:45px;">'+response.fd_begin +'-'+response.fd_respoend+'</h4>'+
+                                            // '<h1 style="color:#05f705;height:45px;" title="'+value.icon +'"></h1>'+
+
+                                            // '<h1 style="color:#05f705;height:45px;" title="'+response.fd_begin +'-'+response.fd_respoend+'">'+value.icon +'</h1>'+
+                                            '</div>'+ 
+                                            '<div class="d-flex justify-content-between">'+
+
+                                            '<h4 style="color:#ffffff;height:45px;">'+response.fd_begin +'-'+response.fd_end+'</h4>'+
+                                            '<h4 style="color:#ffffff;height:45px;" title="'+value.tols +'">'+value.icon +'</h4>'+
+
                                             '</div>'+ muser +
-                                            '<h6 class="mt-2" style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
-                                            '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+response.fd_end+'</span></h6>'+
+                                            // '<h6 class="mt-2" style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
+                                            // '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+nse.fd_respoend+'</span></h6>'+
 
                                         '</div>'+
                                     '</div>'+

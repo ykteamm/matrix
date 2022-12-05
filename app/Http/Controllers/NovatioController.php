@@ -304,7 +304,7 @@ class NovatioController extends Controller
 
             $f_date_begin = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_begin) ) ));
             $f_date_end = date('Y-m-d',(strtotime ( '-1 year' , strtotime ( $date_end) ) ));
-;
+        ;
         }
         elseif ($request->time == 'a_all') {
             $date_begin = date_now()->format('1790-01-01');
@@ -923,8 +923,8 @@ class NovatioController extends Controller
                 return [
                     'status' => 200
                 ];
-        }
-    }
+                }
+            }
 
         // if(count($isset) > 1)
         // {
@@ -963,5 +963,12 @@ class NovatioController extends Controller
 
 
 
+    }
+    public function grades(Request $request)
+    {
+       $month = $request->month;
+       $year = $request->year;
+       $grades = DB::table('tg_knowledge_grades')->get();
+       return $grades;
     }
 }

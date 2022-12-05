@@ -32,18 +32,25 @@ if(!function_exists('wordSimilarity')){
 
     }
 }
-    if(!function_exists('setArt')){
-        function setArt($db)
-    {
-        Config::set("database.connections.pgsql.schema", $db);
-        $query = 'SET search_path TO ' . '"'.$db.'"';
-        DB::statement($query);
-        Artisan::call('migrate:refresh', [
-            '--force' => true,
-        ]);
-
+    if(!function_exists('month_name')){
+            function month_name()
+        {
+            $month_name = [];
+            $month_name [1]= 'Yanvar';
+            $month_name [2]= 'Fevral';
+            $month_name [3]= 'Mart';
+            $month_name [4]= 'Aprel';
+            $month_name [5]= 'May';
+            $month_name [6]= 'Iyun';
+            $month_name [7]= 'Iyul';
+            $month_name [8]= 'Avgust';
+            $month_name [9]= 'Sentabr';
+            $month_name [10]= 'Oktabr';
+            $month_name [11]= 'Noyabr';
+            $month_name [12]= 'Dekabr';
+            return $month_name;
+        }
     }
-}
     if(!function_exists('setPublic')){
         function setPublic($db)
     {

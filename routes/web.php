@@ -29,6 +29,9 @@ use App\Http\Controllers\TrendController;
 
     Route::post('region/elchi', [App\Http\Controllers\NovatioController::class,'region']);
     Route::post('region/chart', [App\Http\Controllers\NovatioController::class,'regionChart']);
+
+    Route::post('grades', [App\Http\Controllers\NovatioController::class,'grades']);
+
     Route::post('calendar', [App\Http\Controllers\NovatioController::class,'calendar']);
     Route::post('grade/ball', [App\Http\Controllers\NovatioController::class,'grade']);
     Route::post('grade/save', [App\Http\Controllers\NovatioController::class,'gradeSave']);
