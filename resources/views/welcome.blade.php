@@ -834,11 +834,86 @@
                 if(response){
                   if(response.dep == 0)
                   {
+                     $(".for-tbody-td").remove();
                      $.each(response.step_question, function(q, question){
+                        var dates = '';
+                        $.each(response.date_array, function(d, date){
+                              if(date['isset'] == 1)
+                              {
+                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"dep"+question.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                              }else{
+                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
+                              }
+                              
+                        });
                               var questions = $('<tr class="for-tbody-td">'+
-                                       '<td id='''+question.id+' class="for-table-border">'+ question.name + '</td>'+
+                                       '<td id='+"dep"+question.id+' class="for-table-border">'+ question.name + '</td>'+
+                                       dates+
                                        '</tr>');
                            $('#tbody_ajax').append(questions);
+
+                           var pill_q = '';
+                     $.each(response.all_pill_question, function(p, pill){
+                        if(question.id == pill.knowledge_id)
+                        {
+                           if(pill.knowledge_id == 1)
+                           {
+                              var p_dates = '';
+                              $.each(response.date_array, function(d, date){
+                                    if(date['isset'] == 1)
+                                    {
+                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"dori"+pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                    }else{
+                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
+                                    }
+                                    
+                              });
+                              var pill_q = $('<tr class="for-tbody-td">'+
+                                          '<td style="padding-left:20px;" id='+"dori"+pill.id+' class="for-table-border">'+ pill.name + '</td>'+
+                                          p_dates+
+                                          '</tr>');
+                              $('#tbody_ajax').append(pill_q);
+                           }else{
+                              var p_dates = '';
+                              $.each(response.date_array, function(d, date){
+                                    if(date['isset'] == 1)
+                                    {
+                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"pill"+pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                    }else{
+                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
+                                    }
+                                    
+                              });
+                              var pill_q = $('<tr class="for-tbody-td">'+
+                                          '<td style="padding-left:20px;" id='+"pill"+pill.id+' class="for-table-border">'+ pill.name + '</td>'+
+                                          p_dates+
+                                          '</tr>');
+                              $('#tbody_ajax').append(pill_q);
+                           }
+                           
+                           $.each(response.know_pill_question, function(kp, know_pill){
+                              if(pill.id == know_pill.d_id)
+                              {
+                                 var k_dates = '';
+                                 $.each(response.date_array, function(d, date){
+                                       if(date['isset'] == 1)
+                                       {
+                                          k_dates = k_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"know"+know_pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                       }else{
+                                          k_dates = k_dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
+                                       }
+                                       
+                                 });
+                           var pill_know = $('<tr class="for-tbody-td">'+
+                                       '<td style="padding-left:30px;" id='+"know"+know_pill.id+' class="for-table-border">'+ know_pill.name + '</td>'+
+                                       k_dates+
+                                       '</tr>');
+                           $('#tbody_ajax').append(pill_know);
+                              
+                              }
+                           });
+                        }
+                     });
                      });
 
                      $(".for_savol").remove();
@@ -851,6 +926,46 @@
                         var grades = $(
                                     '<th style="padding:3px 6px;border: 1px solid rgb(126, 182, 220);" class="for_date">'+ value['day'] +'</th>');
                         $('#thead_ajax').append(grades);
+                     });
+                     $.each(response.grade_array, function(g, grade){
+                        var teach = '';
+                        $.each(grade.grades, function(t, teacher){
+                           var d = new Date(teacher.created_at);
+                           var curr_hour = d.getHours();
+                           var curr_minutes = d.getMinutes();
+                           if(curr_minutes < 10)
+                              {
+                                 var ddatem = '0'+curr_minutes
+                              }else{
+                                 var ddatem = curr_minutes
+                              }
+                           teach = teach + teacher.last_name+' '+teacher.first_name+' ('+teacher.grade+') '+' ('+curr_hour+':'+ddatem+')\n';
+                        });
+                        var teacher = grade.grades;
+                        $.each(response.date_array, function(d, date){
+                           $(`#pill${grade['dep_id']}${date['day']}`).text(grade['avg']);
+                           $(`#pill${grade['dep_id']}${date['day']}`).attr('title',teach);
+                        });
+                     });
+                     $.each(response.know_grade_array, function(g, grade){
+                        var teach = '';
+                        $.each(grade.grades, function(t, teacher){
+                           var d = new Date(teacher.created_at);
+                           var curr_hour = d.getHours();
+                           var curr_minutes = d.getMinutes();
+                           if(curr_minutes < 10)
+                              {
+                                 var ddatem = '0'+curr_minutes
+                              }else{
+                                 var ddatem = curr_minutes
+                              }
+                           teach = teach + teacher.last_name+' '+teacher.first_name+' ('+teacher.grade+') '+' ('+curr_hour+':'+ddatem+')\n';
+                        });
+                        var teacher = grade.grades;
+                        $.each(response.date_array, function(d, date){
+                           $(`#know${grade['dep_id']}${date['day']}`).text(grade['avg']);
+                           $(`#know${grade['dep_id']}${date['day']}`).attr('title',teach);
+                        });
                      });
                   }
                   if(response.dep == 1)
