@@ -966,9 +966,154 @@ class NovatioController extends Controller
     }
     public function grades(Request $request)
     {
-       $month = $request->month;
-       $year = $request->year;
-       $grades = DB::table('tg_knowledge_grades')->get();
-       return $grades;
+       $month = date('m',strtotime($request->month));
+       $year = date('Y',strtotime($request->year));
+       $date = date('Y-m',strtotime($request->year.'-'.$request->month));
+       $myDate = $date.'-01';
+       $begin_day = Carbon::createFromFormat('Y-m-d', $myDate)->startOfMonth()->format('Y-m-d');
+       $end_day = Carbon::createFromFormat('Y-m-d', $myDate)->endOfMonth()->format('Y-m-d');
+       $dep = $request->dep;
+       if($dep == 0){
+        $step_question = DB::table('tg_knowledge')->get();
+        // foreach($step_question as $key => $value)
+        // {   
+        //     if($value->step == 1)
+        //     {
+        //         $asd = [];
+        //         $pill_question = DB::table('tg_pill_questions')->where('knowledge_id',$value->id)->get();
+        //         foreach($pill_question as $k => $v)
+        //         {
+        //             for($i=intval(date('d',strtotime($begin_day)));$i<intval(date('d',strtotime($end_day)));$i++) {
+        //             $d = date('Y-m-d',strtotime($date.'-'.$i));
+        //             $pill_question = DB::table('tg_knowledge_grades')
+        //             ->select('tg_knowledge_grades.*','tg_pill_questions.name','tg_user.first_name','tg_user.last_name')
+        //             ->where('tg_knowledge_grades.user_id',$request->id)
+        //             ->where('tg_knowledge_grades.pill_id',$v->id)
+        //             ->whereDate('tg_knowledge_grades.created_at',$d)
+        //             ->join('tg_pill_questions','tg_pill_questions.id','tg_knowledge_grades.pill_id')
+        //             ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
+        //             ->get();
+
+        //             $teacher = DB::table('tg_knowledge_grades')
+        //             ->select('tg_knowledge_grades.*','tg_pill_questions.name','tg_user.first_name','tg_user.last_name')
+        //             ->where('tg_knowledge_grades.user_id',$request->id)
+        //             ->where('tg_knowledge_grades.pill_id',$v->id)
+        //             ->whereDate('tg_knowledge_grades.created_at',$d)
+        //             ->join('tg_pill_questions','tg_pill_questions.id','tg_knowledge_grades.pill_id')
+        //             ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
+        //             ->pluck('tg_knowledge_grades.teacher_id');
+
+        //             if(count($pill_question) > 0)
+        //             {
+        //                 $grade_sum = 0;
+        //                 foreach ($pill_question as $key => $value) {
+        //                     $grade_sum += $value->grade;
+        //                 }
+        //                 $avg = $grade_sum/count($teacher_id);
+        //             }else{
+        //                 $avg = 0;
+        //             }
+        //             if($avg != 0)
+        //             {
+        //                 $grade_array[] = array('avg' => number_format($avg,1),'q_id' => $value->question_id,'grades' => $grades);
+        //             }
+        //             $asd[] = $pill_question;
+        //             }
+
+        //         }
+        //         return $asd;
+
+        //     }
+        // }
+        $date_array=[];
+        for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
+                {
+                    $date_array[] = array('day' => $i,'isset' => 1);
+                }
+            return [
+                'dep' => 0,
+                'date_array' => $date_array,
+                'step_question' => $step_question
+            ];
+       }else{
+            $question_id = DB::table('tg_question')->where('department_id',$dep)->pluck('id');
+            $questions = DB::table('tg_question')->where('department_id',$dep)->get();
+            $grade_array=[];
+            $ff=[];
+            foreach ($questions as $key => $value) {
+                for($i=intval(date('d',strtotime($begin_day)));$i<intval(date('d',strtotime($end_day)));$i++) {
+                    $d = date('Y-m-d',strtotime($date.'-'.$i));
+                    $grades = DB::table('tg_grade')
+                    ->select('tg_grade.*','tg_question.name','tg_user.first_name','tg_user.last_name')
+                    ->where('tg_grade.user_id',$request->id)
+                    ->where('tg_grade.question_id',$value->id)
+                    ->whereDate('tg_grade.created_at','=',$d)
+                    ->join('tg_question','tg_question.id','tg_grade.question_id')
+                    ->join('tg_user','tg_user.id','tg_grade.teacher_id')
+                    ->get();
+
+                    $teacher_id = DB::table('tg_grade')
+                    ->select('tg_grade.*','tg_question.name','tg_user.first_name','tg_user.last_name')
+                    ->where('tg_grade.user_id',$request->id)
+                    ->where('tg_grade.question_id',$value->id)
+                    ->whereDate('tg_grade.created_at','=',$d)
+                    ->join('tg_question','tg_question.id','tg_grade.question_id')
+                    ->join('tg_user','tg_user.id','tg_grade.teacher_id')
+                    // ->distinct('tg_grade.teacher_id')
+                    ->pluck('tg_grade.teacher_id');
+                    // $techaer_unique = array_unique($teacher_id);
+                    if(count($grades) > 0)
+                    {
+                        $grade_sum = 0;
+                        foreach ($grades as $key => $value) {
+                            $grade_sum += $value->grade;
+                        }
+                        $avg = $grade_sum/count($teacher_id);
+                    }else{
+                        $avg = 0;
+                    }
+                    if($avg != 0)
+                    {
+                        $grade_array[] = array('avg' => number_format($avg,1),'q_id' => $value->question_id,'grades' => $grades);
+                    }
+                }
+            }
+            $grades = DB::table('tg_grade')
+            ->select('tg_grade.*','tg_question.name','tg_user.first_name','tg_user.last_name')
+            ->where('tg_grade.user_id',$request->id)
+            ->whereIn('tg_grade.question_id',$question_id)
+            ->whereDate('tg_grade.created_at','>=',$begin_day)
+            ->whereDate('tg_grade.created_at','<=',$end_day)
+            ->join('tg_question','tg_question.id','tg_grade.question_id')
+            ->join('tg_user','tg_user.id','tg_grade.teacher_id')
+            ->orderBy('tg_grade.created_at','ASC')
+            ->get();
+                $grade_date_array = [];
+                foreach($grades as $item)
+                {
+                    $grade_date_array[] = intval(date('d',strtotime($item->created_at)));
+                }
+                $grade_date_array = array_unique($grade_date_array);
+                $date_array = [];
+                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
+                {
+                    if(in_array($i,$grade_date_array))
+                    {
+                        $date_array[] = array('day' => $i,'isset' => 1);
+
+                    }else{
+                        $date_array[] = array('day' => $i,'isset' => 0);
+                    }
+                }
+                
+            return [
+                'dep' => 1,
+                'questions' => $questions,
+                'grades' => $grades,
+                'date_array' => $date_array,
+                'grade_array' => $grade_array,
+                'grade_date_array' => $grade_date_array,
+            ];
+        }
     }
 }

@@ -31,6 +31,9 @@
         }
     </style> --}}
     <style>
+        .for-table-border {
+            border: 1px solid rgb(126, 182, 220);
+        }
         @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
         body{
             background-color: rgb(255, 255, 255)

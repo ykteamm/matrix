@@ -51,6 +51,13 @@ if(!function_exists('wordSimilarity')){
             return $month_name;
         }
     }
+    if(!function_exists('dep_name')){
+        function dep_name()
+    {
+        $departments = DB::table('tg_department')->where('status',1)->get();
+        return $departments;
+    }
+}
     if(!function_exists('setPublic')){
         function setPublic($db)
     {

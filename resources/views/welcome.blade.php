@@ -300,24 +300,24 @@
             </div> --}}
             <div class="row row-sm align-items-center mt-3">
                <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
-                  <button onclick="lastYear()" type="button" class="btn btn-block btn-outline-success active">
+                  <button onclick="lastYear()" type="button" class="btn btn-block btn-outline-danger">
                      <-
                   </button>
                </div>
                <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
-                  <button type="button" class="btn btn-block btn-outline-success active year-button">
+                  <button type="button" class="btn btn-block btn-outline-danger active year-button">
                      {{date('Y',strtotime(date_now()))}}
                   </button>
                </div>
                <div class="col-6 col-sm-4 col-md-2 col-xl mb-3 mb-xl-0">
-                  <button onclick="nextYear()" type="button" class="btn btn-block btn-outline-success active">
+                  <button onclick="nextYear()" type="button" class="btn btn-block btn-outline-danger">
                      ->
                   </button>
                </div>
             </div>
             <div class="row row-sm align-items-center mt-3">
                @foreach (month_name() as $key => $item)
-               <div class="col-1 col-sm-1 col-md-1 col-xl mb-3 mb-xl-0">
+               <div class="col-2 col-sm-2 col-md-2 col-xl-2 mb-3 mb-xl-2">
                   @if(date('m',strtotime(date_now())) == $key)
                   <button onclick="getMonth(`{{$key}}`)" name="{{$key}}" type="button" class="for-active get-key-code month{{$key}} btn btn-block btn-outline-danger active">
                      {{$item}}
@@ -329,7 +329,34 @@
                   @endif
                </div>
                @endforeach
-               
+            </div>
+            <div class="row row-sm align-items-center mt-3">
+               <div class="col-4 col-sm-4 col-md-4 col-xl mb-3 mb-xl-0">
+                  <button onclick="getDep()" name="0" type="button" class="get-key-dep department btn btn-block btn-outline-danger active">
+                     Bilim
+                  </button>
+               </div>
+               @foreach (dep_name() as $item)
+               <div class="col-4 col-sm-4 col-md-4 col-xl mb-3 mb-xl-0">
+                  <button onclick="getDep()" name="{{$item->id}}" type="button" class="department btn btn-block btn-outline-danger">
+                     {{$item->name}}
+                  </button>
+               </div>
+               @endforeach
+            </div>
+            <div class="row">
+               {{-- <div class="card-body"> --}}
+                  {{-- <div class="table-responsive"> --}}
+                     <table class="for-table-border">
+                        <thead>
+                           <tr id="thead_ajax">
+                           </tr>
+                        </thead>
+                        <tbody id="tbody_ajax">
+                        </tbody>
+                     </table>
+                  {{-- </div> --}}
+               {{-- </div> --}}
             </div>
             <div class="card-body">
             <ul class="nav nav-tabs nav-tabs-solid nav-justified">
@@ -773,9 +800,25 @@
 @endsection
 @section('admin_script')
    <script>
-      $(document).ready(function(){
+      $(document).ready(function(){   
+         detAjax();
+      });
+      $(function(){
+         $(".department").click(function(){
+            $('.department').removeClass('active');
+            $('.department').removeClass('get-key-dep');
+            $(this).addClass('active');
+            $(this).addClass('get-key-dep');
+            detAjax()
+         })
+      })
+      function detAjax()
+      {
          var year = $('.year-button').text();
          var month = $('.get-key-code').attr('name');
+         var dep = $('.get-key-dep').attr('name');
+         var id = <?php echo json_encode( $elchi->id ) ?>;
+
          var _token   = $('meta[name="csrf-token"]').attr('content');
           $.ajax({
              url: "/grades",
@@ -783,30 +826,109 @@
              data:{
                year: year,
                month: month,
+               dep: dep,
+               id: id,
                 _token: _token
              },
              success:function(response){
-                if(response) {
+                if(response){
+                  if(response.dep == 0)
+                  {
+                     $.each(response.step_question, function(q, question){
+                              var questions = $('<tr class="for-tbody-td">'+
+                                       '<td id='''+question.id+' class="for-table-border">'+ question.name + '</td>'+
+                                       '</tr>');
+                           $('#tbody_ajax').append(questions);
+                     });
+
+                     $(".for_savol").remove();
+                     $(".for_date").remove();
+                  
+                     var $savol = $(
+                                 '<th style="border: 1px solid rgb(126, 182, 220);" class="for_savol">Savol</th>');
+                     $('#thead_ajax').append($savol);
+                     $.each(response.date_array, function(index, value){
+                        var grades = $(
+                                    '<th style="padding:3px 6px;border: 1px solid rgb(126, 182, 220);" class="for_date">'+ value['day'] +'</th>');
+                        $('#thead_ajax').append(grades);
+                     });
+                  }
+                  if(response.dep == 1)
+                  {
+                     $(".for-tbody-td").remove();
+
+                     $.each(response.questions, function(q, question){
+                        var dates = '';
+                        $.each(response.date_array, function(d, date){
+                              if(date['isset'] == 1)
+                              {
+                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+question.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                              }else{
+                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
+                              }
+                              
+                        });
+                              var questions = $('<tr class="for-tbody-td">'+
+                                       '<td class="for-table-border">'+ question.name + '</td>'+
+                                       dates+
+                                       '</tr>');
+                           $('#tbody_ajax').append(questions);
+                     });
+                     $(".for_savol").remove();
+                     $(".for_date").remove();
+                  
+                     var $savol = $(
+                                 '<th style="border: 1px solid rgb(126, 182, 220);" class="for_savol">Savol</th>');
+                     $('#thead_ajax').append($savol);
+                     $.each(response.date_array, function(index, value){
+                        var grades = $(
+                                    '<th style="padding:3px 6px;border: 1px solid rgb(126, 182, 220);" class="for_date">'+ value['day'] +'</th>');
+                        $('#thead_ajax').append(grades);
+                     });
+                     $.each(response.grade_array, function(g, grade){
+                        var teach = '';
+                        $.each(grade.grades, function(t, teacher){
+                           var d = new Date(teacher.created_at);
+                           var curr_hour = d.getHours();
+                           var curr_minutes = d.getMinutes();
+                           if(curr_minutes < 10)
+                              {
+                                 var ddatem = '0'+curr_minutes
+                              }else{
+                                 var ddatem = curr_minutes
+                              }
+                           teach = teach + teacher.last_name+' '+teacher.first_name+' ('+teacher.grade+') '+' ('+curr_hour+':'+ddatem+')\n';
+                        });
+                        var teacher = grade.grades;
+                        $.each(response.date_array, function(d, date){
+                           $(`#${grade['q_id']}${date['day']}`).text(grade['avg']);
+                           $(`#${grade['q_id']}${date['day']}`).attr('title',teach);
+                        });
+                     });
+                  }
                 }
              }
             });
-      });
+      }
       function getMonth(id)
       {
          $('.for-active').removeClass('active');
          $('.for-active').removeClass('get-key-code');
          $(`.month${id}`).addClass('active');
          $(`.month${id}`).addClass('get-key-code');
+         detAjax()
       }
       function nextYear()
       {
          var now = $('.year-button').text();
          $('.year-button').text(parseInt(now)+1);
+         detAjax()
       }
       function lastYear()
       {
          var now = $('.year-button').text();
          $('.year-button').text(parseInt(now)-1);
+         detAjax()
       }
    </script>
    <script>
