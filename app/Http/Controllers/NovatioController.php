@@ -983,11 +983,32 @@ class NovatioController extends Controller
         ->join('tg_pill_questions','tg_pill_questions.id','tg_condition_questions.pill_question_id')                    
         ->join('tg_knowledge','tg_knowledge.id','tg_pill_questions.knowledge_id')                    
         ->get();
-            // return $know_pill_question;       
-        $asd = [];
+
+        $all_dates = DB::table('tg_knowledge_grades')
+        ->where('user_id',$request->id)
+        ->whereDate('created_at','>=',$begin_day)
+        ->whereDate('created_at','<=',$end_day)
+        ->pluck('created_at');
+        $grade_date_array = [];
+
+        foreach($all_dates as $item)
+                    {
+                        $grade_date_array[] = intval(date('d',strtotime($item)));
+                    }
+            $grade_date_array = array_unique($grade_date_array);
+                $date_array = [];
+                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
+                {
+                    if(in_array($i,$grade_date_array))
+                    {
+                        $date_array[] = array('day' => $i,'isset' => 1);
+
+                    }else{
+                        $date_array[] = array('day' => $i,'isset' => 0);
+                    }
+                }     
         $grade_array = [];
         $know_grade_array = [];
-        $grade_date_array = [];
         foreach($step_question as $key => $value)
         {   
             if($value->step == 1)
@@ -996,8 +1017,8 @@ class NovatioController extends Controller
 
                 foreach($pill_question as $k => $v)
                 {
-                    for($i=intval(date('d',strtotime($begin_day)));$i<intval(date('d',strtotime($end_day)));$i++) {
-                    $d = date('Y-m-d',strtotime($date.'-'.$i));
+                    foreach ($grade_date_array as $da => $dat) {
+                    $d = date('Y-m-d',strtotime($date.'-'.$dat));
                     $pill_questions = DB::table('tg_knowledge_grades')
                     ->select('tg_knowledge_grades.*','tg_pill_questions.name','tg_user.first_name','tg_user.last_name')
                     ->where('tg_knowledge_grades.user_id',$request->id)
@@ -1006,10 +1027,7 @@ class NovatioController extends Controller
                     ->join('tg_pill_questions','tg_pill_questions.id','tg_knowledge_grades.pill_id')
                     ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                     ->get();
-                    foreach($pill_questions as $item)
-                    {
-                        $grade_date_array[] = intval(date('d',strtotime($item->created_at)));
-                    }
+                    
                     $teacher = DB::table('tg_knowledge_grades')
                     ->select('tg_knowledge_grades.*','tg_pill_questions.name','tg_user.first_name','tg_user.last_name')
                     ->where('tg_knowledge_grades.user_id',$request->id)
@@ -1038,6 +1056,7 @@ class NovatioController extends Controller
                 }
 
             }
+            
             if($value->step == 3)
             {
                 $asd=[];
@@ -1046,10 +1065,8 @@ class NovatioController extends Controller
                     $condition_question = DB::table('tg_condition_questions')->where('pill_question_id',$know->id)->pluck('id');
                     $knowledge_question = DB::table('tg_knowledge_questions')->whereIn('condition_question_id',$condition_question)->pluck('id');
                     foreach ($knowledge_question as $c => $con) {
-                        $know_question = DB::table('tg_pill_questions')->where('knowledge_id',$value->id)->get();
-                        for($i=intval(date('d',strtotime($begin_day)));$i<intval(date('d',strtotime($end_day)));$i++) {
-                            $d = date('Y-m-d',strtotime($date.'-'.$i));
-
+                        foreach ($grade_date_array as $da => $dat) {
+                            $d = date('Y-m-d',strtotime($date.'-'.$dat));
                             $pill_questions = DB::table('tg_knowledge_grades')
                             ->select('tg_knowledge_grades.*','tg_knowledge_questions.name','tg_user.first_name','tg_user.last_name')
                             ->where('tg_knowledge_grades.user_id',$request->id)
@@ -1085,40 +1102,11 @@ class NovatioController extends Controller
                             {
                                 $know_grade_array[] = array('avg' => number_format($avg,1),'dep_id' => $con,'grades' => $pill_questions);
                             }
-                            // if(count($pill_questions))
-                            // {
-                            // $asd[] = $pill_questions;
-                            // }
-
                         }
                     }
-                    # code...
                 }
-
             }
-            // return $grade_array;
-
         }
-        // return $know_question;;
-
-        // $date_array=[];
-        // for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
-        //         {
-        //             $date_array[] = array('day' => $i,'isset' => 1);
-        //         }
-                $grade_date_array = array_unique($grade_date_array);
-                $date_array = [];
-                $know_date_array = [];
-                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
-                {
-                    if(in_array($i,$grade_date_array))
-                    {
-                        $date_array[] = array('day' => $i,'isset' => 1);
-
-                    }else{
-                        $date_array[] = array('day' => $i,'isset' => 0);
-                    }
-                }
             return [
                 'dep' => 0,
                 'grade_array' => $grade_array,

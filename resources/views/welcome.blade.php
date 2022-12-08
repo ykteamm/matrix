@@ -840,14 +840,14 @@
                         $.each(response.date_array, function(d, date){
                               if(date['isset'] == 1)
                               {
-                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"dep"+question.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"dep"+question.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light allsumma'+question.id+date['day']+'"></span></td>';
                               }else{
                                  dates = dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
                               }
                               
                         });
                               var questions = $('<tr class="for-tbody-td">'+
-                                       '<td id='+"dep"+question.id+' class="for-table-border">'+ question.name + '</td>'+
+                                       '<td onclick="openDep('+question.id+')" name="1" style="cursor:pointer;" id='+"dep"+question.id+' class="for-table-border">'+ question.name + '</td>'+
                                        dates+
                                        '</tr>');
                            $('#tbody_ajax').append(questions);
@@ -862,14 +862,14 @@
                               $.each(response.date_array, function(d, date){
                                     if(date['isset'] == 1)
                                     {
-                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"dori"+pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"dori"+pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light alldorisumma'+pill.id+date['day']+' summa'+question.id+date['day']+'""></span></td>';
                                     }else{
                                        p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
                                     }
                                     
                               });
-                              var pill_q = $('<tr class="for-tbody-td">'+
-                                          '<td style="padding-left:20px;" id='+"dori"+pill.id+' class="for-table-border">'+ pill.name + '</td>'+
+                              var pill_q = $('<tr style="display:none;" class="for-tbody-td knowdep'+question.id+'">'+
+                                          '<td onclick="openDori('+pill.id+')" name="1" style="padding-left:20px;cursor:pointer;" id='+"dori"+pill.id+' class="for-table-border">'+ pill.name + '</td>'+
                                           p_dates+
                                           '</tr>');
                               $('#tbody_ajax').append(pill_q);
@@ -878,14 +878,14 @@
                               $.each(response.date_array, function(d, date){
                                     if(date['isset'] == 1)
                                     {
-                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"pill"+pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                       p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"pill"+pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light summa'+question.id+date['day']+'"></span></td>';
                                     }else{
                                        p_dates = p_dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
                                     }
                                     
                               });
-                              var pill_q = $('<tr class="for-tbody-td">'+
-                                          '<td style="padding-left:20px;" id='+"pill"+pill.id+' class="for-table-border">'+ pill.name + '</td>'+
+                              var pill_q = $('<tr style="display:none;" class="for-tbody-td knowdep'+question.id+'">'+
+                                          '<td onclick="openDori('+pill.id+')" name="1" style="padding-left:20px;" id='+"pill"+pill.id+' class="for-table-border">'+ pill.name + '</td>'+
                                           p_dates+
                                           '</tr>');
                               $('#tbody_ajax').append(pill_q);
@@ -898,13 +898,13 @@
                                  $.each(response.date_array, function(d, date){
                                        if(date['isset'] == 1)
                                        {
-                                          k_dates = k_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"know"+know_pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                          k_dates = k_dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+"know"+know_pill.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light dorisumma'+pill.id+date['day']+'"></span></td>';
                                        }else{
                                           k_dates = k_dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
                                        }
                                        
                                  });
-                           var pill_know = $('<tr class="for-tbody-td">'+
+                           var pill_know = $('<tr style="display:none;" class="for-tbody-td open-know knowdori'+pill.id+'">'+
                                        '<td style="padding-left:30px;" id='+"know"+know_pill.id+' class="for-table-border">'+ know_pill.name + '</td>'+
                                        k_dates+
                                        '</tr>');
@@ -912,6 +912,7 @@
                               
                               }
                            });
+                           // $('.for-know').css('ds')
                         }
                      });
                      });
@@ -967,6 +968,87 @@
                            $(`#know${grade['dep_id']}${date['day']}`).attr('title',teach);
                         });
                      });
+                     $.each(response.all_pill_question, function(p, pill){
+                       
+                           if(pill.knowledge_id == 1)
+                           {
+                              $.each(response.date_array, function(d, date){
+                                 if(date['isset'] == 1)
+                                 {
+                                    var summ = 0;
+                                    var i = 0;
+                                    $(`.dorisumma${pill.id}${date['day']}`).each(function() {
+                                       if(parseInt($(this).text()))
+                                       {
+                                          i++;
+                                          summ += parseInt($(this).text());
+                                       }
+                                    });
+                                    if(i==0)
+                                    {
+                                       var avg = 0;
+                                    }else{
+                                       var avg = summ/i;
+                                    }
+                                    if(avg !=0 )
+                                    {
+                                       $(`.alldorisumma${pill.id}${date['day']}`).text(number_format(avg,1,'.',' '));
+                                    }
+                                 }
+                              });
+                           }
+                     });
+                     $.each(response.step_question, function(q, question){
+                        $.each(response.date_array, function(d, date){
+                           if(date['isset'] == 1)
+                           {
+                              var summ = 0;
+                              var i = 0;
+                              $(`.summa${question.id}${date['day']}`).each(function() {
+                                 if(parseInt($(this).text()))
+                                 {
+                                    i++;
+                                    summ += parseInt($(this).text());
+                                 }
+                              });
+                              if(i==0)
+                              {
+                                 var avg = 0;
+                              }else{
+                                 var avg = summ/i;
+                              }
+
+                              $(`.allsumma${question.id}${date['day']}`).text(number_format(avg,1,'.',' '));
+                           }
+                        });
+                     });
+                     var all_avg = 0;
+                     var summ = 0;
+                     var i = 0;
+                     $.each(response.step_question, function(q, question){
+                        
+                        $.each(response.date_array, function(d, date){
+                           if(date['isset'] == 1)
+                           {
+                              $(`.allsumma${question.id}${date['day']}`).each(function() {
+                                 if(parseInt($(this).text()))
+                                 {
+                                    i++;
+                                    all_avg += parseInt($(this).text());
+                                 }
+                              });
+
+                           }
+                        });
+
+
+                     });
+                     if(i!=0)
+                        {
+                           var avg = all_avg/i;
+                           var dep_text = $('.get-key-dep').text();
+                            $('.get-key-dep').text(dep_text+' ('+number_format(avg,2,'.',' ')+')');
+                        }
                   }
                   if(response.dep == 1)
                   {
@@ -1024,6 +1106,51 @@
                 }
              }
             });
+      }
+      function number_format(number, decimals, dec_point, thousands_sep) {
+        number = number.toFixed(decimals);
+
+        var nstr = number.toString();
+        nstr += '';
+        x = nstr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? dec_point + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+
+        while (rgx.test(x1))
+            x1 = x1.replace(rgx, '$1' + thousands_sep + '$2');
+
+        return x1 + x2;
+    }
+      function openDori(id)
+      {
+         var action = $(`#dori${id}`).attr('name');
+         if(action == 1)
+         {
+            $(`.knowdori${id}`).css('display','');
+            $(`#dori${id}`).attr('name',0);
+         }
+         if(action == 0)
+         {
+            $(`.knowdori${id}`).css('display','none');
+            $(`#dori${id}`).attr('name',1);
+         }
+      }
+      function openDep(id)
+      {
+         var action = $(`#dep${id}`).attr('name');
+         if(action == 1)
+         {
+            $(`.knowdep${id}`).css('display','');
+            $(`#dep${id}`).attr('name',0);
+         }
+         if(action == 0)
+         {
+            $(`.knowdep${id}`).css('display','none');
+            $(".open-know").css('display','none');
+            $(`#dep${id}`).attr('name',1);
+            
+         }
       }
       function getMonth(id)
       {

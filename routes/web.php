@@ -31,6 +31,7 @@ use App\Http\Controllers\TrendController;
     Route::post('region/chart', [App\Http\Controllers\NovatioController::class,'regionChart']);
 
     Route::post('grades', [App\Http\Controllers\NovatioController::class,'grades']);
+    Route::post('dep/grades', [App\Http\Controllers\NovatioController::class,'depGrades']);
 
     Route::post('calendar', [App\Http\Controllers\NovatioController::class,'calendar']);
     Route::post('grade/ball', [App\Http\Controllers\NovatioController::class,'grade']);
