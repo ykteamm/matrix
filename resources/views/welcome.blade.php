@@ -332,13 +332,13 @@
             </div>
             <div class="row row-sm align-items-center mt-3">
                <div class="col-4 col-sm-4 col-md-4 col-xl mb-3 mb-xl-0">
-                  <button onclick="getDep()" name="0" type="button" class="get-key-dep department btn btn-block btn-outline-danger active">
+                  <button onclick="getDep()" id="Bilim" name="0" type="button" class="get-key-dep department btn btn-block btn-outline-danger active">
                      Bilim
                   </button>
                </div>
                @foreach (dep_name() as $item)
                <div class="col-4 col-sm-4 col-md-4 col-xl mb-3 mb-xl-0">
-                  <button onclick="getDep()" name="{{$item->id}}" type="button" class="department btn btn-block btn-outline-danger">
+                  <button onclick="getDep()" id="{{$item->name}}" name="{{$item->id}}" type="button" class="department btn btn-block btn-outline-danger">
                      {{$item->name}}
                   </button>
                </div>
@@ -985,10 +985,10 @@
                                     var summ = 0;
                                     var i = 0;
                                     $(`.dorisumma${pill.id}${date['day']}`).each(function() {
-                                       if(parseInt($(this).text()))
+                                       if(parseFloat($(this).text()))
                                        {
                                           i++;
-                                          summ += parseInt($(this).text());
+                                          summ += parseFloat($(this).text());
                                        }
                                     });
                                     if(i==0)
@@ -1012,17 +1012,17 @@
                               var summ = 0;
                               var i = 0;
                               $(`.summa${question.id}${date['day']}`).each(function() {
-                                 if(parseInt($(this).text()))
+                                 if(parseFloat($(this).text()))
                                  {
                                     i++;
-                                    summ += parseInt($(this).text());
+                                    summ += parseFloat($(this).text());
                                  }
                               });
                               if(i==0)
                               {
                                  var avg = 0;
                               }else{
-                                 var avg = summ/i;
+                                 var avg = summ;
                               }
 
                               $(`.allsumma${question.id}${date['day']}`).text(number_format(avg,1,'.',' '));
@@ -1038,10 +1038,10 @@
                            if(date['isset'] == 1)
                            {
                               $(`.allsumma${question.id}${date['day']}`).each(function() {
-                                 if(parseInt($(this).text()))
+                                 if(parseFloat($(this).text()))
                                  {
                                     i++;
-                                    all_avg += parseInt($(this).text());
+                                    all_avg += parseFloat($(this).text());
                                  }
                               });
 
@@ -1053,7 +1053,7 @@
                      if(i!=0)
                         {
                            var avg = all_avg/i;
-                           var dep_text = $('.get-key-dep').text();
+                           var dep_text = $('.get-key-dep').attr('id');
                             $('.get-key-dep').text(dep_text+' ('+number_format(avg,2,'.',' ')+')');
                         }
                   }
@@ -1066,7 +1066,7 @@
                         $.each(response.date_array, function(d, date){
                               if(date['isset'] == 1)
                               {
-                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+question.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light"></span></td>';
+                                 dates = dates+'<td style="padding:3px 6px;" class="for-table-border"><span data-toggle="tooltip" title="" data-placement="top" id='+question.id+date['day']+' style="cursor:pointer;min-width:0px !important;padding: 0px 0px !important;" class="badge bg-success-light savol'+date['day']+'"></span></td>';
                               }else{
                                  dates = dates+'<td style="padding:3px 6px;" class="for-table-border">-</td>';
                               }
@@ -1109,6 +1109,32 @@
                            $(`#${grade['q_id']}${date['day']}`).attr('title',teach);
                         });
                      });
+                     $.each(response.date_array, function(d, date){
+                           if(date['isset'] == 1)
+                           {
+                              var summ = 0;
+                              var i = 0;
+                              $(`.savol${date['day']}`).each(function() {
+                                 if(parseFloat($(this).text()))
+                                 {
+                                    i++;
+                                    summ += parseFloat($(this).text());
+                                 }
+                              });
+                              if(i==0)
+                              {
+                                 var avg = 0;
+                              }else{
+                                 var avg = summ;
+                              }
+                              if(i!=0)
+                                 {
+                                    var all_avg = avg/i;
+                                    var dep_text = $('.get-key-dep').attr('id');
+                                    $('.get-key-dep').text(dep_text+' ('+number_format(all_avg,2,'.',' ')+')');
+                                 }
+                           }
+                        });
                   }
                 }
              }
