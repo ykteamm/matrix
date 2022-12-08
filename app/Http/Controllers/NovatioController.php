@@ -1049,7 +1049,7 @@ class NovatioController extends Controller
                     }
                     if($avg != 0)
                     {
-                        $grade_array[] = array('avg' => number_format($avg,1),'dep_id' => $v->id,'grades' => $pill_questions);
+                        $grade_array[] = array('date' => $dat,'avg' => number_format($avg,1),'dep_id' => $v->id,'grades' => $pill_questions);
                     }
                     }
 
@@ -1100,7 +1100,7 @@ class NovatioController extends Controller
                             }
                             if($avg != 0)
                             {
-                                $know_grade_array[] = array('avg' => number_format($avg,1),'dep_id' => $con,'grades' => $pill_questions);
+                                $know_grade_array[] = array('date' => $dat,'avg' => number_format($avg,1),'dep_id' => $con,'grades' => $pill_questions);
                             }
                         }
                     }

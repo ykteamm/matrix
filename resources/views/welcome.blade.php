@@ -944,8 +944,12 @@
                         });
                         var teacher = grade.grades;
                         $.each(response.date_array, function(d, date){
-                           $(`#pill${grade['dep_id']}${date['day']}`).text(grade['avg']);
-                           $(`#pill${grade['dep_id']}${date['day']}`).attr('title',teach);
+                           if(grade.date == date['day'])
+                           {
+                              $(`#pill${grade['dep_id']}${date['day']}`).text(grade['avg']);
+                              $(`#pill${grade['dep_id']}${date['day']}`).attr('title',teach);
+                           }
+                           
                         });
                      });
                      $.each(response.know_grade_array, function(g, grade){
@@ -964,8 +968,11 @@
                         });
                         var teacher = grade.grades;
                         $.each(response.date_array, function(d, date){
-                           $(`#know${grade['dep_id']}${date['day']}`).text(grade['avg']);
-                           $(`#know${grade['dep_id']}${date['day']}`).attr('title',teach);
+                           if(grade.date == date['day'])
+                           {
+                              $(`#know${grade['dep_id']}${date['day']}`).text(grade['avg']);
+                              $(`#know${grade['dep_id']}${date['day']}`).attr('title',teach);
+                           }
                         });
                      });
                      $.each(response.all_pill_question, function(p, pill){
