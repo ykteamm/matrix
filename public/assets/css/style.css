@@ -5723,7 +5723,7 @@ input:checked+.slider:before {
 
 @media(max-width:991.98px) {
 	.header {
-		background-color: #323584
+		background-color: #ffffff
 	}
 	.header .header-left {
 		position: absolute;
@@ -5731,7 +5731,7 @@ input:checked+.slider:before {
 		border-bottom: 0
 	}
 	.mobile_btn {
-		color: #fff!important;
+		color: #323584!important;
 		cursor: pointer;
 		display: block;
 		font-size: 24px;

@@ -15,7 +15,7 @@
     {{-- <div class="col-xl-12"> --}}
       <div class="flex-fill">
          <h5 style="text-align: center">
-            <img src="{{asset('nvt/logo2.png')}}" style="height: 60px;" class="img-fluid" alt="" />
+            <img src="{{asset('nvt/logo2.png')}}" style="height: 50px;" class="img-fluid" alt="" />
          </h5>
       </div>
   {{-- </div> --}}

@@ -318,7 +318,7 @@
             <div class="row row-sm align-items-center mt-3">
                @foreach (month_name() as $key => $item)
                <div class="col-2 col-sm-2 col-md-2 col-xl-2 mb-3 mb-xl-2">
-                  @if(date('m',strtotime(date_now())) == $key)
+                  @if($key == '10')
                   <button onclick="getMonth(`{{$key}}`)" name="{{$key}}" type="button" class="for-active get-key-code month{{$key}} btn btn-block btn-outline-danger active">
                      {{$item}}
                   </button>
@@ -330,21 +330,21 @@
                </div>
                @endforeach
             </div>
-            <div class="row row-sm align-items-center mt-3">
+            <div class="row row-sm align-items-center mt-3 alfa" style="display:none;">
                <div class="col-4 col-sm-4 col-md-4 col-xl mb-3 mb-xl-0">
-                  <button onclick="getDep()" id="Bilim" name="0" type="button" class="get-key-dep department btn btn-block btn-outline-danger active">
+                  <button id="Bilim" name="0" value="0" type="button" class="get-key-dep department btn btn-block btn-outline-danger active">
                      Bilim
                   </button>
                </div>
                @foreach (dep_name() as $item)
                <div class="col-4 col-sm-4 col-md-4 col-xl mb-3 mb-xl-0">
-                  <button onclick="getDep()" id="{{$item->name}}" name="{{$item->id}}" type="button" class="department btn btn-block btn-outline-danger">
+                  <button id="{{$item->name}}" name="{{$item->id}}" value="0" type="button" class="department dep{{$item->id}} btn btn-block btn-outline-danger">
                      {{$item->name}}
                   </button>
                </div>
                @endforeach
             </div>
-            <div class="row">
+            <div class="row alfa" style="display:none;">
                {{-- <div class="card-body"> --}}
                   {{-- <div class="table-responsive"> --}}
                      <table class="for-table-border">
@@ -1000,6 +1000,8 @@
                                     if(avg !=0 )
                                     {
                                        $(`.alldorisumma${pill.id}${date['day']}`).text(number_format(avg,1,'.',' '));
+                                    }else{
+                                       $(`.alldorisumma${pill.id}${date['day']}`).text(number_format(0,1,'.',' '));
                                     }
                                  }
                               });
@@ -1055,7 +1057,22 @@
                            var avg = all_avg/i;
                            var dep_text = $('.get-key-dep').attr('id');
                             $('.get-key-dep').text(dep_text+' ('+number_format(avg,2,'.',' ')+')');
+                        }else{
+                           var avg = 0;
+                           var dep_text = $('.get-key-dep').attr('id');
+                            $('.get-key-dep').text(dep_text+' ('+number_format(avg,2,'.',' ')+')');
                         }
+                     var dep8 = $('.dep8').attr('value');
+                     if(dep8 == 0)
+                        {
+
+                           $('.department').removeClass('active');
+                           $('.department').removeClass('get-key-dep');
+                           $('.dep8').addClass('active');
+                           $('.dep8').addClass('get-key-dep');
+                           detAjax();
+                        }
+                     
                   }
                   if(response.dep == 1)
                   {
@@ -1109,9 +1126,12 @@
                            $(`#${grade['q_id']}${date['day']}`).attr('title',teach);
                         });
                      });
+                     var betta = 0;
                      $.each(response.date_array, function(d, date){
+
                            if(date['isset'] == 1)
                            {
+                              betta++;
                               var summ = 0;
                               var i = 0;
                               $(`.savol${date['day']}`).each(function() {
@@ -1127,15 +1147,47 @@
                               }else{
                                  var avg = summ;
                               }
-                              if(i!=0)
+                              if(avg != 0)
                                  {
                                     var all_avg = avg/i;
                                     var dep_text = $('.get-key-dep').attr('id');
                                     $('.get-key-dep').text(dep_text+' ('+number_format(all_avg,2,'.',' ')+')');
                                  }
+                                 if(avg == 0)
+                                 {
+                                    var all_avg = 0;
+                                    var dep_text = $('.get-key-dep').attr('id');
+                                    $('.get-key-dep').text(dep_text+' ('+number_format(all_avg,2,'.',' ')+')');
+                                 }
                            }
                         });
+                        if(betta == 0){
+                              var all_avg = 0;
+                                    var dep_text = $('.get-key-dep').attr('id');
+                                    $('.get-key-dep').text(dep_text+' ('+number_format(all_avg,2,'.',' ')+')');
+                           }
+                     $('.get-key-dep').attr('value',1);
+
+                     var dep7 = $('.dep7').attr('value');
+                     
+                     if(dep7 == 0)
+                        {
+
+                           $('.department').removeClass('active');
+                           $('.department').removeClass('get-key-dep');
+                           $('.dep7').addClass('active');
+                           $('.dep7').addClass('get-key-dep');
+                           detAjax();
+                        }
                   }
+                  var dep8 = $('.dep8').attr('value');
+                  var dep7 = $('.dep7').attr('value');
+                  if(dep8 == 1 && dep7 == 1)
+                  {
+                  $('.alfa').css('display','');
+
+                  }
+
                 }
              }
             });
@@ -1187,20 +1239,44 @@
       }
       function getMonth(id)
       {
+         $('.alfa').css('display','none');
+
+         $('.dep7').attr('value',0);
+         $('.dep8').attr('value',0);
+         $('.department').removeClass('active');
+         $('.department').removeClass('get-key-dep');
+         $('#Bilim').addClass('active');
+         $('#Bilim').addClass('get-key-dep');
          $('.for-active').removeClass('active');
          $('.for-active').removeClass('get-key-code');
          $(`.month${id}`).addClass('active');
          $(`.month${id}`).addClass('get-key-code');
-         detAjax()
+         detAjax();
       }
       function nextYear()
       {
+         $('.alfa').css('display','none');
+
+         $('.dep7').attr('value',0);
+         $('.dep8').attr('value',0);
+         $('.department').removeClass('active');
+         $('.department').removeClass('get-key-dep');
+         $('#Bilim').addClass('active');
+         $('#Bilim').addClass('get-key-dep');
          var now = $('.year-button').text();
          $('.year-button').text(parseInt(now)+1);
          detAjax()
       }
       function lastYear()
       {
+         $('.alfa').css('display','none');
+
+         $('.dep7').attr('value',0);
+         $('.dep8').attr('value',0);
+         $('.department').removeClass('active');
+         $('.department').removeClass('get-key-dep');
+         $('#Bilim').addClass('active');
+         $('#Bilim').addClass('get-key-dep');
          var now = $('.year-button').text();
          $('.year-button').text(parseInt(now)-1);
          detAjax()

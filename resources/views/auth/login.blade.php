@@ -43,7 +43,10 @@
             <div class="login-right">
                <div class="login-right-wrap">
                   <!-- <h1>Blackjack </h1> -->
-                  <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
+                  <div style="text-align: center;">
+                     <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
+
+                  </div>
 
                   {{-- <p class="account-subtitle">Доступ к нашей панели управления</p> --}}
                   <form action="{{ route('login') }}" method="POST">
