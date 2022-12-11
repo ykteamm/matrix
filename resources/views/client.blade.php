@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Blackjack</title>
+    <title>Matrix</title>
 
     @include('admin.partials.css')
         

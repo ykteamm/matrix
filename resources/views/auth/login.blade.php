@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Blackjack</title>
+    <title>Matrix</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -42,7 +42,6 @@
          <div class="loginbox">
             <div class="login-right">
                <div class="login-right-wrap">
-                  <!-- <h1>Blackjack </h1> -->
                   <div style="text-align: center;">
                      <a href="/"><img src="{{asset('nvt/logo2.png')}}" alt="" height="100px"></a>
 
