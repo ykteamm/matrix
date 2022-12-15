@@ -242,6 +242,11 @@ Route::get('compare-stocks/{id}/time/{time?}',[\App\Http\Controllers\CompareCont
 Route::post('task',[ElchiTaskController::class,'store'])->name('task.store');
 #end-bro
 
+#rm-dash
+Route::get('rm',[\App\Http\Controllers\RMController::class,'index'])->name('rm-dash');
+Route::get('rm-region',[\App\Http\Controllers\RMController::class,'region'])->name('rm-region');
+
+#end-rm-dash
 });
 
 // });

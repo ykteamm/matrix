@@ -124,6 +124,11 @@ class HomeController extends Controller
 
         }
 
+        if($rm == 1)
+        {
+            return redirect()->route('rm-dash');
+        }
+
         $now = Carbon::now();
         $weekStartDate = $now->startOfWeek()->format('Y-m-d');
         $weekEndDate = $now->endOfWeek()->format('Y-m-d');

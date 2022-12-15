@@ -143,6 +143,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     {{-- <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css"> --}}
     <script src="https://api-maps.yandex.ru/2.1/?apikey=7a4a276f-4b19-448d-877b-1c87a0b350c3&lang=ru_RU" type="text/javascript">
     </script>
+    <livewire:styles>
 </head>
 <body>
     <div class="main-wrapper">
@@ -158,18 +159,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     @include('admin.partials.js')
     @yield('admin_script')
     
-    <script>
-//         function httpGetAsync(url, callback) {
-//     var xmlHttp = new XMLHttpRequest();
-//     xmlHttp.onreadystatechange = function() {
-//         if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-//         callback(xmlHttp.responseText);
-//     }
-//     xmlHttp.open("GET", url, true); // true for asynchronous
-//     xmlHttp.send(null);
-// } 
-        
-      </script>
+    <livewire:scripts>
 
 <script>
 $(document).ready(function () {
