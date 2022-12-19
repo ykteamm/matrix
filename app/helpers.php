@@ -58,24 +58,61 @@ if(!function_exists('wordSimilarity')){
         return $departments;
     }
 }
-    if(!function_exists('setPublic')){
-        function setPublic($db)
+    if(!function_exists('getUserRegion')){
+        function getUserRegion()
     {
-        Config::set("database.connections.pgsql.schema", $db);
-        $query = 'SET search_path TO ' . '"'.$db.'"';
-        DB::statement($query);
+        $userarrayreg = [];
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+            {
+                $users = DB::table('tg_user')
+                    ->where('tg_user.status',1)
+                    ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            }
+            else{
+                $r_id_array = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $r_id_array[] = $key;
+                        }
+                    }
+                    $users = DB::table('tg_user')
+                    ->whereIn('tg_region.id',$r_id_array)
+                    ->where('tg_user.status',1)
+                    ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            }
+            return $userarrayreg;
 
     }
 }
 
-    if(!function_exists('setSchema')){
-            function setSchema($db)
+    if(!function_exists('getRegion')){
+            function getRegion()
         {
-            Config::set("database.connections.pgsql.schema", $db);
-            $query = 'SET search_path TO ' . '"'.$db.'"';
-            DB::statement($query);
-
+            if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+            {
+                $regionId = DB::table('tg_region')->pluck('id');
+            }
+            else{
+                $regionId = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $regionId[] = $key;
+                        }
+                    }
+            }
+            return $regionId;
         }
+
     }
     if(!function_exists('positions')){
             function positions()

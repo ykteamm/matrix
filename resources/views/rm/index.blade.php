@@ -27,7 +27,7 @@
             </div>
             <div class="row">
                 <livewire:counter />
-                <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
+                <div class="col-12 col-md-6 col-lg-3 flex-wrap">
                     <div class="card detail-box1">
                         <div class="card-body">
                             <div class="dash-contetnt">
@@ -35,18 +35,18 @@
                                         <h4 class="text-light">#1</h4>
                                     </div>
                                     <div class="text-center">
-                                        <h1 class="text-white">{{number_format($users->users[0]->allprice,0,'','.')}}</h1>
+                                        <h1 class="text-white">{{number_format($users[0]->allprice,0,'','.')}}</h1>
                                     </div>
                                 
                                     <div class="text-center mb-3">
                                         <h4 class="text-white">
-                                            {{$users->users[0]->last_name}} {{$users->users[0]->first_name}}
+                                            {{$users[0]->last_name}} {{$users[0]->first_name}}
                                         </h4>
                                     </div>
                                 <div style="display:none;" class="user-hide mb-3">
                                             <table style="width: 100%;text-align:center;color:white;">
                                                 <tbody>
-                                                    @foreach ($users->users as $key => $item)
+                                                    @foreach ($users as $key => $item)
                                                                          
                                                     @if ($key < 5)
 
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
+                <div class="col-12 col-md-6 col-lg-3 flex-wrap">
                     <div class="card detail-box1">
                         <div class="card-body">
                             <div class="dash-contetnt">
@@ -86,7 +86,7 @@
                                             {{$pharmacy[0]->name}}
                                         </h4>
                                     </div>
-                                <div style="display:none;" class="region-hide mb-3">
+                                <div style="display:none;" class="pharmacy-hide mb-3">
                                             <table style="width: 100%;text-align:center;color:white;">
                                                 <tbody>
                                                     @foreach ($pharmacy as $key => $item)
@@ -105,15 +105,15 @@
                                             </table>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <button onclick="arrowDown()" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
-                                    <button onclick="arrowUp()" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
-                                    <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                                    <button onclick="arrowDown('pharmacy')" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down-pharmacy"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
+                                    <button onclick="arrowUp('pharmacy')" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-pharmacy"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
+                                    <a href="{{route('rm-pharmacy')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-pharmacy"><i class="fas fa-eye" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
+                <div class="col-12 col-md-6 col-lg-3 flex-wrap">
                     <div class="card detail-box1">
                         <div class="card-body">
                             <div class="dash-contetnt">
@@ -129,7 +129,7 @@
                                             {{$medicine[0]->name}}
                                         </h4>
                                     </div>
-                                <div style="display:none;" class="region-hide mb-3">
+                                <div style="display:none;" class="medicine-hide mb-3">
                                             <table style="width: 100%;text-align:center;color:white;">
                                                 <tbody>
                                                     @foreach ($medicine as $key => $item)
@@ -148,9 +148,9 @@
                                             </table>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <button onclick="arrowDown()" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
-                                    <button onclick="arrowUp()" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
-                                    <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                                    <button onclick="arrowDown('medicine')" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down-medicine"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
+                                    <button onclick="arrowUp('medicine')" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-medicine"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
+                                    <a href="{{route('rm-medicine')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-medicine"><i class="fas fa-eye" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -169,9 +169,14 @@
                         </span>
                     </h3>
                 </div>
-                <livewire:liveuser />
+                
             </div>
-        </div>
+            <div class="row">
+                <livewire:liveuser />
+                <livewire:livepharmacy />
+                <livewire:livemedicine />
+            </div>
+    </div>
     </div>
     @endif
 @endisset

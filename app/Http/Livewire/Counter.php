@@ -27,7 +27,7 @@ class Counter extends Component
         {
             $this->region = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.id,tg_region.name')
-                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-4 day',strtotime(date_now()))))
+                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-6 day',strtotime(date_now()))))
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->orderBy('allprice','DESC')
@@ -46,7 +46,7 @@ class Counter extends Component
         {
             $this->region = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.name,tg_order.id')
-                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-1 day',strtotime(date_now()))))
+                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-6 day',strtotime(date_now()))))
                     ->join('tg_order','tg_order.id','tg_productssold.order_id')
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->join('tg_region','tg_region.id','tg_user.region_id')

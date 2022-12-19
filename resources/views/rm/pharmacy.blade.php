@@ -2,7 +2,7 @@
 @section('admin_content')
 @isset(Session::get('per')['dash'])
     @if(Session::get('per')['dash'] == 'true')
-    <livewire:all-user-page />
+    <livewire:all-pharmacy-page />
     @endif
 @endisset
 @endsection

@@ -24,10 +24,16 @@ class RMController extends Controller
     {
         return view('rm.region');
     }
-    public function user($date)
+    public function user()
     {
-        $users = $this->service->users($date);
-        $regions = Region::all();
-        return view('rm.user',compact('users','regions'));
+        return view('rm.user');
+    }
+    public function pharmacy()
+    {
+        return view('rm.pharmacy');
+    }
+    public function medicine()
+    {
+        return view('rm.medicine');
     }
 }
