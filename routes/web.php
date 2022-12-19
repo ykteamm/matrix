@@ -245,6 +245,7 @@ Route::post('task',[ElchiTaskController::class,'store'])->name('task.store');
 #rm-dash
 Route::get('rm',[\App\Http\Controllers\RMController::class,'index'])->name('rm-dash');
 Route::get('rm-region',[\App\Http\Controllers\RMController::class,'region'])->name('rm-region');
+Route::get('rm-user/{date?}',[\App\Http\Controllers\RMController::class,'user'])->name('rm-user');
 
 #end-rm-dash
 });

@@ -27,55 +27,149 @@
             </div>
             <div class="row">
                 <livewire:counter />
-               
-                <div class="col-12 col-md-6 col-lg-3 flex-wrap">
-                <div class="card detail-box2 details-box">
-                <div class="card-body">
-                <div class="dash-contetnt">
-                <div class="mb-3">
-                <img src="assets/img/icons/visits.svg" alt="" width="26">
+                <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
+                    <div class="card detail-box1">
+                        <div class="card-body">
+                            <div class="dash-contetnt">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="text-light">#1</h4>
+                                    </div>
+                                    <div class="text-center">
+                                        <h1 class="text-white">{{number_format($users->users[0]->allprice,0,'','.')}}</h1>
+                                    </div>
+                                
+                                    <div class="text-center mb-3">
+                                        <h4 class="text-white">
+                                            {{$users->users[0]->last_name}} {{$users->users[0]->first_name}}
+                                        </h4>
+                                    </div>
+                                <div style="display:none;" class="user-hide mb-3">
+                                            <table style="width: 100%;text-align:center;color:white;">
+                                                <tbody>
+                                                    @foreach ($users->users as $key => $item)
+                                                                         
+                                                    @if ($key < 5)
+
+                                                        <tr style="border-bottom: 1px solid white;" class="mb-4">
+                                                        <td>#{{$key+1}}</td>
+                                                        <td style="padding:0px 2px;">{{$item->last_name}} {{$item->first_name}}</td>
+                                                        <td>{{number_format($item->allprice,0,'','.')}}</td>
+                                                        </tr>
+                                                    @endif
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button onclick="arrowDown('user')" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down-user"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
+                                    <button onclick="arrowUp('user')" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
+                                    <a href="{{route('rm-user')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h4 class="text-white">Patients Visit </h4>
-                <h2 class="text-white">137 </h2>
-                <div class="growth-indicator">
-                <span class="text-white"><i class="fas fa-angle-double-down mr-1"></i> (4.78%) </span>
+                <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
+                    <div class="card detail-box1">
+                        <div class="card-body">
+                            <div class="dash-contetnt">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="text-light">#1</h4>
+                                    </div>
+                                    <div class="text-center">
+                                        <h1 class="text-white">{{number_format($pharmacy[0]->allprice,0,'','.')}}</h1>
+                                    </div>
+                                
+                                    <div class="text-center mb-3">
+                                        <h4 class="text-white">
+                                            {{$pharmacy[0]->name}}
+                                        </h4>
+                                    </div>
+                                <div style="display:none;" class="region-hide mb-3">
+                                            <table style="width: 100%;text-align:center;color:white;">
+                                                <tbody>
+                                                    @foreach ($pharmacy as $key => $item)
+                                                                         
+                                                    @if ($key < 5)
+
+                                                        <tr style="border-bottom: 1px solid white;" class="mb-4">
+                                                        <td>#{{$key+1}}</td>
+                                                        <td style="padding:0px 2px;">{{$item->name}}</td>
+                                                        <td>{{number_format($item->allprice,0,'','.')}}</td>
+                                                        </tr>
+                                                    @endif
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button onclick="arrowDown()" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
+                                    <button onclick="arrowUp()" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
+                                    <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap">
+                    <div class="card detail-box1">
+                        <div class="card-body">
+                            <div class="dash-contetnt">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="text-light">#1</h4>
+                                    </div>
+                                    <div class="text-center">
+                                        <h1 class="text-white">{{number_format($medicine[0]->allprice,0,'','.')}}</h1>
+                                    </div>
+                                
+                                    <div class="text-center mb-3">
+                                        <h4 class="text-white">
+                                            {{$medicine[0]->name}}
+                                        </h4>
+                                    </div>
+                                <div style="display:none;" class="region-hide mb-3">
+                                            <table style="width: 100%;text-align:center;color:white;">
+                                                <tbody>
+                                                    @foreach ($medicine as $key => $item)
+                                                                         
+                                                    @if ($key < 5)
+
+                                                        <tr style="border-bottom: 1px solid white;" class="mb-4">
+                                                        <td>#{{$key+1}}</td>
+                                                        <td style="padding:0px 2px;">{{$item->name}}</td>
+                                                        <td>{{number_format($item->allprice,0,'','.')}}</td>
+                                                        </tr>
+                                                    @endif
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button onclick="arrowDown()" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
+                                    <button onclick="arrowUp()" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
+                                    <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="content">
+                <div class="col-xl-12 mt-3">
+                    <h3>      
+                        <span>
+                            @if(intval(date('h',strtotime(date_now()))) > 0 && intval(date('h',strtotime(date_now()))) < 13)            
+                            Kechagi kungi hisobot
+                            @else
+                            Bugungi kun hozirgacha hisobot
+                            @endif
+                        </span>
+                    </h3>
                 </div>
-                </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3 flex-wrap">
-                <div class="card detail-box3 details-box">
-                <div class="card-body">
-                <div class="dash-contetnt">
-                <div class="mb-3">
-                <img src="assets/img/icons/hospital-bed.svg" alt="" width="26">
-                </div>
-                <h4 class="text-white">New Admit </h4>
-                <h2 class="text-white">24 </h2>
-                <div class="growth-indicator">
-                <span class="text-white"><i class="fas fa-angle-double-up mr-1"></i> (18.32%) </span>
-                </div>
-                </div>
-                </div>
-                </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-3 flex-wrap">
-                <div class="card detail-box4 details-box">
-                <div class="card-body">
-                <div class="dash-contetnt">
-                <div class="mb-3">
-                <img src="assets/img/icons/operating.svg" alt="" width="26">
-                </div>
-                <h4 class="text-white">Operations </h4>
-                <h2 class="text-white">05 </h2>
-                <div class="growth-indicator">
-                <span class="text-white"><i class="fas fa-angle-double-down mr-1"></i> (25.14%) </span>
-                </div>
-                </div>
-                </div>
-                </div>
-                </div>
+                <livewire:liveuser />
             </div>
         </div>
     </div>
@@ -84,17 +178,17 @@
 @endsection
 @section('admin_script')
     <script>
-        function arrowDown()
+        function arrowDown($t)
         {
-            $('.region-hide').css('display','');
-            $('.arrow-up').css('display','');
-            $('.arrow-down').css('display','none');
+            $(`.${$t}-hide`).css('display','');
+            $(`.arrow-up-${$t}`).css('display','');
+            $(`.arrow-down-${$t}`).css('display','none');
         }
-        function arrowUp()
+        function arrowUp($t)
         {
-            $('.region-hide').css('display','none');
-            $('.arrow-up').css('display','none');
-            $('.arrow-down').css('display','');
+            $(`.${$t}-hide`).css('display','none');
+            $(`.arrow-up-${$t}`).css('display','none');
+            $(`.arrow-down-${$t}`).css('display','');
         }
     </script>
 @endsection

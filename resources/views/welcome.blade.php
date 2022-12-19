@@ -1341,23 +1341,11 @@
     }
       $(function() {
   $('input[name="datetimes"]').daterangepicker({
-   //  timePicker: true,
-   //  startDate: moment().startOf('hour'),
-   //  endDate: moment().startOf('hour').add(32, 'hour'),
     locale: {
       format: 'DD.MM.YY'
     }
   });
   $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
-            // $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-      //   console.log(picker.startDate.format('YYYY-MM-DD'))
-         // $('.in-range').onclick(function()
-         // {
-         //    alert(123);
-         //    $('.opensright').css('top','115px !important');
-
-         // });
-
          window.location = $(this).data("href");
          var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
          var id = <?php echo json_encode($elchi->id); ?>;
