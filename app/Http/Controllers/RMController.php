@@ -15,10 +15,16 @@ class RMController extends Controller
     }
     public function index()
     {
-        $users = $this->service->users();
-        $pharmacy = $this->service->pharmacy();
-        $medicine = $this->service->medicine();
-        return view('rm.index',compact('users','pharmacy','medicine'));
+        
+        if(intval(date('h',strtotime(date_now()))) >= 0 && intval(date('h',strtotime(date_now()))) <= 13) 
+        {
+            $users = $this->service->users();
+            $pharmacy = $this->service->pharmacy();
+            $medicine = $this->service->medicine();
+            return view('rm.index',compact('users','pharmacy','medicine'));
+        }else{
+            return view('rm.live',compact('users','pharmacy','medicine'));
+        }
     }
     public function region()
     {

@@ -16,11 +16,7 @@
                 <div class="col-xl-12 mt-3">
                     <h3>      
                         <span>
-                            @if(intval(date('h',strtotime(date_now()))) > 0 && intval(date('h',strtotime(date_now()))) < 13)            
                             Kechagi kungi hisobot
-                            @else
-                            Bugungi kun hozirgacha hisobot
-                            @endif
                         </span>
                     </h3>
                 </div>
@@ -30,6 +26,7 @@
                 <div class="col-12 col-md-6 col-lg-3 flex-wrap">
                     <div class="card detail-box1">
                         <div class="card-body">
+                            @if(count($users) > 0)
                             <div class="dash-contetnt">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="text-light">#1</h4>
@@ -44,22 +41,22 @@
                                         </h4>
                                     </div>
                                 <div style="display:none;" class="user-hide mb-3">
-                                            <table style="width: 100%;text-align:center;color:white;">
-                                                <tbody>
-                                                    @foreach ($users as $key => $item)
-                                                                         
-                                                    @if ($key < 5)
+                                    <table style="width: 100%;text-align:center;color:white;">
+                                        <tbody>
+                                            @foreach ($users as $key => $item)
+                                                                 
+                                            @if ($key < 5)
 
-                                                        <tr style="border-bottom: 1px solid white;" class="mb-4">
-                                                        <td>#{{$key+1}}</td>
-                                                        <td style="padding:0px 2px;">{{$item->last_name}} {{$item->first_name}}</td>
-                                                        <td>{{number_format($item->allprice,0,'','.')}}</td>
-                                                        </tr>
-                                                    @endif
-                                                    @endforeach
+                                                <tr style="border-bottom: 1px solid white;" class="mb-4">
+                                                <td>#{{$key+1}}</td>
+                                                <td style="padding:0px 2px;">{{$item->last_name}} {{$item->first_name}}</td>
+                                                <td>{{number_format($item->allprice,0,'','.')}}</td>
+                                                </tr>
+                                            @endif
+                                            @endforeach
 
-                                                </tbody>
-                                            </table>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <button onclick="arrowDown('user')" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down-user"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
@@ -67,12 +64,16 @@
                                     <a href="{{route('rm-user')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user"><i class="fas fa-eye" aria-hidden="true"></i></a>
                                 </div>
                             </div>
+                            @else
+                            <span style="text-align: center;color:white">No data</span>
+                            @endif
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 flex-wrap">
                     <div class="card detail-box1">
                         <div class="card-body">
+                            @if(count($pharmacy) > 0)
                             <div class="dash-contetnt">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="text-light">#1</h4>
@@ -110,12 +111,16 @@
                                     <a href="{{route('rm-pharmacy')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-pharmacy"><i class="fas fa-eye" aria-hidden="true"></i></a>
                                 </div>
                             </div>
+                            @else
+                            <span style="text-align: center;color:white">No data</span>
+                            @endif
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 flex-wrap">
                     <div class="card detail-box1">
                         <div class="card-body">
+                            @if(count($pharmacy) > 0)
                             <div class="dash-contetnt">
                                     <div class="d-flex justify-content-between">
                                         <h4 class="text-light">#1</h4>
@@ -153,6 +158,9 @@
                                     <a href="{{route('rm-medicine')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-medicine"><i class="fas fa-eye" aria-hidden="true"></i></a>
                                 </div>
                             </div>
+                            @else
+                            <span style="text-align: center;color:white">No data</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -161,11 +169,7 @@
                 <div class="col-xl-12 mt-3">
                     <h3>      
                         <span>
-                            @if(intval(date('h',strtotime(date_now()))) > 0 && intval(date('h',strtotime(date_now()))) < 13)            
-                            Kechagi kungi hisobot
-                            @else
                             Bugungi kun hozirgacha hisobot
-                            @endif
                         </span>
                     </h3>
                 </div>

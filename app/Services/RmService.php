@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class RmService
 {
-    public $day = 5;
+    public $day;
     public function users()
     {
+        $this->day = 6;
             $users = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id,tg_user.first_name,tg_user.last_name,tg_user.region_id')
             ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-'.$this->day.' day',strtotime(date_now()))))
@@ -81,6 +82,8 @@ class RmService
     }
     public function medicine()
     {
+        // $this->day = 6;
+
         $pharmacy = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_medicine.id,tg_medicine.name')
                     ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-'.$this->day.' day',strtotime(date_now()))))

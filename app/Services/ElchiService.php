@@ -10,10 +10,16 @@ class ElchiService
 {
     public function day($time)
     {
+        
         if ($time == 'today') {
             $date_begin = date_now();
             $date_end = date_now();
             $dateText = 'Bugun';
+        }
+        elseif ($time == 'last') {
+            $date_begin = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date_now()) ) ));
+            $date_end = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( date_now()) ) ));
+            $dateText = 'Kecha';
         }
         elseif ($time == 'week') {
             $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( date_now()) ) ));

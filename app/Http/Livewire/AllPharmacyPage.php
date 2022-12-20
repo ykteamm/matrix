@@ -26,6 +26,15 @@ class AllPharmacyPage extends Component
     }
     public function render()
     {
+        $t = rmDay();
+        if($t == 1)
+        {
+            $this->times = 'last';
+            $this->time_text = 'Kecha';
+        }else{
+            $this->times = 'today';
+            $this->time_text = 'Bugun';
+        }
         if($this->region_id)
         {
             $id[] = $this->region_id;

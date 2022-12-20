@@ -9,7 +9,7 @@ use App\Services\RmService;
 class AllMedicinePage extends Component
 {
     public $regions;
-    public $times = 'today';
+    public $times;
     public $time_text = 'Bugun';
     public $region_id;
     public $region_name = 'Barchasi';
@@ -26,6 +26,19 @@ class AllMedicinePage extends Component
     }
     public function render()
     {
+        if(!isset($this->times))
+        {
+            $t = rmDay();
+        if($t == 1)
+        {
+            $this->times = 'last';
+            $this->time_text = 'Kecha';
+        }else{
+            $this->times = 'today';
+            $this->time_text = 'Bugun';
+        }
+        }
+        
         if($this->region_id)
         {
             $id[] = $this->region_id;

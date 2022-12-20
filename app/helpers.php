@@ -114,23 +114,16 @@ if(!function_exists('wordSimilarity')){
         }
 
     }
-    if(!function_exists('positions')){
-            function positions()
+    if(!function_exists('rmDay')){
+            function rmDay()
         {
-            $positions = [
-                'hospital' => 'Больница',
-                'branch' => 'Филиал',
-                'rol' => 'Должность',
-                'user' => 'Пользователь',
-                'p_registr' => 'Пациент регистрация',
-                'p_diagnos' => 'Пациент диагноз ',
-                'p_illnes' => 'Пациент осмотр больного ',
-                'p_ekg' => 'Пациент ЭКГ',
-                'p_exo' => 'Пациент ЭХО',
-                'p_treatment' => 'Пациент лечение ',
-                'exit' => 'Исход',
-            ];
-            return $positions;
+            if(intval(date('h',strtotime(date_now()))) >= 0 && intval(date('h',strtotime(date_now()))) <= 13) 
+            {
+                $day = 1;
+            }else{
+                $day = 0;
+            }
+            return $day;
 
         }
     }

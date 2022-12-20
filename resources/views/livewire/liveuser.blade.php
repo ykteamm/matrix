@@ -1,6 +1,7 @@
 <div class="col-6 col-md-6 col-lg-3 flex-wrap">
             <div class="card detail-box1">
                 <div class="card-body">
+                    @if(count($users) > 0)
                     <div class="dash-contetnt">
                             <div class="d-flex justify-content-between">
                                 <h4 class="text-light" wire:poll.5s="test()">#1</h4>
@@ -36,6 +37,9 @@
                             {{-- <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user-live"><i class="fas fa-eye" aria-hidden="true"></i></a> --}}
                         </div>
                     </div>
+                    @else
+                    <span style="text-align: center;color:white">No data</span>
+                    @endif
                 </div>
             </div>
 </div>
