@@ -24,6 +24,38 @@ class RmService
             ->groupBy('tg_user.id')->get();
         return $users;
     }
+    public function usersT()
+    {
+            $users = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id,tg_user.first_name,tg_user.last_name,tg_user.region_id')
+            ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-1 day',strtotime(date_now()))))
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->orderBy('allprice','DESC')
+            ->groupBy('tg_user.id')->get();
+        return $users;
+    }
+    public function pharmacyT()
+    {
+        $pharmacy = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_pharmacy.id,tg_pharmacy.name')
+                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-1 day',strtotime(date_now()))))
+                    ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+                    ->orderBy('allprice','DESC')
+                    ->groupBy('tg_pharmacy.id')->get();
+        return $pharmacy;
+    }
+    public function medicineT()
+    {
+        // $this->day = 6;
+
+        $pharmacy = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_medicine.id,tg_medicine.name')
+                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-1 day',strtotime(date_now()))))
+                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                    ->orderBy('allprice','DESC')
+                    ->groupBy('tg_medicine.id')->get();
+        return $pharmacy;
+    }
     public function allUsers($time,$region_id)
     {
         $date = new ElchiService;
@@ -70,26 +102,5 @@ class RmService
             ->groupBy('tg_medicine.id')->get();
         return $users;
     }
-    public function pharmacy()
-    {
-        $pharmacy = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_pharmacy.id,tg_pharmacy.name')
-                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-'.$this->day.' day',strtotime(date_now()))))
-                    ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
-                    ->orderBy('allprice','DESC')
-                    ->groupBy('tg_pharmacy.id')->get();
-        return $pharmacy;
-    }
-    public function medicine()
-    {
-        // $this->day = 6;
-
-        $pharmacy = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_medicine.id,tg_medicine.name')
-                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-'.$this->day.' day',strtotime(date_now()))))
-                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
-                    ->orderBy('allprice','DESC')
-                    ->groupBy('tg_medicine.id')->get();
-        return $pharmacy;
-    }
+    
 }

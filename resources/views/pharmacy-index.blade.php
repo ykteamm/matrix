@@ -125,7 +125,7 @@
                iconColor: '#ff0000'
             });
             myMap.geoObjects.add(placemark);
-         }
+         };
          
       </script>
    <script>
