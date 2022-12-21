@@ -1,4 +1,4 @@
-<div class="col-6 col-md-6 col-lg-3 flex-wrap">
+<div class="col-12 col-md-6 col-lg-3 flex-wrap">
             <div class="card detail-box1">
                 <div class="card-body">
                     @if(count($users) > 0)
@@ -34,6 +34,8 @@
                         <div class="d-flex justify-content-between">
                             <button onclick="arrowDown('user-live')" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down-user-live"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
                             <button onclick="arrowUp('user-live')" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user-live"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
+                            <a href="{{route('rm-user',['region' => 'all','time' => 'today'])}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                            
                             {{-- <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-user-live"><i class="fas fa-eye" aria-hidden="true"></i></a> --}}
                         </div>
                     </div>

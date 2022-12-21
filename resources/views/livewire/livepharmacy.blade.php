@@ -1,4 +1,4 @@
-<div class="col-6 col-md-6 col-lg-3 flex-wrap">
+<div class="col-12 col-md-6 col-lg-3 flex-wrap">
             <div class="card detail-box1">
                 <div class="card-body">
                     @if(count($pharmacy) > 0)

@@ -7,21 +7,32 @@
         @include('admin.components.logo')
         </div>
         <div class="main-wrapper headbot">
-            <div class="content">
-                <div class="col-xl-12 mt-3">
-                    <h3 style="margin-top:100px;">                  
-                        Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->last_name}} {{Session::get('user')->first_name}}</span>
-                    </h3>
+                <div class="content">
+                    <div class="col-xl-12 mt-3">
+                        <h3 style="margin-top:100px;">                  
+                            Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->last_name}} {{Session::get('user')->first_name}}</span>
+                        </h3>
+                    </div>
                 </div>
-                <div class="col-xl-12 mt-3">
-                    <h3>      
-                        <span>
-                            bugungi kungi hisobot
-                        </span>
-                    </h3>
+            <div class="card" style="background: #cacaca;">
+                <div style="margin: 0px 12px;">
+                    <div class="col-xl-12 mt-3">
+                        <h3>      
+                            <span>
+                                bugungi kungi hisobot
+                            </span>
+                        </h3>
+                    </div>
+                    <div class="row">
+                        <livewire:counter />
+                        <livewire:liveuser />
+                        <livewire:livepharmacy />
+                        <livewire:livemedicine />
+                    </div>
                 </div>
+
             </div>
-            {{-- //fff --}}
+
             <div class="content">
                 <div class="col-xl-12 mt-3">
                     <h3>      

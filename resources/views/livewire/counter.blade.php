@@ -46,7 +46,7 @@
                 <div class="d-flex justify-content-between">
                     <button onclick="arrowDown('region')" style="padding: 0px 6px;" type="button" class="btn btn-outline-danger arrow-down-region"><i class="fas fa-arrow-down" aria-hidden="true"></i> </button>
                     <button onclick="arrowUp('region')" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-region"><i class="fas fa-arrow-up" aria-hidden="true"></i> </button>
-                    <a href="{{route('rm-region')}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-region">ko'proq</a>
+                    <a href="{{route('rm-region',['region' => 'all','time' => 'today','action' => $index])}}" style="padding: 0px 6px;display:none;" type="button" class="btn btn-outline-danger arrow-up-region">ko'proq</a>
                 </div>
             </div>
         </div>
