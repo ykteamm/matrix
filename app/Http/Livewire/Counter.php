@@ -12,6 +12,7 @@ class Counter extends Component
     public $index = 0;
     public $final;
     public $region ;
+    public $day ;
     public function increment($index)
     {
 
@@ -21,6 +22,11 @@ class Counter extends Component
             $this->index = 0;
         }
         $this->factor[$this->index];
+    }
+    public function test()
+    {
+        $this->day = 7;
+        
     }
     public function render()
     {
