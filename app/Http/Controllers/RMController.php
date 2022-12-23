@@ -17,18 +17,39 @@ class RMController extends Controller
     }
     public function index()
     {
-        if(rmDay() == 1) 
-        {
-            $users = $this->service->users();
-            $pharmacy = $this->service->pharmacy();
-            $medicine = $this->service->medicine();
-            return view('rm.index',compact('users','pharmacy','medicine'));
-        }else{
+        
             $users = $this->service->usersT();
             $pharmacy = $this->service->pharmacyT();
             $medicine = $this->service->medicineT();
-            return view('rm.live',compact('users','pharmacy','medicine'));
-        }
+
+            $regions = DB::table('tg_region')->get();
+
+            $sum = DB::table('tg_productssold')
+                    ->select('tg_productssold.price_product as price','tg_productssold.number as m_number','tg_region.name as r_name','tg_region.id as r_id')
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                    // ->orderBy('tg_order.id', 'ASC')
+                    ->get();
+            $summa = 0;
+            $array = [];
+            foreach ($regions as $key => $value) {
+                foreach ($sum as $keys => $values) {
+                    if($value->id == $values->r_id)
+                    {
+                        $summa = $summa + ($values->m_number * $values->price);
+                    }
+    
+                }
+    
+                $array[] = array('summa' => $summa,'region' => $value->name);
+                $summa = 0;
+    
+            }
+            arsort( $array);
+    
+            return view('rm.index',compact('users','pharmacy','medicine','array'));
+        
     }
     public function region($region,$time,$action)
     {

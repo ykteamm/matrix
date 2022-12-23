@@ -228,7 +228,6 @@ class UserController extends Controller
     }
     public function adminList(Request $request)
     {
-
         $elchi = DB::table('tg_user')
         ->where('admin',TRUE)
         ->where('rm',0)

@@ -172,7 +172,7 @@ $(document).ready(function () {
   });
 
   $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         "order": [[ 4, "desc" ]]
 

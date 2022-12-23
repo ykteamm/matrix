@@ -3,8 +3,8 @@
 @isset(Session::get('per')['dash'])
              @if(Session::get('per')['dash'] == 'true')
 <div class="content mt-1 main-wrapper ">
-   <div class="row gold-box">
-    @include('admin.components.logo')
+    <div class="row gold-box">
+        @include('admin.components.logo')
 
       <div class="card flex-fill">
        
@@ -38,16 +38,11 @@
     {{-- <div class="page-header"> --}}
         <div class="main-wrapper headbot">
             <div class="content">
-            {{-- <div class="card-header">
-                      </div> --}}
-                   {{-- second row --}}
                    <div class="col-xl-12 mt-3">
-                    {{-- <div class="card flex-fill" style="margin-bottom:0 !important"> --}}
                        <h3 style="text-align: center">                  
                         Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
                        </h3>
-                    {{-- </div> --}}
-                </div>
+                    </div>
                     <div class="row align-items-center justify-content-center" id="myregionid">
                     </div>
                     <div class="row" id="catid">
@@ -71,114 +66,112 @@
                         </div>
                         
                      </div>
-                   <div class="row" id="regionid">
-                   </div>
-                   <div class="row calender-col">
+                        <div class="row" id="regionid">
+                        </div>
+                    <div class="row calender-col">
                       <div class="col-xl-12" id="forvil">
                          <div class="card" style="height: 62%">
                          
-                    <div class="row" id="myregionid">
-                    </div>
-                    <div class="row" id="catid">
-                    </div>
-                   <div class="row" id="regionid">
-                   </div>
-                   <div id="dchart">
-                   <div id="rchart_del"></div>
+                            <div class="row" id="myregionid">
+                            </div>
+                            <div class="row" id="catid">
+                            </div>
+                            <div class="row" id="regionid">
+                            </div>
+                            <div id="dchart">
+                            <div id="rchart_del"></div>
 
-                    <div id="rchart">
-                    </div>
-                   </div>
+                                <div id="rchart">
+                                </div>
+                            </div>
                    
-                   <div class="row calender-col">
-                      <div class="col-xl-12" id="forvil">
-                         <div class="card">
-                            
-                            <div class="card-header">
-                               <div class="card bg-white">
-                                    <div class="card-header">
-                                    <h5 class="card-title">Viloyat </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="col-md-4">
-                                            <ul class="nav nav-tabs nav-tabs-solid nav-justified">
-                                                <li class="nav-item"><a class="nav-link active" href="#solid-tab1" data-toggle="tab">Tartiblanmagan </a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#solid-tab2" data-toggle="tab">Tartiblangan </a></li>
-                                            </ul>
-                                        </div>
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="solid-tab1">
-                                                    <div id="regionchart_del"></div>
-                                                    <div id="regionchart"></div>
+                            <div class="row calender-col">
+                                <div class="col-xl-12" id="forvil">
+                                    <div class="card">
+                                        
+                                        <div class="card-header">
+                                        <div class="card bg-white">
+                                                <div class="card-header">
+                                                <h5 class="card-title">Viloyat </h5>
                                                 </div>
-                                                <div class="tab-pane show" id="solid-tab2">
-                                                    <div id="regionchart_del_sort"></div>
-                                                    <div id="regionchart_sort"></div>
-                                                </div>
+                                                <div class="card-body">
+                                                    <div class="col-md-4">
+                                                        <ul class="nav nav-tabs nav-tabs-solid nav-justified">
+                                                            <li class="nav-item"><a class="nav-link active" href="#solid-tab1" data-toggle="tab">Tartiblanmagan </a></li>
+                                                            <li class="nav-item"><a class="nav-link" href="#solid-tab2" data-toggle="tab">Tartiblangan </a></li>
+                                                        </ul>
+                                                    </div>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active" id="solid-tab1">
+                                                                <div id="regionchart_del"></div>
+                                                                <div id="regionchart"></div>
+                                                            </div>
+                                                            <div class="tab-pane show" id="solid-tab2">
+                                                                <div id="regionchart_del_sort"></div>
+                                                                <div id="regionchart_sort"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                             </div>
                                         </div>
-                                        </div>
-                                   </div>
-                            </div>
-                        </div>
-                      <div class="col-xl-12">
-                      <div class="card">
-                            
-                            <div class="card-header">
-                               <div class="card bg-white">
-                                    <div class="card-header">
-                                    <h5 class="card-title">Elchi </h5>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="col-md-4">
-                                            <ul class="nav nav-tabs nav-tabs-solid nav-justified">
-                                                <li class="nav-item"><a class="nav-link active" href="#solid-tab3" data-toggle="tab">Tartiblanmagan </a></li>
-                                                <li class="nav-item"><a class="nav-link" href="#solid-tab4" data-toggle="tab">Tartiblangan </a></li>
-                                            </ul>
-                                        </div>
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="solid-tab3">
-                                                    <div id="elchichart_del"></div>
-                                                    <div id="elchichart"></div>
+                                <div class="col-xl-12">
+                                <div class="card">
+                                        
+                                        <div class="card-header">
+                                        <div class="card bg-white">
+                                                <div class="card-header">
+                                                <h5 class="card-title">Elchi </h5>
                                                 </div>
-                                                <div class="tab-pane show" id="solid-tab4">
-                                                    <div id="elchichart_del_sort"></div>
-                                                    <div id="elchichart_sort"></div>
-                                                </div>
+                                                <div class="card-body">
+                                                    <div class="col-md-4">
+                                                        <ul class="nav nav-tabs nav-tabs-solid nav-justified">
+                                                            <li class="nav-item"><a class="nav-link active" href="#solid-tab3" data-toggle="tab">Tartiblanmagan </a></li>
+                                                            <li class="nav-item"><a class="nav-link" href="#solid-tab4" data-toggle="tab">Tartiblangan </a></li>
+                                                        </ul>
+                                                    </div>
+                                                        <div class="tab-content">
+                                                            <div class="tab-pane active" id="solid-tab3">
+                                                                <div id="elchichart_del"></div>
+                                                                <div id="elchichart"></div>
+                                                            </div>
+                                                            <div class="tab-pane show" id="solid-tab4">
+                                                                <div id="elchichart_del_sort"></div>
+                                                                <div id="elchichart_sort"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-12">
+                
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                        <table class="table table-stripped">
+                                        <thead>
+                                            <tr>
+                                            <th>FIO </th>
+                                            <th>Summa </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="userid">
+                                        </tbody>
+                                        </table>
                                         </div>
-                                   </div>
+                                    </div>
+                                </div>
+                                </div>
+                
                             </div>
                         </div>
-                      </div>
-                      
-                      <div class="col-xl-12">
-    
-                      <div class="card">
-                         <div class="card-body">
-                            <div class="table-responsive">
-                            <table class="table table-stripped">
-                               <thead>
-                                  <tr>
-                                  <th>FIO </th>
-                                  <th>Summa </th>
-                                  </tr>
-                               </thead>
-                               <tbody id="userid">
-                               </tbody>
-                            </table>
-                            </div>
-                         </div>
-                      </div>
-                      </div>
-    
-                   </div>
-                </div>
+                    </div>
             </div>
-        <!-- </div> -->
-    {{-- </div> --}}
-</div>
 @endif
 @endisset
 @endsection

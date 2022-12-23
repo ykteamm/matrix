@@ -117,7 +117,7 @@ if(!function_exists('wordSimilarity')){
     if(!function_exists('rmDay')){
             function rmDay()
         {
-            if(intval(date('H',strtotime(date_now()))) >= 0 && intval(date('H',strtotime(date_now()))) <= 13) 
+            if(intval(date('H',strtotime(date_now()))) >= 0 && intval(date('H',strtotime(date_now()))) < 13) 
             {
                 $day = 1;
             }else{
