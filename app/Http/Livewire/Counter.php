@@ -34,7 +34,7 @@ class Counter extends Component
         {
             $this->region = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_region.id,tg_region.name')
-                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-6 day',strtotime(date_now()))))
+                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-0 day',strtotime(date_now()))))
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->orderBy('allprice','DESC')
@@ -56,7 +56,7 @@ class Counter extends Component
             $regions = Region::all();
             $orders = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_order.id as ord_id,tg_region.id as reg_id')
-                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-5 day',strtotime(date_now()))))
+                    ->whereDate('tg_productssold.created_at','=',date('Y-m-d',strtotime('-0 day',strtotime(date_now()))))
                     ->join('tg_order','tg_order.id','tg_productssold.order_id')
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
@@ -73,9 +73,10 @@ class Counter extends Component
                         }
                         if($i != 0)
                             {
-                                $this->region[] = array('allprice' => number_format($sum/$i,2),'name' => $region->name,'id' => $region->id);
+                                $this->region[] = array('allprice' => $sum/$i,'name' => $region->name,'id' => $region->id);
                             }
                     }
+                array_multisort(array_column($this->region, 'allprice'), $this->region);
         }
         return view('livewire.counter');
     }

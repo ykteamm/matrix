@@ -21,7 +21,7 @@
                         </div>
                         @endif
                     @endforeach
-                    <div style="display:none;" class="region-hide mb-3">
+                    <div style="display:none;" class="regiont-hide mb-3">
                                 <table style="width: 100%;text-align:center;color:white;">
                                     <tbody>
                                     @foreach ($region as $key => $item)
