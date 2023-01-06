@@ -14,17 +14,11 @@
 
 
             <div class="col-md-2 mb-2  justify-content-end">
-                <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
-                <div class="dropdown-menu" style="left:150px !important">
-                    @php $i=1 @endphp
-                    @foreach($months as $m)
-
-                        @if($i < 10)
-                            <a href="{{route('elchilar',['month'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                        @else
-                            <a href="{{route('elchilar',['month'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                        @endif
-                        @php $i++ @endphp
+                <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{date('m.Y',strtotime($month))}}</button>
+                <div class="dropdown-menu">
+                    
+                    @foreach($calendars as $m)
+                            <a href="{{route('elchilar',['month'=>date('Y',strtotime('01.'.$m)).'-'.date('m',strtotime('01.'.$m))])}}"  class="dropdown-item" > {{date('m.Y',strtotime('01.'.$m))}} </a>
                     @endforeach
                 </div>
             </div>
