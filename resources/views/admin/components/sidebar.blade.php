@@ -266,7 +266,7 @@
                      {{-- @endisset --}}
                      {{-- @isset(Session::get('per')['rol_read']) --}}
                         <li><a href="{{route('rm-list')}}">RM</a></li>
-                        <li><a href="{{route('cap-list')}}">         </a></li>
+                        <li><a href="{{route('cap-list')}}">Capitan</a></li>
                         <li><a href="{{route('user-list')}}">Elchi</a></li>
                      {{-- @endisset --}}
                      </ul>

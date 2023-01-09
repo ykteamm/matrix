@@ -36,6 +36,7 @@ use App\Models\KnowledgeQuestion;
 use App\Models\Member;
 use App\Models\Team;
 use App\Services\ElchilarService;
+use App\Services\ElchiBattleService;
 
 class HomeController extends Controller
 {
@@ -114,6 +115,9 @@ class HomeController extends Controller
 
     public function index()
     {
+        $battle_service = new ElchiBattleService;
+        $elchi_battle = $battle_service->battle();
+        // return $elchi_battle;
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
         $rm = DB::table('tg_user')->where('id',$id)->value('rm');

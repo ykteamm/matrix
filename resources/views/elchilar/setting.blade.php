@@ -15,29 +15,29 @@
                                         <div class="form-group col-md-4">
                                             <label for="">Boshanish kuni</label>
                                             {{-- <input type="date" class="form-control form-control-sm" name="start_day" required> --}}
-                                            <select class="form-control form-control-sm" name='start_day'>
+                                            <select class="form-control form-control-sm" name='start_day' onchange="startBattle(this);">
                                                 <option value="" disabled selected hidden></option>
-                                                <option value="0">Dushanba</option>
-                                                <option value="1">Seshanba</option>
-                                                <option value="2">Chorshanba</option>
-                                                <option value="3">Payshanba</option>
-                                                <option value="4">Juma</option>
-                                                <option value="5">Shanba</option>
-                                                <option value="6">Yakshanba</option>
+                                                <option class="startbattle0 sallbattle" value="0">Dushanba</option>
+                                                <option class="startbattle1 sallbattle" value="1">Seshanba</option>
+                                                <option class="startbattle2 sallbattle" value="2">Chorshanba</option>
+                                                <option class="startbattle3 sallbattle" value="3">Payshanba</option>
+                                                <option class="startbattle4 sallbattle" value="4">Juma</option>
+                                                <option class="startbattle5 sallbattle" value="5">Shanba</option>
+                                                <option class="startbattle6 sallbattle" value="6">Yakshanba</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="">Tugash kuni</label>
                                             {{-- <input type="date" class="form-control form-control-sm" name="end_day" required> --}}
-                                            <select class="form-control form-control-sm" name='end_day'>
+                                            <select class="form-control form-control-sm" name='end_day' onchange="endBattle(this);">
                                                 <option value="" disabled selected hidden></option>
-                                                <option value="0">Dushanba</option>
-                                                <option value="1">Seshanba</option>
-                                                <option value="2">Chorshanba</option>
-                                                <option value="3">Payshanba</option>
-                                                <option value="4">Juma</option>
-                                                <option value="5">Shanba</option>
-                                                <option value="6">Yakshanba</option>
+                                                <option class="endbattle0 eallbattle" value="0">Dushanba</option>
+                                                <option class="endbattle1 eallbattle" value="1">Seshanba</option>
+                                                <option class="endbattle2 eallbattle" value="2">Chorshanba</option>
+                                                <option class="endbattle3 eallbattle" value="3">Payshanba</option>
+                                                <option class="endbattle4 eallbattle" value="4">Juma</option>
+                                                <option class="endbattle5 eallbattle" value="5">Shanba</option>
+                                                <option class="endbattle6 eallbattle" value="6">Yakshanba</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-2 mt-4">
@@ -97,5 +97,26 @@
 @endsection
 @section('admin_script')
     <script>
+        function startBattle(day)
+        {
+            $('.eallbattle').css('display','');
+
+            for (let index = 0; index <= day.value; index++) {
+                $(`.endbattle${index}`).css('display','none');
+            }
+
+        }
+        function endBattle(day)
+        {
+            var valu = $('select[name="start_day"] option:selected').val();
+            if(valu)
+            {
+                $('.sallbattle').css('display','');
+                for (let index = day.value; index <= 6; index++) {
+                    $(`.startbattle${index}`).css('display','none');
+                }
+            }
+            
+        }
     </script>
 @endsection

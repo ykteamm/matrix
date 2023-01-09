@@ -14,6 +14,39 @@ if(!function_exists('date_now')){
     }
 }
 
+if(!function_exists('battleDay')){
+    function battleDay($day) {
+        if($day == 0)
+        {
+            return 'Monday';
+        }
+        if($day == 0)
+        {
+            return 'Tuesday';
+        }
+        if($day == 0)
+        {
+            return 'Wednesday';
+        }
+        if($day == 0)
+        {
+            return 'Thursday';
+        }
+        if($day == 0)
+        {
+            return 'Friday';
+        }
+        if($day == 0)
+        {
+            return 'Saturday';
+        }
+        if($day == 0)
+        {
+            return 'Sunday';
+        }
+    }
+}
+
 if(!function_exists('wordSimilarity')){
     function wordSimilarity($s1,$s2) {
 

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Services\ElchiService;
+use App\Services\ElchiBattleService;
 
 class UserController extends Controller
 {
@@ -380,7 +381,6 @@ class UserController extends Controller
     }
     public function elchiBattleSelect()
     {
-        
         $settings = ElchiBattleSetting::first();
         if(!isset($settings->start_day))
         {
@@ -579,100 +579,8 @@ class UserController extends Controller
     public function elchiBattleSelectStore(Request $request)
     {
         $inputs = $request->all();
-        $settings = ElchiBattleSetting::first();
-        $weekStartDate = date_now()->startOfWeek()->format('Y-m-d');
-        $weekEndDate = date_now()->endOfWeek()->format('Y-m-d');
-        $week_date = DB::table('tg_battle')
-        ->select('start_day','end_day')
-        ->whereDate('start_day','>=',$weekStartDate)
-        ->whereDate('end_day','<=',$weekEndDate)
-        ->distinct()
-        ->first();
-        $startday = date('d.m.Y',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
-        $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekEndDate ) ) ));
-        
-        
-        $get_date = DB::table('tg_battle')
-        ->whereDate('start_day','>=',$startday)
-        ->whereDate('end_day','<=',$endday)
-        ->where('end',1)
-        ->latest()
-        ->first();
-        if(isset($get_date->start_day))
-        {
-            $start = date('Y-m-d',(strtotime ( '+'.($settings->start_day+7).' day' , strtotime ( $weekStartDate ) ) ));
-        $end = date('Y-m-d',(strtotime ( '+'.($settings->end_day+7).' day' , strtotime ( $weekStartDate ) ) ));
-        
-        }else{
-            $start = date('Y-m-d',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
-            $end = date('Y-m-d',(strtotime ( '+'.($settings->end_day).' day' , strtotime ( $weekStartDate ) ) ));
-            
-        }
-        
-        $day = 10;
-        $count1 = 0;
-        $sum1 = 0;
-        $count2 = 0;
-        $sum2 = 0;
-        $s_array=[];
-        for ($i=0; $i < $day; $i++) { 
-            $date = date('Y-m-d',(strtotime ( '-'.($i+7).' day' , strtotime ( $start ) ) ));
-            $summa1 = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
-                    ->whereDate('tg_productssold.created_at','=',$date)
-                    ->where('tg_user.id','=',$inputs['user1'])
-                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->orderBy('tg_user.id','ASC')
-                    ->groupBy('tg_user.id')->first();
-            if(isset($summa1->allprice))
-            {
-                $sum1+=$summa1->allprice;
-            }
-            $count1 += DB::table('tg_smena')->whereDate('created_from',$date)
-            ->where('user_id',$inputs['user1'])
-            ->count();
-
-            $summa2 = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
-                    ->whereDate('tg_productssold.created_at','=',$date)
-                    ->where('tg_user.id','=',$inputs['user2'])
-                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->orderBy('tg_user.id','ASC')
-                    ->groupBy('tg_user.id')->first();
-            if(isset($summa2->allprice))
-            {
-                $sum2+=$summa2->allprice;
-            }
-            $count2 += DB::table('tg_smena')->whereDate('created_from',$date)
-            ->where('user_id',$inputs['user2'])
-            ->count();
-        }
-        if($count1 != 0)
-            {
-                $summ1 = round($sum1/$count1);
-            }else{
-                $summ1 = 0;
-            }
-        if($count2 != 0)
-            {
-                $summ2 = round($sum2/$count2);
-            }else{
-                $summ2 = 0;
-            }
-        
-        $new = DB::table('tg_battle')->insert([
-            'start_day' => $start,
-            'end_day' => $end,
-            'created_at' => date_now()->format('Y-m-d'),
-            'user1_id' => $inputs['user1'],
-            'user2_id' => $inputs['user2'],
-            'bot' => 0,
-            'sum1' => $summ1,
-            'sum2' => $summ2,
-            'end' => 0
-
-        ]);
-        return redirect()->back();
+        $battle_service = new ElchiBattleService;
+        $elchi_battle = $battle_service->battleDefault($inputs);
     }
     public function elchiBattle()
     {
