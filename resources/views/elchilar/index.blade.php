@@ -130,7 +130,16 @@
                         </div>
                     </td>
                     <td class="fixed">
-                        {{$encane[$t]}}
+                        @if (isset($encane[$item->id]) && count($encane[$item->id]) > 0)
+                        {{-- {{count($encane[$item->id])}} --}}
+
+                            @foreach ($encane[$item->id] as $items)
+                                 <p>{{$items->name}} ({{number_format($items->allprice,'0',',','.')}})</p>
+                            @endforeach
+                        @else
+                            Aptekasi yoq
+                        @endif
+                        
                     </td>
                     <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t], 0, '', '.')}}</span> </td>
                     <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t], 0, '', '.')}}</span> </td>

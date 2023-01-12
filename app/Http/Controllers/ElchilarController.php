@@ -68,6 +68,7 @@ class ElchilarController extends Controller
         $total_plan=$this->service->total_plan($plan);
         $total_planday=$this->service->total_planday($plan_day);
         $total_haftalik=$this->service->total_week($haftalik,$days);
+        // return ($encane);
         return view('elchilar.index',compact('calendars','test','vil','total_haftalik','total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
 
     }

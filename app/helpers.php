@@ -20,27 +20,27 @@ if(!function_exists('battleDay')){
         {
             return 'Monday';
         }
-        if($day == 0)
+        if($day == 1)
         {
             return 'Tuesday';
         }
-        if($day == 0)
+        if($day == 2)
         {
             return 'Wednesday';
         }
-        if($day == 0)
+        if($day == 3)
         {
             return 'Thursday';
         }
-        if($day == 0)
+        if($day == 4)
         {
             return 'Friday';
         }
-        if($day == 0)
+        if($day == 5)
         {
             return 'Saturday';
         }
-        if($day == 0)
+        if($day == 6)
         {
             return 'Sunday';
         }

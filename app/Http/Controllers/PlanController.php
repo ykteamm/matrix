@@ -10,9 +10,11 @@ use App\Models\ProductSold;
 use App\Models\Shablon;
 use App\Models\Sold;
 use App\Services\PlanService;
+use App\Models\Price;
 use Carbon\Carbon;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class PlanController extends Controller
 {
     /**
@@ -40,13 +42,25 @@ class PlanController extends Controller
     {
         $med=Medicine::orderBy('id')->get();
         $shablons=Shablon::all();
-        $plans=Plan::where('user_id',$id)->get();
-
+        $price=[];
+        foreach ($shablons as $key => $value) {
+            $pr = Price::where('shablon_id',$value->id)->pluck('price','medicine_id');
+            $price[$value->id]=$pr;
+        }
+        $last = Carbon::now()->startofMonth()->subMonth()->endOfMonth()->toDateString();
+        $first = Carbon::now()->startofMonth()->subMonth()->startOfMonth()->toDateString();
+        $last_plans=Plan::where('user_id',$id)
+        ->whereDate('created_at','>=',$first)
+        ->whereDate('created_at','<=',$last)
+        ->orderBy('medicine_id','ASC')
+        ->pluck('number','medicine_id');
+        // return $price;
         return view('plan.create',[
             'shablons'=>$shablons,
             'user_id'=>$id,
-            'plans'=>$plans,
-            'medicines'=>$med
+            'medicines'=>$med,
+            'last_plans'=>$last_plans,
+            'price'=>$price
         ]);
     }
 

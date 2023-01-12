@@ -15,4 +15,13 @@ class PharmacyUser extends Model
         'user_id',
         'pharma_id',
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+    public function pharmacy()
+    {
+        return $this->belongsTo(Pharmacy::class,'pharma_id','id');
+    }
 }

@@ -27,6 +27,10 @@ class User extends Model
     {
         return $this->hasMany(Ball::class,'user_id','id');
     }
+    public function pharmacy_user()
+    {
+        return $this->hasMany(PharmacyUser::class,'user_id','id');
+    }
 //
 //    public function tools()
 //    {

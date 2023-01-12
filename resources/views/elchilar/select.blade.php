@@ -14,11 +14,11 @@
                                     <div class="row">
                                         <div class="form-group col-md-6">
                                             <label for="">Jang boshlanish sanasi</label>
-                                            <input placeholder="{{$starts}} {{$startdays}}" type="text" class="form-control form-control-sm" disabled>
+                                            <input placeholder="{{$starts}} {{date('d.m.Y',strtotime($startdays))}}" type="text" class="form-control form-control-sm" disabled>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="">Jang tugash sanasi</label>
-                                            <input placeholder="{{$ends}} {{$enddays}}" type="text" class="form-control form-control-sm" disabled>
+                                            <input placeholder="{{$ends}} {{date('d.m.Y',strtotime($enddays))}}" type="text" class="form-control form-control-sm" disabled>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="">Elchi tanlash</label>

@@ -168,7 +168,17 @@
 {{--                            <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>--}}
                     </div>
                 </td>
-                <td class="fixed">{{$encane[$t]}} </td>
+                <td class="fixed">
+                    @if (isset($encane[$item->id]) && count($encane[$item->id]) > 0)
+                        {{-- {{count($encane[$item->id])}} --}}
+
+                            @foreach ($encane[$item->id] as $items)
+                                 <p>{{$items->name}} ({{number_format($items->allprice,'0',',','.')}})</p>
+                            @endforeach
+                        @else
+                            Aptekasi yoq
+                        @endif
+                </td>
                 <td class="yashir "><span class="badge bg-primary-light">{{number_format($plan[$t])}}</span> </td>
                 <td class="yashir "><span class="badge bg-success-light">{{number_format($plan_day[$t])}}</span> </td>
                 <td class="yashir "> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>

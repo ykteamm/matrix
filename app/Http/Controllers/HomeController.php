@@ -117,6 +117,7 @@ class HomeController extends Controller
     {
         $battle_service = new ElchiBattleService;
         $elchi_battle = $battle_service->battle();
+        $elchi_battle = $battle_service->battleEnd();
         // return $elchi_battle;
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
@@ -366,8 +367,10 @@ class HomeController extends Controller
             ->first();
 
             $array = array();
-            $Variable1 = strtotime(date_now());
-            $Variable2 = strtotime('2022-12-31');
+            $first_month = date_now();
+            $last_month = new Carbon('last day of this month');
+            $Variable1 = strtotime($first_month);
+            $Variable2 = strtotime($last_month);
             for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400))
             {
                 $day = date('l', $currentDate);
@@ -376,6 +379,7 @@ class HomeController extends Controller
                     $array[] = $Store;
                 }
             }
+            // return $array;
             if($cap->team_id == 7 || $cap->team_id == 8)
             {
                 $maqsad = 320;
@@ -388,6 +392,7 @@ class HomeController extends Controller
             {
                 $maqsad = 200;
             }
+            
         $dayst = number_format(($maqsad-($all->allprice/1000000))/count($array),2);
 
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();

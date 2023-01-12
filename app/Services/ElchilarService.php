@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\User;
 use App\Models\Member;
 use App\Models\Team;
+use App\Models\PharmacyUser;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -389,17 +390,14 @@ class ElchilarService
     public function encane($elchi)
     {
         $encane=[];
-        $t=0;
-        $apteka=DB::table('tg_pharmacy_users')->get();
         foreach ($elchi as $item){
-            $encane[$t]='nomalum';
-            foreach ($apteka as $apt){
-                if ($item->id==$apt->user_id){
-                    $pharm=DB::table('tg_pharmacy')->where('id',$apt->pharma_id)->first();
-                    $encane[$t]=$pharm->name;
-                }
-            }
-                $t++;
+                        $sum = DB::table('tg_productssold')
+                        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_pharmacy.id,tg_pharmacy.name')
+                        ->where('tg_productssold.user_id','=',$item->id)
+                        ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+                        ->orderBy('allprice','DESC')
+                        ->groupBy('tg_pharmacy.id')->get();
+                        $encane[$item->id]=$sum;
         }
         return $encane;
     }
