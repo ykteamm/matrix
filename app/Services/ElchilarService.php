@@ -89,15 +89,15 @@ class ElchilarService
                 $all_work_day[]=$key+1;
             }
         }
-        $old_month = intval(date('m',strtotime($month.'-01')));
-        $now_month = intval(date('m',strtotime(date_now())));
-        // dd($now_month);
+
+        $old_month = date('Y-m',strtotime($month.'-01'));
+        $now_month = date('Y-m',strtotime(date_now()));
         $begin_date = intval(date('d',strtotime($month.'-01')));
         $end_date = intval(date('d',strtotime($month.'-'.$endofmonth)));
-        // $end_date = 10;
         $remain=0;
+        // dd($now_month);
 
-        if($now_month > $old_month)
+        if($old_month != $now_month)
         {
             for ($i=$begin_date; $i <= $end_date; $i++) { 
                 if(in_array($i,$all_work_day))
@@ -106,6 +106,8 @@ class ElchilarService
                 }
             }
         }else{
+        $end_date = intval(date('d',strtotime(date_now())));
+            
             for ($i=$begin_date; $i < $end_date; $i++) { 
                 if(in_array($i,$all_work_day))
                 {
@@ -114,7 +116,6 @@ class ElchilarService
             }
         }
         
-        // dd($remain);
 
         foreach($elchi as $elch)
         {
@@ -132,15 +133,6 @@ class ElchilarService
                 {
                     $day_work_array[] = intval(date('d',strtotime($c)));
                 }
-        $no_day = 0;  
-        // $count_work_array = $all_work_day;
-        // foreach($all_work_day as $h)
-        // {
-        //     if(!in_array($h,$day_work_array))
-        //     {
-        //         $no_day += 1;        
-        //     }
-        // }
 
                 $sunday = 0;
                 foreach($date as $d)
@@ -158,6 +150,7 @@ class ElchilarService
                     ->where('tg_user.id','=',$elch->id)
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->groupBy('tg_user.id')->first();
+                    // dd($all_work_day);
                 
                 if(isset($user->allprice))
                 {
@@ -166,13 +159,10 @@ class ElchilarService
                         $prog = 0;
                     }else{
                         $prog = (count($all_work_day)/$remain)*$user->allprice;
-                        // $prog = ($user->allprice/count($date))*(count($all_work_day)+$sunday-intval($no_day));
-                        // all_work_day
                     }
                 }else{
                     $prog = 0;
                 }
-                    // dd( (count($date) ));
 
                 $elchi_prognoz[$elch->id] = $prog;
 
