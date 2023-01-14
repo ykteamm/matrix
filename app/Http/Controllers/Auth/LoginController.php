@@ -64,18 +64,18 @@ class LoginController extends Controller
         ->where('pr',$request->password)
         // ->where('admin',true)
         ->first();
-        if($userd->admin == 'false')
-        {
-            $elchi_level = ElchiLevel::where('user_id',$userd->rol_id)->get();
-            if(count($elchi_level) == 0)
-            {
-                $elchi_level = new ElchiLevel([
-                    'user_id' => $userd->rol_id,
-                    'level' => 1,
-                ]);
-                $elchi_level->save();
-            }
-        }
+        // if($userd->admin == 'false')
+        // {
+        //     $elchi_level = ElchiLevel::where('user_id',$userd->rol_id)->get();
+        //     if(count($elchi_level) == 0)
+        //     {
+        //         $elchi_level = new ElchiLevel([
+        //             'user_id' => $userd->rol_id,
+        //             'level' => 1,
+        //         ]);
+        //         $elchi_level->save();
+        //     }
+        // }
             
             $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
