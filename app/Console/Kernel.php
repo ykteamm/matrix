@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
         // ->fridays()
         // ->at('11:03')
         // ->sendOutputTo('scheduler.log');
-        $schedule->command('messsage:weekly')
+        $schedule->command('battle:elchi')
         ->everyMinute();
     }
 

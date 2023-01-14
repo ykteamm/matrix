@@ -180,6 +180,9 @@ Route::get('elchi-battle-setting',[App\Http\Controllers\UserController::class,'e
 Route::post('elchi-battle-setting-store',[App\Http\Controllers\UserController::class,'elchiBattleSettingStore'])->name('elchi-battle-setting.store');
 Route::get('elchi-battle-select',[App\Http\Controllers\UserController::class,'elchiBattleSelect'])->name('elchi-battle-select');
 Route::post('elchi-battle-select.store',[App\Http\Controllers\UserController::class,'elchiBattleSelectStore'])->name('elchi-battle-select.store');
+Route::get('elchi-battle-exercise',[App\Http\Controllers\UserController::class,'elchiBattleExercise'])->name('elchi-battle-exercise');
+Route::post('elchi-battle-exercise-store',[App\Http\Controllers\UserController::class,'elchiBattleExerciseStore'])->name('elchi-battle-exercise-store');
+
 #endbattle
 
 Route::resource('member',MemberController::class);

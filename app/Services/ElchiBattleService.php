@@ -41,7 +41,7 @@ class ElchiBattleService
             ->get();
 
             $battle=array();
-            $day = 30;
+            $day = 10;
             foreach ($users as $key => $user) {
                 $count = 0;
                 $sum = 0;
@@ -127,7 +127,7 @@ class ElchiBattleService
         $users = [$array['user1'],$array['user2']];
 
             $battle=array();
-            $day = 30;
+            $day = 10;
             foreach ($users as $key => $user) {
                 $count = 0;
                 $sum = 0;

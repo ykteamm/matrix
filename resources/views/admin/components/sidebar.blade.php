@@ -86,6 +86,7 @@
                <ul style="display: none;">
                   <li><a href="{{route('elchi-battle')}}">Jang</a></li>
                   <li><a href="{{route('elchi-battle-select')}}">Elchi tanlash</a></li>
+                  <li><a href="{{route('elchi-battle-exercise')}}">Jang topshiriq</a></li>
                   <li><a href="{{route('elchi-battle-setting')}}">Sozlamalar</a></li>
                </ul>
             </li>

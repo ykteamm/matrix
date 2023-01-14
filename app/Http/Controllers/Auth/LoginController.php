@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use App\Models\Position;
 use App\Models\Member;
+use App\Models\ElchiLevel;
 
 
 class LoginController extends Controller
@@ -63,6 +64,15 @@ class LoginController extends Controller
         ->where('pr',$request->password)
         // ->where('admin',true)
         ->first();
+            $elchi_level = ElchiLevel::where('user_id',$userd->rol_id)->get();
+            if(count($elchi_level) == 0)
+            {
+                $elchi_level = new ElchiLevel([
+                    'user_id' => $userd->rol_id,
+                    'level' => 1,
+                ]);
+                $elchi_level->save();
+            }
             $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
             $pcode = json_decode($per->position_json,TRUE);

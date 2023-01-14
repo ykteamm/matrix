@@ -8,6 +8,9 @@ use App\Models\Member;
 use App\Models\Ball;
 use App\Models\BattleHistory;
 use App\Models\ElchiBattleSetting;
+use App\Models\Medicine;
+use App\Models\Price;
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -319,9 +322,8 @@ class UserController extends Controller
                 $week_start = date('l',(strtotime ( $week_date->start_day ) ));
                 $week_end = date('l',(strtotime ( $week_date->end_day ) ));
             }else{
-                $week_date = DB::table('tg_battle')
-                ->select('start_day','end_day')
-                ->latest()->first();
+                $week_date = DB::table('tg_elchi_battle_setting')
+                ->first();
                 $week_start = date('l',(strtotime ( $week_date->start_day ) ));
                 $week_end = date('l',(strtotime ( $week_date->end_day ) ));
             }
@@ -822,5 +824,22 @@ class UserController extends Controller
         ->orWhere('lose_user_id',$id)->get();
         // return $getter;
         return view('elchilar.history',compact('getter','id'));
+    }
+    public function elchiBattleExercise()
+    {
+        $medicine = Medicine::orderBy('id','ASC')->get();
+        $price = Price::where('shablon_id',3)->get();
+        return view('elchilar.exercise',compact('medicine','price'));
+        // return $shablon;
+    }
+    public function elchiBattleExerciseStore(Request $request)
+    {
+        $inputs = $request->all();
+        unset($inputs['_token']);
+        $exercise = new Exercise($inputs);
+        $exercise->save();
+        if($exercise->id){
+            return redirect()->back();
+        }
     }
 }
