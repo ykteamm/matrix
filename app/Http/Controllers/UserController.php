@@ -11,6 +11,9 @@ use App\Models\ElchiBattleSetting;
 use App\Models\Medicine;
 use App\Models\Price;
 use App\Models\Exercise;
+use App\Models\ElchiExercise;
+use App\Models\ElchiUserExercise;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -841,5 +844,25 @@ class UserController extends Controller
         if($exercise->id){
             return redirect()->back();
         }
+    }
+    public function elchiUserBattleExercise()
+    {
+        $medicine = Medicine::orderBy('id','ASC')->get();
+        $price = Price::where('shablon_id',3)->get();
+        return view('elchilar.user-exercise',compact('medicine','price'));
+        // return $shablon;
+    }
+    public function elchiUserBattleExerciseStore(Request $request)
+    {
+        // return $request;
+        $inputs = $request->all();
+        unset($inputs['_token']);
+        $users = User::where('admin','false')->get();
+        foreach ($users as $key => $value) {
+            $inputs['user_id'] = $value->id;
+            $exercise = new ElchiUserExercise($inputs);
+            $exercise->save();
+        }
+        return redirect()->back();
     }
 }

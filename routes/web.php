@@ -182,6 +182,9 @@ Route::get('elchi-battle-select',[App\Http\Controllers\UserController::class,'el
 Route::post('elchi-battle-select.store',[App\Http\Controllers\UserController::class,'elchiBattleSelectStore'])->name('elchi-battle-select.store');
 Route::get('elchi-battle-exercise',[App\Http\Controllers\UserController::class,'elchiBattleExercise'])->name('elchi-battle-exercise');
 Route::post('elchi-battle-exercise-store',[App\Http\Controllers\UserController::class,'elchiBattleExerciseStore'])->name('elchi-battle-exercise-store');
+Route::get('elchi-user-battle-exercise',[App\Http\Controllers\UserController::class,'elchiUserBattleExercise'])->name('elchi-user-battle-exercise');
+
+Route::post('elchi-user-battle-exercise-store',[App\Http\Controllers\UserController::class,'elchiUserBattleExerciseStore'])->name('elchi-user-battle-exercise-store');
 
 #endbattle
 
