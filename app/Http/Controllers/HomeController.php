@@ -122,6 +122,8 @@ class HomeController extends Controller
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
         $rm = DB::table('tg_user')->where('id',$id)->value('rm');
+        $settingday = DB::table('tg_elchi_battle_settings')->first();
+
         // return $rm;
         if($cap == 2 && $rm == 0)
         {
@@ -341,7 +343,7 @@ class HomeController extends Controller
 
         }
         arsort( $array);
-        return view('index',compact('array'));
+        return view('index',compact('array','settingday'));
     }
     public function capitan($month)
     {

@@ -64,6 +64,8 @@ class LoginController extends Controller
         ->where('pr',$request->password)
         // ->where('admin',true)
         ->first();
+        if($userd->admin == 'false')
+        {
             $elchi_level = ElchiLevel::where('user_id',$userd->rol_id)->get();
             if(count($elchi_level) == 0)
             {
@@ -73,6 +75,8 @@ class LoginController extends Controller
                 ]);
                 $elchi_level->save();
             }
+        }
+            
             $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
             $pcode = json_decode($per->position_json,TRUE);
