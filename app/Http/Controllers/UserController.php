@@ -351,7 +351,7 @@ class UserController extends Controller
                 $week_start = date('l',(strtotime ( $week_date->start_day ) ));
                 $week_end = date('l',(strtotime ( $week_date->end_day ) ));
             }else{
-                $week_date = DB::table('tg_elchi_battle_setting')
+                $week_date = DB::table('tg_elchi_battle_settings')
                 ->first();
                 $week_start = date('l',(strtotime ( $week_date->start_day ) ));
                 $week_end = date('l',(strtotime ( $week_date->end_day ) ));
