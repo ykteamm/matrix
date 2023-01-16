@@ -31,6 +31,10 @@ class User extends Model
     {
         return $this->hasMany(PharmacyUser::class,'user_id','id');
     }
+    public function new_elchi()
+    {
+        return $this->hasMany(NewElchi::class,'user_id','id');
+    }
 //
 //    public function tools()
 //    {

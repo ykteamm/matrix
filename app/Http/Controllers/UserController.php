@@ -13,6 +13,7 @@ use App\Models\Price;
 use App\Models\Exercise;
 use App\Models\ElchiExercise;
 use App\Models\ElchiUserExercise;
+use App\Models\NewElchi;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -27,8 +28,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users=User::orderBy('id')->get();
+        $users=User::with('new_elchi')->orderBy('id')->get();
         $new_users=NewUsers::all();
+        // return $users;
         $arr=[];
         foreach ($new_users as $user){
             $d = json_decode($user->message);
@@ -61,6 +63,14 @@ class UserController extends Controller
                 DB::table('tg_user')
                     ->where('id',$test)
                     ->update(['status'=>3]);
+            }
+            if ($item=='new'){
+                $id=substr($key,4);
+                $new_elchi = new NewElchi([
+                    'user_id' => $id,
+                ]);
+
+                $new_elchi->save();
             }
             if ($item=='rm'){
                 $test=substr($key,3);
@@ -195,6 +205,22 @@ class UserController extends Controller
                     ->update(['status'=>1]);
                 
                 
+            }
+
+        }
+        return redirect()->back();
+
+    }
+    public function userNew(Request $request)
+    {
+        $r=$request->all();
+        unset($r['_token']);
+
+        // return $r;
+        foreach ($r as $key=> $item){
+            if ($item=='new'){
+                $id=substr($key,4);
+                $delete = NewElchi::where('user_id',$id)->delete();
             }
 
         }

@@ -33,16 +33,18 @@ class ElchilarService
             {
                 $elchi = DB::table('tg_user')
                 ->where('tg_user.status',1)
-                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id')
                 ->orderBy('tg_region.side','ASC')->get();
             }else
             {
                 $elchi = DB::table('tg_user')
                 ->where('tg_user.status',1)
                 ->whereIn('tg_region.id',$regions)
-                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id')
                 ->orderBy('tg_region.side','ASC')->get();
             }
             

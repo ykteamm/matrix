@@ -82,6 +82,7 @@
                     <th class="fixed"><strong>Garb/Sharq</strong></th>
                     <th class="fixed"><strong>Viloyat</strong> </th>
                     <th class="fixed"><strong>Elchi</strong> </th>
+                    <th class="fixed"><strong>Yangi elchi</strong> </th>
                     <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
                     <th class="yashir"><strong>Plan </strong></th>
                     <th class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></th>
@@ -128,6 +129,22 @@
 {{--                            <span class="badge bg-success-light">Ichki reyting:  <span class="text-danger">{{$item['ichki-reyting']}} </span> </span>--}}
 {{--                            <span class="badge bg-primary-light">Tashqi reyting:  <span class="text-danger">{{$item['tashqi-reyting']}} </span></span>--}}
                         </div>
+                    </td>
+                    <td class="fixed">
+                        @if ($item->new_created != NULL)
+                        @php
+                            $arrayDate = 0;
+                            $Variable1 = strtotime($item->new_created);
+                            $Variable2 = strtotime(date_now());
+                            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+                            {                        
+                            $arrayDate += 1;
+                            }
+                        @endphp
+                            <span class="badge bg-primary-light">{{date('d.m.Y',strtotime($item->new_created))}} ({{$arrayDate}} kun)</span>
+                        @else
+                            Eski elchi
+                        @endif
                     </td>
                     <td class="fixed">
                         @if (isset($encane[$item->id]) && count($encane[$item->id]) > 0)

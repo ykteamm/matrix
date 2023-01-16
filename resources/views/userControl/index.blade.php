@@ -10,6 +10,7 @@
                     <ul class="nav nav-tabs nav-tabs-solid nav-justified">
                         <li class="nav-item"><a class="nav-link active" href="#solid-justified-tab1" data-toggle="tab">Ishchilar </a></li>
                         <li class="nav-item"><a class="nav-link" href="#solid-justified-tab2" data-toggle="tab">Ishdan ketganlar </a></li>
+                        <li class="nav-item"><a class="nav-link" href="#solid-justified-tab7" data-toggle="tab">Yangi elchilar </a></li>
                         {{-- <li class="nav-item"><a class="nav-link" href="#solid-justified-tab3" data-toggle="tab">Yangilar</a></li> --}}
                         <li class="nav-item"><a class="nav-link" href="#solid-justified-tab6" data-toggle="tab">Test</a></li>
                         <li class="nav-item"><a class="nav-link" href="#solid-justified-tab4" data-toggle="tab">RMlar</a></li>
@@ -31,6 +32,7 @@
                                                         <th scope="col">Ismi</th>
                                                         <th scope="col">Familiyasi</th>
                                                         <th scope="col">Ishdan olish</th>
+                                                        <th scope="col">Yangi elchilar</th>
                                                         <th scope="col">Test qilish</th>
                                                         <th scope="col">RM</th>
                                                         <th scope="col">Capitan</th>
@@ -39,7 +41,7 @@
                                                     <tbody style="height: 50px!important;  overflow-y: scroll!important;">
                                                     @php $t2=0 @endphp
                                                     @foreach($users as $user)
-                                                    @if(($user->status==1 ) && ($user->level !=2 || $user->rm !=1) && $user->status!=3)
+                                                    @if(($user->status==1 ) && ($user->level !=2 || $user->rm !=1) && $user->status!=3 && count($user->new_elchi) == 0)
                                                         @php $t2++; @endphp
                     
                                                         <tr>
@@ -53,6 +55,13 @@
                                                               </div>
                                                             </td  >
                                                             <td>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="new.{{$user->id}}" value="new" >
+                                                                    <label class="form-check-label">Yangi elchi</label>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                
                                                                 {{-- <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input" @if($user->status==3) checked @endif id="check1test.{{$user->id}}" name="test.{{$user->id}}" value="test" >
                                                                     <label class="form-check-label" for="check1test.{{$user->id}}">Test qilish</label>
@@ -143,43 +152,6 @@
                             </div>
                             </form>
                         </div>
-                        {{-- <div class="tab-pane" id="solid-justified-tab3">
-                            <form  method="post" action="{{route('user-add')}}">
-                                @csrf
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Ismi</th>
-                                        <th scope="col">Familiyasi</th>
-                                        <th scope="col">Ishga Qo'shish</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @php $t1=0; @endphp
-                                    @foreach($arr as $item)
-                                            @php $t1++; @endphp
-                                            <tr>
-                                                <th scope="row">{{$t1}}</th>
-                                                <td>{{$item['data']->first_name}}</td>
-                                                <td>{{$item['data']->last_name}}</td>
-                                                <td>
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="check1.{{$user->id}}" name="id.{{$item['tg_id']}}" value="something" >
-                                                        <label class="form-check-label" for="check1">Ishga Qo'shish</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                    @endforeach
-
-
-                                    </tbody>
-                                </table>
-                                <div>
-                                    <button type="submit" class="w-100 btn btn-primary">Saqlash</button>
-                                </div>
-                            </form>
-                        </div> --}}
                         <div class="tab-pane" id="solid-justified-tab6">
                             <form  method="post" action="{{route('user-test')}}">
                                 @csrf
@@ -315,6 +287,55 @@
                                                                 <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input" name="cap.{{$user->id}}" value="cap" >
                                                                     <label class="form-check-label">Capitan</label>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                    @endforeach
+                    
+                    
+                                                    </tbody>
+                                                </table>    
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+                                <div>
+                                    <button type="submit" class="w-100 btn btn-primary">Saqlash</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="solid-justified-tab7">
+                            <form  method="post" action="{{route('user-new')}}">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                               <div class="table-responsive">
+                                                <table class="table mb-0 example22" style="height: 100px;overflow-y: scroll">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Ismi</th>
+                                                        <th scope="col">Familiyasi</th>
+                                                        <th scope="col">Ishchilarga qaytarish</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style="height: 50px!important;  overflow-y: scroll!important;">
+                                                    @foreach($users as $key => $user)
+                                                    @if(count($user->new_elchi) != 0)
+                                                        <tr>
+                                                            <th scope="row">{{$key+1}}</th>
+                                                            <td>{{$user->first_name}}</td>
+                                                            <td>{{$user->last_name}}</td>
+                                                            <td>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="new.{{$user->id}}" value="new" >
+                                                                    <label class="form-check-label">Ishchilarga qaytarish</label>
                                                                 </div>
                                                             </td>
                                                         </tr>
