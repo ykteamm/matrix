@@ -40,6 +40,10 @@ use App\Http\Controllers\TrendController;
     Route::get('/sms',[App\Http\Controllers\HomeController::class, 'smsfly'])->name('smsfly');
     Route::post('edit/purchase', [App\Http\Controllers\NovatioController::class,'editPurchase']);
 
+    Route::post('/user/cancel', [UserController::class,'userCancel']);
+    Route::post('/user/success', [UserController::class,'userSuccess']);
+
+
 
 Auth::routes();
 
@@ -205,6 +209,7 @@ Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('
 Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
 Route::get('elchilar-kunlik/{month}/{region?}', [ElchilarController::class,'kunlik'])->name('elchilar');
 Route::get('user-control', [UserController::class,'index'])->name('user-control');
+Route::get('user-register', [UserController::class,'userRegister'])->name('user-register');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
 Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');
 Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');

@@ -1768,7 +1768,10 @@ button.bg-danger:hover {
 	width: 5.125rem;
 	height: 5.125rem
 }
-
+.avatar-large {
+	width: 5.125rem;
+	height: 5.125rem
+}
 .avatar-xxl .border {
 	border-width: 6px!important
 }

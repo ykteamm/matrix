@@ -131,6 +131,7 @@
                         </div>
                     </td>
                     <td class="fixed">
+                        @isset($item->new_created)
                         @if ($item->new_created != NULL)
                         @php
                             $arrayDate = 0;
@@ -145,6 +146,7 @@
                         @else
                             Eski elchi
                         @endif
+                        @endisset
                     </td>
                     <td class="fixed">
                         @if (isset($encane[$item->id]) && count($encane[$item->id]) > 0)

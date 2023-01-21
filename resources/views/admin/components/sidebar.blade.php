@@ -211,8 +211,14 @@
 
              @isset(Session::get('per')['control'])
              @if(Session::get('per')['control'] == 'true')
-             <li><a href="{{route('user-control')}}"><i class="feather-filter"></i>  <span>User boshqaruvi</span></a>
-             </li>
+
+               <li class="submenu">
+                  <a href="settings.html"><i class="feather-activity"></i>  <span> User boshqaruvi </span><span class="menu-arrow"></span></a>
+                  <ul style="display: none;">
+                     <li><a href="{{route('user-control')}}">Status</a></li>
+                     <li><a href="{{route('user-register')}}">Registratsiya</a></li>
+                  </ul>
+               </li>
              @endif
              @endisset
 

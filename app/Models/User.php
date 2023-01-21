@@ -11,6 +11,7 @@ class User extends Model
 
     protected $table = 'tg_user';
 
+
     public function journal()
     {
         return $this->hasMany(ProductJournal::class, 'user_id', 'id');

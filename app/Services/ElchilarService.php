@@ -198,6 +198,7 @@ class ElchilarService
         $data->elchi=$elchi;
         $data->elchi_fact=$fact;
         $data->elchi_prognoz=$elchi_prognoz;
+        // dd($data->elchi);
      return $data;
     }
     public function capitan($month,$endofmonth,$user_id)

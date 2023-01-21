@@ -14,10 +14,13 @@ use App\Models\Exercise;
 use App\Models\ElchiExercise;
 use App\Models\ElchiUserExercise;
 use App\Models\NewElchi;
+use App\Models\TestRegister;
+use App\Models\Region;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
@@ -412,6 +415,7 @@ class UserController extends Controller
     }
     public function elchiBattleSelect()
     {
+        // return 123;
         $settings = ElchiBattleSetting::first();
         if(!isset($settings->start_day))
         {
@@ -890,5 +894,116 @@ class UserController extends Controller
             $exercise->save();
         }
         return redirect()->back();
+    }
+    public function userRegister()
+    {
+        $registers = TestRegister::orderBy('id','ASC')->get();
+        $region = Region::pluck('name','id');
+        $district = DB::table('tg_district')->pluck('name','id');
+        // return $registers;
+        // $register = TestRegister::join('tg_region', function ($join) {
+        //     $join->on(function ($on) {
+        //         $on->whereJsonContains('tg_test_register.elchi->region', 'tg_region.id');
+        //     });
+        // })->get();
+     
+        return view('userControl.register',compact('registers','region','district'));
+    }
+    public function userCancel(Request $request)
+    {   
+        $user = TestRegister::where('id',$request->id)->first('elchi');
+        $user = json_decode($user->elchi);
+        // return $user;
+        $response = Http::post('notify.eskiz.uz/api/auth/login', [
+            'email' => 'mubashirov2002@gmail.com',
+            'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
+        ]);
+        $token = $response['data']['token'];
+
+        $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
+            'mobile_phone' => '998'.$user->phone,
+            'message' => 'jang.novatio.uz saytida qilgan registratsiyangiz bekor qilindi'.' '.$request->comment,
+            'from' => '4546',
+            'callback_url' => 'http://0000.uz/test.php'
+        ]);
+        if($sms['status'])
+        {   
+            $update = TestRegister::where('id',$request->id)->update([
+                'status' => 0,
+            ]);
+        }
+        return [
+            'status' => 200,
+        ];
+    }
+    public function userSuccess(Request $request)
+    {
+        $user = TestRegister::where('id',$request->id)->first('elchi');
+        $user = json_decode($user->elchi);
+        
+        $last_user = User::orderBy('id','DESC')->first('username');
+            $username = 'nvt'.(intval(substr($last_user->username,3))+1);
+            $password = rand(1000, 9999);
+            
+            $new = DB::table('tg_user')->insert([
+                'password' => Hash::make($password),
+                'last_login' => NULL,
+                'is_superuser' => FALSE,
+                'username' => $username,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'phone_number' => '+998'.$user->phone,
+                'is_staff' => FALSE,
+                'is_active' => TRUE,
+                'is_verified' => TRUE,
+                'date_joined' => date_now(),
+                'district_id' => $user->district,
+                'region_id' => $user->region,
+                'specialty_id' => 1,
+                'email' => NULL,
+                'tg_id' => 990821015,
+                'birthday' => $user->year.'-'.$user->month.'-'.$user->day,
+                'admin' => FALSE,
+                'write_time' => date_now(),
+                'salary' => 1500000,
+                'image' => $user->photo,
+                'pr' => $password,
+                'tg_file_id' => NULL,
+                'rol_id' => 27,
+                'last_seen' => NULL,
+                'teacher' => FALSE,
+                'image_change' => TRUE,
+                'pharmacy_id' => NULL,
+                'image_url' => 'https://telegra.ph//file/04f99aa16eebd4af2a42c.jpg',
+                'status' => 1,
+                'level' => 0,
+                'rm' => 0
+            ]);
+        
+        if($new == 1)
+        {
+            $response = Http::post('notify.eskiz.uz/api/auth/login', [
+                'email' => 'mubashirov2002@gmail.com',
+                'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
+            ]);
+            $token = $response['data']['token'];
+    
+            $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
+                'mobile_phone' => '998'.$user->phone,
+                'message' => 'jang.novatio.uz saytida qilgan registratsiyangiz qabul qilindi.'.' '.' '.'Login: '.$username.' '.' '.'Parol: '.$password,
+                'from' => '4546',
+                'callback_url' => 'http://0000.uz/test.php'
+            ]);
+            if($sms['status'])
+            {   
+                $update = TestRegister::where('id',$request->id)->update([
+                    'status' => 1,
+                ]);
+            }
+        }
+
+        return [
+            'status' => 200
+        ];
     }
 }
