@@ -6,6 +6,7 @@ use App\Models\NewUsers;
 use App\Models\User;
 use App\Models\Member;
 use App\Models\Ball;
+use App\Models\BattleDay;
 use App\Models\BattleHistory;
 use App\Models\ElchiBattleSetting;
 use App\Models\Medicine;
@@ -14,9 +15,9 @@ use App\Models\Exercise;
 use App\Models\ElchiExercise;
 use App\Models\ElchiUserExercise;
 use App\Models\NewElchi;
+use App\Models\ProductSold;
 use App\Models\TestRegister;
 use App\Models\Region;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,6 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Services\ElchiService;
 use App\Services\ElchiBattleService;
-
 class UserController extends Controller
 {
     public function index()
@@ -415,80 +415,88 @@ class UserController extends Controller
     }
     public function elchiBattleSelect()
     {
-        // return 123;
-        $settings = ElchiBattleSetting::first();
-        if(!isset($settings->start_day))
+        $endday = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( Carbon::now() ) ) ));
+        $startday = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( Carbon::now() ) ) ));
+        $all_user = User::pluck('id');
+        $users=[];
+        foreach($all_user as $id)
         {
-            return view('elchilar.error');
+            $transactions= ProductSold::whereBetween('created_at', [$startday, $endday])
+            ->select(DB::raw('DATE(created_at) as date'))
+            ->where('user_id',$id)
+            ->groupBy('date')
+            ->get('date');
+            $sizeof = sizeof($transactions);
+                if($sizeof >= 3)
+                {
+                    $users[] = $id;
+                }
         }
-        $weekStartDate = date_now()->startOfWeek()->format('Y-m-d');
-        $weekEndDate = date_now()->endOfWeek()->format('Y-m-d');
-        $week_date = DB::table('tg_battle')
-        ->select('start_day','end_day')
-        ->whereDate('start_day','>=',$weekStartDate)
-        ->whereDate('end_day','<=',$weekEndDate)
-        ->distinct()
-        ->first();
-        $startday = date('d.m.Y',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
-        $endday = date('d.m.Y',(strtotime ( '+'.($settings->end_day ).' day' , strtotime ( $weekStartDate ) ) ));
+        $userid = User::with('battle_user1','battle_user2')->whereIn('id',$users)->get();
+        // return $userid;
+        // $battle_day = BattleDay::with('u1id','u2id')->where('u1id',27)->orWhere('u2id',27)->get();
+        // return $battle_day;
         
-        
-        $get_date = DB::table('tg_battle')
-        ->whereDate('start_day','>=',date('Y-m-d',strtotime($startday)))
-        ->whereDate('end_day','<=',date('Y-m-d',strtotime($endday)))
-        ->where('end',1)
-        ->orderBy('id', 'DESC')->first();
-        // return $get_date;
-
-        if (isset($get_date->start_day))
-        {
-            $start = date('l',(strtotime ( '+'.($settings->start_day+7).' day' , strtotime ( $weekStartDate ) ) ));
-            $end = date('l',(strtotime ( '+'.($settings->end_day+7).' day' , strtotime ( $weekStartDate ) ) ));
-            $startdays = date('Y-m-d',(strtotime ( '+'.($settings->start_day+7).' day' , strtotime ( $weekStartDate ) ) ));
-            $enddays = date('Y-m-d',(strtotime ( '+'.($settings->end_day+7).' day' , strtotime ( $weekStartDate ) ) ));
-        
-        }else{
-            $start = date('l',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
-            $end = date('l',(strtotime ( '+'.($settings->end_day).' day' , strtotime ( $weekStartDate ) ) ));
-            $startdays = date('Y-m-d',(strtotime ( '+'.($settings->start_day).' day' , strtotime ( $weekStartDate ) ) ));
-            $enddays = date('Y-m-d',(strtotime ( '+'.($settings->end_day).' day' , strtotime ( $weekStartDate ) ) ));
-        
-        }
-
-        
-        $elchi_battle = new ElchiService();
-        $starts = $elchi_battle->battleSetting($start);
-        $ends = $elchi_battle->battleSetting($end);
-
-        $exists1 = DB::table('tg_battle')
-        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
-        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
-        ->pluck('user1_id');
-        
-        $exists2 = DB::table('tg_battle')
-        ->whereDate('start_day',date('Y-m-d',strtotime($startdays)))
-        ->whereDate('end_day',date('Y-m-d',strtotime($enddays)))
-        ->pluck('user2_id');
-        // return $startdays;
-        $usersarray = Member::with('user')
-        ->whereNotIn('user_id',[60,72])
-        ->whereNotIn('user_id',$exists1)
-        ->whereNotIn('user_id',$exists2)
-        ->get();
-        #battle
-        $settings = ElchiBattleSetting::first();
-        $weekStartDate = date_now()->startOfWeek()->format('Y-m-d');
-        $weekEndDate = date_now()->endOfWeek()->format('Y-m-d');
-        $week_date = DB::table('tg_battle')
-        ->select('start_day','end_day')
-        ->whereDate('start_day','>=',$weekStartDate)
-        ->whereDate('end_day','<=',$weekEndDate)
-        ->distinct()
-        ->first();
-        return view ('elchilar.select',compact('usersarray','starts','startdays','ends','enddays'));
+        return view ('elchilar.select',compact('userid'));
     }
     public function elchiBattleSelectStore(Request $request)
     {
+        if($request->user1 == $request->user2)
+        {
+            return redirect()->back();
+        }
+        $userIn[]=$request->user1;
+        $userIn[]=$request->user2;
+        $battle_day_count = BattleDay::whereIn('u1id',$userIn)->where('u2id',$userIn)->where('ends',0)->orderBy('id','DESC')->limit(1)->get();
+        // return $battle_day_count;
+        if(count($battle_day_count) == 1)
+        {
+            $new_battle = new BattleDay([
+                'u1id' => $request->user1,
+                'u2id' => $request->user2,
+                'price1' => 0,
+                'price2' => 0,
+                'days' => $request->day,
+                'start_day' => date('Y-m-d H:i:s',(strtotime ( '+1 day' , strtotime ( $battle_day_count[0]->end_day ) ) )),
+                'end_day' => date('Y-m-d H:i:s',(strtotime ( '+'.$request->day.' day' , strtotime ( $battle_day_count[0]->end_day ) ) )),
+            ]);
+            $new_battle->save();
+
+        }else{
+            $user1 = BattleDay::where('u1id',$request->user1)->orWhere('u2id',$request->user1)->where('ends',0)->orderBy('id','DESC')->limit(1)->get();
+            $user2 = BattleDay::where('u1id',$request->user2)->orWhere('u2id',$request->user2)->where('ends',0)->orderBy('id','DESC')->limit(1)->get();
+            if($user1[0]->end_day >= $user2[0]->end_day )
+            {
+                // return strtotime('2023-01-22');
+                $new_battle = new BattleDay([
+                    'u1id' => $request->user1,
+                    'u2id' => $request->user2,
+                    'price1' => 0,
+                    'price2' => 0,
+                    'days' => $request->day,
+                    'start_day' => date('Y-m-d H:i:s',(strtotime ( '+1 day' , strtotime ($user1[0]->end_day ) ) )),
+                    'end_day' => date('Y-m-d H:i:s',(strtotime ( '+'.$request->day.' day' , strtotime ($user1[0]->end_day ) ) )),
+                ]);
+                $new_battle->save();
+            }else{
+                $new_battle = new BattleDay([
+                    'u1id' => $request->user1,
+                    'u2id' => $request->user2,
+                    'price1' => 0,
+                    'price2' => 0,
+                    'days' => $request->day,
+                    'start_day' => date('Y-m-d H:i:s',(strtotime ( '+1 day' , strtotime ($user2[0]->end_day ) ) )),
+                    'end_day' => date('Y-m-d H:i:s',(strtotime ( '+'.$request->day.' day' , strtotime ($user2[0]->end_day ) ) )),
+                ]);
+                $new_battle->save();
+            }
+            // return abs(strtotime('2023-01-22')-strtotime('2023-01-24'))/86400;
+
+            // return 1234;
+        }
+        // return $battle_day2_count;
+        return 123;
+
         $inputs = $request->all();
         $battle_service = new ElchiBattleService;
         $elchi_battle = $battle_service->battleDefault($inputs);

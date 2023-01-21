@@ -36,6 +36,14 @@ class User extends Model
     {
         return $this->hasMany(NewElchi::class,'user_id','id');
     }
+    public function battle_user1()
+    {
+        return $this->hasMany(BattleDay::class,'u1id','id');
+    }
+    public function battle_user2()
+    {
+        return $this->hasMany(BattleDay::class,'u2id','id');
+    }
 //
 //    public function tools()
 //    {
