@@ -41,10 +41,13 @@ class Pharmacy extends Model
     {
         return $this->hasMany(Stock::class,'pharmacy_id','id');
     }
-
     public function shablon_pharmacy()
     {
         return $this->hasMany(ShablonPharmacy::class,'pharmacy_id','id');
+    }
+    public function shift()
+    {
+        return $this->hasMany(Pharmacy::class,'user_id','id');
     }
 
 }

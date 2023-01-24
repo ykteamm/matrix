@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrendController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,6 +42,8 @@ use App\Http\Controllers\TrendController;
 
     Route::post('/user/cancel', [UserController::class,'userCancel']);
     Route::post('/user/success', [UserController::class,'userSuccess']);
+
+    Route::post('/user/shift', [ToolzController::class,'shiftAnsver']);
 
 
 
@@ -262,6 +264,9 @@ Route::get('rm-pharmacy/{region}/{time?}',[\App\Http\Controllers\RMController::c
 Route::get('rm-medicine/{region}/{time?}',[\App\Http\Controllers\RMController::class,'medicine'])->name('rm-medicine');
 
 #end-rm-dash
+
+Route::get('selfi', [ToolzController::class,'selfi'])->name('selfi');
+
 });
 
 // });

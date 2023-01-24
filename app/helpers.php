@@ -189,6 +189,7 @@ if(!function_exists('wordSimilarity')){
         $h_positions['user_pharmacy'] = 'Dorixona - user';
         $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';
+        $h_positions['toolz'] = 'Toolz Bot';
         $h_positions['narx'] = 'Narx';
         $h_positions['zavod'] = 'Zavod';
         $h_positions['control'] = 'User control';

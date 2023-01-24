@@ -44,6 +44,14 @@ class User extends Model
     {
         return $this->hasMany(BattleDay::class,'u2id','id');
     }
+    public function shift()
+    {
+        return $this->hasMany(Shift::class,'user_id','id');
+    }
+    public function region()
+    {
+        return $this->belongsTo(Region::class,'region_id','id');
+    }
 //
 //    public function tools()
 //    {

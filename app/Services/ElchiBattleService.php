@@ -349,25 +349,25 @@ class ElchiBattleService
                     }
                     if($price2 == $price1)
                     {
-                        if($ball1 > $ball2)
-                        {
-                            $pow = pow(10,($ball2-$ball1)/400);
-                            $e = 1/(1+$pow);
-                            $r1 = $d*(0.5-$e)+round($price1*$d/20000000);
+                            if($ball1 > $ball2)
+                            {
+                                $pow = pow(10,($ball2-$ball1)/400);
+                                $e = 1/(1+$pow);
+                                $r1 = $d*(0.5-$e)+round($price1*$d/20000000);
 
-                            $pow = pow(10,($ball1-$ball2)/400);
-                            $e = 1/(1+$pow);
-                            $r2 = $d*(0.5-$e)+round($price2*$d/20000000);
+                                $pow = pow(10,($ball1-$ball2)/400);
+                                $e = 1/(1+$pow);
+                                $r2 = $d*(0.5-$e)+round($price2*$d/20000000);
 
-                        }else{
-                            $pow = pow(10,($ball2-$ball1)/400);
-                            $e = 1/(1+$pow);
-                            $r2 = $d*(0.5-$e)+round($price2*$d/20000000);
+                            }else{
+                                $pow = pow(10,($ball2-$ball1)/400);
+                                $e = 1/(1+$pow);
+                                $r2 = $d*(0.5-$e)+round($price2*$d/20000000);
 
-                            $pow = pow(10,($ball1-$ball2)/400);
-                            $e = 1/(1+$pow);
-                            $r1 = $d*(0.5-$e)+round($price1*$d/20000000);
-                        }
+                                $pow = pow(10,($ball1-$ball2)/400);
+                                $e = 1/(1+$pow);
+                                $r1 = $d*(0.5-$e)+round($price1*$d/20000000);
+                            }
                         if($get->bot == 1)
                         {
                             $battleArray[]=array('a1' => $sumarray1,'a2' => $sumarray2,'id1' =>$get->user1_id,'id2' =>$get->user2_id,'win' => $r1,'lose'=>$r2,'bot'=>1,'i'=>0);

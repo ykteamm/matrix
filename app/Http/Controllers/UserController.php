@@ -448,17 +448,53 @@ class UserController extends Controller
         $userIn[]=$request->user1;
         $userIn[]=$request->user2;
         $battle_day_count = BattleDay::whereIn('u1id',$userIn)->where('u2id',$userIn)->where('ends',0)->orderBy('id','DESC')->limit(1)->get();
+
+            
         // return $battle_day_count;
         if(count($battle_day_count) == 1)
         {
+            $st_day = $battle_day_count[0]->end_day;
+            $start_index_day = date('Y-m-d',(strtotime ( '+1 day' , strtotime ( $st_day ) ) ));
+            $end_index_day = date('Y-m-d',(strtotime ( '+'.$request->day.' day' , strtotime ( $st_day ) ) ));
+
+            $arrayDate = array();
+            $Variable1 = strtotime($start_index_day);
+            $Variable2 = strtotime($end_index_day);
+            $sum = 0;
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+            {                        
+                $Store = date('w', $currentDate);
+                if($Store == 0)
+                {
+                    $sum += 1;
+                }else{
+                    $arrayDate[] = date('Y-m-d', $currentDate);
+
+                }
+            }
+            if($sum > 0)
+            {
+                for ($i=1; $i <= $sum; $i++) { 
+                    $ends = date('w',(strtotime ( '+1 day' , strtotime ( end($arrayDate) ) ) ));
+                    if($ends == 0)
+                    {
+                        $endsw = date('Y-m-d',(strtotime ( '+2 day' , strtotime ( end($arrayDate) ) ) ));
+                    }else{
+                        $endsw = date('Y-m-d',(strtotime ( '+1 day' , strtotime ( end($arrayDate) ) ) ));
+                    }
+                    $arrayDate[] = $endsw;
+                }
+            }
+            $start_day = $arrayDate[0];
+            $end_day = end($arrayDate);
             $new_battle = new BattleDay([
                 'u1id' => $request->user1,
                 'u2id' => $request->user2,
                 'price1' => 0,
                 'price2' => 0,
                 'days' => $request->day,
-                'start_day' => date('Y-m-d H:i:s',(strtotime ( '+1 day' , strtotime ( $battle_day_count[0]->end_day ) ) )),
-                'end_day' => date('Y-m-d H:i:s',(strtotime ( '+'.$request->day.' day' , strtotime ( $battle_day_count[0]->end_day ) ) )),
+                'start_day' => $start_day,
+                'end_day' => $end_day,
             ]);
             $new_battle->save();
 
@@ -467,26 +503,93 @@ class UserController extends Controller
             $user2 = BattleDay::where('u1id',$request->user2)->orWhere('u2id',$request->user2)->where('ends',0)->orderBy('id','DESC')->limit(1)->get();
             if($user1[0]->end_day >= $user2[0]->end_day )
             {
-                // return strtotime('2023-01-22');
+                $st_day = $user1[0]->end_day;
+            $start_index_day = date('Y-m-d',(strtotime ( '+1 day' , strtotime ( $st_day ) ) ));
+            $end_index_day = date('Y-m-d',(strtotime ( '+'.$request->day.' day' , strtotime ( $st_day ) ) ));
+
+            $arrayDate = array();
+            $Variable1 = strtotime($start_index_day);
+            $Variable2 = strtotime($end_index_day);
+            $sum = 0;
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+            {                        
+                $Store = date('w', $currentDate);
+                if($Store == 0)
+                {
+                    $sum += 1;
+                }else{
+                    $arrayDate[] = date('Y-m-d', $currentDate);
+
+                }
+            }
+            if($sum > 0)
+            {
+                for ($i=1; $i <= $sum; $i++) { 
+                    $ends = date('w',(strtotime ( '+1 day' , strtotime ( end($arrayDate) ) ) ));
+                    if($ends == 0)
+                    {
+                        $endsw = date('Y-m-d',(strtotime ( '+2 day' , strtotime ( end($arrayDate) ) ) ));
+                    }else{
+                        $endsw = date('Y-m-d',(strtotime ( '+1 day' , strtotime ( end($arrayDate) ) ) ));
+                    }
+                    $arrayDate[] = $endsw;
+                }
+            }
+            $start_day = $arrayDate[0];
+            $end_day = end($arrayDate);
                 $new_battle = new BattleDay([
                     'u1id' => $request->user1,
                     'u2id' => $request->user2,
                     'price1' => 0,
                     'price2' => 0,
                     'days' => $request->day,
-                    'start_day' => date('Y-m-d H:i:s',(strtotime ( '+1 day' , strtotime ($user1[0]->end_day ) ) )),
-                    'end_day' => date('Y-m-d H:i:s',(strtotime ( '+'.$request->day.' day' , strtotime ($user1[0]->end_day ) ) )),
+                    'start_day' => $start_day,
+                    'end_day' => $end_day,
                 ]);
                 $new_battle->save();
             }else{
+                $st_day = $user1[0]->end_day;
+            $start_index_day = date('Y-m-d',(strtotime ( '+1 day' , strtotime ( $st_day ) ) ));
+            $end_index_day = date('Y-m-d',(strtotime ( '+'.$request->day.' day' , strtotime ( $st_day ) ) ));
+
+            $arrayDate = array();
+            $Variable1 = strtotime($start_index_day);
+            $Variable2 = strtotime($end_index_day);
+            $sum = 0;
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+            {                        
+                $Store = date('w', $currentDate);
+                if($Store == 0)
+                {
+                    $sum += 1;
+                }else{
+                    $arrayDate[] = date('Y-m-d', $currentDate);
+
+                }
+            }
+            if($sum > 0)
+            {
+                for ($i=1; $i <= $sum; $i++) { 
+                    $ends = date('w',(strtotime ( '+1 day' , strtotime ( end($arrayDate) ) ) ));
+                    if($ends == 0)
+                    {
+                        $endsw = date('Y-m-d',(strtotime ( '+2 day' , strtotime ( end($arrayDate) ) ) ));
+                    }else{
+                        $endsw = date('Y-m-d',(strtotime ( '+1 day' , strtotime ( end($arrayDate) ) ) ));
+                    }
+                    $arrayDate[] = $endsw;
+                }
+            }
+            $start_day = $arrayDate[0];
+            $end_day = end($arrayDate);
                 $new_battle = new BattleDay([
                     'u1id' => $request->user1,
                     'u2id' => $request->user2,
                     'price1' => 0,
                     'price2' => 0,
                     'days' => $request->day,
-                    'start_day' => date('Y-m-d H:i:s',(strtotime ( '+1 day' , strtotime ($user2[0]->end_day ) ) )),
-                    'end_day' => date('Y-m-d H:i:s',(strtotime ( '+'.$request->day.' day' , strtotime ($user2[0]->end_day ) ) )),
+                    'start_day' => $start_day,
+                    'end_day' => $end_day,
                 ]);
                 $new_battle->save();
             }

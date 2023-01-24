@@ -92,7 +92,18 @@
                </ul>
             </li>
             @endif
-             @endisset
+            @endisset
+
+            @isset(Session::get('per')['toolz'])
+            @if(Session::get('per')['toolz'] == 'true')
+           <li class="submenu">
+              <a href="settings.html"><i class="feather-sliders"></i>  <span> Toolz Bot </span><span class="menu-arrow"></span></a>
+              <ul style="display: none;">
+                 <li><a href="{{route('selfi')}}">Selfi</a></li>
+               </ul>
+           </li>
+           @endif
+           @endisset
 
              @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')

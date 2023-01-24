@@ -24,4 +24,9 @@ class Region extends Model
     {
         return $this->hasMany(Pharmacy::class,'region_id','id');
     }
+
+    public function user()
+    {
+        return $this->hasMany(User::class,'region_id','id');
+    }
 }
