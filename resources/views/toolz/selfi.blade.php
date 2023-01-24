@@ -11,7 +11,7 @@
             <div class="row mb-5 mt-5 pt-2 pb-2" style="border: 1px solid black; border-radius:15px;">
                 <div class="col-md-4">
                     <div class="mt-4">
-                        @if($host == 'jang')
+                        @if($host == 'mat')
                         <img id="avatarImg" height="100px" class="avatar-img" src="https://jang.novatio.uz/images/users/open_smena/{{$item->open_image}}" alt="Profile Image">
                         @else
                         <img id="avatarImg" height="100px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">

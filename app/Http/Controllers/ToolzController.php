@@ -10,7 +10,7 @@ class ToolzController extends Controller
     public function selfi()
     {
         $shifts = Shift::with('user','pharmacy','user.region')->whereNull('admin_check')->orderBy('id','ASC')->get();
-        $host = substr(request()->getHttpHost(),0,4);
+        $host = substr(request()->getHttpHost(),0,3);
         return view('toolz.selfi',compact('shifts','host'));
     }
     public function shiftAnsver(Request $request)
