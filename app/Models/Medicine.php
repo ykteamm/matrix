@@ -24,4 +24,9 @@ class Medicine extends Model
     {
         return $this->hasMany(Price::class,'medicine_id','id');
     }
+    public function psold()
+    {
+        return $this->hasMany(ProductSold::class,'medicine_id','id');
+    }
+    
 }

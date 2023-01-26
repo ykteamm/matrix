@@ -44,6 +44,7 @@ use App\Http\Controllers\TrendController;
     Route::post('/user/success', [UserController::class,'userSuccess']);
 
     Route::post('/user/shift', [ToolzController::class,'shiftAnsver']);
+    Route::post('/user/king-sold', [ToolzController::class,'kingSoldAnsver']);
 
 
 
@@ -266,6 +267,7 @@ Route::get('rm-medicine/{region}/{time?}',[\App\Http\Controllers\RMController::c
 #end-rm-dash
 
 Route::get('selfi', [ToolzController::class,'selfi'])->name('selfi');
+Route::get('king-sold', [ToolzController::class,'kingSold'])->name('king.sold');
 
 });
 

@@ -100,6 +100,7 @@
               <a href="settings.html"><i class="feather-sliders"></i>  <span> Toolz Bot </span><span class="menu-arrow"></span></a>
               <ul style="display: none;">
                  <li><a href="{{route('selfi')}}">Selfi</a></li>
+                 <li><a href="{{route('king.sold')}}">Shox yurish</a></li>
                </ul>
            </li>
            @endif

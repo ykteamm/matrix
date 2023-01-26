@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductSold extends Model
 {
+    use HasFactory;
+
     protected $table='tg_productssold';
     protected $fillable=[
         'number',
@@ -16,5 +18,19 @@ class ProductSold extends Model
         'price_product',
         'is_active'
     ];
-    use HasFactory;
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class,'order_id','id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class,'medicine_id','id');
+    }
 }
