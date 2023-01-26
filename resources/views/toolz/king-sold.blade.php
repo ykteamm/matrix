@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap">
                         @if($host == 'mat')
-                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/king_sold/{{$item->open_image}}" alt="Profile Image">
+                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/king_sold/{{$item->image}}" alt="Profile Image">
                         @else
                         <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                         @endif
