@@ -343,6 +343,111 @@
      
                  </div>
              </div>
+             <div class="col-sm-12">
+                <div class="card">
+                    <span class="text-center">Bugungi kun hisbot</span>
+
+                   <div class="card-body">
+                      <div class="table-responsive">
+                         <table class="table mb-0 example1">
+                            <thead>
+                               <tr>
+                                  <th>Username </th>
+                                  <th>FIO </th>
+                                  <th>Telefon raqam </th>
+                                  <th>Viloyat </th>
+                                  <th>Smena boshlagan vaqti</th>
+                                  <th>Admin tekshirishi</th>
+                                  <th>Smena holati</th>
+                                  <th>Ishlagan vaqti</th>
+                               </tr>
+                            </thead>
+                            <tbody>
+                               @foreach ($hisob as $h)
+                               <tr>
+                                  <td>{{$h->username}}</td>
+       
+                                  <td>{{$h->last_name}} {{$h->first_name}}</td>
+                                  <td>{{$h->phone_number}}</td>
+                                  <td>{{$h->name}}</td>
+                                  <td>{{date('d.m.Y H:i',strtotime($h->open_date))}}</td>
+                                  @if ($h->admin_check == NULL)
+                                    <td>Tasdiqlanmadi</td>  
+                                  @else
+                                  @php
+                                      $a = json_decode($h->admin_check);
+                                  @endphp
+                                    @if ($a->check == 'ok')
+                                        <td>Tasdiqlandi</td>
+                                    @elseif($a->check == 'code')
+                                    <td>Kun soni yo'q</td>
+
+                                    @elseif($a->check == 'card')
+                                    <td>Beyjik yo'q</td>
+
+                                    @elseif($a->check == 'robe')
+                                    <td>Xalat yo'q</td>
+
+                                    @else
+                                    <td>Lokatsiya noto'g'ri</td>
+                                  @endif
+                                  
+                                  
+                                  
+                                      
+                                  @endif
+
+                                  @if ($h->active == 1)
+                                        <td>Smena ochiq</td>
+                                    @endif
+                                    @if ($h->active == 2)
+                                        <td>Smena yopiq</td>
+                                    @endif
+                                    
+                                <td>{{number_format((intval(strtotime($h->close_date))-intval(strtotime($h->open_date)))/(60*60),0)}} soat </td>
+                                  
+                               </tr>
+                               
+                               @endforeach
+                            </tbody>
+                         </table>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <div class="col-sm-12">
+                <div class="card">
+                    <span class="text-center">Ishga chiqmaganlar</span>
+
+                   <div class="card-body">
+                      <div class="table-responsive">
+                         <table class="table mb-0 example1">
+                            <thead>
+                               <tr>
+                                  <th>Username </th>
+                                  <th>FIO </th>
+                                  <th>Telefon raqam </th>
+                                  <th>Viloyat </th>
+                               </tr>
+                            </thead>
+                            <tbody>
+                               @foreach ($nowork as $h)
+                               <tr>
+                                  <td>{{$h->username}}</td>
+       
+                                  <td>{{$h->last_name}} {{$h->first_name}}</td>
+                                  <td>{{$h->phone_number}}</td>
+                                  <td>{{$h->name}}</td>
+                                  
+                               </tr>
+                               
+                               @endforeach
+                            </tbody>
+                         </table>
+                      </div>
+                   </div>
+                </div>
+             </div>
          </div>
  </div>
     </div>

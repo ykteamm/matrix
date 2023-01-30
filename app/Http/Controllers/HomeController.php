@@ -340,12 +340,6 @@ class HomeController extends Controller
 
         }
         arsort( $array);
-        $hisob = DB::table('tg_shift')
-        ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
-        ->join('tg_user','tg_user.id','tg_shift.user_id')
-        ->join('tg_region','tg_region.id','tg_user.region_id')
-        ->whereDate('tg_shift.open_date',Carbon::now())
-        ->get();
 
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
             {
@@ -375,6 +369,15 @@ class HomeController extends Controller
                         $userarrayreg[] = $value->id;
                     }
             }
+        $hisob = DB::table('tg_shift')
+        ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
+        ->join('tg_user','tg_user.id','tg_shift.user_id')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->whereIn('tg_user.id',$userarrayreg)
+        ->whereDate('tg_shift.open_date',Carbon::now())
+        ->get();
+
+        
         $nowork = DB::table('tg_shift')
         ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
         ->join('tg_user','tg_user.id','tg_shift.user_id')
