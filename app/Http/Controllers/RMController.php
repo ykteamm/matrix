@@ -51,7 +51,7 @@ class RMController extends Controller
             arsort( $array);
             if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
             {
-                $users = DB::table('tg_user')
+                $usersssss = DB::table('tg_user')
                     ->where('tg_user.status',1)
                     ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
@@ -67,13 +67,13 @@ class RMController extends Controller
                             $r_id_array[] = $key;
                         }
                     }
-                    $users = DB::table('tg_user')
+                    $userssss = DB::table('tg_user')
                     ->whereIn('tg_region.id',$r_id_array)
                     ->where('tg_user.status',1)
                     ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
                     ->join('tg_region','tg_region.id','tg_user.region_id')
                     ->get();
-                    foreach ($users as $key => $value) {
+                    foreach ($userssss as $key => $value) {
                         $userarrayreg[] = $value->id;
                     }
             }
