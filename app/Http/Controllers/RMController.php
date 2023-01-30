@@ -8,7 +8,7 @@ use App\Services\ElchiService;
 use App\Models\Region;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Illuminate\Contracts\Session\Session;
+use Session;
 
 class RMController extends Controller
 {
