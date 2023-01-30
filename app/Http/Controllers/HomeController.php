@@ -115,9 +115,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        $battle_service = new ElchiBattleService;
-        $elchi_battle = $battle_service->battle();
-        $elchi_battle = $battle_service->battleEnd();
         // return $elchi_battle;
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
@@ -343,7 +340,57 @@ class HomeController extends Controller
 
         }
         arsort( $array);
-        return view('index',compact('array','settingday'));
+        $hisob = DB::table('tg_shift')
+        ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
+        ->join('tg_user','tg_user.id','tg_shift.user_id')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->whereDate('tg_shift.open_date',Carbon::now())
+        ->get();
+
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+            {
+                $users = DB::table('tg_user')
+                    ->where('tg_user.status',1)
+                    ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            }
+            else{
+                $r_id_array = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $r_id_array[] = $key;
+                        }
+                    }
+                    $users = DB::table('tg_user')
+                    ->whereIn('tg_region.id',$r_id_array)
+                    ->where('tg_user.status',1)
+                    ->select('tg_region.id as tid','tg_user.id','tg_user.last_name','tg_user.first_name')
+                    ->join('tg_region','tg_region.id','tg_user.region_id')
+                    ->get();
+                    foreach ($users as $key => $value) {
+                        $userarrayreg[] = $value->id;
+                    }
+            }
+        $nowork = DB::table('tg_shift')
+        ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
+        ->join('tg_user','tg_user.id','tg_shift.user_id')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->whereIn('tg_user.id',$userarrayreg)
+        ->whereDate('tg_shift.open_date',Carbon::now())
+        ->pluck('tg_shift.user_id')->toArray();
+        // return $hisob;
+        $nowork = DB::table('tg_user')
+        ->select('tg_user.*','tg_region.name')
+        ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->whereNotIn('tg_user.id',$nowork)
+        ->whereIn('tg_user.id',$userarrayreg)
+        ->get();
+        // return $nowork;
+        return view('index',compact('array','settingday','hisob','nowork'));
     }
     public function capitan($month)
     {
