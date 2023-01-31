@@ -18,12 +18,21 @@
                             <div class="row mb-5 mt-5 pt-2 pb-2" style="border: 1px solid black; border-radius:15px;">
                                 <div class="col-md-4">
                                     <div class="mt-4">
-                                        <img id="avatarImg" height="100px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                        @if($host == 'mat')
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$item->image}}" alt="Profile Image">
+                                        @else
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                        @endif
                                     </div>
+
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mt-4">
-                                        <img id="avatarImg" height="100px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673873679.jpg" alt="Profile Image">
+                                        @if($host == 'mat')
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$item->image}}" alt="Profile Image">
+                                        @else
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -91,12 +100,20 @@
                         <div class="row mb-5 mt-5 pt-2 pb-2" style="border: 1px solid black; border-radius:15px;">
                             <div class="col-md-4">
                                 <div class="mt-4">
-                                    <img id="avatarImg" height="100px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                    @if($host == 'mat')
+                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$item->image}}" alt="Profile Image">
+                                    @else
+                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mt-4">
-                                    <img id="avatarImg" height="100px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673873679.jpg" alt="Profile Image">
+                                    @if($host == 'mat')
+                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$item->image}}" alt="Profile Image">
+                                    @else
+                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-4">

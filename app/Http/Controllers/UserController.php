@@ -560,6 +560,8 @@ class UserController extends Controller
         $registers = TestRegister::orderBy('id','ASC')->get();
         $region = Region::pluck('name','id');
         $district = DB::table('tg_district')->pluck('name','id');
+        $host = substr(request()->getHttpHost(),0,3);
+
         // return $registers;
         // $register = TestRegister::join('tg_region', function ($join) {
         //     $join->on(function ($on) {
@@ -567,7 +569,7 @@ class UserController extends Controller
         //     });
         // })->get();
      
-        return view('userControl.register',compact('registers','region','district'));
+        return view('userControl.register',compact('registers','region','district','host'));
     }
     public function userCancel(Request $request)
     {   
