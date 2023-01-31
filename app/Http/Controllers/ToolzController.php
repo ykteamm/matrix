@@ -9,7 +9,7 @@ class ToolzController extends Controller
 {
     public function selfi()
     {
-        $shifts = Shift::with('user','pharmacy','user.region')->whereNull('admin_check')->orderBy('id','ASC')->get();
+        $shifts = Shift::with('user','pharmacy','user.region')->orderBy('id','DESC')->get();
         $host = substr(request()->getHttpHost(),0,3);
         return view('toolz.selfi',compact('shifts','host'));
     }
@@ -25,7 +25,7 @@ class ToolzController extends Controller
     }
     public function kingSold()
     {  
-        $solds = KingSold::with('order','order.sold','order.sold.medicine','order.user')->get();
+        $solds = KingSold::with('order','order.sold','order.sold.medicine','order.user')->orderBy('id','DESC')->get();
         $host = substr(request()->getHttpHost(),0,3);
         return view('toolz.king-sold',compact('solds','host'));
 
