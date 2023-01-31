@@ -19,7 +19,7 @@
                                 <div class="col-md-4">
                                     <div class="mt-4">
                                         @if($host == 'mat')
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$item->photo}}" alt="Profile Image">
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$user->photo}}" alt="Profile Image">
                                         @else
                                         <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                         @endif
@@ -29,7 +29,7 @@
                                 <div class="col-md-4">
                                     <div class="mt-4">
                                         @if($host == 'mat')
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$item->photo}}" alt="Profile Image">
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$user->photo}}" alt="Profile Image">
                                         @else
                                         <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                         @endif
@@ -101,7 +101,7 @@
                             <div class="col-md-4">
                                 <div class="mt-4">
                                     @if($host == 'mat')
-                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$item->photo}}" alt="Profile Image">
+                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$user->photo}}" alt="Profile Image">
                                     @else
                                     <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                     @endif
@@ -110,7 +110,7 @@
                             <div class="col-md-4">
                                 <div class="mt-4">
                                     @if($host == 'mat')
-                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$item->photo}}" alt="Profile Image">
+                                    <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$user->photo}}" alt="Profile Image">
                                     @else
                                     <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                     @endif
