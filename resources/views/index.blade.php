@@ -185,6 +185,7 @@
                                           <th>Telefon raqam </th>
                                           <th>Viloyat </th>
                                           <th>Smena boshlagan vaqti</th>
+                                          <th>Smena yopilgan vaqti</th>
                                           <th>Admin tekshirishi</th>
                                           <th>Smena holati</th>
                                           <th>Ishlagan vaqti</th>
@@ -199,6 +200,13 @@
                                           <td>{{$h->phone_number}}</td>
                                           <td>{{$h->name}}</td>
                                           <td>{{date('d.m.Y H:i',strtotime($h->open_date))}}</td>
+
+                                          @if ($h->close_date == NULL)
+                                            <td>Smena yopilmagan</td>
+                                          @else
+                                            <td>{{date('d.m.Y H:i',strtotime($h->close_date))}}</td>
+                                          @endif
+
                                           @if ($h->admin_check == NULL)
                                             <td>Tasdiqlanmadi</td>  
                                           @else
@@ -232,7 +240,11 @@
                                                 <td>Smena yopiq</td>
                                             @endif
                                             
-                                        <td>{{number_format((intval(strtotime($h->close_date))-intval(strtotime($h->open_date)))/(60*60),0)}} soat </td>
+                                        @if ($h->close_date == NULL)
+                                        <td>{{number_format((intval(strtotime(date('Y-m-d H:i')))-intval(strtotime($h->open_date)))/(60*60),1)}} soat </td>
+                                        @else
+                                        <td>{{number_format((intval(strtotime($h->close_date))-intval(strtotime($h->open_date)))/(60*60),1)}} soat </td>
+                                        @endif
                                           
                                        </tr>
                                        

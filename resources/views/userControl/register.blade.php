@@ -19,7 +19,7 @@
                                 <div class="col-md-4">
                                     <div class="mt-4">
                                         @if($host == 'mat')
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$user->passport}}" alt="Profile Image">
+                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$user->passport }}" alt="Profile Image">
                                         @else
                                         <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                         @endif
