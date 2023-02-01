@@ -374,7 +374,7 @@ class HomeController extends Controller
         ->join('tg_user','tg_user.id','tg_shift.user_id')
         ->join('tg_region','tg_region.id','tg_user.region_id')
         ->whereIn('tg_user.id',$userarrayreg)
-        // ->whereDate('tg_shift.open_date',Carbon::now())
+        ->whereDate('tg_shift.open_date',Carbon::now())
         ->get();
 
         
