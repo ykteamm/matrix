@@ -1,9 +1,10 @@
 @extends('admin.layouts.app')
 @section('admin_content')
+<form  method="post" action="{{route('plan.store',['id'=>$user_id])}}">
+    @csrf
     <div class="container mt-5 pt-5" style="margin-top: 6% !important;">
 {{--        <a href="" class="btn btn-danger my-2 w-100">Orqaga</a>--}}
-        <form  method="post" action="{{route('plan.store',['id'=>$user_id])}}">
-            @csrf
+        
                 <select class="form-select p-2 mb-2" aria-label="Default select example" name="shablon_id" required onchange="priceChange(this);">
                 @php $i=1 @endphp
                 @foreach($shablons as $m)
@@ -55,7 +56,6 @@
             </table>
             
 {{--            <button type="submit" href="" class="btn btn-primary my-2 w-100">Saqlash</button>--}}
-        </form>
 
     </div>
     <div class="text-right " style="position: fixed;right: 1rem;top: 62px; width: 100%"  >
@@ -69,6 +69,8 @@
             </div>
         </div>
     </div>
+</form>
+
 @endsection
 @section('admin_script')
     <script>
