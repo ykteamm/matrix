@@ -62,9 +62,6 @@ class ToolzController extends Controller
             'admin_check' => $request->ansver
         ]);
 
-        // $u1id = UserBattle::where('ends',0)->pluck('u1id')->toArray();
-        // $u2id = UserBattle::where('ends',0)->pluck('u2id')->toArray();
-        // $alluid = array_unique(array_merge($u1id,$u2id));
         $weekStartDate = Carbon::now()->startOfWeek()->format('Y-m-d');
         $weekEndDate = Carbon::now()->endOfWeek()->format('Y-m-d');
         $king_sold = DB::table('tg_king_sold')
@@ -85,16 +82,19 @@ class ToolzController extends Controller
             'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
         ]);
         $token = $response['data']['token'];
-        foreach ($king_sold as $key => $value) {
-            $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
-                'mobile_phone' => substr($value,1),
-                'message' => 'Jangchi !!! '.' '.$user->last_name.' '.$user->first_name.' '.'hozirgina shox yurish qildi.'.' '.'Yutganga 200.000 som premiya beriladi!!! https://jang.novatio.uz',
-                'from' => '4546',
-                'callback_url' => 'http://0000.uz/test.php'
-            ]);
-
+        if($request->ansver != 2)
+        {
+            foreach ($king_sold as $key => $value) {
+                $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
+                    'mobile_phone' => substr($value,1),
+                    'message' => 'Jangchi !!! '.' '.$user->last_name.' '.$user->first_name.' '.'hozirgina shox yurish qildi.'.' '.'Yutganga 200.000 som premiya beriladi!!! https://jang.novatio.uz',
+                    'from' => '4546',
+                    'callback_url' => 'http://0000.uz/test.php'
+                ]);
+    
+            }
         }
-
+        
         return [
             'response' => 200,
         ];
