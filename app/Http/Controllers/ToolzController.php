@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\KingSold;
 use App\Models\LigaKingSold;
+use App\Models\LigaKingUser;
+use App\Models\ProductSold;
 use App\Models\Shift;
+use App\Models\User;
 use App\Models\UserBattle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -107,7 +110,39 @@ class ToolzController extends Controller
     }
     public function kingSoldLiga()
     {
-        $ligas = LigaKingSold::all();
-        return $ligas;
+        $ligas = LigaKingSold::with('liga_user','liga_user.user')->get();
+
+        $no_user = LigaKingUser::pluck('user_id')->toArray();
+        // return $no_user;
+        $endday = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( Carbon::now() ) ) ));
+        $startday = date('Y-m-d',(strtotime ( '-14 day' , strtotime ( Carbon::now() ) ) ));
+        $transactions= ProductSold::whereBetween('created_at', [$startday, $endday])
+            ->distinct()
+            ->pluck('user_id')->toArray();
+        $user_in = [];
+        foreach ($transactions as $key => $value) {
+            if(!in_array($value,$no_user))
+            {
+                $user_in[] = $value;
+            }
+        }
+        // return $user_in;
+        $users = User::whereIn('id',$user_in)->get();
+        // return $users;
+        return view('toolz.king-liga',compact('users','ligas'));
+    }
+    public function kingSoldLigaStore(Request $request)
+    {
+        $inputs = $request->all();
+        unset($inputs['_token']);
+        $new = new LigaKingUser($inputs);
+        $new->save();
+        return redirect()->back();
+    }
+    public function kingSoldLigaDelete(Request $request)
+    {
+        $inputs = $request->all();
+        $new = LigaKingUser::where('user_id',$inputs['user_id'])->where('liga_id',$inputs['team_id'])->delete();
+        return redirect()->back();
     }
 }

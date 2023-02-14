@@ -60,6 +60,10 @@ class User extends Model
     {
         return $this->hasMany(Order::class,'user_id','id');
     }
+    public function liga_user()
+    {
+        return $this->hasMany(LigaKingUser::class,'user_id','id');
+    }
 //
 //    public function tools()
 //    {

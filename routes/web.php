@@ -269,6 +269,8 @@ Route::get('rm-medicine/{region}/{time?}',[\App\Http\Controllers\RMController::c
 Route::get('selfi', [ToolzController::class,'selfi'])->name('selfi');
 Route::get('king-sold', [ToolzController::class,'kingSold'])->name('king.sold');
 Route::get('king-liga', [ToolzController::class,'kingSoldLiga'])->name('king-liga');
+Route::post('king-liga-store', [ToolzController::class,'kingSoldLigaStore'])->name('user-add-liga.king');
+Route::post('king-liga-delete', [ToolzController::class,'kingSoldLigaDelete'])->name('user-delete-liga.king');
 
 });
 
