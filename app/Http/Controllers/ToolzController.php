@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KingSold;
+use App\Models\LigaKingSold;
 use App\Models\Shift;
 use App\Models\UserBattle;
 use Carbon\Carbon;
@@ -35,6 +36,7 @@ class ToolzController extends Controller
         $solds = KingSold::with('order','order.sold','order.sold.medicine','order.user')
         ->whereDate('created_at','>=','2023-01-30')
         ->where('image','!=','add')
+        ->where('admin_check',0)
         ->orderBy('id','DESC')->get();
         $host = substr(request()->getHttpHost(),0,3);
         return view('toolz.king-sold',compact('solds','host'));
@@ -77,6 +79,10 @@ class ToolzController extends Controller
         $user = DB::table('tg_user')->find($user_id);
         $king_sold[] = '+998990821015';
         $king_sold[] = '+998977332305';
+        $king_sold[] = '+998931810408';
+        $king_sold[] = '+998930000047';
+        $king_sold[] = '+998935050498';
+        $king_sold[] = '+998946890010';
         $response = Http::post('notify.eskiz.uz/api/auth/login', [
             'email' => 'mubashirov2002@gmail.com',
             'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
@@ -98,5 +104,10 @@ class ToolzController extends Controller
         return [
             'response' => 200,
         ];
+    }
+    public function kingSoldLiga()
+    {
+        $ligas = LigaKingSold::all();
+        return $ligas;
     }
 }

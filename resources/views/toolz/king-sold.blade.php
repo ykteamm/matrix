@@ -63,13 +63,20 @@
                                         </div>
                                         
                                     </div>
-                                    <div class="col-md-12 mt-3">
+                                    <div class="col-md-12 mt-3 ansversms">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-4 col-md-2">
                                                 <button type="button" class="btn btn-block btn-outline-danger active" onclick="ansver(`{{$item->id}}`,2)">Rad qilish </button>
                                             </div>
                                             <div class="col-md-6 col-sm-4 col-md-2">
                                                 <button type="button" class="btn btn-block btn-outline-success active" onclick="ansver(`{{$item->id}}`,1)" >Qabul qilish </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3 d-none ansversmsnone">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-4 col-md-2 text-center">
+                                                <h2 class="text-white">Iltimos biroz kuting !!!</h2>
                                             </div>
                                         </div>
                                     </div>
@@ -171,6 +178,8 @@
    <script>
       function ansver(id,ansver)
         {
+            $('.ansversms').addClass('d-none');
+            $('.ansversmsnone').removeClass('d-none');
             var _token   = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
                 url: "/user/king-sold",
