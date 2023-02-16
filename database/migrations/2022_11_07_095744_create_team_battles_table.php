@@ -17,11 +17,14 @@ class CreateTeamBattlesTable extends Migration
             $table->id();
             $table->foreignId('team1_id');
             $table->foreignId('team2_id');
-            $table->date('begin');
-            $table->date('end')->nullable();
-            $table->boolean('ended')->default(false);
-            $table->integer('win_id')->nullable();
-            $table->integer('lose_id')->nullable();
+            $table->date('month');
+            $table->integer('round');
+            $table->foreignId('win')->nullable();
+            $table->foreignId('lose')->nullable();
+            $table->date('start_day');
+            $table->date('end_day');
+            $table->json('team1_user')->nullable();
+            $table->json('team2_user')->nullable();
             $table->timestamps();
         });
     }

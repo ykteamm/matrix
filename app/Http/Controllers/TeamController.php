@@ -363,12 +363,57 @@ class TeamController extends Controller
     public function teamBattleStore(Request $request)
     {
         $inputs = $request->all();
-        // unset($inputs['_token']);
-        $new_battle = new TeamBattle($inputs);
-        $new_battle->save();
-        if($new_battle->id)
-        {
-            return redirect()->back();
+        unset($inputs['_token']);
+        // return $inputs;
+            $arrayDate = [];
+            $Variable1 = strtotime($inputs['begin']);
+            $Variable2 = strtotime($inputs['end']);
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
+            {                        
+                $Store = date('Y-m'.'-01', $currentDate);
+                $Store2 = date('Y-m-d', $currentDate);
+                $arrayDate[$Store] = $Store2;
+                
+            }
+        $d=[];
+        $i=1;
+        foreach ($arrayDate as $key => $value) {
+            $start_day = $key;
+            $end_day = $value;
+            $json = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($start_day)))->value('day_json');
+            $json = json_decode($json);
+            $s=[];
+            foreach ($json as $keyd => $valude) {
+                if($valude == 'true')
+                {
+                    $s[]=$keyd+1;
+                }
+            }
+            $chunks = array_chunk($s,7);
+            foreach ($chunks as $ke => $val) {
+                // dd($val);
+                $new_battle = new TeamBattle([
+                    'team1_id' => $inputs['team1_id'],
+                    'team2_id' => $inputs['team2_id'],
+                    'month' => $start_day,
+                    'round' => $i,
+                    'start_day' => date('Y-m',strtotime($start_day)).'-'.$val[0],
+                    'end_day' => date('Y-m',strtotime($start_day)).'-'.$val[count($val)-1],
+                ]);
+                $new_battle->save();
+                $i += 1;
+            }
         }
+        // return $d['2023-02-01'];
+        // $new_battle = new TeamBattle([
+        //     'team1_id' => $inputs['team1_id'],
+        //     'team2_id' => $inputs['team2_id'],
+        //     'month' => $inputs['team2_id'],
+        // ]);
+        // $new_battle->save();
+        // if($new_battle->id)
+        // {
+            return redirect()->back();
+        // }
     }
 }

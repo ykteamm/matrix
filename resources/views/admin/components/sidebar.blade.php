@@ -206,7 +206,7 @@
 
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')
-             <li><a href="{{route('setting','09.2022')}}"><i class="feather-settings"></i>  <span>Sozlamalar </span></a>
+             <li><a href="{{route('setting',date('m.Y'))}}"><i class="feather-settings"></i>  <span>Kalendar </span></a>
              </li>
              @endif
              @endisset

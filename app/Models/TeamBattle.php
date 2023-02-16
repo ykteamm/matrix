@@ -14,10 +14,13 @@ class TeamBattle extends Model
     protected $fillable = [
         'team1_id',
         'team2_id',
-        'begin',
-        'end',
-        'ended',
-        'win_id',
-        'lose_id',
+        'month',
+        'round',
+        'win',
+        'lose',
+        'start_day',
+        'end_day',
+        'team1_user',
+        'team2_user',
     ];
 }
