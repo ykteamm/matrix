@@ -45,6 +45,17 @@ class ToolzController extends Controller
         return view('toolz.king-sold',compact('solds','host'));
 
     }
+    public function kingSoldHistory($date)
+    {  
+        $solds = KingSold::with('order','order.sold','order.sold.medicine','order.user')
+        ->whereDate('created_at','>=','2023-01-30')
+        ->where('image','!=','add')
+        // ->where('admin_check',0)
+        ->orderBy('id','DESC')->get();
+        $host = substr(request()->getHttpHost(),0,3);
+        return view('toolz.king-sold-history',compact('solds','host'));
+
+    }
     public function kingSoldAnsver(Request $request)
     {
         $order_id = KingSold::find($request->id)->order_id;
