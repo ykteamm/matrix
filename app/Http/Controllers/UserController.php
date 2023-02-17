@@ -574,7 +574,7 @@ class UserController extends Controller
                 'admin' => FALSE,
                 'write_time' => date_now(),
                 'salary' => 1500000,
-                'image' => $user->photo,
+                // 'image' => $user->photo,/
                 'pr' => $password,
                 'tg_file_id' => NULL,
                 'rol_id' => 27,
