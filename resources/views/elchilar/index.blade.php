@@ -84,6 +84,7 @@
                     <th class="fixed"><strong>Elchi</strong> </th>
                     <th class="fixed"><strong>Yangi elchi</strong> </th>
                     <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
+                    <th class="yashir"><strong>Shox </strong></th>
                     <th class="yashir"><strong>Plan </strong></th>
                     <th class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></th>
                     <th class="yashir">
@@ -119,6 +120,13 @@
                         <td style="width: 17rem;" class="bg-success">Elchi</td>
                         <td style="width: 17rem;" class="bg-success">Yangi Elchi</td>
                         <td style="width: 13rem">Dorixonalar</td>
+                        @php
+                        $sum_king_sold = 0;
+                            foreach ($king_sold as $key => $value) {
+                                $sum_king_sold += $value;
+                            }
+                        @endphp
+                        <td style="width: 6.5rem;" class="text-center">{{$sum_king_sold}}</td>
                         <td style="width: 6.5rem;">{{number_format($total_plan,0,'','.')}}</td>
                         <td style="width:6rem">{{number_format($total_planday,0,'','.')}}</td>
                         <td style="width: 8.5rem">{{number_format($total_fact,0,'','.')}}</td>
@@ -199,7 +207,15 @@
                         @endif
                         
                     </td>
+                    <td class="yashir p-0 text-center"><span class="text-center">
+                        @if (isset($king_sold[$t]))
+                            {{$king_sold[$t]}}
+                        @else
+                            0
+                        @endif
+                    </span> </td>
                     <td class="yashir p-0"><span class="badge bg-primary-light">{{number_format($plan[$t], 0, '', '.')}}</span> </td>
+                    
                     <td class="yashir p-0"><span class="badge bg-success-light">{{number_format($plan_day[$t], 0, '', '.')}}</span> </td>
                     <td class="yashir qizil p-0" name="{{$elchi_fact[$item->id]}}"> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
                     <td class="yashir p-0"> <span class="badge bg-success-light">{{number_format($elchi_prognoz[$item->id], 0, '', '.')}}</span></td>

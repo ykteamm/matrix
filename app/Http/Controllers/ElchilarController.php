@@ -19,6 +19,8 @@ class ElchilarController extends Controller
 
     public function kunlik($month,$region = null)
     {
+        
+
         $calendars = DB::table('tg_calendar')->pluck('year_month');
         if(isset($region))
         {
@@ -52,6 +54,7 @@ class ElchilarController extends Controller
         $elchi=$data->elchi;
         $elchi_fact=$data->elchi_fact;
         $elchi_prognoz=$data->elchi_prognoz;
+        $king_sold=$data->king_sold;
         $item=$this->service->plan($elchi,$month,$endofmonth);
 
         $plan=$item->plan;
@@ -68,8 +71,8 @@ class ElchilarController extends Controller
         $total_plan=$this->service->total_plan($plan);
         $total_planday=$this->service->total_planday($plan_day);
         $total_haftalik=$this->service->total_week($haftalik,$days);
-        // return $elchi;
-        return view('elchilar.index',compact('calendars','test','vil','total_haftalik','total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
+        // dd($king_sold[]);
+        return view('elchilar.index',compact('king_sold','calendars','test','vil','total_haftalik','total_fact','total_prog','total_plan','total_planday','viloyatlar','tot_sold_day','years','endofmonth','month','elchi_prognoz','months','elchi','elchi_fact','plan','plan_day','encane','days','sold','haftalik','viloyatlar'));
 
     }
 }

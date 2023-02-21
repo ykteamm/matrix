@@ -81,6 +81,7 @@ class ElchilarService
         $elchi_prognoz=[];
         $cale_date=[];
         $all_work_day=[];
+        $king_sold=[];
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         $cale_d = json_decode($cale->day_json);
         foreach($cale_d as $key => $c)
@@ -166,7 +167,18 @@ class ElchilarService
                     $prog = 0;
                 }
 
+                $king_soldis = DB::table('tg_king_sold')
+                    ->selectRaw('count(tg_king_sold.id) as count')
+                    ->where('tg_king_sold.admin_check',1)
+                    ->where('tg_user.id',$elch->id)
+                    ->whereDate('tg_king_sold.created_at','=',date('Y-m-d'))
+                    ->join('tg_order','tg_order.id','tg_king_sold.order_id')
+                    ->join('tg_user','tg_user.id','tg_order.user_id')
+                    ->get();
+
                 $elchi_prognoz[$elch->id] = $prog;
+                $king_sold[$elch->id] = $king_soldis[0]->count;
+                // $king_sold[$elch->id] = $king_sold[0]->count;
 
 
             
@@ -198,6 +210,7 @@ class ElchilarService
         $data->elchi=$elchi;
         $data->elchi_fact=$fact;
         $data->elchi_prognoz=$elchi_prognoz;
+        $data->king_sold=$king_sold;
         // dd($data->elchi);
      return $data;
     }
