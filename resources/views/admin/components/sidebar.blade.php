@@ -44,7 +44,7 @@
                @endisset
              @isset(Session::get('per')['elchi'])
              @if(Session::get('per')['elchi'] == 'true')
-               <li><a href="{{route('elchi-list')}}"><i class="feather-users"></i>  <span>Elchilar</span></a>
+               {{-- <li><a href="{{route('elchi-list')}}"><i class="feather-users"></i>  <span>Elchilar</span></a> --}}
                   @endif
              @endisset
 
