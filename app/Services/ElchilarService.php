@@ -121,14 +121,14 @@ class ElchilarService
 
         foreach($elchi as $elch)
         {
-            $date = DB::table('tg_smena')
-                ->whereDate('created_from','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_from','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
-                ->where('smena',2)
+            $date = DB::table('tg_shift')
+                ->whereDate('open_date','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('open_date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->where('active',2)
                 ->where('user_id',$elch->id)
-                ->orderBy('created_from','DESC')
-                ->pluck('created_from');
-
+                ->orderBy('open_date','DESC')
+                ->pluck('open_date');
+            // dd($date);
 
             $day_work_array=[];
             foreach($date as $key => $c)

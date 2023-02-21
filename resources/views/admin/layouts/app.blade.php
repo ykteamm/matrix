@@ -134,6 +134,9 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
   background-color: #0eee59;
   color: white;
 }
+/* .asdasdasd thead th .asdasdasd tr{
+    position: sticky; top: 0; z-index: 1;
+} */
 /* .daterangepicker .ltr .show-calendar .opensright {
     top: 115px !important;
     left: 790px !important;
