@@ -208,8 +208,8 @@
                         
                     </td>
                     <td class="yashir p-0 text-center"><span class="text-center">
-                        @if (isset($king_sold[$t]))
-                            {{$king_sold[$t]}}
+                        @if (isset($king_sold[$item->id]))
+                            {{$king_sold[$item->id]}}
                         @else
                             0
                         @endif
