@@ -84,6 +84,7 @@
                     <th class="fixed"><strong>Elchi</strong> </th>
                     <th class="fixed"><strong>Yangi elchi</strong> </th>
                     <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
+                    <th class="yashir"><strong>Ishlagan kuni </strong></th>
                     <th class="yashir"><strong>Shox </strong></th>
                     <th class="yashir"><strong>Plan </strong></th>
                     <th class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></th>
@@ -120,6 +121,13 @@
                         <td style="width: 17rem;" class="bg-success">Elchi</td>
                         <td style="width: 17rem;" class="bg-success">Yangi Elchi</td>
                         <td style="width: 13rem">Dorixonalar</td>
+                        @php
+                        $sum_king_sold = 0;
+                            foreach ($day_work as $key => $value) {
+                                $sum_king_sold += $value;
+                            }
+                        @endphp
+                        <td style="width: 6.5rem;" class="text-center">{{$sum_king_sold}}</td>
                         @php
                         $sum_king_sold = 0;
                             foreach ($king_sold as $key => $value) {
@@ -207,6 +215,13 @@
                         @endif
                         
                     </td>
+                    <td class="yashir p-0 text-center"><span class="text-center">
+                        @if (isset($day_work[$item->id]))
+                            {{$day_work[$item->id]}}
+                        @else
+                            0
+                        @endif
+                    </span> </td>
                     <td class="yashir p-0 text-center"><span class="text-center">
                         @if (isset($king_sold[$item->id]))
                             {{$king_sold[$item->id]}}

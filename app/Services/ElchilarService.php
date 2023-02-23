@@ -21,7 +21,6 @@ class ElchilarService
 {
     public function elchilar($month,$endofmonth,$user_id,$regions)
     {
-
         $positions=DB::table('tg_positions')
             ->selectRaw('tg_positions.position_json')
             ->where('tg_user.id',$user_id)
@@ -81,6 +80,7 @@ class ElchilarService
         $elchi_prognoz=[];
         $cale_date=[];
         $all_work_day=[];
+        $work_d=[];
         $king_sold=[];
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         $cale_d = json_decode($cale->day_json);
@@ -180,6 +180,25 @@ class ElchilarService
                 $king_sold[$elch->id] = $king_soldis[0]->count;
                 // $king_sold[$elch->id] = $king_sold[0]->count;
 
+                $shift = DB::table('tg_shift')
+                ->selectRaw('count(tg_shift.id) as count')
+                ->where('tg_shift.active',2)
+                ->where('tg_shift.user_id',$elch->id)
+                ->whereDate('tg_shift.created_at','>=',$month.'-01')
+                ->whereDate('tg_shift.created_at','<',$month.'-'.$endofmonth)
+                ->get()[0]->count;
+
+                $shift2 = DB::table('tg_smena')
+                ->selectRaw('count(tg_smena.id) as count')
+                ->where('tg_smena.smena',2)
+                ->where('tg_smena.user_id',$elch->id)
+                ->whereDate('tg_smena.created_at','>=',$month.'-01')
+                ->whereDate('tg_smena.created_at','<',$month.'-'.$endofmonth)
+                ->get()[0]->count;
+
+                $work_d[$elch->id] = $shift+$shift2;
+                // dd($endofmonth);
+
 
             
         }
@@ -208,6 +227,7 @@ class ElchilarService
 
         $data=new ElchilarKunlikItems();
         $data->elchi=$elchi;
+        $data->all_work_day=$work_d;
         $data->elchi_fact=$fact;
         $data->elchi_prognoz=$elchi_prognoz;
         $data->king_sold=$king_sold;

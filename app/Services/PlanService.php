@@ -13,12 +13,15 @@ class PlanService
     {
 
         $r=$request->all();
+
         unset($r['_token']);
         $shablon_id=$r['shablon_id'];
         unset($r['shablon_id']);
+
         date_default_timezone_set('Asia/Tashkent');
         $cal=Calendar::where('year_month',date('m.Y'))->first();
         $arr=json_decode($cal->day_json);
+        dd($arr);
 
         foreach ($r as $key => $item){
             if($item!=0){
@@ -38,7 +41,6 @@ class PlanService
                     $count=4;
                 }
 
-//                dd($plan->number);
                 $planwork=$plan->number/$cal->work_day;
                 for($i=0;$i<$count;$i++){
                     $pw=new PlanWeek();
@@ -71,7 +73,7 @@ class PlanService
                         }
 
 
-                        if($ct==$pw->workday){
+                        if($ct==$pw->workday){ 
                             $d=$j;
                             $start=$j+1;
                             $d=$d.' day';
