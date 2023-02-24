@@ -7,6 +7,11 @@
             position: sticky;
             left: 0;
         }
+        .ddth tr > *:nth-child(4) {
+            position: sticky;
+            left: 0;
+        }
+
     </style>
 
     <div id="table-wrapper"  class="card-body mt-5">
@@ -71,34 +76,36 @@
 
         <div id="table-scroll" onscroll="myFunction()"  class="table-responsive" style="height: 85vh; overflow-y: scroll">
             <table class="table mb-0 table-striped "   >
-                <thead  >
+                <thead class="ddth" >
                
 
-                <tr onmouseover="$(this).css('cursor','pointer')";
+                <tr style="position: sticky;z-index: 1000; top:0vh; color: white" onmouseover="$(this).css('cursor','pointer')";
                     onmouseleave="$(this).css('color','black');"
-                    class="asd"
+                    class="asd bg-success tr"
                     >
-                    <th class="fixed"><strong>ID</strong> </th>
-                    <th class="fixed"><strong>Garb/Sharq</strong></th>
-                    <th class="fixed"><strong>Viloyat</strong> </th>
-                    <th class="fixed"><strong>Elchi</strong> </th>
-                    <th class="fixed"><strong>Yangi elchi</strong> </th>
-                    <th class="fixed" onclick="yashir()" ><strong>Dorixona</strong> </th>
-                    <th class="yashir"><strong>Ishlagan kuni </strong></th>
-                    <th class="yashir"><strong>Shox </strong></th>
-                    <th class="yashir"><strong>Plan </strong></th>
-                    <th class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></th>
-                    <th class="yashir">
+                    {{-- <tr style="position: sticky;z-index: 1000; top:76vh; color: white" class="bg-success tr" > --}}
+
+                    <td ><strong>ID</strong> </td>
+                    <td ><strong>Garb/Sharq</strong></td>
+                    <td class="text-center" style="width: 13rem;"><strong>Viloyat</strong> </td>
+                    <td style="width: 17rem;" class="bg-success"><strong>Elchi</strong> </td>
+                    <td yle="width: 17rem;" class="bg-success"><strong>Yangi elchi</strong> </td>
+                    <td style="width: 13rem" onclick="yashir()" ><strong>Dorixona</strong> </td>
+                    <td class="yashir"><strong>Ishlagan kuni </strong></td>
+                    <td class="yashir"><strong>Shox </strong></td>
+                    <td class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></td>
+                    <td class="yashir">
                         <a onclick="yashir3()" class="yashir3"><strong>Fakt </strong></a>
                         <input id="qizil" style="display: none" name="plan" class="yashir3" type="number">
                         <button onclick="qizil()" style="display: none" class="btn btn-primary yashir3">ok</button>
-                    </th>
-                    <th class="yashir" onclick="yashir3()"><strong>Prognoz  </strong></th>
+                    </td>
+                    <td class="yashir"><strong>Plan </strong></td>
+                    <td class="yashir" onclick="yashir3()"><strong>Prognoz  </strong></td>
                     @php $i=0; $s=0; @endphp
                     @foreach($days as $day)
 
 
-                    <th style="display: none" class="days{{$s}} "><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></th>
+                    <td style="display: none" class="days{{$s}} "><strong onclick="days({{$s}})" class="days{{$s}}">{{date('d.m.Y',strtotime($day))}}  </strong></td>
                         @if($i==0||$i==7||$i==14||$i==21)
                             @if($i==21)
                                 <th   class="week{{$s}} weeks{{$i}} hover{{$s}}"><span onclick="weeks({{$s}})"  class="text-warning week{{$s}}  ">{{date('d.m',strtotime($day))}}  ->  {{$endofmonth}}.{{date('m',strtotime($day))}} </span></th>
@@ -135,9 +142,9 @@
                             }
                         @endphp
                         <td style="width: 6.5rem;" class="text-center">{{$sum_king_sold}}</td>
-                        <td style="width: 6.5rem;">{{number_format($total_plan,0,'','.')}}</td>
                         <td style="width:6rem">{{number_format($total_planday,0,'','.')}}</td>
                         <td style="width: 8.5rem">{{number_format($total_fact,0,'','.')}}</td>
+                        <td style="width: 6.5rem;">{{number_format($total_plan,0,'','.')}}</td>
                         <td>{{number_format($total_prog,0,'','.')}}</td>
                         @php $i=0; $s=0;  $arr=0; @endphp
                         @foreach($tot_sold_day as $item)
@@ -229,10 +236,11 @@
                             0
                         @endif
                     </span> </td>
-                    <td class="yashir p-0"><span class="badge bg-primary-light">{{number_format($plan[$t], 0, '', '.')}}</span> </td>
                     
                     <td class="yashir p-0"><span class="badge bg-success-light">{{number_format($plan_day[$t], 0, '', '.')}}</span> </td>
                     <td class="yashir qizil p-0" name="{{$elchi_fact[$item->id]}}"> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
+                    <td class="yashir p-0"><span class="badge bg-primary-light">{{number_format($plan[$t], 0, '', '.')}}</span> </td>
+                    
                     <td class="yashir p-0"> <span class="badge bg-success-light">{{number_format($elchi_prognoz[$item->id], 0, '', '.')}}</span></td>
                     @php $i=0; $s=0;  $arr=0; @endphp
                         @foreach($days as $day)
