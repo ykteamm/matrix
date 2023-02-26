@@ -269,6 +269,8 @@ if(!function_exists('b_positions')){
      *
      * @return string IP
      */
+
+
     function get_visitor_IP()
     {
         // Get real visitor IP behind CloudFlare network
@@ -296,6 +298,20 @@ if(!function_exists('b_positions')){
     }
 }
 
+if(!function_exists('numb')){
+    function numb($number) {
+        if ($number < 999999 && $number > 999) {
+            // Anything less than a billion
+            $format =  number_format($number / 1000).'K';
+        }else if ($number < 999999999 && $number > 999999) {
+            // Anything less than a billion
+            $format =  number_format($number / 1000000,).'M';
+        }else {
+            $format = number_format($number, 0, '', '.');
+        }
+        return $format;
+    }
+}
 
 
 

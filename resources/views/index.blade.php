@@ -534,12 +534,24 @@
 
                 if(response.myid == value.id || response.regid == value.id)
                 {
+                    var bestsoldRegion = '';
+
+                    if(value.best[0].bestsum != 0)
+                    {
+                        bestsoldRegion = bestsoldRegion + '<div class="d-flex justify-content-between">'+
+
+                            '<h4 style="color:#00ffc4;height:45px;">'+ value.best[0].date +' <p>(best-month)</p></h4>'+
+                            '<h3 style="color:#00ffc4;height:45px;" title="'+value.best[0].bestsumText +'">'+value.best[0].bestsum +'</h3>'+
+
+                            '</div>';
+                    }
                     var $row = $('<div class="col-12 col-md-6 col-lg-4 d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
                                             '<h2 style="color:#05f705;text-align:center;">'+ value.region +'</h2>'+
                                             '<h3 style="color:#ffffff;text-align:left;margin-left:12px;"><span title="'+value.tols +'">'+value.summa +'</span></h3>'+
+                                            bestsoldRegion +
                                             '<h6 style="margin-top:-15px;"><span style="text-align:left;"><img src="{{asset("assets/img/sumoq.png")}}" width="60px"></span></h6>'+
                                             '<h6 style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                             '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+response.fd_end+'</span></h6>'+
@@ -583,6 +595,17 @@
 
                         }
                     });
+                    var bestsoldRegion = '';
+
+                    if(value.best[0].bestsum != 0)
+                    {
+                        bestsoldRegion = bestsoldRegion + '<div class="d-flex justify-content-between">'+
+
+                            '<h4 style="color:#00ffc4;height:45px;">'+ value.best[0].date +' <p>(best-month)</p></h4>'+
+                            '<h3 style="color:#00ffc4;height:45px;" title="'+value.best[0].bestsumText +'">'+value.best[0].bestsum +'</h3>'+
+
+                            '</div>';
+                    }
                     var $row = $('<div class="col-12 col-md-'+md+' col-lg-'+lg+' d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
@@ -592,11 +615,8 @@
                                             '<h4 style="color:#05f705;height:45px;">'+ value.region +'</h4>'+
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
 
-                                            // '<h4 style="color:#05f705;height:45px;">'+response.fd_begin +'-'+response.fd_respoend+'</h4>'+
-                                            // '<h1 style="color:#05f705;height:45px;" title="'+value.icon +'"></h1>'+
-
-                                            // '<h1 style="color:#05f705;height:45px;" title="'+response.fd_begin +'-'+response.fd_respoend+'">'+value.icon +'</h1>'+
-                                            '</div>'+ 
+                                            '</div>'+
+                                            bestsoldRegion +
                                             '<div class="d-flex justify-content-between">'+
 
                                             '<h4 style="color:#ffffff;height:45px;">'+response.fd_begin +'-'+response.fd_end+'</h4>'+

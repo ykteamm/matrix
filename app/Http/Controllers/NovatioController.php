@@ -510,11 +510,14 @@ class NovatioController extends Controller
 
 
             }
-            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id);
+            $ddd = $this->bestMonthSold();
+            $rrr = $this->bestRegion($ddd,$value->id);
+            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id,'best'=>$rrr);
             $summa = 0;
             $fsumma = 0;
 
         }
+        
         foreach ($users as $keyf => $valuef) {
             foreach ($sum as $keys => $values) {
                 if($valuef->id == $values->u_id)
@@ -663,7 +666,7 @@ class NovatioController extends Controller
 
 
 
-            $newarray[] = array('muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
+            $newarray[] = array('best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }
 
         $newuserarray = [];
@@ -964,6 +967,77 @@ class NovatioController extends Controller
 
 
     }
+    public function bestMonthSold()
+    {
+        $b_date = $this->getFirstDate(date('Y-m-d'));
+        $b_date = date('Y-m-d',(strtotime ( '-10 day' , strtotime ( $b_date ) ) ));
+        $e_date = date('2022-09-01');
+        $mustang = [];
+        
+        $arrayDate = array();
+                $Variable1 = strtotime($b_date);
+                $Variable2 = strtotime($e_date);
+                $sum = 0;
+                for ($currentDate = $Variable1; $currentDate >= $Variable2;$currentDate -= (30*86400)) 
+                {            
+                    $begin_month = $this->getFirstDate(date('Y-m-d',$currentDate));           
+                    $end_month = $this->getLastDate(date('Y-m-d',$currentDate));           
+                   $mustang[] = array('begin' => $begin_month,'end' => $end_month);
+                }
+        return $mustang;
+    }
+    public function bestRegion($mustang,$id)
+    {
+        $arr=[];
+        $max=0;
+        foreach ($mustang as $key => $value) {
+            $sum = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product*tg_productssold.number) as allprice')
+                ->where('tg_region.id',$id)
+                ->whereDate('tg_productssold.created_at','>=',$value['begin'])
+                ->whereDate('tg_productssold.created_at','<=',$value['end'])
+                ->whereIn('tg_user.status',[1,2])
+
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
+                ->join('tg_category','tg_category.id','tg_medicine.category_id')
+                ->get()[0]->allprice;
+            
+            if($sum == NULL)
+            {
+                $sum=0;
+            }
+            if($sum > $max)
+            {
+                $max = $sum;
+                $index=$value;
+            }
+        }
+        if($max == 0)
+        {
+            $arr[]=array('date' => 0, 'bestsum' => $max);
+        }else{
+            $arr[]=array('date' => date('m.Y',strtotime($index['begin'])), 'bestsum' => numb($max),'bestsumText' => $max);
+        }
+
+    return $arr;
+    }
+    public function getFirstDate($date)
+    {
+        $d = Carbon::createFromFormat('Y-m-d', $date)
+                        ->firstOfMonth()
+                        ->format('Y-m-d');
+        return $d;
+    }
+    public function getLastDate($date)
+    {
+        $d = Carbon::createFromFormat('Y-m-d', $date)
+                        ->lastOfMonth()
+                        ->format('Y-m-d');
+        return $d;
+    }
+
     public function grades(Request $request)
     {
        $month = date('m',strtotime($request->month));
