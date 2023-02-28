@@ -48,6 +48,11 @@
                   @endif
              @endisset
 
+             @isset(Session::get('per')['king_sold'])
+             @if(Session::get('per')['king_sold'] == 'true')
+               <li><a href="{{route('king-sold',['user_id'=>'all','region_id'=>'all','date' => 'today'])}}"><i class="feather-filter"></i>  <span>Shox yurish </span></a>
+             @endif
+             @endisset
 
              {{-- @isset(Session::get('per')['pharmacy'])
              @if(Session::get('per')['pharmacy'] == 'true')

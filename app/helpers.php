@@ -169,6 +169,7 @@ if(!function_exists('wordSimilarity')){
             'filter' => 'Filter',
             'elchi' => 'Elchi',
             'elchi-day' => 'Elchi kunlik',
+            'king_sold' => 'Shox yurish',
             'pro' => 'Mahsulotlar',
             'trend' => 'Trend',
             'grade' => 'Baholash',

@@ -9,6 +9,7 @@ use App\Models\ProductSold;
 use App\Models\Shift;
 use App\Models\User;
 use App\Models\UserBattle;
+use App\Services\KingSoldSearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -155,5 +156,44 @@ class ToolzController extends Controller
         $inputs = $request->all();
         $new = LigaKingUser::where('user_id',$inputs['user_id'])->where('liga_id',$inputs['team_id'])->delete();
         return redirect()->back();
+    }
+    public function kingSoldSearch($user_id,$region_id,$date)
+    {
+        $new = new KingSoldSearchService;
+        $king_solds = $new->kingSoldSearch($user_id,$region_id,$date);
+        
+        $regions = DB::table('tg_region')
+        ->whereIn('id',$new->getMyRegion())
+        ->get();
+        
+        $users = DB::table('tg_user')->select('first_name','last_name','id','region_id')
+        ->whereIn('id',$new->getUserId('all'))
+        ->get();
+
+        $dates = $new->day($date);
+        $dateTexte =$dates->dateTexte;
+        $dateText =$dates->dateText;
+
+
+        if($user_id == 'all')
+        {
+            $pText = 'Hammasi';
+            $pkey = 'all';
+        }else{
+            $pText = DB::table('tg_user')->where('id',$user_id)->value('last_name').' '.DB::table('tg_user')->where('id',$user_id)->value('first_name');
+            $pkey = $user_id;
+
+        }
+
+        if($region_id == 'all')
+        {
+            $regText = 'Hammasi';
+            $regkey = "all";
+        }else{
+            $regText = DB::table('tg_region')->where('id',$region_id)->value('name');
+            $regkey = $region_id;
+        }
+        // return $users;
+        return view('toolz.king-sold-report',compact('pText','pkey','king_solds','regions','users','regkey','regText','dateText','dateTexte'));
     }
 }
