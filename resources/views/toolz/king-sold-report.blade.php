@@ -107,8 +107,13 @@
                        
                        <tbody>
                         
-                        
+                            @php
+                                $sum = 0;
+                            @endphp
                           @foreach ($king_solds as $item)
+                          @php
+                              $sum += $item->count;
+                          @endphp
                           <tr>
                              <td>{{$item->r}} </td>
                              <td>{{$item->f}} </td>
@@ -118,6 +123,12 @@
                           @endforeach
                        </tbody>
                     </table>
+
+                    <div class="text-right">
+                        <h2>Jami:{{$sum}}</h2>
+
+                    </div>
+
                  </div>
               </div>
            </div>
