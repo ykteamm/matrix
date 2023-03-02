@@ -116,7 +116,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <div ></div>
+                        <div></div>
                         <div class="mb-0 mt-3">
                             {{-- <div class="table mb-0 " id="dtBasicExample12"> --}}
                             <div class="mt-5 mb-3">
@@ -143,10 +143,10 @@
                                     $sum1 = 0;
                                     $sum2 = 0;
                                     foreach ($a as $i) {
-                                       $sum1 += $i->count;
+                                        $sum1 += $i->count;
                                     }
                                     foreach ($b as $j) {
-                                       $sum2 += $j->count;
+                                        $sum2 += $j->count;
                                     }
                                     if ($sum1 == $sum2) {
                                         return 0;
@@ -158,6 +158,7 @@
                             <div class="bodyyyy">
                                 @php
                                     $idd = 0;
+                                    $totalSum = 0;
                                 @endphp
                                 @foreach ($total as $key => $regions)
                                     @php
@@ -181,6 +182,9 @@
                                                             $sum += $item->count;
                                                         @endphp
                                                     @endforeach
+                                                    @php
+                                                        $totalSum += $sum;
+                                                    @endphp
                                                     <h5>
                                                         {{ $sum }}
                                                     </h5>
@@ -217,6 +221,14 @@
                                         </div>
                                     </div>
                                 @endforeach
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <h5 class="mr-1">
+                                    Jami:
+                                </h5>
+                                <h4>
+                                    {{ $totalSum }}
+                                </h4>
                             </div>
                         </div>
                     </div>
