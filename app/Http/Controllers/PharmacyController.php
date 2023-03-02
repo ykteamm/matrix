@@ -11,6 +11,29 @@ use Session;
 
 class PharmacyController extends Controller
 {
+    public function addPharm(Request $request) {
+        $lastPharm = Pharmacy::orderBy('id', "desc")->first();
+        DB::table('tg_pharmacy')->insert([
+            'name' => $request->input('pharm_name'),
+            'phone_number' => $lastPharm->phone_number,
+            'location' => $lastPharm->location,
+            'image' => $lastPharm->image,
+            'image_id' => $lastPharm->image_id,
+            'volume' => $lastPharm->volume,
+            'sort' => $lastPharm->sort,
+            'is_active' => $lastPharm->is_active,
+            'created_at' => $lastPharm->created_at,
+            'tg_id' => $lastPharm->tg_id,
+            'day_count' => $lastPharm->day_count,
+            'slug' => substr($lastPharm->slug, 0, 3).((int)substr($lastPharm->slug, 3) + 1),
+            'region_id' => $request->input('region_id')
+        ]);
+        DB::table('tg_shablon_pharmacies')->insert([
+            'shablon_id' => $request->input('shablon_id'),
+            'pharmacy_id' => Pharmacy::orderBy('id', "desc")->first()->id
+        ]);
+        return back();
+    }
     public function pharmacyList($time)
     {
         if ($time == 'today') {
@@ -333,6 +356,8 @@ class PharmacyController extends Controller
         ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id');
 
         // return $farm_sold;
-        return view('pharmacy.index',compact('pharmacy','users','pusers','farm_sold','user_sold','dateText'));
+        $regions = DB::table('tg_region')->get();
+        $shablons = DB::table('tg_shablons')->get();
+        return view('pharmacy.index',compact('shablons','regions','pharmacy','users','pusers','farm_sold','user_sold','dateText'));
     }
 }

@@ -102,6 +102,8 @@ Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
 
+Route::post('add-new-pharm', [App\Http\Controllers\PharmacyController::class,'addPharm'])->name('add-new-pharm.store');
+
 Route::get('pharmacy-user/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyUser'])->name('pharmacy-user');
 Route::get('pharmacy-list/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyList'])->name('pharmacy-list');
 Route::post('farm/chart', [App\Http\Controllers\PharmacyController::class,'chart']);
@@ -213,6 +215,9 @@ Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.up
 Route::get('elchilar-kunlik/{month}/{region?}', [ElchilarController::class,'kunlik'])->name('elchilar');
 Route::get('user-control', [UserController::class,'index'])->name('user-control');
 Route::get('user-register', [UserController::class,'userRegister'])->name('user-register');
+Route::get('users-without-pharmacy', [UserController::class,'userWithoutPharmacy'])->name('users-without-pharmacy');
+Route::post('user-bind-pharmacy', [UserController::class,'userBindPharmacy'])->name('user-bind-pharmacy.store');
+Route::get('users-all', [UserController::class,'allUsers'])->name('users-all');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
 Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');
 Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');

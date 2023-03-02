@@ -236,6 +236,7 @@
                   <ul style="display: none;">
                      <li><a href="{{route('user-control')}}">Status</a></li>
                      <li><a href="{{route('user-register')}}">Registratsiya</a></li>
+                     <li><a href="{{route('users-without-pharmacy')}}">New users</a></li>
                   </ul>
                </li>
              @endif
@@ -300,6 +301,14 @@
                   </li>
                @endif
               @endisset
+              <li>
+               <a href="{{route('users-all')}}">
+                  <i class="feather-settings"></i>  
+                  <span>
+                     Users
+                  </span>
+               </a>
+              </li>
               <li class="mb-5"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="feather-home"></i>  <span> Chiqish </span></a>
                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                   @csrf
