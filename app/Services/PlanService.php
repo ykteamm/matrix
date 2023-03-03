@@ -11,7 +11,6 @@ class PlanService
 {
     public function store($request,$id)
     {
-
         $r=$request->all();
 
         unset($r['_token']);
@@ -21,7 +20,6 @@ class PlanService
         date_default_timezone_set('Asia/Tashkent');
         $cal=Calendar::where('year_month',date('m.Y'))->first();
         $arr=json_decode($cal->day_json);
-        dd($arr);
 
         foreach ($r as $key => $item){
             if($item!=0){

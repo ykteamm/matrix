@@ -20,7 +20,6 @@ class PlanController extends Controller
     /**
      * Display a listing of the resource.
      *
-//     *
      */
     public $service;
 
@@ -60,6 +59,51 @@ class PlanController extends Controller
             'user_id'=>$id,
             'medicines'=>$med,
             'last_plans'=>$last_plans,
+            'price'=>$price
+        ]);
+    }
+
+    public function updateAllPlans(Request $request, $id)
+    {
+        $this_month = Carbon::now()->startofMonth()->format('Y-m-d');
+        Plan::where('user_id',$id)
+        ->whereDate('created_at','>=',$this_month)
+        ->delete();
+        PlanWeek::where('user_id',$id)
+        ->whereDate('created_at','>=',$this_month)
+        ->delete();
+        $this->service->store($request, $id);
+       return redirect()->route('elchi',['id'=>$id,'time'=>'today']);
+    }
+
+    public function updateAll($id)
+    {
+        $med=Medicine::orderBy('id')->get();
+        $shablons=Shablon::all();
+        $price=[];
+        foreach ($shablons as $key => $value) {
+            $pr = Price::where('shablon_id',$value->id)->pluck('price','medicine_id');
+            $price[$value->id]=$pr;
+        }
+        $last = Carbon::now()->startofMonth()->subMonth()->endOfMonth()->toDateString();
+        $first = Carbon::now()->startofMonth()->subMonth()->startOfMonth()->toDateString();
+        $last_plans=Plan::where('user_id',$id)
+        ->whereDate('created_at','>=',$first)
+        ->whereDate('created_at','<=',$last)
+        ->orderBy('medicine_id','ASC')
+        ->pluck('number','medicine_id');
+
+        $current_plans=Plan::where('user_id',$id)
+        ->whereDate('created_at','>',$last)
+        ->orderBy('medicine_id','ASC')
+        ->pluck('number','medicine_id');
+        
+        return view('plan.update-all',[
+            'shablons'=>$shablons,
+            'user_id'=>$id,
+            'medicines'=>$med,
+            'last_plans'=>$last_plans,
+            'current_plans' => $current_plans,
             'price'=>$price
         ]);
     }
