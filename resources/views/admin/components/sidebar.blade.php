@@ -104,7 +104,8 @@
            <li class="submenu">
               <a href="settings.html"><i class="feather-sliders"></i>  <span> Toolz Bot </span><span class="menu-arrow"></span></a>
               <ul style="display: none;">
-                 <li><a href="{{route('selfi')}}">Selfi</a></li>
+                 <li><a href="{{route('open-smena')}}">Smena ochish</a></li>
+                 <li><a href="{{route('close-smena')}}">Smena yopish</a></li>
                  <li><a href="{{route('king.sold')}}">Shox yurish</a></li>
                  <li><a href="{{route('king.history',['date'=>date('Y-m-d')])}}">Shox yurish tarix</a></li>
                  <li><a href="{{route('king-liga')}}">Shox yurish Liga</a></li>
