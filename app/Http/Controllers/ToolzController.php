@@ -17,14 +17,38 @@ use Illuminate\Support\Facades\Http;
 
 class ToolzController extends Controller
 {
-    public function selfi()
+    public function openSmena()
     {
-        $shifts = Shift::with('user','pharmacy','user.region')
+        $uncheckedshifts = Shift::with('user','pharmacy','user.region')
         ->whereDate('created_at','>=','2023-01-30')
+        ->where('admin_check', NULL)
         ->orderBy('id','DESC')->get();
+
+        $checkedshifts = Shift::with('user','pharmacy','user.region')
+        ->whereDate('created_at','>=','2023-01-30')
+        ->where('admin_check','!=', NULL)
+        ->orderBy('id','DESC')->paginate(10);
+        
         $host = substr(request()->getHttpHost(),0,3);
-        return view('toolz.selfi',compact('shifts','host'));
+        return view('toolz.open-smena',compact('checkedshifts','host', 'uncheckedshifts'));
     }
+
+    public function closeSmena()
+    {
+        $uncheckedshifts = Shift::with('user','pharmacy','user.region')
+        ->whereDate('created_at','>=','2023-01-30')
+        ->where('admin_check', NULL)
+        ->orderBy('id','DESC')->get();
+
+        $checkedshifts = Shift::with('user','pharmacy','user.region')
+        ->whereDate('created_at','>=','2023-01-30')
+        ->where('admin_check','!=', NULL)
+        ->orderBy('id','DESC')->paginate(10);
+        
+        $host = substr(request()->getHttpHost(),0,3);
+        return view('toolz.close-smena',compact('checkedshifts','host', 'uncheckedshifts'));
+    }
+
     public function shiftAnsver(Request $request)
     {
         $new = Shift::where('id',$request->id)->update([
@@ -52,8 +76,9 @@ class ToolzController extends Controller
         ->whereDate('created_at','>=','2023-01-30')
         ->where('image','!=','add')
         // ->where('admin_check',0)
-        ->orderBy('id','DESC')->get();
+        ->orderBy('id','DESC')->limit(10)->paginate(10);
         $host = substr(request()->getHttpHost(),0,3);
+        // dd($solds);
         return view('toolz.king-sold-history',compact('solds','host'));
 
     }
