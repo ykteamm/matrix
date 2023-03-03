@@ -75,9 +75,10 @@
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade()">Ichki reyting {{number_format($allavg,2)}}</button> </h5>
                    <h5> <button type="button" class="btn btn-info" onclick="collapseGrade2()">Tashqi reyting {{number_format($altgardes,2)}}</button> </h5>
                    @if($plan)
-                   <h5> <a href="{{route('plan.edit',['id'=>$elchi->id])}}" type="button" class="btn btn-info" >Planni Tahrirlash</a> </h5>
+                   {{-- <h5> <a href="{{route('plan.edit',['id'=>$elchi->id])}}" type="button" class="btn btn-info" >Planni Tahrirlash</a> </h5> --}}
                    <h5> <a onclick="show_weeks()"  type="button" class="open-plan text-white btn btn-info" >Planni Ko'rish</a> </h5>
                    <h5> <a onclick="close_weeks()" type="button" style="display: none" class="close-plan text-white btn btn-info" >Planni Ko'rish</a> </h5>
+                   <h5> <a href="{{route('plan.update-all',['id'=>$elchi->id])}}" type="button" class="btn btn-info" >Planni Yangilash</a> </h5>
                   @else
                      <h5> <a href="{{route('plan',['id'=>$elchi->id])}}" type="button" class="btn btn-info" >Plan Qo'shish</a> </h5>
 

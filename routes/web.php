@@ -209,7 +209,9 @@ Route::get('trend-pharmacy/{range}',[App\Http\Controllers\TrendController::class
 #bro
 Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');
 Route::post('plan/create/{id}', [PlanController::class,'store'])->name('plan.store');
+Route::post('plan/update/{id}', [PlanController::class,'updateAllPlans'])->name('plan.update-all-plans');
 Route::get('plan/{id}/edit', [PlanController::class,'edit'])->name('plan.edit');
+Route::get('plan/{id}/update-all', [PlanController::class,'updateAll'])->name('plan.update-all');
 Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
 Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
 Route::get('elchilar-kunlik/{month}/{region?}', [ElchilarController::class,'kunlik'])->name('elchilar');
@@ -271,7 +273,8 @@ Route::get('rm-medicine/{region}/{time?}',[\App\Http\Controllers\RMController::c
 
 #end-rm-dash
 
-Route::get('selfi', [ToolzController::class,'selfi'])->name('selfi');
+Route::get('open-smena', [ToolzController::class,'openSmena'])->name('open-smena');
+Route::get('close-smena', [ToolzController::class,'closeSmena'])->name('close-smena');
 Route::get('king-sold', [ToolzController::class,'kingSold'])->name('king.sold');
 
 Route::get('king-sold/{user_id}/{region_id}/{date}', [ToolzController::class,'kingSoldSearch'])->name('king-sold');
