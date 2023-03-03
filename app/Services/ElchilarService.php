@@ -31,7 +31,7 @@ class ElchilarService
             if($regions == 0 || $regions == 1)
             {
                 $elchi = DB::table('tg_user')
-                ->where('tg_user.status',1)
+                // ->where('tg_user.status',1)
                 ->select('tg_new_elchi.created_at as new_created','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id')
@@ -39,7 +39,7 @@ class ElchilarService
             }else
             {
                 $elchi = DB::table('tg_user')
-                ->where('tg_user.status',1)
+                // ->where('tg_user.status',1)
                 ->whereIn('tg_region.id',$regions)
                 ->select('tg_new_elchi.created_at as new_created','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
@@ -68,13 +68,13 @@ class ElchilarService
                 $reg[]=$key;
             }
             $elchi = DB::table('tg_user')
-                ->where('tg_user.status',1)
+                // ->where('tg_user.status',1)
                 ->whereIn('tg_user.region_id',$reg)
                 ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->orderBy('tg_region.side','ASC')->get();
         }
-
+        // dd($elchi);
         $elchi_work=[];
 
         $elchi_prognoz=[];
@@ -119,7 +119,7 @@ class ElchilarService
             }
         }
         
-
+        // dd($elchi);
         foreach($elchi as $elch)
         {
             $date = DB::table('tg_shift')
@@ -206,6 +206,8 @@ class ElchilarService
 
         $fact=[];
         $i=0;
+
+        // dd($elchi);
         foreach ($elchi as $item){
 
             $s=DB::table('tg_productssold')
@@ -220,11 +222,11 @@ class ElchilarService
 
             }
             else{
-                $fact[$item->id]=0;
+                // $fact[$item->id]=0;
             }
             $i++;
         }
-
+        // dd($fact);
         $data=new ElchilarKunlikItems();
         $data->elchi=$elchi;
         $data->all_work_day=$work_d;

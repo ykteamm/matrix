@@ -236,9 +236,14 @@
                             0
                         @endif
                     </span> </td>
-                    
+                    {{-- {{ dd($elchi_fact); }} --}}
                     <td class="yashir p-0"><span class="badge bg-success-light">{{number_format($plan_day[$t], 0, '', '.')}}</span> </td>
+                    @if(isset($elchi_fact[$item->id]))
                     <td class="yashir qizil p-0" name="{{$elchi_fact[$item->id]}}"> <span class="badge bg-warning-light">{{number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span></td>
+                    @else
+                    <td class="yashir qizil p-0" name="0"> <span class="badge bg-warning-light">0</span></td>
+
+                    @endif
                     <td class="yashir p-0"><span class="badge bg-primary-light">{{number_format($plan[$t], 0, '', '.')}}</span> </td>
                     
                     <td class="yashir p-0"> <span class="badge bg-success-light">{{number_format($elchi_prognoz[$item->id], 0, '', '.')}}</span></td>

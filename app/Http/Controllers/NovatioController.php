@@ -399,6 +399,7 @@ class NovatioController extends Controller
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->whereIn('tg_user.status',[1,2])
+                // ->where('tg_region.id',3)
 
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
@@ -425,7 +426,8 @@ class NovatioController extends Controller
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->whereIn('tg_user.status',[1,2])
-
+                // ->whereIn('tg_user.status',[18,167,72,175,79,29])
+                // ->where('tg_region.id',3)
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -456,9 +458,9 @@ class NovatioController extends Controller
         $SummaArray = [];
         $usersArray = [];
         $usersummaArray = [];
-
         $catarray = [];
         $c_summa = 0;
+        // return $sum;
         foreach ($regions as $key => $value) {
             foreach ($sum as $keys => $values) {
                 if($value->id == $values->r_id)
@@ -468,6 +470,7 @@ class NovatioController extends Controller
 
             }
 
+            
             foreach ($fsum as $fkeys => $fvalues) {
                 if($value->id == $fvalues->r_id)
                 {
@@ -517,7 +520,6 @@ class NovatioController extends Controller
             $fsumma = 0;
 
         }
-        
         foreach ($users as $keyf => $valuef) {
             foreach ($sum as $keys => $values) {
                 if($valuef->id == $values->u_id)
