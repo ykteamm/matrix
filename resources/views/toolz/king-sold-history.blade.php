@@ -3,7 +3,6 @@
 <div class="content main-wrapper">
    <div class="row gold-box">
       @include('admin.components.logo')
-
    </div>
    <div class="row headbot">
     <div class="col-md-12">
@@ -13,8 +12,11 @@
             <li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab1" data-toggle="tab">Yangi </a></li>
             <li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab2" data-toggle="tab">Tarix </a></li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content">   
             <div class="tab-pane show active" id="solid-rounded-justified-tab1">
+                <div class="d-flex align-items-center justify-content-center my-3">
+                    {!! $solds->links() !!}
+                </div>
                 <div class="row">
                     @foreach ($solds as $item)
 
@@ -86,7 +88,9 @@
                 
                 @endforeach
                 </div>
-                
+                <div class="d-flex align-items-center justify-content-center">
+                    {!! $solds->links() !!}
+                </div>
             </div>
             </div>
             {{-- </div> --}}
