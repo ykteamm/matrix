@@ -178,7 +178,7 @@
                     </tr>
                 @php $t=0; @endphp
                 @foreach($elchi as $item)
-                    @if($item->status ==1)
+                    @if(true)
                 <tr  id="{{$item->id}}" class="tr tr{{$item->v_id}} gsh{{$item->side}} vil{{$item->v_id}}" onmouseover="$(this).css('cursor','pointer') ">
                     <td class="p-0" onclick="myf({{$item->id}})">{{$t+1}} </td>
                     <td class="p-0" onclick="myf({{$item->id}})" >@if($item->side==2)Sharq @else G‘arb @endif </td>
