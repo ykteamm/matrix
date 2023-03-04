@@ -175,6 +175,9 @@
 </div>
 @endsection
 @section('admin_script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+<script src="{{asset('/assets/js/moment.tz.min.js')}}"></script>
+
 <script>
    $(function() {
   $('input[name="datetimes"]').daterangepicker({
@@ -272,8 +275,14 @@
 
                    $.each(response.data, function(index, value){
 
+                     var newYork    = moment.tz(value.m_data, "Europe/London");
+                     // var losAngeles = newYork.clone().tz("America/Los_Angeles");
+                     // var london     = newYork.clone().tz("Europe/London");
 
-                     var dateff = new Date(value.m_data);
+                     // newYork.format();    // 2016-06-01T12:00:00-04:00
+                     // losAngeles.format(); // 2016-06-01T09:00:00-07:00
+                     // london.format();     // 2016-06-01T17:00:00+01:00
+                     var dateff = new Date(newYork.format());
                      // var fsdf = addHours(5, dateff);
                      var fsdf = dateff;
 
