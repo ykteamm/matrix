@@ -175,8 +175,8 @@
 </div>
 @endsection
 @section('admin_script')
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
-<script src="{{asset('/assets/js/moment.tz.min.js')}}"></script> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script> --}}
+<script src="{{asset('/assets/js/moment.tz.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script>
    $(function() {
@@ -276,15 +276,16 @@
                    $.each(response.data, function(index, value){
 
                      // var newYork    = moment.tz(value.m_data, "UTC");
-                     var newYork = moment(value.m_data).utc();
+                     var ddate = moment(value.m_data).utc().format('DD.MM.YYYY');
+                     var ddatem = moment(value.m_data).utc().format('HH:mm');
                      // var losAngeles = newYork.clone().tz("America/Los_Angeles");
                      // var london     = newYork.clone().tz("Europe/London");
-                     console.log(newYork);
+                     // console.log(newYork);
                      // newYork.format();    // 2016-06-01T12:00:00-04:00
                      // losAngeles.format(); // 2016-06-01T09:00:00-07:00
                      // london.format();     // 2016-06-01T17:00:00+01:00
-                     var dateff = new Date(newYork);
-                     var d = new Date(newYork);
+                     // var dateff = new Date(newYork);
+                     // var d = new Date(newYork);
 
                      // var fsdf = addHours(5, dateff);
                      // var fsdf = dateff;
@@ -297,26 +298,26 @@
                      // var dateff = new Date(value.m_data);
                      // var fsdf = addHours(5, dateff);
 
-                            var curr_day = d.getDate();
-                            var curr_month = d.getMonth();
-                            var curr_year = d.getFullYear();
-                            var curr_hour = dateff.getHours();
-                            var curr_minutes = dateff.getMinutes();
+                           //  var curr_day = d.getDate();
+                           //  var curr_month = d.getMonth();
+                           //  var curr_year = d.getFullYear();
+                           //  var curr_hour = dateff.getHours();
+                           //  var curr_minutes = dateff.getMinutes();
 
-                            curr_month++
-                            if(curr_month < 10)
-                            {
-                               var ddate = '0'+curr_month
-                            }else{
-                               var ddate = curr_month
-                            }
+                           //  curr_month++
+                           //  if(curr_month < 10)
+                           //  {
+                           //     var ddate = '0'+curr_month
+                           //  }else{
+                           //     var ddate = curr_month
+                           //  }
 
-                            if(curr_minutes < 10)
-                            {
-                               var ddatem = '0'+curr_minutes
-                            }else{
-                               var ddatem = curr_minutes
-                            }
+                           //  if(curr_minutes < 10)
+                           //  {
+                           //     var ddatem = '0'+curr_minutes
+                           //  }else{
+                           //     var ddatem = curr_minutes
+                           //  }
 
                             if(yulduz.edit_purchase)
                               {
@@ -328,8 +329,8 @@
                                      '<input style="display:none;" class="input'+value.sid+value.t_id+
                                      '" type="number" name="" class="form-control form-control-sm" required/></td>'+
                                      '<td>'+ value.r_name +'</td>'+
-                                     '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
-                                     '<td>'+ curr_hour + ':' + ddatem +'</td>'+
+                                     '<td>'+ddate +'</td>'+
+                                     '<td>'+ ddatem +'</td>'+
                                      '<td class="text-right cancel-edit'+value.sid+value.t_id+'"><a type="button" onclick="editpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-primary mr-2"><i class="fas fa-edit mr-1"></i></a></td>'+
                                      '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="cancelpurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-danger mr-2"><i class="fas fa-times mr-1"></i></a></td>'+
                                      '<td style="display:none" class="text-right cancel-save'+value.sid+value.t_id+'"><a type="button" onclick="savepurchase(`'+value.sid+'`,`'+value.t_id+'`)" class="btn btn-sm btn-white text-success mr-2"><i class="fas fa-save mr-1"></i></a></td>'+
@@ -345,8 +346,8 @@
                                      '<input style="display:none;" class="input'+value.sid+value.t_id+
                                      '" type="number" name="" class="form-control form-control-sm" required/></td>'+
                                      '<td>'+ value.r_name +'</td>'+
-                                     '<td>'+ curr_day +'.'+ddate+'.'+curr_year +'</td>'+
-                                     '<td>'+ curr_hour +':'+curr_minutes+'</td>'+
+                                     '<td>'+ddate +'</td>'+
+                                     '<td>'+ ddatem +'</td>'+
                                   '</tr>');
                               }
 
