@@ -52,6 +52,10 @@ class User extends Model
     {
         return $this->belongsTo(Region::class,'region_id','id');
     }
+    public function pharmacy()
+    {
+        return $this->hasMany(PharmacyUser::class,'user_id','id');
+    }
     public function pro_sold()
     {
         return $this->hasMany(ProductSold::class,'user_id','id');
