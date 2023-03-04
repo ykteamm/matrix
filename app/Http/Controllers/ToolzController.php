@@ -152,7 +152,7 @@ class ToolzController extends Controller
         $no_user = LigaKingUser::pluck('user_id')->toArray();
         // return $no_user;
         $endday = date('Y-m-d',(strtotime ( '-1 day' , strtotime ( Carbon::now() ) ) ));
-        $startday = date('Y-m-d',(strtotime ( '-14 day' , strtotime ( Carbon::now() ) ) ));
+        $startday = date('Y-m-d',(strtotime ( '-30 day' , strtotime ( Carbon::now() ) ) ));
         $transactions= ProductSold::whereBetween('created_at', [$startday, $endday])
             ->distinct()
             ->pluck('user_id')->toArray();
