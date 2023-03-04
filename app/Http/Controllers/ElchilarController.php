@@ -52,7 +52,7 @@ class ElchilarController extends Controller
         $user_id= Session::get('user')->id;
         $data=$this->service->elchilar($month,$endofmonth,$user_id,$regions);
         $elchi=$data->elchi;
-        // dd($data->all_work_day);
+        // return $elchi;
         $elchi_fact=$data->elchi_fact;
         $elchi_prognoz=$data->elchi_prognoz;
         $king_sold=$data->king_sold;
@@ -63,7 +63,7 @@ class ElchilarController extends Controller
         $plan=$item->plan;
 
         $plan_day=$item->planday;
-        $encane=$this->service->encane($elchi);
+        $encane=$this->service->encane($elchi, $month);
         $days=$this->service->checkCalendar($month,$endofmonth);
         $sold=$this->service->sold($elchi,$days);
         $haftalik=$this->service->haftalik($days,$sold,$elchi);

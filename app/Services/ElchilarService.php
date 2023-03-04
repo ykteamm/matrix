@@ -30,18 +30,18 @@ class ElchilarService
         if(isset($pos->region)){
             if($regions == 0 || $regions == 1)
             {
-                $elchi = DB::table('tg_user')
+                $elchi = User::with('pharmacy')
                 // ->where('tg_user.status',1)
-                ->select('tg_new_elchi.created_at as new_created','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id')
                 ->orderBy('tg_region.side','ASC')->get();
             }else
             {
-                $elchi = DB::table('tg_user')
+                $elchi = User::with('pharmacy')
                 // ->where('tg_user.status',1)
                 ->whereIn('tg_region.id',$regions)
-                ->select('tg_new_elchi.created_at as new_created','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id')
                 ->orderBy('tg_region.side','ASC')->get();
@@ -67,10 +67,10 @@ class ElchilarService
                     $key==14 )
                 $reg[]=$key;
             }
-            $elchi = DB::table('tg_user')
+            $elchi = User::with('pharmacy')
                 // ->where('tg_user.status',1)
                 ->whereIn('tg_user.region_id',$reg)
-                ->select('tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->orderBy('tg_region.side','ASC')->get();
         }
@@ -415,13 +415,17 @@ class ElchilarService
 //        return $plan_sum;
 //    }
 
-    public function encane($elchi)
+    public function encane($elchi, $month)
     {
+        $start = Carbon::parse($month)->startOfMonth()->format("Y-m-d");
+        $end = Carbon::parse($month)->endOfMonth()->format("Y-m-d");
+        
         $encane=[];
         foreach ($elchi as $item){
                         $sum = DB::table('tg_productssold')
                         ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_pharmacy.id,tg_pharmacy.name')
-                        ->where('tg_productssold.user_id','=',$item->id)
+                        ->where('tg_productssold.user_id','=', $item->id)
+                        ->whereBetween('tg_productssold.created_at', [$start, $end])
                         ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
                         ->orderBy('allprice','DESC')
                         ->groupBy('tg_pharmacy.id')->get();
