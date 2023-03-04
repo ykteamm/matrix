@@ -274,7 +274,8 @@
 
 
                      var dateff = new Date(value.m_data);
-                     var fsdf = addHours(5, dateff);
+                     // var fsdf = addHours(5, dateff);
+                     var fsdf = dateff;
 
                      var e = formatDate(fsdf);
 
