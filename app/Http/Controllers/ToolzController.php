@@ -153,7 +153,7 @@ class ToolzController extends Controller
         // return $no_user;
         // $endday = date('Y-m-d',(strtotime ( '-0 day' , strtotime ( Carbon::now() ) ) ));
         $startday = date('Y-m-d',(strtotime ( '-30 day' , strtotime ( Carbon::now() ) ) ));
-        $transactions= ProductSold::whereBetween('created_at', [date('Y-m-d'), $endday])
+        $transactions= ProductSold::whereBetween('created_at', [$startday,date('Y-m-d')])
             ->distinct()
             ->pluck('user_id')->toArray();
         $user_in = [];
