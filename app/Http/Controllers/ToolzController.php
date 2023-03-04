@@ -76,7 +76,7 @@ class ToolzController extends Controller
         ->whereDate('created_at','>=','2023-01-30')
         ->where('image','!=','add')
         // ->where('admin_check',0)
-        ->orderBy('id','DESC')->limit(10)->paginate(10);
+        ->orderBy('id','DESC')->paginate(10);
         $host = substr(request()->getHttpHost(),0,3);
         // dd($solds);
         return view('toolz.king-sold-history',compact('solds','host'));
