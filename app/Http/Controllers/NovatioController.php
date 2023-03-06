@@ -151,8 +151,6 @@ class NovatioController extends Controller
 
             // }
             $all = [];
-        date_default_timezone_set('UTC');
-
                 $user = DB::table('tg_productssold')
                 ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
                 ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -181,7 +179,6 @@ class NovatioController extends Controller
             ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->get();
-            date_default_timezone_set('UTC');
 
         $user = DB::table('tg_productssold')->where('tg_region.id',$inputs['id'])
         ->select('tg_productssold.id as sid','tg_user.id as uid','tg_region.id as tid','tg_order.id as t_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
@@ -218,8 +215,6 @@ class NovatioController extends Controller
         {
             $category = DB::table('tg_category')->get();
             $medicine = DB::table('tg_medicine')->get();
-        date_default_timezone_set('UTC');
-
             $oneuser = DB::table('tg_productssold')
             ->select('tg_user.id as uid','tg_region.id as tid','tg_category.id as c_id','tg_medicine.id as m_id','tg_medicine.name as m_name','tg_productssold.price_product as m_price','tg_productssold.number as m_number','tg_user.first_name as uf_name','tg_user.last_name as ul_name','tg_region.name as r_name','tg_productssold.created_at as m_data')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
