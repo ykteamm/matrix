@@ -52,7 +52,8 @@
                                                         <li class="nav-item">
                                                             <a href="preferences.html" class="nav-link">
                                                                 <i class="fas fa-cog"></i>
-                                                                <span>{{ date('d.m.Y H:i:s', strtotime($item->close_date)) }}
+                                                                {{$item->close_date}}
+                                                                {{-- <span>{{ date('d.m.Y H:i:s', strtotime($item->close_date)) }} --}}
                                                                 </span>
                                                             </a>
                                                         </li>
