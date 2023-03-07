@@ -114,7 +114,7 @@ class ToolzController extends Controller
             ->where('tg_productssold.order_id', $order_id)->get();
 
 
-        if ($summa[0]->allprice  >= 200000) {
+        if ($summa[0]->allprice >= 200000) {
             $add = floor($summa[0]->allprice / 200000) - 1;
 
             if ($add != 0) {
