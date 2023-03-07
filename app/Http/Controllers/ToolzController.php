@@ -48,6 +48,7 @@ class ToolzController extends Controller
         $uncheckedshifts = Shift::with('user', 'pharmacy', 'user.region')
             ->whereDate('created_at', '>=', '2023-01-30')
             ->where('admin_check', NULL)
+            ->where('active',2)
             ->orderBy('id', 'DESC')->get();
 
         $checkedshifts = Shift::with('user', 'pharmacy', 'user.region')
