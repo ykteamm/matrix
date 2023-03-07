@@ -25,7 +25,7 @@
                                                 <div class="mt-4">
                                                     @if ($host == 'mat')
                                                         <img id="avatarImg" height="500px" class="avatar-img"
-                                                            src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                            src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
                                                             alt="Profile Image">
                                                     @else
                                                         <img id="avatarImg" height="500px" class="avatar-img"
