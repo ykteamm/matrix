@@ -95,7 +95,7 @@ class ToolzController extends Controller
         $solds = KingSold::with('order', 'order.sold', 'order.sold.medicine', 'order.user')
             ->whereDate('created_at', '>=', '2023-01-30')
             ->where('image', '!=', 'add');
-            
+
         $host = substr(request()->getHttpHost(), 0, 3);
 
         if ($date !== NULL) {
@@ -112,20 +112,32 @@ class ToolzController extends Controller
         $summa = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
             ->where('tg_productssold.order_id', $order_id)->get();
-        $add = floor($summa[0]->allprice / 200000) - 1;
-        if ($add != 0) {
-            for ($i = 1; $i <= $add; $i++) {
-                $new = new KingSold([
-                    'order_id' => $order_id,
-                    'image' => 'add',
-                    'admin_check' => 1
-                ]);
-                $new->save();
+
+
+        if ($summa[0]->allprice  >= 200000) {
+            $add = floor($summa[0]->allprice / 200000) - 1;
+
+            if ($add != 0) {
+                for ($i = 1; $i <= $add; $i++) {
+                    $new = new KingSold([
+                        'order_id' => $order_id,
+                        'image' => 'add',
+                        'admin_check' => 1
+                    ]);
+                    $new->save();
+                }
             }
+            $new = KingSold::where('id', $request->id)->update([
+                'admin_check' => $request->ansver,
+                'status' => 1
+            ]);
+        } else {
+            $new = KingSold::where('id', $request->id)->update([
+                'admin_check' => $request->ansver,
+                'status' => 2
+            ]);
         }
-        $new = KingSold::where('id', $request->id)->update([
-            'admin_check' => $request->ansver
-        ]);
+
 
         $weekStartDate = Carbon::now()->startOfWeek()->format('Y-m-d');
         $weekEndDate = Carbon::now()->endOfWeek()->format('Y-m-d');
