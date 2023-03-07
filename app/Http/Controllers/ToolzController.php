@@ -63,6 +63,7 @@ class ToolzController extends Controller
         } else {
             $checkedshifts = $checkedshifts->orderBy('id', 'DESC')->paginate(10);
         }
+        // return $uncheckedshifts;
         return view('toolz.close-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
     }
 
