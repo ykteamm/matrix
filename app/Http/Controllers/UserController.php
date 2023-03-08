@@ -34,34 +34,40 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('new_elchi')->orderBy('id')->get();
-        $new_users = NewUsers::all();
+        $users = User::where('status', 1)->where('rm','!=', 1)
+        ->where('level', '!=', 2)
+        ->orderBy('id')->get();
+        $unemployes = User::where('status', 2)->orderBy('id')->get();
+        $newemployes = User::where('status', 0)->orderBy('id')->get();
+        $testusers = User::where('status', 3)->orderBy('id')->get();
+        $rms = User::where('rm', 1)->orderBy('id')->get();
+        $caps = User::where('level', 2)->orderBy('id')->get();
+        // $new_users = NewUsers::all();
         // return $users;
-        $arr = [];
-        foreach ($new_users as $user) {
-            $d = json_decode($user->message);
-            if (isset($d->data)) {
-                $arr[] = array('id' => $user->id, 'tg_id' => $user->tg_id, 'data' => $d->data);
-            }
-        }
-        return view('userControl.index', compact('users', 'arr'));
+        // $arr = [];
+        // foreach ($new_users as $user) {
+        //     $d = json_decode($user->message);
+        //     if (isset($d->data)) {
+        //         $arr[] = array('id' => $user->id, 'tg_id' => $user->tg_id, 'data' => $d->data);
+        //     }
+        // }    
+        return view('userControl.index', compact('users', 'testusers', 'unemployes', 'newemployes', 'rms', 'caps'));
     }
 
     public function controlWorker(Request $request, $action)
     {
 
         $r = $request->all();
-        // return $r;
         unset($r['_token']);
-        // DB::table('tg_user')
-        //     ->where('status',3)
-        //     ->update(['status'=>1]);
         foreach ($r as $key => $item) {
             if ($item == 'id') {
                 $id = substr($key, 3);
                 DB::table('tg_user')
                     ->where('id', $id)
-                    ->update(['status' => $action]);
+                    ->update([
+                    'status' => $action ?? 2,
+                    'work_end' => date("Y-m-d")
+                ]);
             }
             if ($item == 'test') {
                 $test = substr($key, 5);
@@ -69,14 +75,6 @@ class UserController extends Controller
                 DB::table('tg_user')
                     ->where('id', $test)
                     ->update(['status' => 3]);
-            }
-            if ($item == 'new') {
-                $id = substr($key, 4);
-                $new_elchi = new NewElchi([
-                    'user_id' => $id,
-                ]);
-
-                $new_elchi->save();
             }
             if ($item == 'rm') {
                 $test = substr($key, 3);
@@ -104,7 +102,6 @@ class UserController extends Controller
                 $test = substr($key, 4);
                 $rm = DB::table('tg_user')
                     ->where('id', $test)->first();
-                // return $rm;
                 if ($rm->rm != 1) {
                     $json = [
                         "dash" => "true",
@@ -137,8 +134,6 @@ class UserController extends Controller
     {
         $r = $request->all();
         unset($r['_token']);
-        // return $r;/
-
         foreach ($r as $key => $item) {
             if ($item == 'rm') {
                 $test = substr($key, 3);
@@ -161,7 +156,6 @@ class UserController extends Controller
         $r = $request->all();
         unset($r['_token']);
 
-        // return $r;
         foreach ($r as $key => $item) {
             if ($item == 'cap') {
                 $test = substr($key, 4);
@@ -187,14 +181,17 @@ class UserController extends Controller
         $r = $request->all();
         unset($r['_token']);
 
-        // return $r;
         foreach ($r as $key => $item) {
             if ($item == 'test') {
                 $test = substr($key, 5);
 
                 DB::table('tg_user')
                     ->where('id', $test)
-                    ->update(['status' => 1]);
+                    ->update([
+                        'status' => 1,
+                        'work_start' => date("Y-m-d"),
+                        'work_end' => NULL
+                    ]);
             }
         }
         return redirect()->back();
@@ -204,11 +201,16 @@ class UserController extends Controller
         $r = $request->all();
         unset($r['_token']);
 
-        // return $r;
         foreach ($r as $key => $item) {
             if ($item == 'new') {
                 $id = substr($key, 4);
-                $delete = NewElchi::where('user_id', $id)->delete();
+                DB::table('tg_user')
+                    ->where('id', $id)
+                    ->update([
+                        'status' => 1,
+                        'work_start' => date("Y-m-d"),
+                        'work_end' => NULL
+                    ]);
             }
         }
         return redirect()->back();
@@ -220,9 +222,11 @@ class UserController extends Controller
         foreach ($r as $key => $item) {
             if ($item == 'exit') {
                 $test = substr($key, 5);
-                $rm = DB::table('tg_user')
+                DB::table('tg_user')
                     ->where('id', $test)->update([
-                        'status' => 1
+                        'status' => 1,
+                        'work_start' => date("Y-m-d"),
+                        'work_end' => NULL
                     ]);
             }
         }
@@ -474,26 +478,26 @@ class UserController extends Controller
             'user_id' => $request->input('user_id'),
             'pharma_id' => $request->input('pharma_id')
         ]);
-        return back();  
+        return back();
     }
 
     public function userWithoutPharmacy()
     {
         $idArr = DB::table('tg_pharmacy_users')->pluck('user_id')->toArray();
-        $users = User::with('region','region.pharmacy')
-        ->whereNotIn('id',$idArr)
-        ->where('admin',FALSE)
-        ->where('status','!=',3)
-        ->get();
+        $users = User::with('region', 'region.pharmacy')
+            ->whereNotIn('id', $idArr)
+            ->where('admin', FALSE)
+            ->where('status', '!=', 3)
+            ->get();
         return view('userControl.withoutpharm', compact('users'));
     }
 
     public function allUsers()
     {
         $users = User::select('tg_user.*', 'tg_region.name as region_name')
-        ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
-        ->orderBy('tg_user.id', 'DESC')
-        ->get();
+            ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
+            ->orderBy('tg_user.id', 'DESC')
+            ->get();
         return view('userControl.users', compact('users'));
     }
 
