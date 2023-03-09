@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\Ball;
 use App\Models\BattleDay;
 use App\Models\BattleHistory;
+use App\Models\DailyWork;
 use App\Models\ElchiBattleSetting;
 use App\Models\Medicine;
 use App\Models\Price;
@@ -34,9 +35,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::where('status', 1)->where('rm','!=', 1)
-        ->where('level', '!=', 2)
-        ->orderBy('id')->get();
+        $users = User::where('status', 1)->where('rm', '!=', 1)
+            ->where('level', '!=', 2)
+            ->orderBy('id')->get();
         $unemployes = User::where('status', 2)->orderBy('id')->get();
         $newemployes = User::where('status', 0)->orderBy('id')->get();
         $testusers = User::where('status', 3)->orderBy('id')->get();
@@ -65,9 +66,9 @@ class UserController extends Controller
                 DB::table('tg_user')
                     ->where('id', $id)
                     ->update([
-                    'status' => $action ?? 2,
-                    'work_end' => date("Y-m-d")
-                ]);
+                        'status' => $action ?? 2,
+                        'work_end' => date("Y-m-d")
+                    ]);
             }
             if ($item == 'test') {
                 $test = substr($key, 5);
@@ -494,11 +495,38 @@ class UserController extends Controller
 
     public function allUsers()
     {
-        $users = User::select('tg_user.*', 'tg_region.name as region_name')
+        $users = User::select('tg_user.*', 'tg_region.name as region_name', 'daily_works.start_work', 'daily_works.finish_work')
             ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
+            ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
             ->orderBy('tg_user.id', 'DESC')
             ->get();
+        // dd($users[0]);
         return view('userControl.users', compact('users'));
+    }
+
+    public function assignDailyWork(Request $request)
+    {
+        $r = $request->all();
+        unset($r['_token']);
+        foreach ($r as $key => $value) {
+            if ($value == 'change') {
+                $user_id = substr($key, 7);
+                $userDaily = DailyWork::where('user_id', $user_id)->first();
+                if ($userDaily) {
+                    DailyWork::where('user_id', $user_id)->update([
+                        'start_work' => $r['start_' . $user_id],
+                        'finish_work' => $r['finish_' . $user_id]
+                    ]);
+                } else {
+                    DailyWork::create([
+                        'user_id' => $user_id,
+                        'start_work' => $r['start_' . $user_id],
+                        'finish_work' => $r['finish_' . $user_id]
+                    ]);
+                }
+            }
+        }
+        return back();
     }
 
     public function userRegister()

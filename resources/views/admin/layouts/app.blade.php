@@ -15,7 +15,7 @@
 
     <!-- Fonts -->
     @include('admin.partials.css')
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
     {{-- <style>
         table.dataTable thead .sorting:after,
         table.dataTable thead .sorting:before,
@@ -145,6 +145,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
 
     {{-- <link rel="stylesheet" href="https://cdn.rawgit.com/mfd/09b70eb47474836f25a21660282ce0fd/raw/e06a670afcb2b861ed2ac4a1ef752d062ef6b46b/Gilroy.css"> --}}
     <script src="https://api-maps.yandex.ru/2.1/?apikey=7a4a276f-4b19-448d-877b-1c87a0b350c3&lang=ru_RU" type="text/javascript">
+
     </script>
     <livewire:styles>
 </head>
@@ -163,6 +164,7 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
     @yield('admin_script')
     
     <livewire:scripts>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 
 <script>
 $(document).ready(function () {

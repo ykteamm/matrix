@@ -178,6 +178,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /**
+         * Custom service providers
+         */
+        App\Providers\RepositoryServiseProvider::class
     ],
 
     /*

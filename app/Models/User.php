@@ -68,6 +68,11 @@ class User extends Model
     {
         return $this->hasMany(LigaKingUser::class,'user_id','id');
     }
+
+    public function dailywork()
+    {
+        return $this->hasOne(DailyWork::class, 'user_id', 'id');
+    }
 //
 //    public function tools()
 //    {

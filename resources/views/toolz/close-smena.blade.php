@@ -52,7 +52,6 @@
                                                         <li class="nav-item">
                                                             <a href="preferences.html" class="nav-link">
                                                                 <i class="fas fa-cog"></i>
-                                                                {{-- {{$item->close_date}} --}}
                                                                 <span>{{ date('d.m.Y H:i:s', strtotime($item->close_date)) }}
                                                                 </span>
                                                             </a>
@@ -81,34 +80,62 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mt-5">
-                                                <div class="row">
-                                                    <div class="col-md-2 col-sm-4 col-md-2 mb-3">
-                                                        <button type="button" class="btn btn-block btn-outline-info active"
-                                                            onclick="shiftAnsver(`{{ $item->id }}`,`code`)">Kun soni
-                                                            yo'q </button>
+                                                <form action="{{ route('admin-check-close-smena') }}" method="POST">
+                                                    @csrf
+                                                    <div class="row">
+                                                        <input type="number" class="d-none" name="shift_id"
+                                                            value="{{ $item->id }}">
+                                                        <input type="number" class="d-none" name="user_id"
+                                                            value="{{ $item->user_id }}">
+                                                        <div class="col-sm-4 col-md-2 mb-3">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="kunSoni" value="true" name="kun_soni">
+                                                                <label class="form-check-label" for="kunSoni">
+                                                                    Kun soni yo'q
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-2 mb-3">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="beyjikYoq" value="true" name="beyjik_yoq">
+                                                                <label class="form-check-label" for="beyjikYoq">
+                                                                    Beyjik yo'q
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-2 mb-3">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="xalatYoq" value="true" name="xalat_yoq">
+                                                                <label class="form-check-label" for="xalatYoq">
+                                                                    Xalat yo'q
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-2 mb-3">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="lokatsiya" value="true" name="lokatsiya_notogri">
+                                                                <label class="form-check-label" for="lokatsiya">
+                                                                    Lokatsiya noto'g'ri
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-2 mb-3">
+                                                            <button type="submit"
+                                                                class="btn btn-block btn-outline-success active">
+                                                                Qabul qilish
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-2 col-sm-4 col-md-2 mb-3">
-                                                        <button type="button" class="btn btn-block btn-outline-info active"
-                                                            onclick="shiftAnsver(`{{ $item->id }}`,`card`)">Beyjik yo'q
-                                                        </button>
+                                                    <div class="d-flex align-items-center">
+                                                        <label class="mr-2" for="izoh">Izoh: </label>
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            name="izoh">
                                                     </div>
-                                                    <div class="col-md-2 col-sm-4 col-md-2 mb-3">
-                                                        <button type="button" class="btn btn-block btn-outline-info active"
-                                                            onclick="shiftAnsver(`{{ $item->id }}`,`robe`)">Xalat yo'q
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-4 col-md-2 mb-3">
-                                                        <button type="button" class="btn btn-block btn-outline-info active"
-                                                            onclick="shiftAnsver(`{{ $item->id }}`,`location`)">Lokatsiya
-                                                            noto'g'ri </button>
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-4 col-md-2 mb-3">
-                                                        <button type="button"
-                                                            class="btn btn-block btn-outline-success active"
-                                                            onclick="shiftAnsver(`{{ $item->id }}`,`ok`)">Qabul qilish
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -123,8 +150,9 @@
                                     </div>
                                     <div class="col-md-12">
                                         <form action="{{ route('close-smena') }}" method="GET">
-                                            <input value="{{ $date }}" name="smena_date" type="date"  onchange="filterByDate(this)" class="form-control">
-                                              <button id="close-smena-button" type="submit" class="d-none">button</button>
+                                            <input value="{{ $date }}" name="smena_date" type="date"
+                                                onchange="filterByDate(this)" class="form-control">
+                                            <button id="close-smena-button" type="submit" class="d-none">button</button>
                                         </form>
                                     </div>
                                 </div>
@@ -223,11 +251,11 @@
                                     </div>
                                 @endforeach
                             </div>
-                            @if($paginated)
-                              <div class="d-flex align-items-center justify-content-center">
-                                {!! $checkedshifts->links() !!}
-                            </div>
-                          @endif
+                            @if ($paginated)
+                                <div class="d-flex align-items-center justify-content-center">
+                                    {!! $checkedshifts->links() !!}
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -242,22 +270,6 @@
     <script>
         function filterByDate(data) {
             $('#close-smena-button').click();
-        }
-
-        function shiftAnsver(id, ansver) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                url: "/user/shift",
-                type: "POST",
-                data: {
-                    ansver: ansver,
-                    id: id,
-                    _token: _token
-                },
-                success: function(response) {
-                    location.reload();
-                }
-            });
         }
     </script>
 @endsection

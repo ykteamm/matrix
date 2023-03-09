@@ -43,7 +43,8 @@ use App\Http\Controllers\TrendController;
     Route::post('/user/cancel', [UserController::class,'userCancel']);
     Route::post('/user/success', [UserController::class,'userSuccess']);
 
-    Route::post('/user/shift', [ToolzController::class,'shiftAnsver']);
+    Route::post('/user/shift-open', [ToolzController::class,'adminCheckOpenSmena'])->name("admin-check-open-smena");
+    Route::post('/user/shift-close', [ToolzController::class,'adminCheckCloseSmena'])->name("admin-check-close-smena");
     Route::post('/user/king-sold', [ToolzController::class,'kingSoldAnsver']);
 
 
@@ -220,6 +221,7 @@ Route::get('user-register', [UserController::class,'userRegister'])->name('user-
 Route::get('users-without-pharmacy', [UserController::class,'userWithoutPharmacy'])->name('users-without-pharmacy');
 Route::post('user-bind-pharmacy', [UserController::class,'userBindPharmacy'])->name('user-bind-pharmacy.store');
 Route::get('users-all', [UserController::class,'allUsers'])->name('users-all');
+Route::post('assign-daily-work-time', [UserController::class, 'assignDailyWork'])->name('assign-daily-work-time');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
 Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');
 Route::post('user-rm', [UserController::class,'userRm'])->name('user-rm');

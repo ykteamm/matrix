@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\Repositories\SMSRepository;
+use App\Interfaces\Repositories\ShiftRepository;
 use App\Models\KingSold;
 use App\Models\LigaKingSold;
 use App\Models\LigaKingUser;
@@ -12,32 +14,37 @@ use App\Models\UserBattle;
 use App\Services\KingSoldSearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class ToolzController extends Controller
 {
+    private SMSRepository $smsRepository;
+    private ShiftRepository $shiftRepository;
+    public function __construct(
+        SMSRepository $sms,
+        ShiftRepository $shift
+    ) {
+        $this->smsRepository = $sms;
+        $this->shiftRepository = $shift;
+    }
+    private const ERRORS = [
+        'kun_soni' => 'Kun soni yo\'q',
+        'beyjik_yoq' => 'Bejyik yo\'q',
+        'xalat_yoq' => 'Xalat yo\'q',
+        'lokatsiya_notogri' => 'Lokatsiya noto\'g\'ri'
+    ];
+    private const MIN_FINE = 10000;
+
     public function openSmena(Request $request)
     {
         $date = $request->input('smena_date');
         $paginated = true;
-        $uncheckedshifts = Shift::with('user', 'pharmacy', 'user.region')
-            ->whereDate('created_at', '>=', '2023-01-30')
-            ->where('admin_check', NULL)
-            ->orderBy('id', 'DESC')->get();
-
-        $checkedshifts = Shift::with('user', 'pharmacy', 'user.region')
-            ->whereDate('created_at', '>=', '2023-01-30')
-            ->where('admin_check', '!=', NULL);
-
         $host = substr(request()->getHttpHost(), 0, 3);
-
-        if ($date !== NULL) {
-            $paginated = false;
-            $checkedshifts = $checkedshifts->whereDate('created_at', $date)->orderBy('id', 'DESC')->get();
-        } else {
-            $checkedshifts = $checkedshifts->orderBy('id', 'DESC')->paginate(10);
-        }
+        $uncheckedshifts = $this->shiftRepository->unchecked();
+        $checkedshifts = $this->shiftRepository->checked($date, $paginated);
         return view('toolz.open-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
     }
 
@@ -45,39 +52,56 @@ class ToolzController extends Controller
     {
         $date = $request->input('smena_date');
         $paginated = true;
-        $uncheckedshifts = Shift::with('user', 'pharmacy', 'user.region')
-            ->whereDate('created_at', '>=', '2023-01-30')
-            ->where('admin_check', NULL)
-            ->where('active',2)
-            ->orderBy('id', 'DESC')->get();
-
-        $checkedshifts = Shift::with('user', 'pharmacy', 'user.region')
-            ->whereDate('created_at', '>=', '2023-01-30')
-            ->where('admin_check', '!=', NULL);
-
-
         $host = substr(request()->getHttpHost(), 0, 3);
-
-        if ($date !== NULL) {
-            $paginated = false;
-            $checkedshifts = $checkedshifts->whereDate('created_at', $date)->orderBy('id', 'DESC')->get();
-        } else {
-            $checkedshifts = $checkedshifts->orderBy('id', 'DESC')->paginate(10);
-        }
-        // return $uncheckedshifts;
+        $uncheckedshifts = $this->shiftRepository->unchecked('admin_check_close', 2);
+        $checkedshifts = $this->shiftRepository->checked($date, $paginated, 'admin_check_close', 2);
         return view('toolz.close-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
     }
 
-    public function shiftAnsver(Request $request)
+    public function adminCheckOpenSmena(Request $request)
     {
-        $new = Shift::where('id', $request->id)->update([
-            'admin_check' => array('check' => $request->ansver)
-        ]);
-
-        return [
-            'response' => 200,
-        ];
+        $fine = 0;
+        $msg = '';
+        $inputs = $request->all();
+        $phone = DB::table('tg_user')->where('id', $request->input('user_id'))->get()->phone_number;
+        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh']);
+        foreach ($inputs as $key => $value) {
+            if ($key === 'kun_soni' || $key === 'lokatsiya_notogri') {
+                $this->shiftRepository->delete($request->input('shift_id'));
+                $this->smsRepository->sendSMS($phone, "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
+                return back();
+            } else {
+                $fine += static::MIN_FINE;
+                $msg .= static::ERRORS[$key] . '. ';
+            }
+        }
+        if ($fine !== 0 && $msg !== '') {
+            $this->shiftRepository->setDetail($fine, $request->input('izoh'), $request->input('user_id'), $msg);
+            $this->smsRepository->sendSMS($phone, $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+        }
+        $this->shiftRepository->update($request->input('shift_id'), $msg);
+        return back();
     }
+    public function adminCheckCloseSmena(Request $request)
+    {
+        $fine = 0;
+        $msg = '';
+        $inputs = $request->all();
+        $phone = DB::table('tg_user')->where('id', $request->input('user_id'))->first()->phone_number;
+        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh']);
+        foreach ($inputs as $key => $value) {
+            $fine += static::MIN_FINE;
+            $msg .= static::ERRORS[$key] . '. ';
+        }
+        if ($fine !== 0 && $msg !== '') {
+            $this->shiftRepository->setDetail($fine, $request->input('izoh'), $request->input('user_id'), $msg);
+            $this->smsRepository->sendSMS($phone, $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+        }
+        $this->shiftRepository->update($request->input('shift_id'), $msg);
+        return back();
+    }
+
+
     public function kingSold()
     {
         $solds = KingSold::with('order', 'order.sold', 'order.sold.medicine', 'order.user')
