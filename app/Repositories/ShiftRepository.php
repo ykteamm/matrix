@@ -13,7 +13,7 @@ class ShiftRepository implements ShiftRepositoryInterface
   {
     return Shift::with('user', 'pharmacy', 'user.region')
       // ->whereDate('created_at', '>=', '2023-01-30')
-      // ->whereDate('created_at', '>=', '2023-03-7')
+      ->whereDate('created_at', '>=', '2023-03-7')
       ->where($column, NULL)
       ->where('active', $active)
       ->orderBy('id', 'DESC')->get();
@@ -27,17 +27,17 @@ class ShiftRepository implements ShiftRepositoryInterface
       ->where('active', $active);
     if ($date !== NULL) {
       $paginated = false;
-      $checkedshifts = $query->whereDate('created_at', $date)->orderBy('id', 'DESC')->get();
+      $checkedshifts = $query->whereDate('created_at', $date)->orderBy('id', 'ASC')->get();
     } else {
-      $checkedshifts = $query->orderBy('id', 'DESC')->paginate(10);
+      $checkedshifts = $query->orderBy('id', 'ASC')->paginate(10);
     }
     return $checkedshifts;
   }
 
-  public function update($shift_id, $msg)
+  public function update($shift_id, $error)
   {
     return Shift::where('id', $shift_id)->update([
-      'admin_check' => array('check' => $msg ?? "Ok")
+      'admin_check' => array('check' => $error == '' ? "ok" : $error)
     ]);
   }
 
@@ -56,6 +56,6 @@ class ShiftRepository implements ShiftRepositoryInterface
       'user_id' => (int)$user_id,
       'is_active' => true,
       'created_at' => now()
-  ]);
+    ]);
   }
 }

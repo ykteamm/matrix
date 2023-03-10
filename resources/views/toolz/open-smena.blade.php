@@ -8,14 +8,14 @@
             <div class="col-md-12">
                 <div class="card bg-white">
                     <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
-                        <li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab1"
+                        <li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab1"
                                 data-toggle="tab">Tasdiqlanmagan
                             </a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab2"
+                        <li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab2"
                                 data-toggle="tab">Tasdiqlangan</a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" id="solid-rounded-justified-tab1">
+                        <div class="tab-pane show active" id="solid-rounded-justified-tab1">
                             <div class="row">
                                 @foreach ($uncheckedshifts as $item)
                                     <div class="col-md-12">
@@ -83,15 +83,15 @@
                                                 <form action="{{ route('admin-check-open-smena') }}" method="POST">
                                                     @csrf
                                                     <div class="row">
-                                                        <input type="number" class="d-none" name="shift_id"
+                                                        <input type="text" class="d-none" name="shift_id"
                                                             value="{{ $item->id }}">
-                                                        <input type="number" class="d-none" name="user_id"
-                                                            value="{{ $item->user_id }}">
+                                                        <input type="text" class="d-none" name="test_id" value="{{ 4 }}">
+                                                        <input type="text" class="d-none" name="user_id" value="{{ $item->user_id }}">
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="kunSoni" value="true" name="kun_soni">
-                                                                <label class="form-check-label" for="kunSoni">
+                                                                    id="kunSoni{{ $item->id }}" value="true" name="kun_soni">
+                                                                <label class="form-check-label" for="kunSoni{{ $item->id }}">
                                                                     Kun soni yo'q
                                                                 </label>
                                                             </div>
@@ -99,8 +99,8 @@
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="beyjikYoq" value="true" name="beyjik_yoq">
-                                                                <label class="form-check-label" for="beyjikYoq">
+                                                                    id="beyjikYoq{{ $item->id }}" value="true" name="beyjik_yoq">
+                                                                <label class="form-check-label" for="beyjikYoq{{ $item->id }}">
                                                                     Beyjik yo'q
                                                                 </label>
                                                             </div>
@@ -108,8 +108,8 @@
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="xalatYoq" value="true" name="xalat_yoq">
-                                                                <label class="form-check-label" for="xalatYoq">
+                                                                    id="xalatYoq{{ $item->id }}" value="true" name="xalat_yoq">
+                                                                <label class="form-check-label" for="xalatYoq{{ $item->id }}">
                                                                     Xalat yo'q
                                                                 </label>
                                                             </div>
@@ -118,8 +118,8 @@
                                                             <div class="form-check form-check-inline">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        id="lokatsiya" value="true" name="lokatsiya_notogri">
-                                                                    <label class="form-check-label" for="lokatsiya">
+                                                                        id="lokatsiya{{ $item->id }}" value="true" name="lokatsiya_notogri">
+                                                                    <label class="form-check-label" for="lokatsiya{{ $item->id }}">
                                                                         Lokatsiya noto'g'ri
                                                                     </label>
                                                                 </div>
@@ -144,7 +144,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="tab-pane show active" id="solid-rounded-justified-tab2">
+                        <div class="tab-pane " id="solid-rounded-justified-tab2">
                             <div class="btn-group d-flex justify-content-end">
                                 <div class="row">
                                     <div class="col-md-12" align="center">
@@ -229,22 +229,11 @@
                                                             <button type="button"
                                                                 class="btn btn-block btn-outline-info active">Tasdiqlangan
                                                             </button>
-                                                        @elseif(json_decode($item->admin_check)->check == 'robe')
-                                                            <button type="button"
-                                                                class="btn btn-block btn-outline-info active">Xalati
-                                                                yoq</button>
-                                                        @elseif(json_decode($item->admin_check)->check == 'code')
-                                                            <button type="button"
-                                                                class="btn btn-block btn-outline-info active">Kun soni
-                                                                yoq</button>
-                                                        @elseif(json_decode($item->admin_check)->check == 'card')
-                                                            <button type="button"
-                                                                class="btn btn-block btn-outline-info active">Beyjik
-                                                                yoq yoq</button>
                                                         @else
                                                             <button type="button"
-                                                                class="btn btn-block btn-outline-info active">Lokatsiya
-                                                                yoq</button>
+                                                                class="btn btn-block btn-outline-info active">
+                                                                {{ json_decode($item->admin_check)->check }}
+                                                            </button>
                                                         @endif
                                                     </div>
                                                 </div>

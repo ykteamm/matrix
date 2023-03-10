@@ -62,48 +62,53 @@ class ToolzController extends Controller
     public function adminCheckOpenSmena(Request $request)
     {
         $fine = 0;
-        $msg = '';
+        $error = '';
         $inputs = $request->all();
-        $phone_num = DB::table('tg_user')->where('id', $request->input('user_id'))->get();
-        $phone = $phone_num[0]->phone_number;
-        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh']);
+        $izoh = $request->input('izoh');
+        // $phone = DB::table('tg_user')->where('id', $request->input('test_id'))->first()->phone_number;
+        $user = DB::table('tg_user')->where('id', $request->input('user_id'))->first();
+        $phone = $user->phone_number;
+        $message = "Hurmatli " . substr($user->last_name, 0, 1) . "." . substr($user->first_name, 0, 1) . "\n";
+        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh'], $inputs['test_id']);
         foreach ($inputs as $key => $value) {
             if ($key === 'kun_soni' || $key === 'lokatsiya_notogri') {
                 $this->shiftRepository->delete($request->input('shift_id'));
-                $this->smsRepository->sendSMS(substr($phone, 1), "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
-                $this->smsRepository->sendSMS('998990821015', "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
+                $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
+                $this->smsRepository->sendSMS('998990821015', $message . "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
                 return back();
             } else {
                 $fine += static::MIN_FINE;
-                $msg .= static::ERRORS[$key] . '. ';
+                $error .= static::ERRORS[$key] . '. ';
             }
         }
-        if ($fine !== 0 && $msg !== '') {
-            $this->shiftRepository->setDetail($fine, $request->input('izoh'), $request->input('user_id'), $msg);
-            $this->smsRepository->sendSMS(substr($phone, 1), $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
-            $this->smsRepository->sendSMS('998990821015', $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+        if ($fine !== 0 && $error !== '') {
+            $this->shiftRepository->setDetail($fine, $izoh, $request->input('user_id'), $error);
+            $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+            $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
-        $this->shiftRepository->update($request->input('shift_id'), $msg);
+        $this->shiftRepository->update($request->input('shift_id'), $error);
         return back();
     }
     public function adminCheckCloseSmena(Request $request)
     {
         $fine = 0;
-        $msg = '';
+        $error = '';
         $inputs = $request->all();
-        $phone_num = DB::table('tg_user')->where('id', $request->input('user_id'))->get();
-        $phone = $phone_num[0]->phone_number;
-        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh']);
+        $izoh = $request->input('izoh');
+        $phone = DB::table('tg_user')->where('id', $request->input('test_id'))->first()->phone_number;
+        $user = DB::table('tg_user')->where('id', $request->input('user_id'))->first();
+        $message = "Hurmatli " . substr($user->last_name, 0, 1) . "." . substr($user->first_name, 0, 1) . "\n";
+        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh'], $inputs['test_id']);
         foreach ($inputs as $key => $value) {
             $fine += static::MIN_FINE;
-            $msg .= static::ERRORS[$key] . '. ';
+            $error .= static::ERRORS[$key] . '. ';
         }
-        if ($fine !== 0 && $msg !== '') {
-            $this->shiftRepository->setDetail($fine, $request->input('izoh'), $request->input('user_id'), $msg);
-            $this->smsRepository->sendSMS(substr($phone, 1), $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
-            $this->smsRepository->sendSMS('998990821015', $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+        if ($fine !== 0 && $error !== '') {
+            $this->shiftRepository->setDetail($fine, $izoh, $request->input('user_id'), $error);
+            $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+            $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
-        $this->shiftRepository->update($request->input('shift_id'), $msg);
+        $this->shiftRepository->update($request->input('shift_id'), $error);
         return back();
     }
 
@@ -137,7 +142,7 @@ class ToolzController extends Controller
         }
         return view('toolz.king-sold-history', compact('solds', 'host', 'date', 'paginated'));
     }
-    
+
     public function kingSoldAnsver(Request $request)
     {
         $order_id = KingSold::find($request->id)->order_id;
