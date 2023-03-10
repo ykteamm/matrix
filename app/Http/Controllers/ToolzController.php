@@ -64,7 +64,8 @@ class ToolzController extends Controller
         $fine = 0;
         $msg = '';
         $inputs = $request->all();
-        $phone = DB::table('tg_user')->where('id', $request->input('user_id'))->get()->phone_number;
+        $phone_num = DB::table('tg_user')->where('id', $request->input('user_id'))->get();
+        $phone = $phone_num[0]->phone_number;
         unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh']);
         foreach ($inputs as $key => $value) {
             if ($key === 'kun_soni' || $key === 'lokatsiya_notogri') {
@@ -90,7 +91,8 @@ class ToolzController extends Controller
         $fine = 0;
         $msg = '';
         $inputs = $request->all();
-        $phone = DB::table('tg_user')->where('id', $request->input('user_id'))->first()->phone_number;
+        $phone_num = DB::table('tg_user')->where('id', $request->input('user_id'))->get();
+        $phone = $phone_num[0]->phone_number;
         unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh']);
         foreach ($inputs as $key => $value) {
             $fine += static::MIN_FINE;
