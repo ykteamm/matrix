@@ -27,11 +27,23 @@ class ElchilarService
             ->join('tg_user','tg_user.rol_id','tg_positions.id')
             ->first();
         $pos=json_decode($positions->position_json);
+
+        // $get_work_user = User::where('status',1)->pluck('id')->toArray();
+
+        $yes_user_id = DB::table('tg_productssold')
+                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
+                    ->whereDate('tg_productssold.created_at','>=',date('Y-m',strtotime($month)).'-01')
+                    ->whereDate('tg_productssold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                    ->groupBy('tg_user.id')->pluck('id')->toArray();
+        // $yes_user_id = array_unique(array_merge($get_work_user,$sold_work_user));
+
+        // dd($sold_work_user);
         if(isset($pos->region)){
             if($regions == 0 || $regions == 1)
             {
                 $elchi = User::with('pharmacy')
-                // ->where('tg_user.status',1)
+                ->whereIn('tg_user.id',$yes_user_id)
                 ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id')
@@ -39,7 +51,7 @@ class ElchilarService
             }else
             {
                 $elchi = User::with('pharmacy')
-                // ->where('tg_user.status',1)
+                ->whereIn('tg_user.id',$yes_user_id)
                 ->whereIn('tg_region.id',$regions)
                 ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
@@ -69,12 +81,12 @@ class ElchilarService
             }
             $elchi = User::with('pharmacy')
                 // ->where('tg_user.status',1)
+                ->whereIn('tg_user.id',$yes_user_id)
                 ->whereIn('tg_user.region_id',$reg)
                 ->select('tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->orderBy('tg_region.side','ASC')->get();
         }
-        // dd($elchi);
         $elchi_work=[];
 
         $elchi_prognoz=[];
