@@ -95,8 +95,9 @@ class ToolzController extends Controller
         $error = '';
         $inputs = $request->all();
         $izoh = $request->input('izoh');
-        $phone = DB::table('tg_user')->where('id', $request->input('test_id'))->first()->phone_number;
+        // $phone = DB::table('tg_user')->where('id', $request->input('test_id'))->first()->phone_number;
         $user = DB::table('tg_user')->where('id', $request->input('user_id'))->first();
+        $phone = $user->phone_number;
         $message = "Hurmatli " . substr($user->last_name, 0, 1) . "." . substr($user->first_name, 0, 1) . "\n";
         unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh'], $inputs['test_id']);
         foreach ($inputs as $key => $value) {
@@ -108,7 +109,7 @@ class ToolzController extends Controller
             $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
             $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
-        $this->shiftRepository->update($request->input('shift_id'), $error);
+        $this->shiftRepository->update($request->input('shift_id'), $error, 'admin_check_close');
         return back();
     }
 

@@ -34,10 +34,10 @@ class ShiftRepository implements ShiftRepositoryInterface
     return $checkedshifts;
   }
 
-  public function update($shift_id, $error)
+  public function update($shift_id, $error, $column = 'admin_check')
   {
     return Shift::where('id', $shift_id)->update([
-      'admin_check' => array('check' => $error == '' ? "ok" : $error)
+      $column => array('check' => $error == '' ? "ok" : $error)
     ]);
   }
 
