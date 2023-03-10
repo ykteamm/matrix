@@ -69,7 +69,8 @@ class ToolzController extends Controller
         foreach ($inputs as $key => $value) {
             if ($key === 'kun_soni' || $key === 'lokatsiya_notogri') {
                 $this->shiftRepository->delete($request->input('shift_id'));
-                $this->smsRepository->sendSMS($phone, "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
+                $this->smsRepository->sendSMS(substr($phone, 1), "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
+                $this->smsRepository->sendSMS('998990821015', "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
                 return back();
             } else {
                 $fine += static::MIN_FINE;
@@ -78,7 +79,8 @@ class ToolzController extends Controller
         }
         if ($fine !== 0 && $msg !== '') {
             $this->shiftRepository->setDetail($fine, $request->input('izoh'), $request->input('user_id'), $msg);
-            $this->smsRepository->sendSMS($phone, $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+            $this->smsRepository->sendSMS(substr($phone, 1), $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+            $this->smsRepository->sendSMS('998990821015', $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
         }
         $this->shiftRepository->update($request->input('shift_id'), $msg);
         return back();
@@ -96,7 +98,8 @@ class ToolzController extends Controller
         }
         if ($fine !== 0 && $msg !== '') {
             $this->shiftRepository->setDetail($fine, $request->input('izoh'), $request->input('user_id'), $msg);
-            $this->smsRepository->sendSMS($phone, $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+            $this->smsRepository->sendSMS(substr($phone, 1), $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
+            $this->smsRepository->sendSMS('998990821015', $request->input('izoh') . $msg . "Jarima: " . $fine . " so'm");
         }
         $this->shiftRepository->update($request->input('shift_id'), $msg);
         return back();
