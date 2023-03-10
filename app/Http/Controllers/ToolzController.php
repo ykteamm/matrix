@@ -71,15 +71,14 @@ class ToolzController extends Controller
         $message = "Hurmatli " . substr($user->last_name, 0, 1) . "." . substr($user->first_name, 0, 1) . "\n";
         unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh'], $inputs['test_id']);
         foreach ($inputs as $key => $value) {
-            if ($key === 'kun_soni' || $key === 'lokatsiya_notogri') {
-                $this->shiftRepository->delete($request->input('shift_id'));
-                $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
-                $this->smsRepository->sendSMS('998990821015', $message . "Sizning hisobotingiz qabul qilinmadi. Qaytadan smena oching");
-                return back();
-            } else {
-                $fine += static::MIN_FINE;
-                $error .= static::ERRORS[$key] . '. ';
-            }
+            $fine += static::MIN_FINE;
+            $error .= static::ERRORS[$key] . '. ';
+        }
+        if (isset($inputs['kun_soni']) || isset($inputs['lokatsiya_notogri'])) {
+            $this->shiftRepository->delete($request->input('shift_id'));
+            $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: ".$error);
+            $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
+            return back();
         }
         if ($fine !== 0 && $error !== '') {
             $this->shiftRepository->setDetail($fine, $izoh, $request->input('user_id'), $error);
