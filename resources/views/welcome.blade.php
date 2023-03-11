@@ -139,10 +139,12 @@
                            <button onclick="yashir()" class="btn btn-primary" >Vazifa berish</button>
                        </div> --}}
                        <div>
-                        <button onclick="premya()" class="btn btn-primary" >Premya va shtraf qo'yish</button>
+                        <div class="row mt-5">
+                           <button onclick="premya()" class="col-12 mb-3 btn btn-primary" >Premya va shtraf qo'yish</button>
+                           <button onclick="premyashtraf()" class="col-12 mb-3 btn btn-primary" >Premya va shtraf ko'rish</button>
+                        </div>
                     </div>
                    </div>
-                   
                     <div class="row yashir" style="display: none">
                         <div class="col-12">
                             <form action="{{route('task.store')}}" method="post">
@@ -192,7 +194,50 @@
                        </div>
                    </form>
                </div>
-           </div>
+           
+            </div>
+               <div class="premyashtraf row" style="display: none">
+                  <div class="col-12">                  
+                  <div class="table-responsive">
+                     <table class="table">
+                        <thead>
+                           <tr>
+                              <th>#</th>
+                              <th>Price</th>
+                              <th>Admin</th>
+                              <th>Message</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach($premyashtraf as $prem)
+                              <tr>
+                                 <td>
+                                    {{ $prem->id }}
+                                 </td>
+                                 <td>
+                                    @if($prem->status == "2")
+                                    <span class="btn btn-danger">
+                                       {{ $prem->price }}
+                                    </span>
+                                    @else
+                                    <span class="btn btn-success">
+                                       {{ $prem->price }}
+                                    </span>
+                                    @endif
+                                 </td>
+                                 <td>
+                                    {{ $prem->first_name }}
+                                 </td>
+                                 <td>
+                                    {{ $prem->message }}
+                                 </td>
+                              </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
           </div>
        </div>
     </div>
@@ -1312,6 +1357,17 @@
 
       function premya(){
            let a=document.querySelectorAll('.premya');
+           a.forEach(e=>{
+               if(e.style.display=='none') {
+                   e.style.display = ''
+               }else{
+                   e.style.display='none';
+               }
+           })
+       }
+
+       function premyashtraf(){
+         let a=document.querySelectorAll('.premyashtraf');
            a.forEach(e=>{
                if(e.style.display=='none') {
                    e.style.display = ''

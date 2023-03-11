@@ -1089,7 +1089,11 @@ class HomeController extends Controller
 
         $tasks=DB::table('tg_task')->where('elchi_id',$id)->get();
 //        dd($tasks);
-        return view('welcome',compact('tasks','step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
+        $premyashtraf = DB::table('tg_details')
+        ->select('tg_details.*', 'tg_user.first_name')
+        ->leftJoin('tg_user', 'tg_user.id', 'tg_details.admin_id')
+        ->where('user_id', $id)->get();
+        return view('welcome',compact('premyashtraf','tasks','step3_get_user','step3_get','step1_get','pharmacy_user','pharmacy','allweekplan','plan_product','numbers','allplans','ps','plan','step_array_grade_all','step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
 
         // return view('welcome',compact('step_array','pill_array','medicineall','allquestion','devicegrade','allavg','d_for_user','d_array','altgardes','quearray','elchi','medic','cateory','category','sum','dateText'));
         // return $id;
