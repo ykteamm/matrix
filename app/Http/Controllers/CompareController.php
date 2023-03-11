@@ -23,7 +23,6 @@ class CompareController extends Controller
 
     public function show($pharmacy_id,$month)
     {
-
         $ser=new ElchilarService();
         $months=$ser->month();
         $endofmonth=$ser->endmonth($month,$months);
@@ -35,7 +34,6 @@ class CompareController extends Controller
             ->orderBy('date_time')
             ->groupBy('date_time')->get();
         $med=Medicine::orderBy('id')->get();
-
         $arr_sold=[];
         $i=0;
         $stocks=[];
@@ -65,11 +63,7 @@ class CompareController extends Controller
                 $a=$s->date_time;
             }
             else{
-                $a=$s->date_time;
-
                 $st=Stock::where('date_time',$a)->get();
-                return $st;
-
                 foreach ($st as $item){
                     if($item->number==null){
                         $arr_qol[$item->medicine_id]=0;

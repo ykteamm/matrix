@@ -81,6 +81,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('/capitan/{month}',[HomeController::class,'capitan'])->name('capitan');
     Route::get('/search',[HomeController::class,'filter']);
 Route::get('elchi/{id}/{time?}', [HomeController::class,'elchi'])->name('elchi');
+Route::post('elchi/premya', [HomeController::class, 'markPremya'])->name('premya.store');
 Route::get('elchi-list', [HomeController::class,'elchiList'])->name('elchi-list');
 Route::get('admin-list', [UserController::class,'adminList'])->name('admin-list');
 Route::get('rm-list', [UserController::class,'rmList'])->name('rm-list');

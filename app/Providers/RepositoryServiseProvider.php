@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Interfaces\Repositories\HelperRepository as HelperRepositoryInterface;
 use App\Interfaces\Repositories\SMSRepository as SMSRepositoryInterface;
 use App\Interfaces\Repositories\ShiftRepository as ShiftRepositoryInterface;
+use App\Repositories\HelperRepository;
 use App\Repositories\ShiftRepository;
 use App\Repositories\SMSRepository;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,6 @@ class RepositoryServiseProvider extends ServiceProvider
     {
         $this->app->bind(SMSRepositoryInterface::class, SMSRepository::class);
         $this->app->bind(ShiftRepositoryInterface::class, ShiftRepository::class);
-
+        $this->app->bind(HelperRepositoryInterface::class, HelperRepository::class);
     }
 }

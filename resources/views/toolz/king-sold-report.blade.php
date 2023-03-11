@@ -160,7 +160,7 @@
                                     $idd = 0;
                                     $totalSum = 0;
                                 @endphp
-                                @foreach ($total as $key => $regions)
+                                @foreach ($total as $key => $regkingSol)
                                     @php
                                         $idd += 1;
                                     @endphp
@@ -177,7 +177,7 @@
                                                     @php
                                                         $sum = 0;
                                                     @endphp
-                                                    @foreach ($regions as $item)
+                                                    @foreach ($regkingSol as $item)
                                                         @php
                                                             $sum += $item->count;
                                                         @endphp
@@ -206,7 +206,7 @@
                                                             </thead>
 
                                                             <tbody>
-                                                                @foreach ($regions as $item)
+                                                                @foreach ($regkingSol as $item)
                                                                     <tr>
                                                                         <td>{{ $item->f }} </td>
                                                                         <td>{{ $item->l }} </td>

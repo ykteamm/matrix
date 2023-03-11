@@ -24,13 +24,41 @@
                                             <div class="col-md-4">
                                                 <div class="mt-4">
                                                     @if ($host == 'mat')
-                                                        <img id="avatarImg" height="500px" class="avatar-img"
-                                                            src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
-                                                            alt="Profile Image">
+                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
+                                                            <img width="500" class="avatar-img"
+                                                                src="https://jang.novatio.uz/images/users/close_smena/{{ $item->open_image }}"
+                                                                alt="item image">
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
+                                                                        <div class="smenaImage">
+                                                                            <img
+                                                                            src="https://jang.novatio.uz/images/users/close_smena/{{ $item->open_image }}"
+                                                                            alt="Message image">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @else
-                                                        <img id="avatarImg" height="500px" class="avatar-img"
-                                                            src="https://jang.novatio.uz/images/users/passport/1673874613.jpg"
-                                                            alt="Profile Image">
+                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
+                                                            <img width="500" class="avatar-img"
+                                                                src="https://jang.novatio.uz/images/users/close_smena/{{ $item->open_image }}"
+                                                                alt="item image">
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
+                                                                        <div class="smenaImage">
+                                                                            <img
+                                                                            src="https://jang.novatio.uz/images/users/close_smena/{{ $item->open_image }}"
+                                                                            alt="Message image">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -168,13 +196,41 @@
                                             <div class="col-md-4">
                                                 <div class="mt-4">
                                                     @if ($host == 'mat')
-                                                        <img id="avatarImg" height="500px" class="avatar-img"
-                                                            src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
-                                                            alt="Profile Image">
+                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
+                                                            <img width="500" class="avatar-img"
+                                                                src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
+                                                                alt="item image">
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
+                                                                        <div class="smenaImage">
+                                                                            <img
+                                                                            src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
+                                                                            alt="Message image">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @else
-                                                        <img id="avatarImg" height="500px" class="avatar-img"
-                                                            src="https://jang.novatio.uz/images/users/passport/1673874613.jpg"
-                                                            alt="Profile Image">
+                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
+                                                            <img width="500" class="avatar-img"
+                                                                src="https://jang.novatio.uz/images/users/close_smena/{{ $item->open_image }}"
+                                                                alt="item image">
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
+                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
+                                                                        <div class="smenaImage">
+                                                                            <img
+                                                                            src="https://jang.novatio.uz/images/users/close_smena/{{ $item->open_image }}"
+                                                                            alt="Message image">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </div>

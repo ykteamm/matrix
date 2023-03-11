@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\UserSystemInfo;
+use App\Interfaces\Repositories\HelperRepository;
 use App\Models\Plan;
 use App\Models\PlanWeek;
 use App\Models\ProductSold;
@@ -46,9 +47,14 @@ class HomeController extends Controller
      * @return void
      */
     public $service;
-    public function __construct(ElchilarService $service)
+    private HelperRepository $helper;
+    public function __construct(
+        ElchilarService $service,
+        HelperRepository $helper
+    )
     {
         $this->service=$service;
+        $this->helper = $helper;
     }
     /**
      * Show the application dashboard.
@@ -462,7 +468,7 @@ class HomeController extends Controller
         $item=$this->service->plan($elchi,$month,$endofmonth);
         $plan=$item->plan;
         $plan_day=$item->planday;
-        $encane=$this->service->encane($elchi);
+        $encane=$this->service->encane($elchi, $month);
         $days=$this->service->checkCalendar($month,$endofmonth);
         $sold=$this->service->sold($elchi,$days);
         $haftalik=$this->service->haftalik($days,$sold,$elchi);
@@ -496,6 +502,12 @@ class HomeController extends Controller
         $medicine = DB::table('tg_medicine')->get();
         $category = DB::table('tg_category')->get();
         return view('filter',compact('regions','medicine','users','category'));
+    }
+
+    public function markPremya(Request $request)
+    {
+        $this->helper->setDetail($request->summa, $request->message, $request->user_id, '', $request->premyashtraf);
+        return redirect()->back();
     }
     public function elchi($id,$time)
     {

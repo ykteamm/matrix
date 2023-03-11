@@ -132,14 +132,17 @@
 
                         @endif
                      </div>
-                       <div>
+                       {{-- <div>
                            <button onclick="yashir2()" class="btn btn-primary" >Vazifalar</button>
                        </div>
                        <div>
                            <button onclick="yashir()" class="btn btn-primary" >Vazifa berish</button>
-                       </div>
-
+                       </div> --}}
+                       <div>
+                        <button onclick="premya()" class="btn btn-primary" >Premya va shtraf qo'yish</button>
+                    </div>
                    </div>
+                   
                     <div class="row yashir" style="display: none">
                         <div class="col-12">
                             <form action="{{route('task.store')}}" method="post">
@@ -159,15 +162,37 @@
                             </form>
                         </div>
                     </div>
-
-
-
-
                 </div>
-
-
              </div>
-
+             <div class="row premya" style="display: none">
+               <div class="col-12">
+                   <form action="{{route('premya.store')}}" method="post">
+                       @csrf
+                       <input name="user_id" style="display: none" value="{{$elchi->id}}">
+                       <div class="form-group">
+                          <label class="m-2" for="exampleFormControlTextarea1">Xabar</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" name="message" required  rows="2" cols="20"></textarea>
+                       </div>
+                       <div class="row">
+                           <div class="col-6">
+                              <label for="summa">Summa</label>
+                              <input class="form-control form-control-sm" name="summa" type="number">
+                           </div>
+                           <div class="col-6 d-flex align-items-center justify-content-around">
+                              <div class="form-group">
+                                 <label for="premya">Premya</label>
+                                 <input class="form-control form-control-sm" value="1" type="radio" name="premyashtraf">
+                              </div>
+                              <div class="form-group">
+                                 <label for="premya">Jarima</label>
+                                 <input class="form-control form-control-sm" value="2" type="radio" name="premyashtraf">
+                              </div>
+                              <button type="submit" class="btn btn-success align-self-end">Saqlash</button>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+           </div>
           </div>
        </div>
     </div>
@@ -1284,6 +1309,18 @@
       }
    </script>
    <script>
+
+      function premya(){
+           let a=document.querySelectorAll('.premya');
+           a.forEach(e=>{
+               if(e.style.display=='none') {
+                   e.style.display = ''
+               }else{
+                   e.style.display='none';
+               }
+           })
+       }
+
        function yashir(){
            let a=document.querySelectorAll('.yashir');
            a.forEach(e=>{
@@ -1293,7 +1330,6 @@
                    e.style.display='none';
                }
            })
-
        }
        function yashir2(){
            let a=document.querySelectorAll('.yashir2');
