@@ -15,70 +15,126 @@ class KingSoldSearchService
 {
     public function kingSoldSearch($user_id,$region_id,$date)
     {
-        $user_all_id = $this->getUserID($user_id);
+        // $user_all_id = $this->getUserID($user_id);
+        $dates = $this->day($date);
+        $region_all_id = $this->getRegionId($region_id);
+
+        if($user_id == 'all')
+        {
+            $king_array = $this->kingSoldSearchUserAll($region_id,$date);
+        }else{
+            $king_sold = DB::table('tg_king_sold')
+                        ->selectRaw('count(tg_king_sold.id) as count')
+                        ->where('tg_king_sold.admin_check',1)
+                        ->where('tg_king_sold.status',1)
+                        ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
+                        ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
+                        ->join('tg_order','tg_order.id','tg_king_sold.order_id')
+                        ->join('tg_user','tg_user.id','tg_order.user_id')
+                        ->join('tg_region','tg_region.id','tg_user.region_id')
+                        ->where('tg_user.id',$user_id)
+                        // ->whereIn('tg_region.id',$region_all_id)
+                        ->leftjoin('liga_king_users','liga_king_users.user_id','tg_user.id')
+                        ->get();
+                        if($king_sold[0]->count == null)
+                        {
+                            $count = 0;
+                        }else{
+                            $count = $king_sold[0]->count;
+                        }
+
+                        
+                        $king_sold05 = DB::table('tg_king_sold')
+                        ->selectRaw('count(tg_king_sold.id) as count')
+                        ->where('tg_king_sold.admin_check',1)
+                        ->where('tg_king_sold.status',2)
+                        ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
+                        ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
+                        ->join('tg_order','tg_order.id','tg_king_sold.order_id')
+                        ->join('tg_user','tg_user.id','tg_order.user_id')
+                        ->join('tg_region','tg_region.id','tg_user.region_id')
+                        ->where('tg_user.id',$user_id)
+                        // ->whereIn('tg_region.id',$region_all_id)
+                        ->leftjoin('liga_king_users','liga_king_users.user_id','tg_user.id')
+                        ->get();
+                        if($king_sold05[0]->count == null)
+                        {
+                            $count05 = 0;
+                        }else{
+                            $count05 = $king_sold05[0]->count;
+                        }
+                        $all_count = $count + $count05/2;
+                        if($all_count != 0)
+                        {
+                            $user = User::find($user_id);
+                            $liga_id = DB::table('liga_king_users')->where('user_id',$user_id)->first();
+                            $region = Region::find($user->region_id);
+                            $king_array[] = array('user_id' => $user->id,'lid' => $liga_id->liga_id,'f' => $user->first_name,'l' => $user->last_name,'count' => $all_count,'r' => $region->name);
+                        }
+        }
+        return $king_array;
+    }
+    public function kingSoldSearchUserAll($region_id,$date)
+    {
         $region_all_id = $this->getRegionId($region_id);
         $dates = $this->day($date);
+            $liga_user_id = DB::table('liga_king_users')->get();
+                    $king_array=[];
+                    foreach ($liga_user_id as $key => $value) {
+                        $king_sold = DB::table('tg_king_sold')
+                        ->selectRaw('count(tg_king_sold.id) as count')
+                        ->where('tg_king_sold.admin_check',1)
+                        ->where('tg_king_sold.status',1)
+                        ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
+                        ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
+                        ->join('tg_order','tg_order.id','tg_king_sold.order_id')
+                        ->join('tg_user','tg_user.id','tg_order.user_id')
+                        ->join('tg_region','tg_region.id','tg_user.region_id')
+                        ->where('tg_user.id',$value->user_id)
+                        // ->whereIn('tg_region.id',$region_all_id)
+                        ->leftjoin('liga_king_users','liga_king_users.user_id','tg_user.id')
+                        ->get();
+                        if($king_sold[0]->count == null)
+                        {
+                            $count = 0;
+                        }else{
+                            $count = $king_sold[0]->count;
+                        }
+
+                        
+                        $king_sold05 = DB::table('tg_king_sold')
+                        ->selectRaw('count(tg_king_sold.id) as count')
+                        ->where('tg_king_sold.admin_check',1)
+                        ->where('tg_king_sold.status',2)
+                        ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
+                        ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
+                        ->join('tg_order','tg_order.id','tg_king_sold.order_id')
+                        ->join('tg_user','tg_user.id','tg_order.user_id')
+                        ->join('tg_region','tg_region.id','tg_user.region_id')
+                        ->where('tg_user.id',$value->user_id)
+                        // ->whereIn('tg_region.id',$region_all_id)
+                        ->leftjoin('liga_king_users','liga_king_users.user_id','tg_user.id')
+                        ->get();
+                        if($king_sold05[0]->count == null)
+                        {
+                            $count05 = 0;
+                        }else{
+                            $count05 = $king_sold05[0]->count;
+                        }
+                        $all_count = $count + $count05/2;
+                        if($all_count != 0)
+                        {
+                            $user = User::find($value->user_id);
+                            $region = Region::find($user->region_id);
+                            $king_array[] = array('user_id' => $user->id,'lid' => $value->liga_id,'f' => $user->first_name,'l' => $user->last_name,'count' => $all_count,'r' => $region->name);
+                        }
+                    
+                    }
+                    array_multisort(array_column($king_array, 'count'),SORT_DESC, $king_array);
+                    
+                    // dd($)
         
-
-        $king_sold = DB::table('tg_king_sold')
-                    ->selectRaw('count(tg_king_sold.id) as count,tg_order.user_id,tg_user.first_name as f,tg_user.last_name as l,tg_region.name as r,liga_king_users.liga_id as lid')
-                    ->where('tg_king_sold.admin_check',1)
-                    ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
-                    ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
-                    ->join('tg_order','tg_order.id','tg_king_sold.order_id')
-                    ->join('tg_user','tg_user.id','tg_order.user_id')
-                    ->join('tg_region','tg_region.id','tg_user.region_id')
-                    ->whereIn('tg_user.id',$user_all_id)
-                    ->whereIn('tg_region.id',$region_all_id)
-                    ->leftjoin('liga_king_users','liga_king_users.user_id','tg_user.id')
-                    ->orderBy('count','DESC')
-                    ->groupBy('tg_order.user_id','f','l','r','lid')
-                    ->get();
-
-        $sharq = DB::table('tg_king_sold')
-                    ->selectRaw('count(tg_king_sold.id) as count')
-                    ->addSelect(DB::raw('DATE(tg_king_sold.created_at) as date'))
-                    ->where('tg_king_sold.admin_check',1)
-                    ->where('tg_region.side',2)
-                    // ->whereDate('tg_king_sold.created_at','>=','2023-02-04')
-                    // ->whereDate('tg_king_sold.created_at','<=',date('Y-m-d'))
-                    ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
-                    ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
-                    ->join('tg_order','tg_order.id','tg_king_sold.order_id')
-                    ->join('tg_user','tg_user.id','tg_order.user_id')
-                    ->join('tg_region','tg_region.id','tg_user.region_id')
-                    ->orderBy('date','ASC')
-                    ->groupBy('date')
-                    ->get();
-
-        $garb = DB::table('tg_king_sold')
-                    ->selectRaw('count(tg_king_sold.id) as count')
-                    ->addSelect(DB::raw('DATE(tg_king_sold.created_at) as date'))
-                    ->where('tg_king_sold.admin_check',1)
-                    ->where('tg_region.side',1)
-                    // ->whereDate('tg_king_sold.created_at','>=','2023-02-04')
-                    // ->whereDate('tg_king_sold.created_at','<=',date('Y-m-d'))
-                    ->whereDate('tg_king_sold.created_at','>=',$dates->date_begin)
-                    ->whereDate('tg_king_sold.created_at','<=',$dates->date_end)
-                    ->join('tg_order','tg_order.id','tg_king_sold.order_id')
-                    ->join('tg_user','tg_user.id','tg_order.user_id')
-                    ->join('tg_region','tg_region.id','tg_user.region_id')
-                    ->orderBy('date','ASC')
-                    ->groupBy('date')
-                    ->get();
-
-
-        $all =  array_reduce($king_sold->toArray(), function($sum, $one) {
-            return $sum += $one->count;
-        });
-        $garbbb =  array_reduce($garb->toArray(), function($sum, $one) {
-            return $sum += $one->count;
-        });
-        $sharqq =  array_reduce($sharq->toArray(), function($sum, $one) {
-            return $sum += $one->count;
-        });
-        // dd($all, $garbbb, $sharqq);
-        return $king_sold;
+        return $king_array;
     }
 
     public function getUserId($user_id)
