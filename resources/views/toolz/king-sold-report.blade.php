@@ -23,7 +23,7 @@
                                                 <a href="#" onclick="region('Hammasi','all')" class="dropdown-item"
                                                     id="tgregion"> Hammasi </a>
                                                 @foreach ($regions as $region)
-                                                    <a href="#" onclick="region(`{{ $region->name }}`,``)"
+                                                    <a href="#" onclick="region(`{{ $region->name }}`,`{{ $region->id }}`)"
                                                         class="dropdown-item" id="tgregion"> {{ $region->name }} </a>
                                                 @endforeach
                                             </div>
@@ -129,7 +129,7 @@
                                 $total = [];
                                 foreach ($regions as $reg) {
                                     foreach ($king_solds as $king) {
-                                        if ($reg->name == $king->r) {
+                                        if ($reg->name == $king['r']) {
                                             if (!isset($total[$reg->name])) {
                                                 $total[$reg->name] = [];
                                             }
@@ -143,10 +143,10 @@
                                     $sum1 = 0;
                                     $sum2 = 0;
                                     foreach ($a as $i) {
-                                        $sum1 += $i->count;
+                                        $sum1 += $i['count'];
                                     }
                                     foreach ($b as $j) {
-                                        $sum2 += $j->count;
+                                        $sum2 += $j['count'];
                                     }
                                     if ($sum1 == $sum2) {
                                         return 0;
@@ -160,7 +160,7 @@
                                     $idd = 0;
                                     $totalSum = 0;
                                 @endphp
-                                @foreach ($total as $key => $regkingSol)
+                                @foreach ($total as $key => $regions)
                                     @php
                                         $idd += 1;
                                     @endphp
@@ -177,9 +177,9 @@
                                                     @php
                                                         $sum = 0;
                                                     @endphp
-                                                    @foreach ($regkingSol as $item)
+                                                    @foreach ($regions as $item)
                                                         @php
-                                                            $sum += $item->count;
+                                                            $sum += $item['count'];
                                                         @endphp
                                                     @endforeach
                                                     @php
@@ -206,11 +206,11 @@
                                                             </thead>
 
                                                             <tbody>
-                                                                @foreach ($regkingSol as $item)
+                                                                @foreach ($regions as $item)
                                                                     <tr>
-                                                                        <td>{{ $item->f }} </td>
-                                                                        <td>{{ $item->l }} </td>
-                                                                        <td>{{ $item->count }} </td>
+                                                                        <td>{{ $item['f'] }} </td>
+                                                                        <td>{{ $item['l'] }} </td>
+                                                                        <td>{{ $item['count'] }} </td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
