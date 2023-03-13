@@ -216,7 +216,7 @@ Route::get('plan/{id}/edit', [PlanController::class,'edit'])->name('plan.edit');
 Route::get('plan/{id}/update-all', [PlanController::class,'updateAll'])->name('plan.update-all');
 Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
 Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
-Route::get('elchilar-kunlik/{month}/{region?}', [ElchilarController::class,'kunlik'])->name('elchilar');
+Route::get('elchilar-kunlik/{month}/{all_or_new?}/{climate?}/{region?}', [ElchilarController::class,'kunlik'])->name('elchilar');
 Route::get('user-control', [UserController::class,'index'])->name('user-control');
 Route::get('user-register', [UserController::class,'userRegister'])->name('user-register');
 Route::get('users-without-pharmacy', [UserController::class,'userWithoutPharmacy'])->name('users-without-pharmacy');
