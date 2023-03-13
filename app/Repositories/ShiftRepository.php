@@ -13,10 +13,10 @@ class ShiftRepository implements ShiftRepositoryInterface
   {
     return Shift::with('user', 'pharmacy', 'user.region')
       // ->whereDate('created_at', '>=', '2023-01-30')
-      // ->whereDate('created_at', '>=', '2023-03-7')
+      ->whereDate('created_at', '>=', '2023-03-7')
       ->where($column, NULL)
       ->where('active', $active)
-      ->orderBy('id', 'DESC')->limit(20)->get();
+      ->orderBy('id', 'DESC')->get();
   }
   public function checked($date, &$paginated, $column = 'admin_check', $active = 1)
   {
@@ -34,19 +34,16 @@ class ShiftRepository implements ShiftRepositoryInterface
     return $checkedshifts;
   }
 
-  public function update($shift_id, $columns = [],  $values = [])
+  public function update($shift_id, $values)
   {
-    if ($columns == 'admin_check' || $columns == 'admin_check_close') {
-      return Shift::where('id', $shift_id)->update([
-        $columns => array('check' => $values == '' ? "ok" : $values)
-      ]);
-    } else {
-      $updater = [];
-      for ($i = 0; $i < count($columns); $i++) {
-        $updater[$columns[$i]] = $values[$i];
-      }
-      return Shift::where('id', $shift_id)->update($updater);
-    }
+    return Shift::where('id', $shift_id)->update($values);
+  }
+
+  public function updateAdminCheck($shift_id, $error, $column = 'admin_check')
+  {
+    return Shift::where('id', $shift_id)->update([
+      $column => array('check' => $error == '' ? "ok" : $error)
+    ]);
   }
 
   public function delete($shift_id)

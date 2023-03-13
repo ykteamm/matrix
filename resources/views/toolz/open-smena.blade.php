@@ -1,17 +1,40 @@
-<style>
-    .smenaImage {
-        min-width: 90vw;
-        object-fit: contain;
-        min-height: 100vh;
-    }
-    .smenaImage img {
-        width: 90%;
-        max-height: 100vh;
-        object-fit: contain;
-    }
-</style>
 @extends('admin.layouts.app')
 @section('admin_content')
+    <style>
+        @media (max-width: 500px) {
+            img.smena-img {
+                text-align: center;
+                width: 90%;
+            }
+
+            .smena-image-detail {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .smena-image-detail img {
+                width: 98%;
+                max-height: 90vh;
+            }
+        }
+
+        @media (min-width: 500px) {
+            img.smena-img {
+                width: 350px;
+            }
+
+            .smena-image-detail {
+                width: 80vw;
+                height: 80vh;
+            }
+
+            .smena-image-detail img {
+                max-height: 100%;
+            }
+        }
+    </style>
     <div class="content main-wrapper">
         <div class="row gold-box">
             @include('admin.components.logo')
@@ -36,37 +59,45 @@
                                             <div class="col-md-4">
                                                 <div class="mt-4">
                                                     @if ($host == 'mat')
-                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
-                                                            <img width="500" class="avatar-img"
+                                                        <div class="btn d-flex justify-content-center d-md-inline"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal{{ $item->id }}">
+                                                            <img class="smena-img"
                                                                 src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                 alt="item image">
-                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
-                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered">
-                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
-                                                                        <div class="smenaImage">
-                                                                            <img
-                                                                            src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                                aria-hidden="true">
+                                                                <div
+                                                                    class="modal-dialog modal-dialog-centered d-md-flex justify-content-md-center">
+                                                                    <div class="smena-image-detail">
+                                                                        <button type="button"
+                                                                            class="close bg-white rounded p-2 d-none d-md-block"
+                                                                            data-dismiss="modal">&times;</button>
+                                                                        <img src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                             alt="Message image">
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
-                                                            <img width="500" class="avatar-img"
+                                                        <div class="btn d-flex justify-content-center d-md-inline"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal{{ $item->id }}">
+                                                            <img class="smena-img"
                                                                 src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                 alt="item image">
-                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
-                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered">
-                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
-                                                                        <div class="smenaImage">
-                                                                            <img
-                                                                            src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                                aria-hidden="true">
+                                                                <div
+                                                                    class="modal-dialog modal-dialog-centered d-md-flex justify-content-md-center">
+                                                                    <div class="smena-image-detail">
+                                                                        <button type="button"
+                                                                            class="close bg-white rounded p-2 d-none d-md-block"
+                                                                            data-dismiss="modal">&times;</button>
+                                                                        <img src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                             alt="Message image">
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -125,13 +156,17 @@
                                                     <div class="row">
                                                         <input type="text" class="d-none" name="shift_id"
                                                             value="{{ $item->id }}">
-                                                        <input type="text" class="d-none" name="test_id" value="{{ 4 }}">
-                                                        <input type="text" class="d-none" name="user_id" value="{{ $item->user_id }}">
+                                                        <input type="text" class="d-none" name="test_id"
+                                                            value="{{ 4 }}">
+                                                        <input type="text" class="d-none" name="user_id"
+                                                            value="{{ $item->user_id }}">
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="kunSoni{{ $item->id }}" value="true" name="kun_soni">
-                                                                <label class="form-check-label" for="kunSoni{{ $item->id }}">
+                                                                    id="kunSoni{{ $item->id }}" value="true"
+                                                                    name="kun_soni">
+                                                                <label class="form-check-label"
+                                                                    for="kunSoni{{ $item->id }}">
                                                                     Kun soni yo'q
                                                                 </label>
                                                             </div>
@@ -139,8 +174,10 @@
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="beyjikYoq{{ $item->id }}" value="true" name="beyjik_yoq">
-                                                                <label class="form-check-label" for="beyjikYoq{{ $item->id }}">
+                                                                    id="beyjikYoq{{ $item->id }}" value="true"
+                                                                    name="beyjik_yoq">
+                                                                <label class="form-check-label"
+                                                                    for="beyjikYoq{{ $item->id }}">
                                                                     Beyjik yo'q
                                                                 </label>
                                                             </div>
@@ -148,8 +185,10 @@
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="xalatYoq{{ $item->id }}" value="true" name="xalat_yoq">
-                                                                <label class="form-check-label" for="xalatYoq{{ $item->id }}">
+                                                                    id="xalatYoq{{ $item->id }}" value="true"
+                                                                    name="xalat_yoq">
+                                                                <label class="form-check-label"
+                                                                    for="xalatYoq{{ $item->id }}">
                                                                     Xalat yo'q
                                                                 </label>
                                                             </div>
@@ -158,8 +197,10 @@
                                                             <div class="form-check form-check-inline">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        id="lokatsiya{{ $item->id }}" value="true" name="lokatsiya_notogri">
-                                                                    <label class="form-check-label" for="lokatsiya{{ $item->id }}">
+                                                                        id="lokatsiya{{ $item->id }}" value="true"
+                                                                        name="lokatsiya_notogri">
+                                                                    <label class="form-check-label"
+                                                                        for="lokatsiya{{ $item->id }}">
                                                                         Lokatsiya noto'g'ri
                                                                     </label>
                                                                 </div>
@@ -207,37 +248,45 @@
                                             <div class="col-md-4">
                                                 <div class="mt-4">
                                                     @if ($host == 'mat')
-                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
-                                                            <img width="500" class="avatar-img"
-                                                                src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                        <div class="btn d-flex justify-content-center d-md-inline"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal{{ $item->id }}">
+                                                            <img class="smena-img"
+                                                                src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                 alt="item image">
-                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
-                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered">
-                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
-                                                                        <div class="smenaImage">
-                                                                            <img
-                                                                            src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                                aria-hidden="true">
+                                                                <div
+                                                                    class="modal-dialog modal-dialog-centered d-md-flex justify-content-md-center">
+                                                                    <div class="smena-image-detail">
+                                                                        <button type="button"
+                                                                            class="close bg-white rounded p-2 d-none d-md-block"
+                                                                            data-dismiss="modal">&times;</button>
+                                                                        <img src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                             alt="Message image">
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <div class="btn" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
-                                                            <img width="500" class="avatar-img"
-                                                                src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                        <div class="btn d-flex justify-content-center d-md-inline"
+                                                            data-toggle="modal"
+                                                            data-target="#exampleModal{{ $item->id }}">
+                                                            <img class="smena-img"
+                                                                src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                 alt="item image">
-                                                            <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
-                                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered">
-                                                                    <div class="modal-content d-flex justify-content-center align-items-center">
-                                                                        <div class="smenaImage">
-                                                                            <img
-                                                                            src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                            <div class="modal fade" id="exampleModal{{ $item->id }}"
+                                                                tabindex="-1" aria-labelledby="exampleModalLabel"
+                                                                aria-hidden="true">
+                                                                <div
+                                                                    class="modal-dialog modal-dialog-centered d-md-flex justify-content-md-center">
+                                                                    <div class="smena-image-detail">
+                                                                        <button type="button"
+                                                                            class="close bg-white rounded p-2 d-none d-md-block"
+                                                                            data-dismiss="modal">&times;</button>
+                                                                        <img src="https://jang.novatio.uz/images/users/open_smena/{{ $item->open_image }}"
                                                                             alt="Message image">
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
