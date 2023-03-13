@@ -80,7 +80,7 @@ class ToolzController extends Controller
         }
         if (isset($inputs['kun_soni']) || isset($inputs['lokatsiya_notogri'])) {
             $this->shiftRepository->update($request->input('shift_id'), ['active' => 0]);
-            $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
+            // $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             return back();
         }

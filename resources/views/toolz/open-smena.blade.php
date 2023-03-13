@@ -296,7 +296,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="mt-4">
-                                                    <h1>{{ $item->close_code }}</h1>
+                                                    <h1>{{ $item->open_code }}</h1>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
