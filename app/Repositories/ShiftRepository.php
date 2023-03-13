@@ -34,11 +34,19 @@ class ShiftRepository implements ShiftRepositoryInterface
     return $checkedshifts;
   }
 
-  public function update($shift_id, $error, $column = 'admin_check')
+  public function update($shift_id, $columns = [],  $values = [])
   {
-    return Shift::where('id', $shift_id)->update([
-      $column => array('check' => $error == '' ? "ok" : $error)
-    ]);
+    if ($columns == 'admin_check' || $columns == 'admin_check_close') {
+      return Shift::where('id', $shift_id)->update([
+        $columns => array('check' => $values == '' ? "ok" : $values)
+      ]);
+    } else {
+      $updater = [];
+      for ($i = 0; $i < count($columns); $i++) {
+        $updater[$columns[$i]] = $values[$i];
+      }
+      return Shift::where('id', $shift_id)->update($updater);
+    }
   }
 
   public function delete($shift_id)

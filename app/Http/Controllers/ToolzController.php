@@ -79,8 +79,8 @@ class ToolzController extends Controller
             $error .= static::ERRORS[$key] . '. ';
         }
         if (isset($inputs['kun_soni']) || isset($inputs['lokatsiya_notogri'])) {
-            $this->shiftRepository->delete($request->input('shift_id'));
-            $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: ".$error);
+            $this->shiftRepository->update($request->input('shift_id'), ['active'], [0]);
+            $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             return back();
         }
@@ -89,7 +89,7 @@ class ToolzController extends Controller
             $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
             $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
-        $this->shiftRepository->update($request->input('shift_id'), $error);
+        $this->shiftRepository->update($request->input('shift_id'), 'admin_check', $error);
         return back();
     }
     public function adminCheckCloseSmena(Request $request)
@@ -112,7 +112,7 @@ class ToolzController extends Controller
             $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
             $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
-        $this->shiftRepository->update($request->input('shift_id'), $error, 'admin_check_close');
+        $this->shiftRepository->update($request->input('shift_id'), 'admin_check_close', $error);
         return back();
     }
 
