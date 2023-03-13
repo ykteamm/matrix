@@ -63,7 +63,7 @@
                                                             data-toggle="modal"
                                                             data-target="#exampleModal{{ $item->id }}">
                                                             <img class="smena-img"
-                                                                src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                                src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
                                                                 alt="item image">
                                                             <div class="modal fade" id="exampleModal{{ $item->id }}"
                                                                 tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -74,7 +74,7 @@
                                                                         <button type="button"
                                                                             class="close bg-white rounded p-2 d-none d-md-block"
                                                                             data-dismiss="modal">&times;</button>
-                                                                        <img src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                                        <img src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
                                                                             alt="Message image">
                                                                     </div>
                                                                 </div>
@@ -85,7 +85,7 @@
                                                             data-toggle="modal"
                                                             data-target="#exampleModal{{ $item->id }}">
                                                             <img class="smena-img"
-                                                                src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                                src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
                                                                 alt="item image">
                                                             <div class="modal fade" id="exampleModal{{ $item->id }}"
                                                                 tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -96,7 +96,7 @@
                                                                         <button type="button"
                                                                             class="close bg-white rounded p-2 d-none d-md-block"
                                                                             data-dismiss="modal">&times;</button>
-                                                                        <img src="https://jang.novatio.uz/images/users/open_smena/{{ $item->close_image }}"
+                                                                        <img src="https://jang.novatio.uz/images/users/close_smena/{{ $item->close_image }}"
                                                                             alt="Message image">
                                                                     </div>
                                                                 </div>
