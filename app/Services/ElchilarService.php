@@ -49,7 +49,7 @@ class ElchilarService
                 
                 if($all_or_new == 'new') {
                     $elchi = $elchi
-                    ->where('tg_user.status',0);
+                    ->where('tg_user.date_joined', '>', date("Y-m-d", (strtotime(date("Y-m-d")) - 30*86400)));
                 } else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
@@ -71,7 +71,7 @@ class ElchilarService
 
                 if($all_or_new == 'new') {
                     $elchi = $elchi
-                    ->where('tg_user.status',0);
+                    ->where('tg_user.date_joined', '>', date("Y-m-d", (strtotime(date("Y-m-d")) - 30*86400)));
                 } else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
@@ -114,7 +114,7 @@ class ElchilarService
 
                 if($all_or_new == 'new') {
                     $elchi = $elchi
-                    ->where('tg_user.status',0);
+                    ->where('tg_user.date_joined', '>', date("Y-m-d", (strtotime(date("Y-m-d")) - 30*86400)));
                 } else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
