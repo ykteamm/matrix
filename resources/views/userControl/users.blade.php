@@ -6,9 +6,7 @@
                 <div class="card p-2">
                     <span class="text-center">All users</span>
                     <div class="card-body">
-                        <div>
-                            <button type="submit" class="w-100 btn btn-primary">Saqlash</button>
-                        </div>
+                        
                         <form action="{{ route('assign-daily-work-time') }}" method="POST">
                             @csrf
                             <div class="table-responsive">
@@ -83,6 +81,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-100 btn btn-primary">Saqlash</button>
                             </div>
                         </form>
                     </div>

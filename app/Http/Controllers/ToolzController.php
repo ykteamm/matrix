@@ -50,7 +50,7 @@ class ToolzController extends Controller
         $host = substr(request()->getHttpHost(), 0, 3);
         $uncheckedshifts = $this->shiftRepository->unchecked();
         $checkedshifts = $this->shiftRepository->checked($date, $paginated,'admin_check',[0,1]);
-        // return $checkedshifts;
+        return $checkedshifts;
         return view('toolz.open-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
     }
 
@@ -81,14 +81,14 @@ class ToolzController extends Controller
         }
         if (isset($inputs['kun_soni']) || isset($inputs['lokatsiya_notogri'])) {
             $this->shiftRepository->update($request->input('shift_id'), ['active' => 0,'admin_check' => ['check' => $error]]);
-            $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
-            $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
+            // $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
+            // $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             return back();
         }
         if ($fine !== 0 && $error !== '') {
             $this->helper->setDetail($fine, $izoh, $request->input('user_id'), $error);
-            $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
-            $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+            // $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+            // $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
         $this->shiftRepository->updateAdminCheck($request->input('shift_id'), $error);
         return back();

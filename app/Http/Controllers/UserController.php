@@ -580,7 +580,7 @@ class UserController extends Controller
         $username = 'nvt' . (intval(substr($last_user->username, 3)) + 1);
         $password = rand(1000, 9999);
 
-        $new = DB::table('tg_user')->insert([
+        $new = DB::table('tg_user')->insertGetId([
             'password' => Hash::make($password),
             'last_login' => NULL,
             'is_superuser' => FALSE,
@@ -610,12 +610,16 @@ class UserController extends Controller
             'image_change' => TRUE,
             'pharmacy_id' => NULL,
             'image_url' => 'https://telegra.ph//file/04f99aa16eebd4af2a42c.jpg',
-            'status' => 1,
+            'status' => 0,
             'level' => 0,
             'rm' => 0
         ]);
-
-        if ($new == 1) {
+        $new_work_day = DB::table('daily_works')->insert([
+            'user_id' => $new,
+            'start_work' => '09:00:00',
+            'finish_work' => '18:00:00',
+        ]);
+        if ($new) {
             $response = Http::post('notify.eskiz.uz/api/auth/login', [
                 'email' => 'mubashirov2002@gmail.com',
                 'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
