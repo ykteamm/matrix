@@ -50,7 +50,7 @@ class ToolzController extends Controller
         $host = substr(request()->getHttpHost(), 0, 3);
         $uncheckedshifts = $this->shiftRepository->unchecked();
         $checkedshifts = $this->shiftRepository->checked($date, $paginated,'admin_check',[0,1]);
-        return $checkedshifts;
+        // return $checkedshifts;
         return view('toolz.open-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
     }
 
