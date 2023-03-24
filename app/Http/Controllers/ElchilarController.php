@@ -17,8 +17,11 @@ class ElchilarController extends Controller
         $this->service = $service;
     }
 
-    public function kunlik($month, $all_or_new = 'all', $climate = 'all', $region = null)
+    public function kunlik(Request $request, $month)
     {
+        $all_or_new = $request->input('all_or_new') ?? 'all';
+        $side = $request->input('side') ?? 'all';
+        $region = $request->input('region');
         $calendars = DB::table('tg_calendar')->pluck('year_month');
         if (isset($region)) {
             if ($region == 'all') {
@@ -44,7 +47,7 @@ class ElchilarController extends Controller
         $months = $this->service->month();
         $endofmonth = $this->service->endmonth($month, $months);
         $user_id = Session::get('user')->id;
-        $data = $this->service->elchilar($month, $endofmonth, $user_id, $regions, $all_or_new, $climate);
+        $data = $this->service->elchilar($month, $endofmonth, $user_id, $regions, $all_or_new, $side);
         $elchi = $data->elchi;
         // return $elchi;
         $elchi_fact = $data->elchi_fact;
@@ -69,6 +72,6 @@ class ElchilarController extends Controller
         $total_planday = $this->service->total_planday($plan_day);
         $total_haftalik = $this->service->total_week($haftalik, $days);
         // dd($king_sold[]);
-        return view('elchilar.index', compact('region', 'day_work', 'king_sold', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
+        return view('elchilar.index', compact('all_or_new','side','region', 'day_work', 'king_sold', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
     }
 }

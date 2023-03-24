@@ -24,15 +24,21 @@
                 <div class="dropdown-menu" style="z-index: 100000">
 
                     @foreach ($calendars as $m)
-                        <a href="{{ route('elchilar', ['month' => date('Y', strtotime('01.' . $m)) . '-' . date('m', strtotime('01.' . $m))]) }}"
-                            class="dropdown-item"> {{ date('m.Y', strtotime('01.' . $m)) }} </a>
+                        <a onclick="selectMonth(this)" 
+                            class="dropdown-item" id="{{ date('Y', strtotime('01.' . $m)) . '-' . date('m', strtotime('01.' . $m)) }}"> {{ date('m.Y', strtotime('01.' . $m)) }} </a>
                     @endforeach
                 </div>
             </div>
             <div class="col-4 d-flex">
                 <div class="mb-2 d-flex  justify-content-end">
                     <button id="new_and_all" type="button" class="btn btn-block btn-outline-primary dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if($all_or_new == 'all')
+                            Hammasi
+                        @else
+                            Yangi elchilar
+                        @endif
+                    </button>
 
                     <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
                         <a onclick="selectNewOrAll('all')" class="dropdown-item"> Hammasi </a>
@@ -43,12 +49,23 @@
                     <div>
                         <button id="garb_sharq" type="button" class="btn btn-block btn-outline-primary dropdown-toggle"
                             id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"> G`arb/Sharq</button>
+                            aria-haspopup="true" aria-expanded="false"> 
+                        @switch($side)
+                            @case('east')
+                                Sharq
+                                @break
+                            @case('west')
+                                G`arb
+                                @break
+                            @default
+                                G`arb/Sharq
+                        @endswitch
+                        </button>
 
                         <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
-                            <a onclick="selectClimate('all')" class="dropdown-item"> Hammasi </a>
-                            <a onclick="selectClimate('west')" class="dropdown-item">G`arb </a>
-                            <a onclick="selectClimate('east')" class="dropdown-item">Sharq </a>
+                            <a onclick="selectSide('all')" class="dropdown-item"> Hammasi </a>
+                            <a onclick="selectSide('west')" class="dropdown-item">G`arb </a>
+                            <a onclick="selectSide('east')" class="dropdown-item">Sharq </a>
 
                         </div>
                     </div>
@@ -428,65 +445,105 @@
                 }
             })
         }
-
-
-        function selectClimate(climate) {
-            let btn = document.getElementById('garb_sharq');
-            if (climate == 'all') {
-                btn.innerText = 'Hammasi'
-            } else if (climate == 'west') {
-                btn.innerText = 'G\'arb'
-            } else {
-                btn.innerText = 'Sharq'
-            }
-            var month = <?php echo json_encode($month); ?>;
-            var url = "{{ route('elchilar', ['month' => ':month', 'all_or_new' => 'all', 'climate' => ':climate']) }}";
-            url = url.replace(':month', month);
-            url = url.replace(':climate', climate)
-            location.href = url;
+        function selectMonth(monthBtn) {
+            var url = "{{ route('elchilar', ['month' => ':month']) }}";
+            url = url.replace(':month', monthBtn.id);
+            location.href = url + makeQueryParams();
         }
 
-        function selectNewOrAll(select) {
-            let btn = document.getElementById('new_and_all');
-            btn.innerText = 'Hammasi'
-            var month = <?php echo json_encode($month); ?>;
-            var url = "{{ route('elchilar', ['month' => ':month', 'all_or_new' => ':select']) }}";
-            url = url.replace(':month', month);
-            url = url.replace(':select', select)
-            location.href = url;
+        function selectSide(side) {
+            location.href = getMainUrl() + makeQueryParams({side});
+        }
+
+        function selectNewOrAll(all_or_new) {
+            location.href = getMainUrl() + makeQueryParams({all_or_new});
         }
 
         function allRegion() {
-            var month = <?php echo json_encode($month); ?>;
-            var url = "{{ route('elchilar', ['month' => ':month', 'all_or_new' => 'all']) }}";
-            url = url.replace(':month', month);
-            location.href = url;
+            location.href = getMainUrl() + makeQueryParams({region:'regAll'});
         }
 
-        function regFunc(id) {
+        function regFunc(region) {
+            location.href = getMainUrl() + makeQueryParams({region});
+        }
+
+        function getMainUrl() {
             var month = <?php echo json_encode($month); ?>;
-            var region = id;
-            var url = "{{ route('elchilar', ['month' => ':month', 'region' => ':region', 'all_or_new' => 'all']) }}";
+            var url = "{{ route('elchilar', ['month' => ':month']) }}";
             url = url.replace(':month', month);
-            url = url.replace(':region', region);
-            location.href = url;
+            return url;
+        }
+
+        function makeQueryParams(params = {}){
+            var searchParams = location.search;
+            if(searchParams.length != 0) {
+                var newParams = '?';
+                var searchArr = location.search.slice(1, location.search.length).split('&');
+                for (let param of searchArr){
+                    let key = param.split('=')[0]
+                    let value = param.split('=')[1]
+                    if(params[key] == 'regAll') {
+                        continue
+                    } else if (typeof params[key] == 'object' && params[key].join(",") != value) {
+                        if(newParams.length > 1){
+                            newParams += `&${key}=${params[key].join(",")}`
+                        } else {
+                            newParams += `${key}=${params[key].join(",")}`
+                        }
+                    } else if(params[key] != undefined && params[key] != value) {
+                        if(newParams.length > 1){
+                            newParams += `&${key}=${params[key]}`
+                        } else {
+                            newParams += `${key}=${params[key]}`
+                        }
+                    } else {
+                        if(newParams.length > 1){
+                            newParams += `&${key}=${value}`
+                        } else {
+                            newParams += `${key}=${value}`
+                        }
+                    }
+                }
+                for (let key in params) {
+                    if(params[key] == 'regAll') {
+                        continue
+                    } 
+                    if(!newParams.includes(key)) {
+                        if(newParams.length > 1){
+                            newParams += `&${key}=${params[key]}`
+                        } else {
+                            newParams += `${key}=${params[key]}`
+                        }
+                    }
+                }
+                if(newParams.length > 1) {
+                    return newParams;
+                } else {
+                    return ''
+                }
+            } else {
+                countParam = 0
+                for (let key in params) {
+                    countParam++
+                    if(countParam == 1 && !searchParams.includes(key)) {
+                        searchParams += `?${key}=${params[key]}`
+                    } else if(countParam > 1 && !searchParams.includes(key)) {
+                        searchParams += `&${key}=${params[key]}`
+                    }
+                }
+                return searchParams;
+            }
         }
 
         function okbtn() {
-            var array = []
+            var region = []
             var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
             for (var i = 0; i < checkboxes.length; i++) {
-                array.push(checkboxes[i].value)
+                region.push(checkboxes[i].value)
             }
-            // console.log(array)
-            var month = <?php echo json_encode($month); ?>;
-            var region = array;
-            var url = "{{ route('elchilar', ['month' => ':month', 'region' => ':region']) }}";
-            url = url.replace(':month', month);
-            url = url.replace(':region', region);
-            location.href = url;
 
+            location.href = getMainUrl() + makeQueryParams({region});
             // let checks=document.querySelectorAll('.checkbox');
             // let tr=document.querySelectorAll('.tr');
             // tr.forEach(e=>{
