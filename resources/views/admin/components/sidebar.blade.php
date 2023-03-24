@@ -302,6 +302,8 @@
                   </li>
                @endif
               @endisset
+              @isset(Session::get('per')['all_user'])
+             @if(Session::get('per')['all_user'] == 'true')
               <li>
                <a href="{{route('users-all')}}">
                   <i class="feather-settings"></i>  
@@ -310,6 +312,8 @@
                   </span>
                </a>
               </li>
+              @endif
+              @endisset
               <li class="mb-5"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="feather-home"></i>  <span> Chiqish </span></a>
                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                   @csrf
