@@ -214,16 +214,23 @@ class PharmacyController extends Controller
         // ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
         // ->groupBy('tg_productssold.id', 'tg_medicine.name')
         // ->get();
-        $query = DB::table('tg_medicine')
-            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) AS price,tg_productssold.count, tg_medicine.name, tg_medicine.id')
+        // $query = DB::table('tg_productssold')
+        //     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) AS price')
+        //     ->whereDate('tg_productssold.created_at','>=', $date_begin)
+        //     ->whereDate('tg_productssold.created_at','<=', $date_end)
+        //     ->where('tg_productssold.pharm_id', $id)
+        //     ->get();
+            // return $query;
+        $query = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) AS price,SUM(tg_productssold.number) AS count,tg_medicine.name, tg_medicine.id')
             ->whereDate('tg_productssold.created_at','>=', $date_begin)
             ->whereDate('tg_productssold.created_at','<=', $date_end)
             ->where('tg_productssold.pharm_id', $id)
-            ->leftJoin('tg_productssold', 'tg_productssold.medicine_id', 'tg_medicine.id')
+            ->join('tg_medicine', 'tg_medicine.id', 'tg_productssold.medicine_id')
             ->groupBy('tg_medicine.id');
 
         $sealed = $query->get();
-        
+        // return $sealed;
         $unSealed = DB::table('tg_medicine')
             ->selectRaw('tg_medicine.name, tg_medicine.id')
             ->whereNotIn('id', $query->pluck('id'))
@@ -370,17 +377,46 @@ class PharmacyController extends Controller
         ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
         ->groupBy('tg_productssold.pharm_id')->pluck('allprice','tg_productssold.pharm_id');
 
-        $user_sold = DB::table('tg_productssold')
-        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id')
-        ->whereDate('tg_productssold.created_at','>=',$date_begin)
-        ->whereDate('tg_productssold.created_at','<=',$date_end)
-        ->join('tg_user','tg_user.id','tg_productssold.user_id')
-        ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
-        ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id');
+        $pharmacy_id = Pharmacy::pluck('id')->toArray();
 
-        // return $farm_sold;
+        $arr = [];
+        // $user_solds = DB::table('tg_productssold')
+        //     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id')
+        //     ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        //     ->whereDate('tg_productssold.created_at','<=',$date_end)
+        //     ->join('tg_user','tg_user.id','tg_productssold.user_id')
+        //     ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+        //     ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id')->toArray();
+        //     return $user_solds;
+        foreach ($pharmacy_id as $key => $value) {
+            $user_solds = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id')
+            ->whereDate('tg_productssold.created_at','>=',$date_begin)
+            ->whereDate('tg_productssold.created_at','<=',$date_end)
+            ->where('tg_productssold.pharm_id','=',$value)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+            ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id')->toArray();
+            if(count($user_solds) != 0)
+            {
+
+                // foreach ($user_solds as $key => $value) {
+                //     $arr[$key] = $value;
+                // }
+                $arr[$value] = $user_solds;
+
+                // $arr[array_keys($user_solds)[0]] = $user_solds[array_keys($user_solds)[0]];
+            }
+
+        }
+        $user_sold = $arr;
+        
+
+        // return $arr;
         $regions = DB::table('tg_region')->get();
         $shablons = DB::table('tg_shablons')->get();
+        // return $pusers;
+
         return view('pharmacy.index',compact('shablons','regions','pharmacy','users','pusers','farm_sold','user_sold','dateText'));
     }
 }

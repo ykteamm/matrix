@@ -71,9 +71,11 @@
                                                                     @endphp
                                                                     @foreach ($pusers as $user)
                                                                         @if ($user->pharma_id == $pharma->id)
-                                                                            @isset($user_sold[$user->user_id])
+                                                                            @isset($user_sold[$user->pharma_id][$user->user_id])
                                                                                 @php
-                                                                                    $sum_elchi = $sum_elchi + $user_sold[$user->user_id];
+                                                                                    // foreach ($user_sold[$user->pharma_id] as $key => $value) {
+                                                                                        $sum_elchi = $sum_elchi + $user_sold[$user->pharma_id][$user->user_id];
+                                                                                    // }
                                                                                 @endphp
                                                                             @endisset
                                                                         @endif
@@ -87,9 +89,11 @@
                                                                     @if ($user->pharma_id == $pharma->id)
                                                                         <h2 class="text-white">{{ $user->last_name }}
                                                                             {{ $user->first_name }}
-                                                                            @isset($user_sold[$user->user_id])
+                                                                            @isset($user_sold[$user->pharma_id][$user->user_id])
                                                                                 <span class="badge bg-primary">
-                                                                                    {{ number_format($user_sold[$user->user_id], 0, '', '.') }}
+                                                                                    {{-- @foreach ($user_sold[$user->pharma_id] as $key=>$item) --}}
+                                                                                    {{ number_format($user_sold[$user->pharma_id][$user->user_id], 0, '', '.') }}
+                                                                                    {{-- @endforeach --}}
                                                                                 </span>
                                                                             @endisset
                                                                         </h2>

@@ -150,6 +150,17 @@ class ToolzController extends Controller
 
     public function kingSoldAnsver(Request $request)
     {
+
+        
+
+        if(isset($request->izoh))
+        {
+            $comment = $request->izoh;
+        }else{
+            $comment = NULL;
+        }
+        // return $request->ansver;
+
         $order_id = KingSold::find($request->id)->order_id;
         $summa = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
@@ -168,29 +179,100 @@ class ToolzController extends Controller
             }
         } else {
 
-            if ($summa[0]->allprice >= 200000) {
-                $add = floor($summa[0]->allprice / 200000) - 1;
+            
+            if(isset($request->count))
+            {
+                $count = $request->count;
+                $floor = floor($count);
+                $kasr = $count - $floor;
 
-                if ($add != 0) {
-                    for ($i = 1; $i <= $add; $i++) {
-                        $new = new KingSold([
-                            'order_id' => $order_id,
-                            'image' => 'add',
-                            'admin_check' => 1
+                if ($kasr == 0) {
+                     if($count == 1)
+                     {
+                        $new = KingSold::where('id', $request->id)->update([
+                                'admin_check' => $request->ansver,
+                                'status' => 1,
+                                'comment' => $comment
+                            ]);
+                     }else{
+                        $new = KingSold::where('id', $request->id)->update([
+                            'admin_check' => $request->ansver,
+                            'status' => 1,
+                            'comment' => $comment
                         ]);
-                        $new->save();
-                    }
+
+                        for ($i = 1; $i <= $count-1; $i++) {
+                            $new = new KingSold([
+                                'order_id' => $order_id,
+                                'image' => 'add',
+                                'admin_check' => 1
+                            ]);
+                            $new->save();
+                        }
+                     }
+                }else{
+                    if($count == 1)
+                     {
+                        $new = KingSold::where('id', $request->id)->update([
+                                'admin_check' => $request->ansver,
+                                'status' => 1,
+                                'comment' => $comment
+                            ]);
+                     }else{
+                        $new = KingSold::where('id', $request->id)->update([
+                            'admin_check' => $request->ansver,
+                            'status' => 1,
+                            'comment' => $comment
+                        ]);
+
+                        for ($i = 1; $i <= $count-1; $i++) {
+                            $new = new KingSold([
+                                'order_id' => $order_id,
+                                'image' => 'add',
+                                'admin_check' => 1
+                            ]);
+                            $new->save();
+                        }
+                     }
+                    $new = new KingSold([
+                        'order_id' => $order_id,
+                        'image' => 'add',
+                        'admin_check' => 1,
+                        'status' => 2,
+                    ]);
+                    $new->save();
                 }
-                $new = KingSold::where('id', $request->id)->update([
-                    'admin_check' => $request->ansver,
-                    'status' => 1
-                ]);
-            } else {
-                $new = KingSold::where('id', $request->id)->update([
-                    'admin_check' => $request->ansver,
-                    'status' => 2
-                ]);
+
+            }else{
+                if ($summa[0]->allprice >= 200000) {
+                    $add = floor($summa[0]->allprice / 200000) - 1;
+    
+                    if ($add != 0) {
+                        for ($i = 1; $i <= $add; $i++) {
+                            $new = new KingSold([
+                                'order_id' => $order_id,
+                                'image' => 'add',
+                                'admin_check' => 1
+                            ]);
+                            $new->save();
+                        }
+                    }
+                    $new = KingSold::where('id', $request->id)->update([
+                        'admin_check' => $request->ansver,
+                        'status' => 1,
+                        'comment' => $comment
+
+                    ]);
+                } else {
+                    $new = KingSold::where('id', $request->id)->update([
+                        'admin_check' => $request->ansver,
+                        'status' => 2,
+                        'comment' => $comment
+
+                    ]);
+                }
             }
+            
 
             $user_id = Order::find($order_id)->user_id;
 
@@ -239,9 +321,7 @@ class ToolzController extends Controller
             }
         }
 
-        return [
-            'response' => 200,
-        ];
+        return redirect()->back();
     }
 
     // public function kingSoldAnsver(Request $request)

@@ -12,6 +12,8 @@ class KingSold extends Model
     protected $fillable = [
         'order_id',
         'image',
+        'status',
+        'comment',
         'admin_check',
     ];
     public function order()

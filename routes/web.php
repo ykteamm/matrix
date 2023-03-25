@@ -45,7 +45,7 @@ use App\Http\Controllers\TrendController;
 
     Route::post('/user/shift-open', [ToolzController::class,'adminCheckOpenSmena'])->name("admin-check-open-smena");
     Route::post('/user/shift-close', [ToolzController::class,'adminCheckCloseSmena'])->name("admin-check-close-smena");
-    Route::post('/user/king-sold', [ToolzController::class,'kingSoldAnsver']);
+    Route::post('/user/king-sold', [ToolzController::class,'kingSoldAnsver'])->name('ks-ansver');
 
 
 
