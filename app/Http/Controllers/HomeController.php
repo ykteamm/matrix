@@ -681,7 +681,6 @@ class HomeController extends Controller
             //     'cateory' => $cateory,
             //     'medic' => $medic,
             // ];
-        // return $elchi;
         $startDay = today()->startOfWeek()->addDay(1);
         $endDay = Carbon::now();
 

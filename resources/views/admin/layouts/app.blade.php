@@ -201,7 +201,12 @@ $(document).ready(function () {
         // "order": [[ 2, "desc" ]]
 
     }).buttons().container().appendTo('#asdasd .col-md-6:eq(0)');
+    $("#example12366").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        // "order": [[ 2, "desc" ]]
 
+    }).buttons().container().appendTo('#asdasd .col-md-6:eq(0)');
     $("#example1231").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]

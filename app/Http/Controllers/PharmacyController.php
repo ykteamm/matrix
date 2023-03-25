@@ -205,14 +205,37 @@ class PharmacyController extends Controller
 
         // }
         $pharma = Pharmacy::with('region')->find($id);
-        $user_sold = DB::table('tg_productssold')
-        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id,tg_user.first_name,tg_user.last_name')
-        ->whereDate('tg_productssold.created_at','>=',$date_begin)
-        ->whereDate('tg_productssold.created_at','<=',$date_end)
-        ->where('tg_productssold.pharm_id',$id)
-        ->join('tg_user','tg_user.id','tg_productssold.user_id')
+        // $user_sold = DB::table('tg_productssold')
+        // ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as price, tg_productssold.number ,tg_medicine.name')
+        // ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        // ->whereDate('tg_productssold.created_at','<=',$date_end)
+        // ->where('tg_productssold.pharm_id',$id)
+        // ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
         // ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
-        ->groupBy('tg_productssold.user_id','tg_user.first_name','tg_user.last_name')->get();
+        // ->groupBy('tg_productssold.id', 'tg_medicine.name')
+        // ->get();
+        $query = DB::table('tg_medicine')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) AS price,tg_productssold.count, tg_medicine.name, tg_medicine.id')
+            ->whereDate('tg_productssold.created_at','>=', $date_begin)
+            ->whereDate('tg_productssold.created_at','<=', $date_end)
+            ->where('tg_productssold.pharm_id', $id)
+            ->leftJoin('tg_productssold', 'tg_productssold.medicine_id', 'tg_medicine.id')
+            ->groupBy('tg_medicine.id');
+
+        $sealed = $query->get();
+        
+        $unSealed = DB::table('tg_medicine')
+            ->selectRaw('tg_medicine.name, tg_medicine.id')
+            ->whereNotIn('id', $query->pluck('id'))
+            ->get();
+
+        foreach($unSealed as $item) {
+            $item->count = 0;
+            $item->price = 0;
+            $sealed->push($item);
+        }
+
+        $user_sold = $sealed->sortBy([fn ($a, $b) => $a->id <=> $b->id]);
         // return $user_sold;
         return view('pharmacy-index',compact('pharma','user_sold','dateText'));
     }

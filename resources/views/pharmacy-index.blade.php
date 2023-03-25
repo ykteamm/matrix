@@ -78,7 +78,42 @@
       </div>
        
     </div>
-    <div class="col-sm-12">
+    <div class="col-lg-12">
+      <div class="card">
+         <div class="card-body">
+            <div class="table-responsive" id="asdasd">
+               <table class="table mb-0" id="example12366">
+                  <thead>
+                     <tr>
+                        <th>Id</th>
+                        <th>Mahsulot nomi1</th>
+                        <th>Soni</th>
+                        <th>Summasi</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                      @php
+                          $n = 0
+                      @endphp
+                  @foreach ($user_sold as $mkey => $mitem)
+                      <tr>
+                           <td>{{$mitem->id}}</td>
+                          <td>{{$mitem->name}} </td>
+                          <td>{{$mitem->count}} </td>
+                          <td>{{ number_format($mitem->price, 0, '', ' ')}}</td>
+                          {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
+                       </tr>
+                       @php
+                           $n += $mitem->count
+                       @endphp
+                  @endforeach
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+    {{-- <div class="col-sm-12">
       <div class="card">
          <div class="card-body">
             <div class="table-responsive">
@@ -104,7 +139,7 @@
             </div>
          </div>
       </div>
-   </div>
+   </div> --}}
 
 </div>
 
