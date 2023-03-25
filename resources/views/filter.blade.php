@@ -37,7 +37,7 @@
                               <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_month">Oy  </a>
                               <a href="#" onclick="timeElchi('a_year')" class="dropdown-item" id="a_year">Yil </a>
                               {{-- <input type="date" class="form-control" > --}}
-                       <input type="text" name="datetimes" class="form-control"/>
+                        <input type="text" name="datetimes" class="form-control"/>
 
                            </div>
                         </div>

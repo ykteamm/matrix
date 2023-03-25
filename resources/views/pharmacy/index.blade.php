@@ -294,5 +294,24 @@
     {{-- @endforeach --}}
 @endsection
 @section('admin_script')
-    <script></script>
+    <script>
+   $(function() {
+  $('input[name="datetimes"]').daterangepicker({
+    locale: {
+      format: 'DD.MM.YY'
+    }
+  });
+  $('input[name="datetimes"]').on('apply.daterangepicker', function(ev, picker) {
+         window.location = $(this).data("href");
+         var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
+         var id = <?php echo json_encode($pharma->id); ?>;
+            var url = "{{ route('pharmacy-user',['time' => ':tim']) }}";
+            url = url.replace(':tim', tim);
+            url = url.replace(':id', id);
+            location.href = url;
+
+  });
+
+});
+</script>
 @endsection
