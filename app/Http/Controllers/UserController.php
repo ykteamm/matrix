@@ -515,8 +515,11 @@ class UserController extends Controller
                 $user_id = substr($key, 7);
                 $userDaily = DailyWork::where('user_id', $user_id)->orderBy('id', 'DESC')->first();
                 if ($userDaily) {
+                    $ends = date('Y-m-d', (strtotime('-1 day', strtotime(date("Y-m-d"))))); 
+
                     DailyWork::where('id', $userDaily->id)->update([
-                        'finish' => date("Y-m-d"),
+                        
+                        'finish' => $ends,
                         'active' => 0
                     ]);
                     DailyWork::create([
