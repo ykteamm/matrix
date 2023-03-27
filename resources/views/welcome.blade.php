@@ -685,15 +685,14 @@
             <div class="card">
                <div class="card-body">
                   <ul class="nav nav-tabs nav-tabs-solid nav-justified">
-                     <li class="nav-item"><a class="nav-link active" href="#solid-justified-tab21" data-toggle="tab">Sotilganlar </a></li>
-                     <li class="nav-item"><a class="nav-link" href="#solid-justified-tab31" data-toggle="tab">Barchasi </a></li>
+                     <li class="nav-item"><a class="nav-link" href="#solid-justified-tab21" data-toggle="tab">Sotilganlar </a></li>
+                     <li class="nav-item"><a class="nav-link active" href="#solid-justified-tab31" data-toggle="tab">Barchasi </a></li>
                   </ul>
                   <div class="tab-content pt-0">
                     @php $i=2 @endphp
                     <div class="tab-pane show active dnone" id="solid-tab1">
-                        {{-- <div class="tab-data"> --}}
                            <div class="tab-content pt-0">
-                              <div class="tab-pane show active " id="solid-justified-tab21">
+                              <div class="tab-pane" id="solid-justified-tab21">
                                  <div class="col-lg-12">
                                     <div class="card">
                                        <div class="card-body">
@@ -728,7 +727,7 @@
                                     </div>
                                  </div>
                               </div>
-                              <div class="tab-pane" id="solid-justified-tab31">
+                              <div class="tab-pane show active" id="solid-justified-tab31">
                                  <div class="col-lg-12">
                                     <div class="card">
                                        <div class="card-body">
@@ -739,6 +738,7 @@
                                                       <th>ID</th>
                                                       <th>Mahsulot nomi</th>
                                                       <th>Soni</th>
+                                                      <th>Summasi</th>
                                                       {{-- <th>Summasi</th> --}}
                                                    </tr>
                                                 </thead>
@@ -751,7 +751,7 @@
                                                         <td style="display: none">{{$mitem['id']}}</td>
                                                         <td>{{$mitem['name']}}</td>
                                                         <td>{{$mitem['number']}} </td>
-                                                        {{-- <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td> --}}
+                                                        <td>{{ number_format($mitem['price'], 0, '', ' ')}}</td>
                                                         {{-- <td class="text-right"><a href="#">View Summary </a></td> --}}
                                                      </tr>
                                                      @php
@@ -766,8 +766,6 @@
                                  </div>
                               </div>
                            </div>
-
-                        {{-- </div> --}}
                      </div>
                     @foreach ($cateory as $key => $item)
                      <div class="tab-pane dnone" id="solid-tab{{$i}}" style="display:none;">

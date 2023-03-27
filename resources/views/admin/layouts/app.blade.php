@@ -208,7 +208,7 @@ $(document).ready(function () {
 
     }).buttons().container().appendTo('#asdasd .col-md-6:eq(0)');
     $("#example1231").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         // "order": [[ 2, "desc" ]]
 
