@@ -11,7 +11,9 @@ class DailyWork extends Model
     protected $fillable = [
         'user_id',
         'start_work',
-        'finish_work'
+        'finish_work',
+        'start',
+        'finish'
     ];
 
     public function user()

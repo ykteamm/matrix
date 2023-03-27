@@ -498,6 +498,8 @@ class UserController extends Controller
         $users = User::select('tg_user.*', 'tg_region.name as region_name', 'daily_works.start_work', 'daily_works.finish_work')
             ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
             ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
+            ->groupBy('tg_user.id', 'daily_works.id','region_name')
+            ->where('daily_works.active', 1)
             ->orderBy('tg_user.id', 'DESC')
             ->get();
         // dd($users[0]);
@@ -511,17 +513,24 @@ class UserController extends Controller
         foreach ($r as $key => $value) {
             if ($value == 'change') {
                 $user_id = substr($key, 7);
-                $userDaily = DailyWork::where('user_id', $user_id)->first();
+                $userDaily = DailyWork::where('user_id', $user_id)->orderBy('id', 'DESC')->first();
                 if ($userDaily) {
-                    DailyWork::where('user_id', $user_id)->update([
+                    DailyWork::where('id', $userDaily->id)->update([
+                        'finish' => date("Y-m-d"),
+                        'active' => 0
+                    ]);
+                    DailyWork::create([
+                        'user_id' => $user_id,
                         'start_work' => $r['start_' . $user_id],
-                        'finish_work' => $r['finish_' . $user_id]
+                        'finish_work' => $r['finish_' . $user_id],
+                        'start' => date("Y-m-d")
                     ]);
                 } else {
                     DailyWork::create([
                         'user_id' => $user_id,
                         'start_work' => $r['start_' . $user_id],
-                        'finish_work' => $r['finish_' . $user_id]
+                        'finish_work' => $r['finish_' . $user_id],
+                        'start' => date("Y-m-d")
                     ]);
                 }
             }
