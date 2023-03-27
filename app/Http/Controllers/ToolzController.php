@@ -26,14 +26,17 @@ class ToolzController extends Controller
     private SMSRepository $smsRepository;
     private ShiftRepository $shiftRepository;
     private HelperRepository $helper;
+    private KingSoldSearchService $kingSoldService;
     public function __construct(
         SMSRepository $sms,
         ShiftRepository $shift,
-        HelperRepository $helper
+        HelperRepository $helper,
+        KingSoldSearchService $kingSold
     ) {
         $this->smsRepository = $sms;
         $this->shiftRepository = $shift;
         $this->helper = $helper;
+        $this->kingSoldService = $kingSold;
     }
     private const ERRORS = [
         'kun_soni' => 'Kun soni yo\'q',
@@ -49,7 +52,7 @@ class ToolzController extends Controller
         $paginated = true;
         $host = substr(request()->getHttpHost(), 0, 3);
         $uncheckedshifts = $this->shiftRepository->unchecked();
-        $checkedshifts = $this->shiftRepository->checked($date, $paginated,'admin_check',[0,1]);
+        $checkedshifts = $this->shiftRepository->checked($date, $paginated, 'admin_check', [0, 1]);
         // return $checkedshifts;
         return view('toolz.open-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
     }
@@ -80,7 +83,7 @@ class ToolzController extends Controller
             $error .= static::ERRORS[$key] . '. ';
         }
         if (isset($inputs['kun_soni']) || isset($inputs['lokatsiya_notogri'])) {
-            $this->shiftRepository->update($request->input('shift_id'), ['active' => 0,'admin_check' => ['check' => $error]]);
+            $this->shiftRepository->update($request->input('shift_id'), ['active' => 0, 'admin_check' => ['check' => $error]]);
             // $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             // $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
             return back();
@@ -150,16 +153,11 @@ class ToolzController extends Controller
 
     public function kingSoldAnsver(Request $request)
     {
-
-        
-
-        if(isset($request->izoh))
-        {
+        if (isset($request->izoh)) {
             $comment = $request->izoh;
-        }else{
+        } else {
             $comment = NULL;
         }
-        // return $request->ansver;
 
         $order_id = KingSold::find($request->id)->order_id;
         $summa = DB::table('tg_productssold')
@@ -178,30 +176,26 @@ class ToolzController extends Controller
                 ]);
             }
         } else {
-
-            
-            if(isset($request->count))
-            {
+            if (isset($request->count)) {
                 $count = $request->count;
                 $floor = floor($count);
                 $kasr = $count - $floor;
 
                 if ($kasr == 0) {
-                     if($count == 1)
-                     {
+                    if ($count == 1) {
                         $new = KingSold::where('id', $request->id)->update([
-                                'admin_check' => $request->ansver,
-                                'status' => 1,
-                                'comment' => $comment
-                            ]);
-                     }else{
+                            'admin_check' => $request->ansver,
+                            'status' => 1,
+                            'comment' => $comment
+                        ]);
+                    } else {
                         $new = KingSold::where('id', $request->id)->update([
                             'admin_check' => $request->ansver,
                             'status' => 1,
                             'comment' => $comment
                         ]);
 
-                        for ($i = 1; $i <= $count-1; $i++) {
+                        for ($i = 1; $i <= $count - 1; $i++) {
                             $new = new KingSold([
                                 'order_id' => $order_id,
                                 'image' => 'add',
@@ -209,23 +203,22 @@ class ToolzController extends Controller
                             ]);
                             $new->save();
                         }
-                     }
-                }else{
-                    if($count == 1)
-                     {
+                    }
+                } else {
+                    if ($count == 1) {
                         $new = KingSold::where('id', $request->id)->update([
-                                'admin_check' => $request->ansver,
-                                'status' => 1,
-                                'comment' => $comment
-                            ]);
-                     }else{
+                            'admin_check' => $request->ansver,
+                            'status' => 1,
+                            'comment' => $comment
+                        ]);
+                    } else {
                         $new = KingSold::where('id', $request->id)->update([
                             'admin_check' => $request->ansver,
                             'status' => 1,
                             'comment' => $comment
                         ]);
 
-                        for ($i = 1; $i <= $count-1; $i++) {
+                        for ($i = 1; $i <= $count - 1; $i++) {
                             $new = new KingSold([
                                 'order_id' => $order_id,
                                 'image' => 'add',
@@ -233,7 +226,7 @@ class ToolzController extends Controller
                             ]);
                             $new->save();
                         }
-                     }
+                    }
                     $new = new KingSold([
                         'order_id' => $order_id,
                         'image' => 'add',
@@ -242,11 +235,10 @@ class ToolzController extends Controller
                     ]);
                     $new->save();
                 }
-
-            }else{
+            } else {
                 if ($summa[0]->allprice >= 200000) {
                     $add = floor($summa[0]->allprice / 200000) - 1;
-    
+
                     if ($add != 0) {
                         for ($i = 1; $i <= $add; $i++) {
                             $new = new KingSold([
@@ -272,10 +264,7 @@ class ToolzController extends Controller
                     ]);
                 }
             }
-            
-
             $user_id = Order::find($order_id)->user_id;
-
             $exists_user_id = DB::table('liga_king_users')->where('user_id', $user_id)->get();
             if (count($exists_user_id) == 0) {
                 DB::table('liga_king_users')->insert([
@@ -324,84 +313,12 @@ class ToolzController extends Controller
         return redirect()->back();
     }
 
-    // public function kingSoldAnsver(Request $request)
-    // {
-    //     $order_id = KingSold::find($request->id)->order_id;
-    //     $summa = DB::table('tg_productssold')
-    //         ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
-    //         ->where('tg_productssold.order_id', $order_id)->get();
-
-
-    //     if ($summa[0]->allprice >= 200000) {
-    //         $add = floor($summa[0]->allprice / 200000) - 1;
-
-    //         if ($add != 0) {
-    //             for ($i = 1; $i <= $add; $i++) {
-    //                 $new = new KingSold([
-    //                     'order_id' => $order_id,
-    //                     'image' => 'add',
-    //                     'admin_check' => 1
-    //                 ]);
-    //                 $new->save();
-    //             }
-    //         }
-    //         $new = KingSold::where('id', $request->id)->update([
-    //             'admin_check' => $request->ansver,
-    //             'status' => 1
-    //         ]);
-    //     } else {
-    //         $new = KingSold::where('id', $request->id)->update([
-    //             'admin_check' => $request->ansver,
-    //             'status' => 2
-    //         ]);
-    //     }
-
-
-    //     $weekStartDate = Carbon::now()->startOfWeek()->format('Y-m-d');
-    //     $weekEndDate = Carbon::now()->endOfWeek()->format('Y-m-d');
-    //     $king_sold = DB::table('tg_king_sold')
-    //         ->selectRaw('tg_order.user_id,tg_user.phone_number')
-    //         ->where('tg_king_sold.admin_check', 1)
-    //         ->whereDate('tg_king_sold.created_at', '>=', $weekStartDate)
-    //         ->whereDate('tg_king_sold.created_at', '<=', $weekEndDate)
-    //         ->join('tg_order', 'tg_order.id', 'tg_king_sold.order_id')
-    //         ->join('tg_user', 'tg_user.id', 'tg_order.user_id')
-    //         ->groupBy('tg_order.user_id', 'tg_user.phone_number')
-    //         ->pluck('phone_number')->toArray();
-    //     $user_id = DB::table('tg_order')->where('id', $order_id)->value('user_id');
-    //     $user = DB::table('tg_user')->find($user_id);
-    //     $king_sold[] = '+998990821015';
-    //     $king_sold[] = '+998977332305';
-    //     $king_sold[] = '+998931810408';
-    //     $king_sold[] = '+998930000047';
-    //     $king_sold[] = '+998935050498';
-    //     $king_sold[] = '+998946890010';
-    //     $response = Http::post('notify.eskiz.uz/api/auth/login', [
-    //         'email' => 'mubashirov2002@gmail.com',
-    //         'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
-    //     ]);
-    //     $token = $response['data']['token'];
-    //     if ($request->ansver != 2) {
-    //         foreach ($king_sold as $key => $value) {
-    //             $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
-    //                 'mobile_phone' => substr($value, 1),
-    //                 'message' => 'Jangchi !!! ' . ' ' . $user->last_name . ' ' . $user->first_name . ' ' . 'hozirgina shox yurish qildi.' . ' ' . 'Yutganga 200.000 som premiya beriladi!!! https://jang.novatio.uz',
-    //                 'from' => '4546',
-    //                 'callback_url' => 'http://0000.uz/test.php'
-    //             ]);
-    //         }
-    //     }
-
-    //     return [
-    //         'response' => 200,
-    //     ];
-    // }
     public function kingSoldLiga()
     {
         $ligas = LigaKingSold::with('liga_user', 'liga_user.user')->get();
 
         $no_user = LigaKingUser::pluck('user_id')->toArray();
-        // return $no_user;
+
         $endday = date('Y-m-d', (strtotime('-1 day', strtotime(Carbon::now()))));
         $startday = date('Y-m-d', (strtotime('-14 day', strtotime(Carbon::now()))));
         $transactions = ProductSold::whereBetween('created_at', [$startday, $endday])
@@ -434,18 +351,18 @@ class ToolzController extends Controller
     }
     public function kingSoldSearch($user_id, $region_id, $date)
     {
-        $new = new KingSoldSearchService;
-        $king_solds = $new->kingSoldSearch($user_id, $region_id, $date);
+        
+        $king_solds = $this->kingSoldService->kingSoldSearch($user_id, $region_id, $date);
 
         $regions = DB::table('tg_region')
-            ->whereIn('id', $new->getMyRegion())
+            ->whereIn('id', $this->kingSoldService->getMyRegion())
             ->get();
 
         $users = DB::table('tg_user')->select('first_name', 'last_name', 'id', 'region_id')
-            ->whereIn('id', $new->getUserId('all'))
+            ->whereIn('id', $this->kingSoldService->getUserId('all'))
             ->get();
 
-        $dates = $new->day($date);
+        $dates = $this->kingSoldService->day($date);
         $dateTexte = $dates->dateTexte;
         $dateText = $dates->dateText;
 
@@ -465,7 +382,47 @@ class ToolzController extends Controller
             $regText = DB::table('tg_region')->where('id', $region_id)->value('name');
             $regkey = $region_id;
         }
-        // return $users;
-        return view('toolz.king-sold-report', compact('pText', 'pkey', 'king_solds', 'regions', 'users', 'regkey', 'regText', 'dateText', 'dateTexte'));
+
+        $total = [];
+   
+        foreach ($king_solds as $king) {
+            if ($user_id == 'all' && $region_id == 'all') {
+                foreach ($regions as $reg) {
+                    if ($reg->name == $king['r']) {
+                        if (!isset($total[$reg->name])) {
+                            $total[$reg->name] = [];
+                        }
+                        $total[$reg->name][] = $king;
+                    }
+                }
+            } else if ($user_id == 'all' && $region_id != 'all') {
+                if ($regText == $king['r']) {
+                    $total[] = $king;
+                }
+            } else if ($user_id != 'all') {
+                if ($user_id == $king['user_id']) {
+                    $total[] = $king;
+                }
+            }
+        }
+        if ($user_id == 'all' && $region_id == 'all') {
+            uasort($total, function ($a, $b) {
+                $sum1 = 0;
+                $sum2 = 0;
+                foreach ($a as $i) {
+                    $sum1 += $i['count'];
+                }
+                foreach ($b as $j) {
+                    $sum2 += $j['count'];
+                }
+                if ($sum1 == $sum2) {
+                    return 0;
+                }
+                return $sum1 > $sum2 ? -1 : 1;
+            });
+        }
+
+
+        return view('toolz.king-sold-report', compact('user_id', 'region_id', 'total', 'pText', 'pkey', 'king_solds', 'regions', 'users', 'regkey', 'regText', 'dateText', 'dateTexte'));
     }
 }

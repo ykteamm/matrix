@@ -124,42 +124,41 @@
                                     <h4>Viloyat</h4>
                                     <h4>Soni </h4>
                                 </div>
-                            </div>
-                            @php
-                                $total = [];
-                                foreach ($regions as $reg) {
-                                    foreach ($king_solds as $king) {
-                                        if ($reg->name == $king['r']) {
-                                            if (!isset($total[$reg->name])) {
-                                                $total[$reg->name] = [];
-                                            }
-                                            $total[$reg->name][] = $king;
-                                        }
-                                    }
-                                }
-                                
-                                function cmp($a, $b)
-                                {
-                                    $sum1 = 0;
-                                    $sum2 = 0;
-                                    foreach ($a as $i) {
-                                        $sum1 += $i['count'];
-                                    }
-                                    foreach ($b as $j) {
-                                        $sum2 += $j['count'];
-                                    }
-                                    if ($sum1 == $sum2) {
-                                        return 0;
-                                    }
-                                    return $sum1 > $sum2 ? -1 : 1;
-                                }
-                                uasort($total, 'cmp');
-                            @endphp
+                            </div>  
                             <div class="bodyyyy">
                                 @php
                                     $idd = 0;
                                     $totalSum = 0;
                                 @endphp
+                                @if ($region_id != 'all' ||  $user_id != 'all')
+                                    <div class="table-responsive">
+                                    <table class="table mb-0 " id="dtBasicExample12">
+                                        <thead>
+                                            <tr>
+                                                <th>Ismi</th>
+                                                <th>Familiyasi </th>
+                                                <th>Soni </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {{-- @php
+                                                dd($total);
+                                            @endphp --}}
+                                            @foreach ($total as $item)
+                                                @php
+                                                    $totalSum += $item['count'];
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $item['f'] }} </td>
+                                                    <td>{{ $item['l'] }} </td>
+                                                    <td>{{ $item['count'] }} </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                @else
                                 @foreach ($total as $key => $regions)
                                     @php
                                         $idd += 1;
@@ -221,6 +220,7 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                @endif
                             </div>
                             <div class="d-flex align-items-center justify-content-end">
                                 <h5 class="mr-1">

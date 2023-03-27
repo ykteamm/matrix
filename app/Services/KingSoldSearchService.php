@@ -23,6 +23,7 @@ class KingSoldSearchService
         {
             $king_array = $this->kingSoldSearchUserAll($region_id,$date);
         }else{
+            $king_array = [];
             $king_sold = DB::table('tg_king_sold')
                         ->selectRaw('count(tg_king_sold.id) as count')
                         ->where('tg_king_sold.admin_check',1)
@@ -42,7 +43,6 @@ class KingSoldSearchService
                         }else{
                             $count = $king_sold[0]->count;
                         }
-
                         
                         $king_sold05 = DB::table('tg_king_sold')
                         ->selectRaw('count(tg_king_sold.id) as count')
