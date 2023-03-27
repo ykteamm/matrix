@@ -103,6 +103,8 @@ Route::post('permission', [HomeController::class,'permission'])->name('permissio
 Route::get('reg', [HomeController::class,'reg']);
 Route::get('grade', [HomeController::class,'grade'])->name('grade');
 Route::get('setting/{month}', [HomeController::class,'setting'])->name('setting');
+Route::post('setting-month', [HomeController::class,'settingMonth'])->name('setting_month');
+
 
 Route::post('add-new-pharm', [App\Http\Controllers\PharmacyController::class,'addPharm'])->name('add-new-pharm.store');
 

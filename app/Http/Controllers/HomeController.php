@@ -1667,9 +1667,13 @@ class HomeController extends Controller
         $months = substr($month,0,-5);
         $maxday =  Carbon::now()->year($year)->month($months)->daysInMonth;
         $dates = [];
-
+        // DB::table('tg_calendar')->where('id', 21)->update([
+        //     'day_json' => ["false", "false", "false", "true", "true", "true", "true", "false", "true", "true", "true", "true", "true", "true", "false", "true", "true", "true", "true", "true", "true", "false", "true", "true", "true", "true", "true", "true", "false", "true", "true"]
+        // ]);
+        // dd("ss");
         $ym = DB::table('tg_calendar')->where('year_month',$month)->value('day_json');
-
+        $except_days = json_decode(DB::table('tg_calendar')->where('year_month',$month)->value('add_day'));
+        
         if($ym)
         {
             $ym_json = json_decode($ym);
@@ -1684,23 +1688,56 @@ class HomeController extends Controller
             $ym_json = NULL;
         }
 
-    for($i=1; $i < $maxday + 1; ++$i) {
-        $dayName = \Carbon\Carbon::createFromDate($year,$months, $i)->format('l');
-        $day = \Carbon\Carbon::createFromDate($year, $months, $i)->format('d');
-        if($day[0] == '0')
-        {
-            $day = substr($day,1);
+        for($i=1; $i < $maxday + 1; ++$i) {
+            $dayName = \Carbon\Carbon::createFromDate($year,$months, $i)->format('l');
+            $day = \Carbon\Carbon::createFromDate($year, $months, $i)->format('d');
+            if($day[0] == '0')
+            {
+                $day = substr($day,1);
+            }
+            $dates[$day] = $dayName;
         }
-        $dates[$day] = $dayName;
-    }
         $monthname =  \Carbon\Carbon::createFromDate($year,$months)->format('F');
+        // dd($monthname);
         // $monthname2 =  \Carbon\Carbon::createFromDate($year,$month)->format('Y-m')->addMonth();;
         $plusmonth = date('m.Y',(strtotime ( '+1 month' , strtotime ( '01.'.$month) ) ));
         $minusmonth = date('m.Y',(strtotime ( '-1 month' , strtotime ( '01.'.$month) ) ));
         $weeks = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
         $key = array_search($dates[1],$weeks);
-        // return $ym_json;
-        return view('settings',compact('dates','monthname','minusmonth','plusmonth','month','ym_json','key'));
+        // dd($dates["1"]);
+        // dd(in_array(4,$except_days));
+        return view('settings',compact('except_days','dates','monthname','minusmonth','plusmonth','month','ym_json','key'));
+    }
+
+    public function settingMonth(Request $request)
+    {
+        $except_day = $request->input('except_day');
+        $month = $request->input('month');
+        $calendar = DB::table('tg_calendar')->where('year_month',$month)->first();
+        $ym_json = json_decode($calendar->day_json);
+        $except_days = json_decode($calendar->add_day);
+        
+        if(count($ym_json) < $except_day) {
+            return back()->with(['message' => count($ym_json) . " dan kichik son kiriting"]);
+        }
+        if(!($ym_json[$except_day - 1] == 'true')) {
+            return back()->with(['message' => "Bu kun allaqachon belgilangan"]);
+        }
+        if($except_days != NULL) {
+            if(in_array($except_day, $except_days)) {
+                return back()->with(['message' => "Bu kun allaqachon belgilangan"]);
+            } else {
+                array_push($except_days, $except_day);
+                DB::table('tg_calendar')->where('id', $calendar->id)->update([
+                    'add_day' => $except_days
+                ]);
+            }
+        } else {
+            DB::table('tg_calendar')->where('id', $calendar->id)->update([
+                'add_day' => [$except_day]
+            ]);
+        }
+        return back();
     }
 
     public function permission(Request $request)
