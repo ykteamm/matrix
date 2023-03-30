@@ -240,7 +240,7 @@
                             @endforeach
                         </tr>
                         @php $t=0; @endphp
-                        @foreach ($elchi as $item)
+                        @foreach ($elchi as $key => $item)
                             @if (true)
                                 <tr id="{{ $item->id }}"
                                     class="tr tr{{ $item->v_id }} gsh{{ $item->side }} vil{{ $item->v_id }}"

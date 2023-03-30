@@ -130,7 +130,7 @@
                         @csrf
                         <div class="d-flex justify-content-between align-items-center">
                             <input class="form-control form-control-sm" type="number" placeholder="Sana kiriting"
-                                name="except_day">
+                                name="except_day" required>
                             <input type="text" name="month" value="{{ $month }}" style="display:none">
                             <button type="submit" class="ml-5 btn btn-success">Saqlash</button>
                         </div>

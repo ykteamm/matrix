@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PlanWeek;
 use App\Models\ProductSold;
 use App\Services\ElchilarService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -54,7 +55,7 @@ class ElchilarController extends Controller
         $elchi_prognoz = $data->elchi_prognoz;
         $king_sold = $data->king_sold;
         $day_work = $data->all_work_day;
-        // dd($day_work);
+        // dd($elchi, $elchi_fact[$elchi[0]->id]);
         $item = $this->service->plan($elchi, $month, $endofmonth);
 
         $plan = $item->plan;
@@ -71,7 +72,13 @@ class ElchilarController extends Controller
         $total_plan = $this->service->total_plan($plan);
         $total_planday = $this->service->total_planday($plan_day);
         $total_haftalik = $this->service->total_week($haftalik, $days);
-        // dd($king_sold[]);
-        return view('elchilar.index', compact('all_or_new','side','region', 'day_work', 'king_sold', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
+        if ($all_or_new == 'all') {
+            $elchi = $elchi->all();
+            uasort($elchi, function ($a, $b) use ($elchi_fact) {
+                return $elchi_fact[$a['id']] > $elchi_fact[$b['id']] ? -1 : 1;
+            });
+            $elchi = new Collection($elchi);
+        }
+        return view('elchilar.index', compact('all_or_new', 'side', 'region', 'day_work', 'king_sold', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
     }
 }

@@ -1718,7 +1718,7 @@ class HomeController extends Controller
         $except_days = json_decode($calendar->add_day);
         
         if(count($ym_json) < $except_day) {
-            return back()->with(['message' => count($ym_json) . " dan kichik son kiriting"]);
+            return back()->with(['message' => (count($ym_json) + 1) . " dan kichik son kiriting"]);
         }
         if(!($ym_json[$except_day - 1] == 'true')) {
             return back()->with(['message' => "Bu kun allaqachon belgilangan"]);
