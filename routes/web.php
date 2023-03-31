@@ -232,6 +232,7 @@ Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
 Route::post('user-exit', [UserController::class,'userExit'])->name('user-exit');
 Route::post('user-test', [UserController::class,'userTest'])->name('user-test');
 Route::post('user-new', [UserController::class,'userNew'])->name('user-new');
+Route::get('user-money', [UserController::class, 'userMoney'])->name('user-money');
 
 Route::get('medicine/accept/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('accept.med.create');
 Route::get('medicine/accept/{id}/show/{time?}',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('accept.med.show');

@@ -238,6 +238,7 @@
                      <li><a href="{{route('user-control')}}">Status</a></li>
                      <li><a href="{{route('user-register')}}">Registratsiya</a></li>
                      <li><a href="{{route('users-without-pharmacy')}}">New users</a></li>
+                     <li><a href="{{route('user-money')}}">User money</a></li>
                   </ul>
                </li>
              @endif

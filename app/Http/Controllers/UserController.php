@@ -30,9 +30,23 @@ use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Services\ElchiService;
 use App\Services\ElchiBattleService;
+use App\Services\UserMoneyService;
 
 class UserController extends Controller
 {
+    public UserMoneyService $userMoney;
+    public function __construct(UserMoneyService $um) {
+        $this->userMoney = $um;
+    }
+    public function userMoney(Request $request)
+    {
+        $month = $request->input('_month') ?? date("Y-m-d");
+        $this->userMoney->setMonth($month);
+        $yearMonths = $this->userMoney->yearMonths();
+        $users = $this->userMoney->moneyInfo();
+        return view('userControl.user-money', compact('users', 'yearMonths', 'month'));
+    }
+
     public function index()
     {
         $users = User::where('status', 1)->where('rm', '!=', 1)
