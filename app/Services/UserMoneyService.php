@@ -78,6 +78,7 @@ class UserMoneyService
       ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice, tg_productssold.user_id as id, tg_user.first_name AS name, tg_user.last_name AS famname')
       ->leftJoin('tg_user', 'tg_user.id', 'tg_productssold.user_id')
       ->whereBetween('tg_productssold.created_at', [$this->workTime->sMonth(), $this->workTime->eMonth()])
+      ->whereDate('tg_productssold.created_at', '>=', '2023-03-15')
       ->whereIn('tg_user.id', $daily)
       ->groupBy('tg_productssold.user_id', 'name', 'famname')
       ->orderBy('allprice', 'DESC')

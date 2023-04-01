@@ -25,7 +25,7 @@ class UserWorkTimeService
       ->get()->first();
   }
 
-  private function isNotToday($day) 
+  private function isNotToday($day)
   {
     return strtotime(date("Y-m-d")) > strtotime($day);
   }
@@ -41,34 +41,36 @@ class UserWorkTimeService
       $daily = $this->usuallyOneDayMinutes($day, $id);
       $user = $this->shiftUser($id, $day);
 
-      if (!$user && $this->isNotToday($day)) {
-        $minusTotal['days'] += 1;
+      if ($daily) {
+        if (!$user && $this->isNotToday($day)) {
+          $minusTotal['days'] += 1;
+          $dayUsually = round((strtotime($daily->finish_work) - strtotime($daily->start_work)) / 60) - 60;
+          $minusTotal['minutes'] += $dayUsually;
+          $minusTotal['hours'] += round($dayUsually / 60);
+        }
+        if ($user && $this->isNotToday($day)) {
+          $workedTotal['days'] += 1;
+          $difOpen = strtotime(date("H:i", strtotime($user->open_date))) - strtotime($daily->start_work);
+          $difClose = strtotime($daily->finish_work) - strtotime(date("H:i", strtotime($user->close_date)));
+          $dayMinus = 0;
+          if ($difClose > 600) {
+            $dayMinus += round($difClose / 60);
+          }
+          if ($difOpen > 600) {
+            $dayMinus += round($difOpen / 60);
+          }
+          if ($dayMinus > 0) {
+            $minusTotal['minutes'] += $dayMinus;
+            $minusTotal['hours'] += round($dayMinus / 60);
+          }
+        }
+
         $dayUsually = round((strtotime($daily->finish_work) - strtotime($daily->start_work)) / 60) - 60;
-        $minusTotal['minutes'] += $dayUsually;
-        $minusTotal['hours'] += round($dayUsually / 60);
+        $total['minutes'] += $dayUsually;
+        $total['hours'] += round($dayUsually / 60);
+        $workedTotal['hours'] = $total['hours'] - $minusTotal['hours'];
+        $workedTotal['minutes'] = $total['minutes'] - $minusTotal['minutes'];
       }
-      if ($user && $this->isNotToday($day)) {
-        $workedTotal['days'] += 1;
-        $difOpen = strtotime(date("H:i", strtotime($user->open_date))) - strtotime($daily->start_work);
-        $difClose = strtotime($daily->finish_work) - strtotime(date("H:i", strtotime($user->close_date)));
-        $dayMinus = 0;
-        if ($difClose > 600) {
-          $dayMinus += round($difClose / 60);
-        }
-        if ($difOpen > 600) {
-          $dayMinus += round($difOpen / 60);
-        }
-        if ($dayMinus > 0) {
-          $minusTotal['minutes'] += $dayMinus;
-          $minusTotal['hours'] += round($dayMinus / 60);
-        }
-      }
-    
-      $dayUsually = round((strtotime($daily->finish_work) - strtotime($daily->start_work)) / 60) - 60;
-      $total['minutes'] += $dayUsually;
-      $total['hours'] += round($dayUsually / 60);
-      $workedTotal['hours'] = $total['hours'] - $minusTotal['hours'];
-      $workedTotal['minutes'] = $total['minutes'] - $minusTotal['minutes'];
     }
     return compact('total', 'minusTotal', 'workedTotal');
   }
@@ -92,21 +94,16 @@ class UserWorkTimeService
   private function usuallyOneDayMinutes($day, $id)
   {
     $dailyWorkHistory = $this->usuallyUserWorksHistory($id);
-    $data = null;
     foreach ($dailyWorkHistory as $daily) {
       $d = strtotime($day);
       $start = strtotime($daily->start);
       $finish = strtotime($daily->finish);
       if ($d >= $start && $d <= $finish) {
-        $data = $daily;
+        return $daily;
       } else if ($d >= $start && $finish == NULL) {
-        $data = $daily;
+        return $daily;
       }
     }
-    if ($data == null) {
-      dd("$id idli userga vaqt biriktirilmagan");
-    }
-    return $data;
   }
 
   private function workedDays()
