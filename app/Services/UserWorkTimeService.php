@@ -36,11 +36,11 @@ class UserWorkTimeService
     $total = ['days' => count($workedDays), 'hours' => 0, 'minutes' => 0,];
     $minusTotal = ['days' => 0, 'hours' => 0, 'minutes' => 0];
     $workedTotal = ['days' => 0, 'hours' => 0, 'minutes' => 0];
+    $dailyFirst = $this->firstDaily($id);
 
     foreach ($workedDays as $day) {
       $daily = $this->usuallyOneDayMinutes($day, $id);
       $user = $this->shiftUser($id, $day);
-
       if ($daily) {
         if (!$user && $this->isNotToday($day)) {
           $minusTotal['days'] += 1;
@@ -68,11 +68,27 @@ class UserWorkTimeService
         $dayUsually = round((strtotime($daily->finish_work) - strtotime($daily->start_work)) / 60) - 60;
         $total['minutes'] += $dayUsually;
         $total['hours'] += round($dayUsually / 60);
-        $workedTotal['hours'] = $total['hours'] - $minusTotal['hours'];
-        $workedTotal['minutes'] = $total['minutes'] - $minusTotal['minutes'];
+      } else {
+        if ($user) {
+          $workedTotal['days'] += 1;
+        }
+        $dayUsually = round((strtotime($dailyFirst->finish_work) - strtotime($dailyFirst->start_work)) / 60) - 60;
+        $total['minutes'] += $dayUsually;
+        $total['hours'] += round($dayUsually / 60);
       }
+      $workedTotal['hours'] = $total['hours'] - $minusTotal['hours'];
+      $workedTotal['minutes'] = $total['minutes'] - $minusTotal['minutes'];
     }
     return compact('total', 'minusTotal', 'workedTotal');
+  }
+
+  private function firstDaily($id)
+  {
+    return DB::table('daily_works')
+      ->select('start', 'finish', 'start_work', 'finish_work')
+      ->where('user_id', $id)
+      ->get()
+      ->first();
   }
 
   private function usuallyUserWorksHistory($id)
