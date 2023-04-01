@@ -72,9 +72,14 @@ class UserWorkTimeService
         if ($user) {
           $workedTotal['days'] += 1;
         }
-        $dayUsually = round((strtotime($dailyFirst->finish_work) - strtotime($dailyFirst->start_work)) / 60) - 60;
-        $total['minutes'] += $dayUsually;
-        $total['hours'] += round($dayUsually / 60);
+        if ($dailyFirst) {
+          $dayUsually = round((strtotime($dailyFirst->finish_work) - strtotime($dailyFirst->start_work)) / 60) - 60;
+          $total['minutes'] += $dayUsually;
+          $total['hours'] += round($dayUsually / 60);
+        } else {
+          $total['minutes'] += 8 * 60;
+          $total['hours'] += 8;
+        }
       }
       $workedTotal['hours'] = $total['hours'] - $minusTotal['hours'];
       $workedTotal['minutes'] = $total['minutes'] - $minusTotal['minutes'];
@@ -87,7 +92,7 @@ class UserWorkTimeService
     return DB::table('daily_works')
       ->select('start', 'finish', 'start_work', 'finish_work')
       ->where('user_id', $id)
-      ->get()
+      ->orderBy('id', 'ASC')
       ->first();
   }
 
