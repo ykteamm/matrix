@@ -31,19 +31,41 @@ use Carbon\Carbon;
 use App\Services\ElchiService;
 use App\Services\ElchiBattleService;
 use App\Services\UserMoneyService;
+use App\Services\WorkDayServices;
 
 class UserController extends Controller
 {
     public UserMoneyService $userMoney;
-    public function __construct(UserMoneyService $um) {
+    public function __construct(UserMoneyService $um)
+    {
         $this->userMoney = $um;
     }
     public function userMoney(Request $request)
     {
-        $month = $request->input('_month') ?? date("Y-m-d");
-        $this->userMoney->setMonth($month);
-        $yearMonths = $this->userMoney->yearMonths();
-        $users = $this->userMoney->moneyInfo();
+        $data = [];
+        // dd($request->input('_month'));
+        $users = DB::table("tg_user")->selectRaw('id,first_name AS name, last_name AS famname')->get();
+        // dd($users);
+        foreach ($users as $user) {
+            $service = new WorkDayServices($user->id);
+            $userData = $service->fff($request->input('_month'));
+            // dd($userData);
+            $microData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'famname' => $user->famname,
+                'maosh' => 0,
+                'jarima' => 0,
+                'minut' => 0
+            ];
+            foreach ($userData as $day => $value) {
+                $microData['maosh'] += $value['maosh'];
+                $microData['jarima'] += $value['jarima'];
+                $microData['minut'] += $value['minut'];
+            }
+        }
+        dd($data);
+        return $data;
         return view('userControl.user-money', compact('users', 'yearMonths', 'month'));
     }
 
@@ -512,7 +534,7 @@ class UserController extends Controller
         $users = User::select('tg_user.*', 'tg_region.name as region_name', 'daily_works.start_work', 'daily_works.finish_work')
             ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
             ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
-            ->groupBy('tg_user.id', 'daily_works.id','region_name')
+            ->groupBy('tg_user.id', 'daily_works.id', 'region_name')
             ->where('daily_works.active', 1)
             ->orderBy('tg_user.id', 'DESC')
             ->get();
@@ -529,10 +551,10 @@ class UserController extends Controller
                 $user_id = substr($key, 7);
                 $userDaily = DailyWork::where('user_id', $user_id)->orderBy('id', 'DESC')->first();
                 if ($userDaily) {
-                    $ends = date('Y-m-d', (strtotime('-1 day', strtotime(date("Y-m-d"))))); 
+                    $ends = date('Y-m-d', (strtotime('-1 day', strtotime(date("Y-m-d")))));
 
                     DailyWork::where('id', $userDaily->id)->update([
-                        
+
                         'finish' => $ends,
                         'active' => 0
                     ]);
