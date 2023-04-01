@@ -43,30 +43,19 @@ class UserController extends Controller
     public function userMoney(Request $request)
     {
         $data = [];
-        // dd($request->input('_month'));
-        $users = DB::table("tg_user")->selectRaw('id,first_name AS name, last_name AS famname')->get();
-        // dd($users);
-        foreach ($users as $user) {
-            $service = new WorkDayServices($user->id);
-            $userData = $service->fff($request->input('_month'));
-            // dd($userData);
-            $microData = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'famname' => $user->famname,
-                'maosh' => 0,
-                'jarima' => 0,
-                'minut' => 0
-            ];
-            foreach ($userData as $day => $value) {
-                $microData['maosh'] += $value['maosh'];
-                $microData['jarima'] += $value['jarima'];
-                $microData['minut'] += $value['minut'];
-            }
+        // return 3232;
+        $month = $request->input('_month')??'2023-04';
+        
+        $users = User::where('status',1)->pluck('id')->toArray();
+        foreach ($users as $id) {
+            $service = new WorkDayServices($id);
+
+            $userData = $service->getMonthMaosh($month);
+            $data[] = $userData[0];
+            
         }
-        dd($data);
-        return $data;
-        return view('userControl.user-money', compact('users', 'yearMonths', 'month'));
+        $yearMonths = ['03.2023','04.2023'];
+        return view('userControl.user-money', compact('data', 'yearMonths', 'month'));
     }
 
     public function index()

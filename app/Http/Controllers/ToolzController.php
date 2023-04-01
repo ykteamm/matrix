@@ -44,6 +44,7 @@ class ToolzController extends Controller
         'xalat_yoq' => 'Xalat yo\'q',
         'lokatsiya_notogri' => 'Lokatsiya noto\'g\'ri'
     ];
+    
     private const MIN_FINE = 10000;
 
     public function openSmena(Request $request)

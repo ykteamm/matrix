@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="card p-2">
-                    <span class="text-center">User money</span>
+                    {{-- <span class="text-center">User money</span> --}}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table mb-0 example1">
@@ -26,23 +26,25 @@
                                     <tr>
                                         <th>FIO</th>
                                         <th>Fakt</th>
-                                        <th>To'liq oylik</th>
-                                        <th>Jarima</th>
                                         <th>Oylik</th>
-                                        <th>Jami(kun,soat, minut)</th>
+                                        <th>Kesiladigan summa</th>
+                                        <th>Kechikgan vaqt (minut)</th>
+                                        <th>Kechikgan vaqt (soat)</th>
+                                        {{-- <th>Jami(kun,soat, minut)</th>
                                         <th>Ishlamagan(kun,soat, minut)</th>
-                                        <th>Ishlagan(kun,soat, minut)</th>
+                                        <th>Ishlagan(kun,soat, minut)</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
+                                    @foreach ($data as $user)
                                         <tr>
-                                            <td>{{ $user['name'] }} {{ $user['famname'] }}</td>
-                                            <td>{{ $user['fact'] }}</td>
-                                            <td>{{ $user['totalMaosh'] }}</td>
-                                            <td>{{ $user['jarima'] }}</td>
-                                            <td>{{ $user['oylik'] }}</td>
-                                            <td>
+                                            <td>{{ $user['name'] }} </td>
+                                            <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
+                                            <td>{{ number_format($user['summa'],0,',',' ') }}</td>
+                                            <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
+                                            <td>{{ number_format($user['time'],0,',',' ') }} minut</td>
+                                            <td>{{ number_format(floor($user['time']/60),0,',',' ') }} soat</td>
+                                            {{-- <td>
                                                 {{ $user['total']['days'] }}:d-
                                                 {{ number_format($user['total']['hours']) }}:h-
                                                 {{ number_format($user['total']['minutes']) }}:m
@@ -56,7 +58,7 @@
                                                 {{ $user['workedTotal']['days'] }}:d-
                                                 {{ number_format($user['workedTotal']['hours']) }}:h-
                                                 {{ number_format($user['workedTotal']['minutes']) }}:m
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

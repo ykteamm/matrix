@@ -9,6 +9,24 @@ use Carbon\Carbon;
 use App\Models\Knowledge;
 
 
+if(!function_exists('maosh')){
+    function maosh($sum) {
+        if($sum < 25000000)
+        {
+            $koef = 2000000/15000000;
+            $oylik = $sum*$koef;
+        }elseif ($sum >= 25000000 && $sum < 35000000) {
+            $koef = 3500000/25000000;
+            $oylik = $sum*$koef;
+        }else{
+            $koef = 5000000/35000000;
+            $oylik = $sum*$koef;
+        }
+        
+        return $oylik;
+    }
+}
+
 if (!function_exists('toLatin')) {
     function toLatin($krill)
     {
