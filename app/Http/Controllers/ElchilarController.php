@@ -79,6 +79,7 @@ class ElchilarController extends Controller
             });
             $elchi = new Collection($elchi);
         }
+        // dd($haftalik);
         return view('elchilar.index', compact('all_or_new', 'side', 'region', 'day_work', 'king_sold', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
     }
 }

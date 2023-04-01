@@ -39,8 +39,8 @@
                                     @foreach ($data as $user)
                                         <tr>
                                             <td>{{ $user['name'] }} </td>
-                                            <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
                                             <td>{{ number_format($user['summa'],0,',',' ') }}</td>
+                                            <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
                                             <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
                                             <td>{{ number_format($user['time'],0,',',' ') }} minut</td>
                                             <td>{{ number_format(floor($user['time']/60),0,',',' ') }} soat</td>

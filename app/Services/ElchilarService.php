@@ -540,7 +540,7 @@ class ElchilarService
                     ->whereDate('created_at','=', $day)->sum(DB::raw('price_product*number'));
                 $sold2[$keys]=$MonthSold;
             }
-            $sold[$key]=$sold2;
+            $sold[$item->id]=$sold2;
         }
         return $sold;
     }
@@ -868,9 +868,9 @@ class ElchilarService
             $s=0;
             foreach ($days as $day){
                 if($j==0||$j==7||$j==14||$j==21){
-                    $arr[$i][$s]=0;
+                    $arr[$el->id][$s]=0;
                 }
-                $arr[$i][$s]+=$sold[$i][$j];
+                $arr[$el->id][$s]+=$sold[$el->id][$j];
                 if($j==6||$j==13||$j==20){
                     $s++;
                 }
@@ -926,7 +926,7 @@ class ElchilarService
             $j=0;
             $tot_sold[$i]=0;
             foreach ($elchi as $item){
-                $tot_sold[$i]+=$sold[$j][$i];
+                $tot_sold[$i]+=$sold[$item->id][$i];
                 $j++;
             }
             $i++;
@@ -972,13 +972,11 @@ class ElchilarService
     {
 //       dd($haftalik);
         $total_week=[];
-       foreach ($haftalik[0] as $key=>$item){
+       foreach ($haftalik[33] as $key=>$item){
 //           dd($item);
            $total_week[$key]=0;
            foreach ($haftalik as $val){
-
                    $total_week[$key]+=$val[$key];
-
            }
        }
        return $total_week;

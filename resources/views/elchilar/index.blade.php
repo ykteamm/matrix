@@ -338,14 +338,14 @@
                                     @endphp
                                     @foreach ($days as $day)
                                         @if ($i == 0 || $i == 7 || $i == 14 || $i == 21)
-                                            @if ($haftalik[$t][$s] == 0)
+                                            @if ($haftalik[$item->id][$s] == 0)
                                                 <td onclick="weeks({{ $s }})"
                                                     class="week{{ $s }}  p-0 week hover{{ $s }}"
                                                     onmouseover="$(`.hover{{ $s }}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
                                                     onmouseleave="$(`.hover{{ $s }}`).css('background','white').css('color','black');"
                                                     data-bs-toggle="tooltip"
                                                     title="{{ $item->last_name }} {{ $item->first_name }}"><span
-                                                        class="week{{ $s }}">{{ number_format($haftalik[$t][$s], 0, '', '.') }}
+                                                        class="week{{ $s }}">{{ number_format($haftalik[$item->id][$s], 0, '', '.') }}
                                                     </span></td>
                                             @else
                                                 <td onclick="weeks({{ $s }})"
@@ -354,26 +354,26 @@
                                                     onmouseleave="$(`.hover{{ $s }}`).css('background','white').css('color','black');"
                                                     data-bs-toggle="tooltip"
                                                     title="{{ $item->last_name }} {{ $item->first_name }}"><span
-                                                        class="week{{ $s }} badge bg-success-light">{{ number_format($haftalik[$t][$s], 0, '', '.') }}
+                                                        class="week{{ $s }} badge bg-success-light">{{ number_format($haftalik[$item->id][$s], 0, '', '.') }}
                                                     </span></td>
                                             @endif
                                         @endif
 
 
-                                        @if ($sold[$t][$i] == 0)
+                                        @if ($sold[$item->id][$i] == 0)
                                             <td style="display: none" onclick="days({{ $s }})"
                                                 class="days{{ $s }} p-0"
                                                 onmouseover="$(`.hover{{ $s }}`).css('cursor','pointer');"
                                                 data-bs-toggle="tooltip"
                                                 title="{{ $item->last_name }} {{ $item->first_name }}">
-                                                {{ number_format($sold[$t][$i], 0, '', '.') }}</span></td>
+                                                {{ number_format($sold[$item->id][$i], 0, '', '.') }}</span></td>
                                         @else
                                             <td style="display: none" onclick="days({{ $s }})"
                                                 class=" days{{ $s }} p-0"
                                                 onmouseover="$(`.hover{{ $s }}`).css('cursor','pointer');"
                                                 data-bs-toggle="tooltip"
                                                 title="{{ $item->last_name }} {{ $item->first_name }}"> <span
-                                                    class="days{{ $s }} badge bg-primary-light">{{ number_format($sold[$t][$i], 0, '', '.') }}</span>
+                                                    class="days{{ $s }} badge bg-primary-light">{{ number_format($sold[$item->id][$i], 0, '', '.') }}</span>
                                             </td>
                                         @endif
                                         @php
