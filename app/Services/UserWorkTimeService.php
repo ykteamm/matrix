@@ -63,11 +63,10 @@ class UserWorkTimeService
           $minusTotal['hours'] += round($dayMinus / 60);
         }
       }
-      if ($this->isNotToday($day)) {
-        $dayUsually = round((strtotime($daily->finish_work) - strtotime($daily->start_work)) / 60) - 60;
-        $total['minutes'] += $dayUsually;
-        $total['hours'] += round($dayUsually / 60);
-      }
+    
+      $dayUsually = round((strtotime($daily->finish_work) - strtotime($daily->start_work)) / 60) - 60;
+      $total['minutes'] += $dayUsually;
+      $total['hours'] += round($dayUsually / 60);
       $workedTotal['hours'] = $total['hours'] - $minusTotal['hours'];
       $workedTotal['minutes'] = $total['minutes'] - $minusTotal['minutes'];
     }
