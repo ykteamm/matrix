@@ -968,17 +968,19 @@ class ElchilarService
         return $tot_planday;
 
     }
-    public function total_week($haftalik,$days)
+    public function total_week($haftalik,$days, $month)
     {
-//       dd($haftalik);
+
+        if($haftalik == []) {
+            return [];
+        }
         $total_week=[];
-       foreach ($haftalik[33] as $key=>$item){
-//           dd($item);
-           $total_week[$key]=0;
-           foreach ($haftalik as $val){
-                   $total_week[$key]+=$val[$key];
-           }
-       }
+        for ($i = 0; $i < 4; $i++){
+            $total_week[$i]=0;
+            foreach ($haftalik as $val){
+                    $total_week[$i]+=$val[$i];
+            }
+        }
        return $total_week;
 
     }

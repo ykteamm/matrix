@@ -203,7 +203,7 @@
                                 $arr = 0;
                             @endphp
                             @foreach ($tot_sold_day as $item)
-                                @if ($i == 0 || $i == 7 || $i == 14 || $i == 21)
+                                @if (($i == 0 || $i == 7 || $i == 14 || $i == 21) && $total_haftalik != [])
                                     @if ($total_haftalik[$s] == 0)
                                         <td style="z-index: 1000" onclick="weeks({{ $s }})"
                                             class="week{{ $s }}  week"><span
