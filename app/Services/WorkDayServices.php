@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Calendar;
 use App\Models\DailyWork;
+use App\Models\ProductSold;
 use App\Models\Shift;
 use App\Models\User;
 use Carbon\Carbon;
@@ -65,6 +66,7 @@ class WorkDayServices
     } 
     public function getReportAllSum($month)
     {
+
         $start_month = $this->getFirstDate($month);
         $end_month = $this->getLastDate($month);
 
@@ -79,12 +81,14 @@ class WorkDayServices
                 if($currentDate < strtotime(date('Y-m-d')) && $currentDate >= strtotime('2023-03-15'))
                 {
                     $date = date('Y-m-d', $currentDate);
+                    // $jarima = $this->getDayJarima('2023-03-22');
                     $jarima = $this->getDayJarima($date);
                     $sum += $jarima;
                     $sum2[] = array('jarima' => $jarima,'date' => $date);
 
                 }                    
             }
+            // dd($sum2);
         
         return $sum;
 
@@ -115,15 +119,18 @@ class WorkDayServices
     }
     public function getDayJarima($date)
     {
-        $sum = $this->getOneMinutSum($this->user_id,date('Y-m'),$date);
+        $sum = $this->getOneMinutSum($this->user_id,date('Y-m',strtotime($date)),$date);
         $maosh = $this->getTaqqoslash($sum);
-        $jar = $this->getOneMinutJarima(date('m.Y'),$maosh);
+        $jar = $this->getOneMinutJarima(date('m.Y',strtotime($date)),$maosh);
         $minut = $this->getMinutesDate($date,$this->user_id);
 
+        // dd($minut);
         return floor($jar*$minut);
     }
     public function getMinutesDate($date,$user_id)
     {
+
+
 
 
         $day = $this->getWorkInMonth(date('m.Y',strtotime($date)));
@@ -136,19 +143,34 @@ class WorkDayServices
 
         $ddd = $day_json[$day_s-1];
 
+
+
         if($date < '2023-03-15' || $ddd == 'false' || in_array($day_s,$add_array))
         {
             return 0;
         }
-        $shift = Shift::whereDate('created_at',$date)->where('user_id',$user_id)->first();
+        $shift = Shift::whereDate('created_at',$date)->where('user_id',$user_id)->where('pharma_id','!=',42)->first();
 
         if($shift == NULL)
         {
             $all_diff = 0;
         }else{
 
+            if($shift->close_date == null)
+            {
+                $table = ProductSold::where('user_id',$shift->user_id)->whereDate('created_at',$shift->created_at)->orderByDesc('id')->value('created_at');
+                if($table == null)
+                {
+                    $close_date = date('H:i:s',strtotime ( $shift->open_date ));
+
+                }else{
+                    $close_date = date('H:i:s',strtotime ( $table ));
+                }
+            }else{
+                $close_date = date('H:i:s',strtotime($shift->close_date));
+            }
+
             $open_date = date('H:i:s',strtotime($shift->open_date));
-            $close_date = date('H:i:s',strtotime($shift->close_date));
 
             $th_start_work = $this->getSpecialStartDay($date,$user_id);
             $th_end_work = $this->getSpecialFinishDay($date,$user_id);
@@ -178,6 +200,7 @@ class WorkDayServices
 
             $all_diff = $diff_open + $diff_close;
         }
+        // dd($all_diff);
 
         return $all_diff;
     }
@@ -201,6 +224,7 @@ class WorkDayServices
     }
     public function getOneMinutSum($user_id,$month,$date)
     {
+
         $summa = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
             ->whereDate('tg_productssold.created_at','>=',$month.'-01')
@@ -311,6 +335,8 @@ class WorkDayServices
             $st[] = array('maosh' =>maosh($month_sol),'summa' => $month_sol,'jarima' => $jarima,'time' => $time,'id' => $this->user_id,'name' => $names);
         // }
             // dd($this->user_id);
+            // dd($date);
+
         return $st;
 
     }

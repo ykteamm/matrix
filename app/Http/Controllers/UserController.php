@@ -47,7 +47,9 @@ class UserController extends Controller
         $month = $request->input('_month')??'2023-04';
         
         $users = User::where('status',1)->pluck('id')->toArray();
+        
         foreach ($users as $id) {
+            
             $service = new WorkDayServices($id);
 
             $userData = $service->getMonthMaosh($month);
