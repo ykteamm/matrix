@@ -24,8 +24,9 @@
                 <div class="dropdown-menu" style="z-index: 100000">
 
                     @foreach ($calendars as $m)
-                        <a onclick="selectMonth(this)" 
-                            class="dropdown-item" id="{{ date('Y', strtotime('01.' . $m)) . '-' . date('m', strtotime('01.' . $m)) }}"> {{ date('m.Y', strtotime('01.' . $m)) }} </a>
+                        <a onclick="selectMonth(this)" class="dropdown-item"
+                            id="{{ date('Y', strtotime('01.' . $m)) . '-' . date('m', strtotime('01.' . $m)) }}">
+                            {{ date('m.Y', strtotime('01.' . $m)) }} </a>
                     @endforeach
                 </div>
             </div>
@@ -33,7 +34,7 @@
                 <div class="mb-2 d-flex  justify-content-end">
                     <button id="new_and_all" type="button" class="btn btn-block btn-outline-primary dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @if($all_or_new == 'all')
+                        @if ($all_or_new == 'all')
                             Hammasi
                         @else
                             Yangi elchilar
@@ -49,17 +50,19 @@
                     <div>
                         <button id="garb_sharq" type="button" class="btn btn-block btn-outline-primary dropdown-toggle"
                             id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"> 
-                        @switch($side)
-                            @case('east')
-                                Sharq
+                            aria-haspopup="true" aria-expanded="false">
+                            @switch($side)
+                                @case('east')
+                                    Sharq
                                 @break
-                            @case('west')
-                                G`arb
+
+                                @case('west')
+                                    G`arb
                                 @break
-                            @default
-                                G`arb/Sharq
-                        @endswitch
+
+                                @default
+                                    G`arb/Sharq
+                            @endswitch
                         </button>
 
                         <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
@@ -203,18 +206,20 @@
                                 $arr = 0;
                             @endphp
                             @foreach ($tot_sold_day as $item)
-                                @if (($i == 0 || $i == 7 || $i == 14 || $i == 21) && $total_haftalik != [])
-                                    @if ($total_haftalik[$s] == 0)
-                                        <td style="z-index: 1000" onclick="weeks({{ $s }})"
-                                            class="week{{ $s }}  week"><span
-                                                class="week{{ $s }}">{{ number_format($total_haftalik[$s], 0, '', '.') }}</span>
-                                        </td>
-                                    @else
-                                        <td style="z-index: 1000;color: white" onclick="weeks({{ $s }})"
-                                            class="week{{ $s }} weeks{{ $i }}   week "><span
-                                                class="week{{ $s }} ">{{ number_format($total_haftalik[$s], 0, '', '.') }}
-                                            </span></td>
-                                    @endif
+                                @if ($i == 0 || $i == 7 || $i == 14 || $i == 21)
+                                    @isset($total_haftalik[$s])
+                                        @if ($total_haftalik[$s] == 0)
+                                            <td style="z-index: 1000" onclick="weeks({{ $s }})"
+                                                class="week{{ $s }}  week"><span
+                                                    class="week{{ $s }}">{{ number_format($total_haftalik[$s], 0, '', '.') }}</span>
+                                            </td>
+                                        @else
+                                            <td style="z-index: 1000;color: white" onclick="weeks({{ $s }})"
+                                                class="week{{ $s }} weeks{{ $i }}   week "><span
+                                                    class="week{{ $s }} ">{{ number_format($total_haftalik[$s], 0, '', '.') }}
+                                                </span></td>
+                                        @endif
+                                    @endisset
                                 @endif
 
 
@@ -417,178 +422,189 @@
         </div>
     </div>
     </div>
-@section('admin_script')
-    <script>
-        function yangiEchilar() {
-            let all_elchi = document.getElementById('all_elchi')
-            let new_elchi = document.getElementById('new_elchi')
-            console.log(all_elchi, new_elchi)
-            if (new_elchi.style.display == 'none') {
-                new_elchi.style.display = 'block'
-                all_elchi.style.display = 'none'
-            } else {
-                new_elchi.style.display = 'none'
-                all_elchi.style.display = 'block'
-            }
-        }
-
-        function qizil() {
-            let qizil = document.querySelectorAll('.qizil')
-            let input = document.getElementById('qizil')
-            // console.log(input.value)
-            qizil.forEach(e => {
-                e.style.background = 'white'
-
-                if (e.attributes.name.value * 1 < input.value * 1) {
-                    console.log(e.attributes.name.value)
-                    e.style.background = 'red'
+    @section('admin_script')
+        <script>
+            function yangiEchilar() {
+                let all_elchi = document.getElementById('all_elchi')
+                let new_elchi = document.getElementById('new_elchi')
+                console.log(all_elchi, new_elchi)
+                if (new_elchi.style.display == 'none') {
+                    new_elchi.style.display = 'block'
+                    all_elchi.style.display = 'none'
+                } else {
+                    new_elchi.style.display = 'none'
+                    all_elchi.style.display = 'block'
                 }
-            })
-        }
-        function selectMonth(monthBtn) {
-            var url = "{{ route('elchilar', ['month' => ':month']) }}";
-            url = url.replace(':month', monthBtn.id);
-            location.href = url + makeQueryParams();
-        }
+            }
 
-        function selectSide(side) {
-            location.href = getMainUrl() + makeQueryParams({side});
-        }
+            function qizil() {
+                let qizil = document.querySelectorAll('.qizil')
+                let input = document.getElementById('qizil')
+                // console.log(input.value)
+                qizil.forEach(e => {
+                    e.style.background = 'white'
 
-        function selectNewOrAll(all_or_new) {
-            location.href = getMainUrl() + makeQueryParams({all_or_new});
-        }
+                    if (e.attributes.name.value * 1 < input.value * 1) {
+                        console.log(e.attributes.name.value)
+                        e.style.background = 'red'
+                    }
+                })
+            }
 
-        function allRegion() {
-            location.href = getMainUrl() + makeQueryParams({region:'regAll'});
-        }
+            function selectMonth(monthBtn) {
+                var url = "{{ route('elchilar', ['month' => ':month']) }}";
+                url = url.replace(':month', monthBtn.id);
+                location.href = url + makeQueryParams();
+            }
 
-        function regFunc(region) {
-            location.href = getMainUrl() + makeQueryParams({region});
-        }
+            function selectSide(side) {
+                location.href = getMainUrl() + makeQueryParams({
+                    side
+                });
+            }
 
-        function getMainUrl() {
-            var month = <?php echo json_encode($month); ?>;
-            var url = "{{ route('elchilar', ['month' => ':month']) }}";
-            url = url.replace(':month', month);
-            return url;
-        }
+            function selectNewOrAll(all_or_new) {
+                location.href = getMainUrl() + makeQueryParams({
+                    all_or_new
+                });
+            }
 
-        function makeQueryParams(params = {}){
-            var searchParams = location.search;
-            if(searchParams.length != 0) {
-                var newParams = '?';
-                var searchArr = location.search.slice(1, location.search.length).split('&');
-                for (let param of searchArr){
-                    let key = param.split('=')[0]
-                    let value = param.split('=')[1]
-                    if(params[key] == 'regAll') {
-                        continue
-                    } else if (typeof params[key] == 'object' && params[key].join(",") != value) {
-                        if(newParams.length > 1){
-                            newParams += `&${key}=${params[key].join(",")}`
+            function allRegion() {
+                location.href = getMainUrl() + makeQueryParams({
+                    region: 'regAll'
+                });
+            }
+
+            function regFunc(region) {
+                location.href = getMainUrl() + makeQueryParams({
+                    region
+                });
+            }
+
+            function getMainUrl() {
+                var month = <?php echo json_encode($month); ?>;
+                var url = "{{ route('elchilar', ['month' => ':month']) }}";
+                url = url.replace(':month', month);
+                return url;
+            }
+
+            function makeQueryParams(params = {}) {
+                var searchParams = location.search;
+                if (searchParams.length != 0) {
+                    var newParams = '?';
+                    var searchArr = location.search.slice(1, location.search.length).split('&');
+                    for (let param of searchArr) {
+                        let key = param.split('=')[0]
+                        let value = param.split('=')[1]
+                        if (params[key] == 'regAll') {
+                            continue
+                        } else if (typeof params[key] == 'object' && params[key].join(",") != value) {
+                            if (newParams.length > 1) {
+                                newParams += `&${key}=${params[key].join(",")}`
+                            } else {
+                                newParams += `${key}=${params[key].join(",")}`
+                            }
+                        } else if (params[key] != undefined && params[key] != value) {
+                            if (newParams.length > 1) {
+                                newParams += `&${key}=${params[key]}`
+                            } else {
+                                newParams += `${key}=${params[key]}`
+                            }
                         } else {
-                            newParams += `${key}=${params[key].join(",")}`
+                            if (newParams.length > 1) {
+                                newParams += `&${key}=${value}`
+                            } else {
+                                newParams += `${key}=${value}`
+                            }
                         }
-                    } else if(params[key] != undefined && params[key] != value) {
-                        if(newParams.length > 1){
-                            newParams += `&${key}=${params[key]}`
-                        } else {
-                            newParams += `${key}=${params[key]}`
+                    }
+                    for (let key in params) {
+                        if (params[key] == 'regAll') {
+                            continue
                         }
+                        if (!newParams.includes(key)) {
+                            if (newParams.length > 1) {
+                                newParams += `&${key}=${params[key]}`
+                            } else {
+                                newParams += `${key}=${params[key]}`
+                            }
+                        }
+                    }
+                    if (newParams.length > 1) {
+                        return newParams;
                     } else {
-                        if(newParams.length > 1){
-                            newParams += `&${key}=${value}`
-                        } else {
-                            newParams += `${key}=${value}`
+                        return ''
+                    }
+                } else {
+                    countParam = 0
+                    for (let key in params) {
+                        countParam++
+                        if (countParam == 1 && !searchParams.includes(key)) {
+                            searchParams += `?${key}=${params[key]}`
+                        } else if (countParam > 1 && !searchParams.includes(key)) {
+                            searchParams += `&${key}=${params[key]}`
                         }
                     }
+                    return searchParams;
                 }
-                for (let key in params) {
-                    if(params[key] == 'regAll') {
-                        continue
-                    } 
-                    if(!newParams.includes(key)) {
-                        if(newParams.length > 1){
-                            newParams += `&${key}=${params[key]}`
-                        } else {
-                            newParams += `${key}=${params[key]}`
-                        }
-                    }
-                }
-                if(newParams.length > 1) {
-                    return newParams;
-                } else {
-                    return ''
-                }
-            } else {
-                countParam = 0
-                for (let key in params) {
-                    countParam++
-                    if(countParam == 1 && !searchParams.includes(key)) {
-                        searchParams += `?${key}=${params[key]}`
-                    } else if(countParam > 1 && !searchParams.includes(key)) {
-                        searchParams += `&${key}=${params[key]}`
-                    }
-                }
-                return searchParams;
-            }
-        }
-
-        function okbtn() {
-            var region = []
-            var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-
-            for (var i = 0; i < checkboxes.length; i++) {
-                region.push(checkboxes[i].value)
             }
 
-            location.href = getMainUrl() + makeQueryParams({region});
-            // let checks=document.querySelectorAll('.checkbox');
-            // let tr=document.querySelectorAll('.tr');
-            // tr.forEach(e=>{
-            //     e.style.display='none'
-            // })
-            // checks.forEach(e=>{
-            //     if(e.checked==true){
-            //         a=e.name;
-            //         x='.tr'+a.substr(3,4)
-            //         let b=document.querySelectorAll(x)
-            //         b.forEach(d=>{
-            //             d.style.display=''
-            //         })
+            function okbtn() {
+                var region = []
+                var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
-            //     }
-            // })
-
-        }
-
-        function myf(id) {
-            let a = document.querySelectorAll('.tr');
-            let b = document.getElementById(id);
-            a.forEach(e => {
-                if (e.style.display == 'none') {
-                    e.style.display = ''
-                } else {
-                    e.style.display = 'none';
-                    b.style.display = '';
+                for (var i = 0; i < checkboxes.length; i++) {
+                    region.push(checkboxes[i].value)
                 }
-            })
-        }
 
-        function gsh(id) {
-            btn = document.getElementById('garb_sharq')
+                location.href = getMainUrl() + makeQueryParams({
+                    region
+                });
+                // let checks=document.querySelectorAll('.checkbox');
+                // let tr=document.querySelectorAll('.tr');
+                // tr.forEach(e=>{
+                //     e.style.display='none'
+                // })
+                // checks.forEach(e=>{
+                //     if(e.checked==true){
+                //         a=e.name;
+                //         x='.tr'+a.substr(3,4)
+                //         let b=document.querySelectorAll(x)
+                //         b.forEach(d=>{
+                //             d.style.display=''
+                //         })
 
-            if (id == 1) {
-                let side1 = document.querySelectorAll('.gsh1');
-                let side2 = document.querySelectorAll('.gsh2');
-                side1.forEach(e => {
-                    e.style.display = '';
+                //     }
+                // })
+
+            }
+
+            function myf(id) {
+                let a = document.querySelectorAll('.tr');
+                let b = document.getElementById(id);
+                a.forEach(e => {
+                    if (e.style.display == 'none') {
+                        e.style.display = ''
+                    } else {
+                        e.style.display = 'none';
+                        b.style.display = '';
+                    }
                 })
-                side2.forEach(s => {
-                    s.style.display = 'none';
-                })
-                btn.innerText = 'G`arb'
+            }
+
+            function gsh(id) {
+                btn = document.getElementById('garb_sharq')
+
+                if (id == 1) {
+                    let side1 = document.querySelectorAll('.gsh1');
+                    let side2 = document.querySelectorAll('.gsh2');
+                    side1.forEach(e => {
+                        e.style.display = '';
+                    })
+                    side2.forEach(s => {
+                        s.style.display = 'none';
+                    })
+                    btn.innerText = 'G`arb'
         }
         if (id == 2) {
             let side1 = document.querySelectorAll('.gsh1');
@@ -607,39 +623,39 @@
         let reg = document.getElementById('region');
         if (id == 1) {
             reg.innerText = 'Qoraqalpog`iston Respublikasi';
-            }
-            if (id == 2) {
-                reg.innerText = 'Andijon viloyati';
-            }
-            if (id == 3) {
-                reg.innerText = 'Buxoro viloyati';
-            }
-            if (id == 4) {
-                reg.innerText = 'Jizzax viloyati';
-            }
-            if (id == 5) {
-                reg.innerText = 'Qashqadaryo viloyati';
-            }
-            if (id == 6) {
-                reg.innerText = 'Navoiy viloyati';
-            }
-            if (id == 7) {
-                reg.innerText = 'Namangan viloyati';
-            }
-            if (id == 8) {
-                reg.innerText = 'Samarqand viloyati';
-            }
-            if (id == 9) {
-                reg.innerText = 'Surxondaryo viloyati';
-            }
-            if (id == 10) {
-                reg.innerText = 'Sirdaryo viloyati';
-            }
-            if (id == 11) {
-                reg.innerText = 'Toshkent viloyati';
-            }
-            if (id == 12) {
-                reg.innerText = 'Farg`ona viloyati';
+                }
+                if (id == 2) {
+                    reg.innerText = 'Andijon viloyati';
+                }
+                if (id == 3) {
+                    reg.innerText = 'Buxoro viloyati';
+                }
+                if (id == 4) {
+                    reg.innerText = 'Jizzax viloyati';
+                }
+                if (id == 5) {
+                    reg.innerText = 'Qashqadaryo viloyati';
+                }
+                if (id == 6) {
+                    reg.innerText = 'Navoiy viloyati';
+                }
+                if (id == 7) {
+                    reg.innerText = 'Namangan viloyati';
+                }
+                if (id == 8) {
+                    reg.innerText = 'Samarqand viloyati';
+                }
+                if (id == 9) {
+                    reg.innerText = 'Surxondaryo viloyati';
+                }
+                if (id == 10) {
+                    reg.innerText = 'Sirdaryo viloyati';
+                }
+                if (id == 11) {
+                    reg.innerText = 'Toshkent viloyati';
+                }
+                if (id == 12) {
+                    reg.innerText = 'Farg`ona viloyati';
         }
         if (id == 13) {
             reg.innerText = 'Xorazm viloyati';
@@ -668,118 +684,118 @@
     function func1() {
         let btn = document.getElementById('garb_sharq')
         btn.innerText = 'G`arb/Sharq'
-            let reg = document.getElementById('region');
-            reg.innerText = 'Hammasi';
-            let a = document.querySelectorAll('.tr');
-            a.forEach(e => {
-                if (e.style.display == 'none') {
-                    e.style.display = '';
-                }
-            })
-        }
-    </script>
-    <script>
-        function yangiEchilar() {
-            let all_elchi = document.getElementById('all_elchi')
-            let new_elchi = document.getElementById('new_elchi')
-            console.log(all_elchi, new_elchi)
-            if (new_elchi.style.display == 'none') {
-                new_elchi.style.display = 'block'
-                all_elchi.style.display = 'none'
-            } else {
-                new_elchi.style.display = 'none'
-                all_elchi.style.display = 'block'
+                let reg = document.getElementById('region');
+                reg.innerText = 'Hammasi';
+                let a = document.querySelectorAll('.tr');
+                a.forEach(e => {
+                    if (e.style.display == 'none') {
+                        e.style.display = '';
+                    }
+                })
             }
-        }
-        $(document).ready(function($) {
-            $(".clickable-row").click(function() {
-                window.location = $(this).data("href");
-            });
-        });
-
-        function yashir() {
-            let a = document.querySelectorAll('.yashir');
-            a.forEach(e => {
-                if (e.style.display == 'none') {
-                    e.style.display = ''
+        </script>
+        <script>
+            function yangiEchilar() {
+                let all_elchi = document.getElementById('all_elchi')
+                let new_elchi = document.getElementById('new_elchi')
+                console.log(all_elchi, new_elchi)
+                if (new_elchi.style.display == 'none') {
+                    new_elchi.style.display = 'block'
+                    all_elchi.style.display = 'none'
                 } else {
-                    e.style.display = 'none';
+                    new_elchi.style.display = 'none'
+                    all_elchi.style.display = 'block'
                 }
-            })
+            }
+            $(document).ready(function($) {
+                $(".clickable-row").click(function() {
+                    window.location = $(this).data("href");
+                });
+            });
 
-        }
+            function yashir() {
+                let a = document.querySelectorAll('.yashir');
+                a.forEach(e => {
+                    if (e.style.display == 'none') {
+                        e.style.display = ''
+                    } else {
+                        e.style.display = 'none';
+                    }
+                })
 
-        function yashir3() {
-            let a = document.querySelectorAll('.yashir3');
-            a.forEach(e => {
-                if (e.style.display == 'none') {
-                    e.style.display = ''
-                } else {
-                    e.style.display = 'none';
+            }
+
+            function yashir3() {
+                let a = document.querySelectorAll('.yashir3');
+                a.forEach(e => {
+                    if (e.style.display == 'none') {
+                        e.style.display = ''
+                    } else {
+                        e.style.display = 'none';
+                    }
+                })
+
+            }
+
+            function region(region) {
+                let reg = document.querySelector('#tgregion');
+                reg.textContent = region;
+            }
+
+            function days(id) {
+                let days, week;
+                if (id == 0) {
+                    days = document.querySelectorAll('.days0');
+                    week = document.querySelectorAll('.week0');
                 }
-            })
+                if (id == 1) {
+                    days = document.querySelectorAll('.days1');
+                    week = document.querySelectorAll('.week1');
+                }
+                if (id == 2) {
+                    days = document.querySelectorAll('.days2');
+                    week = document.querySelectorAll('.week2');
+                }
+                if (id == 3) {
+                    days = document.querySelectorAll('.days3'),
+                        week = document.querySelectorAll('.week3');
+                }
 
-        }
+                week.forEach(element => {
+                    element.style.display = ""
+                });
+                days.forEach(element => {
+                    element.style.display = "none";
+                });
 
-        function region(region) {
-            let reg = document.querySelector('#tgregion');
-            reg.textContent = region;
-        }
+            }
+            // console.log('days'+5);
+            function weeks(id) {
+                let days, week;
+                if (id == 0) {
+                    days = document.querySelectorAll('.days0');
+                    week = document.querySelectorAll('.week0');
+                }
+                if (id == 1) {
+                    days = document.querySelectorAll('.days1');
+                    week = document.querySelectorAll('.week1');
+                }
+                if (id == 2) {
+                    days = document.querySelectorAll('.days2');
+                    week = document.querySelectorAll('.week2');
+                }
+                if (id == 3) {
+                    days = document.querySelectorAll('.days3'),
+                        week = document.querySelectorAll('.week3');
+                }
+                week.forEach(element => {
+                    element.style.display = "none"
+                });
+                days.forEach(element => {
+                    element.style.display = "";
+                });
 
-        function days(id) {
-            let days, week;
-            if (id == 0) {
-                days = document.querySelectorAll('.days0');
-                week = document.querySelectorAll('.week0');
             }
-            if (id == 1) {
-                days = document.querySelectorAll('.days1');
-                week = document.querySelectorAll('.week1');
-            }
-            if (id == 2) {
-                days = document.querySelectorAll('.days2');
-                week = document.querySelectorAll('.week2');
-            }
-            if (id == 3) {
-                days = document.querySelectorAll('.days3'),
-                    week = document.querySelectorAll('.week3');
-            }
-
-            week.forEach(element => {
-                element.style.display = ""
-            });
-            days.forEach(element => {
-                element.style.display = "none";
-            });
-
-        }
-        // console.log('days'+5);
-        function weeks(id) {
-            let days, week;
-            if (id == 0) {
-                days = document.querySelectorAll('.days0');
-                week = document.querySelectorAll('.week0');
-            }
-            if (id == 1) {
-                days = document.querySelectorAll('.days1');
-                week = document.querySelectorAll('.week1');
-            }
-            if (id == 2) {
-                days = document.querySelectorAll('.days2');
-                week = document.querySelectorAll('.week2');
-            }
-            if (id == 3) {
-                days = document.querySelectorAll('.days3'),
-                    week = document.querySelectorAll('.week3');
-            }
-            week.forEach(element => {
-                element.style.display = "none"
-            });
-            days.forEach(element => {
-                element.style.display = "";
-            });
-
-        }
-    </script>
-@endsection
+        </script>
+    @endsection
 @endsection

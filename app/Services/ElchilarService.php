@@ -978,7 +978,9 @@ class ElchilarService
         for ($i = 0; $i < 4; $i++){
             $total_week[$i]=0;
             foreach ($haftalik as $val){
+                if(isset($val[$i])) {
                     $total_week[$i]+=$val[$i];
+                }
             }
         }
        return $total_week;
