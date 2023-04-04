@@ -20,6 +20,7 @@ class PharmUsersController extends Controller
             $arr[]=$id->user_id;
         }
         $users=User::where('status',1)
+            ->where('admin',TRUE)
             ->whereNotIn('id',$arr)
             ->get();
         $pharmacies=Pharmacy::all();
@@ -32,7 +33,6 @@ class PharmUsersController extends Controller
            'user_id'=>'required',
            'pharmacy_id'=>'required'
         ]);
-
         $r=$request->all();
         unset($r['_token']);
         $id=$r['user_id'];
@@ -54,7 +54,6 @@ class PharmUsersController extends Controller
                 $arr[]=$p;
             }
         }
-//        dd($arr[0]->admin_pharmacies[0]->pharmacies->name);
         return view('pharmuser.show',compact('arr'));
     }
 
@@ -69,6 +68,7 @@ class PharmUsersController extends Controller
         $pharm_user=PharmUser::where('user_id',$id)->get();
         $pharmacy=Pharmacy::all();
 //        dd($pharm_user);
+        // return $pharm_user;
         $user=User::where('id',$id)->first();
         return view('pharmuser.edit',compact('id','pharm_user','user','pharmacy'));
     }
@@ -86,44 +86,42 @@ class PharmUsersController extends Controller
     {
         $r=$request->all();
         unset($r['_token']);
-        if(isset($r['user_id'])){
+        if(isset($r['pharmacy_id'])){
 
-
-            $pharm_user=PharmUser::where('pharmacy_id',$id)->get();
+            $pharm_user=PharmUser::where('user_id',$id)->get();
+            // dd($pharm_user);
             if(isset($pharm_user[0])) {
                 foreach ($pharm_user as $p) {
                     $i = 0;
 
-                    foreach ($r['user_id'] as $item) {
+                    foreach ($r['pharmacy_id'] as $item) {
 
-                        $query = PharmUser::where('pharmacy_id', $id)->where('user_id', $item)->first();
+                        $query = PharmUser::where('user_id', $id)->where('pharmacy_id', $item)->first();
 
                         if (!$query) {
-                            $p = new PharmUser();
-                            $p->pharmacy_id = $id;
-                            $p->user_id = $item;
-                            $p->save();
+                            $newP = new PharmUser();
+                            $newP->pharmacy_id = $item;
+                            $newP->user_id = $id;
+                            $newP->save();
                         }
-                        if ($p->user_id == $item) {
+                        if ($p->pharmacy_id == $item) {
                             $i++;
                         }
 
-
                     }
                     if ($i == 0) {
-                        PharmUser::where('pharmacy_id', $id)->where('user_id', $p->user_id)->delete();
+                        PharmUser::where('user_id', $id)->where('pharmacy_id', $p->pharmacy_id)->delete();
                     }
                 }
             }else{
-                foreach ($r['user_id'] as $item) {
+                foreach ($r['pharmacy_id'] as $item) {
                     $p = new PharmUser();
-                    $p->pharmacy_id = $id;
-                    $p->user_id = $item;
+                    $p->pharmacy_id = $item;
+                    $p->user_id = $id;
                     $p->save();
                 }
             }
-        }
-        else{
+        }else{
             PharmUser::where('user_id',$id)->delete();
         }
         return redirect()->route('pharm.users.bypharm');
