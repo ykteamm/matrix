@@ -43,14 +43,22 @@
             <div class="col-md-12">
                 <div class="card bg-white">
                     <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
-                        <li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab1"
-                                data-toggle="tab">Tasdiqlanmagan
-                            </a></li>
-                        <li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab2"
-                                data-toggle="tab">Tasdiqlangan</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link @if ($date == null && $page == null) active @endif"
+                                href="#solid-rounded-justified-tab1" data-toggle="tab">
+                                Tasdiqlanmagan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @if ($date != null || $page != null) active @endif"
+                                href="#solid-rounded-justified-tab2" data-toggle="tab">
+                                Tarix
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane show active" id="solid-rounded-justified-tab1">
+                        <div class="tab-pane @if ($date == null && $page == null) show active @endif"
+                            id="solid-rounded-justified-tab1">
                             <div class="row">
                                 @foreach ($uncheckedshifts as $item)
                                     <div class="col-md-12">
@@ -225,7 +233,8 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="tab-pane " id="solid-rounded-justified-tab2">
+                        <div class="tab-pane @if ($date != null || $page != null) show active @endif"
+                            id="solid-rounded-justified-tab2">
                             <div class="btn-group d-flex justify-content-end">
                                 <div class="row">
                                     <div class="col-md-12" align="center">
@@ -234,14 +243,19 @@
                                     <div class="col-md-12">
                                         <form action="{{ route('open-smena') }}" method="GET">
                                             <input value="{{ $date }}" name="smena_date" type="date"
-                                                onchange="filterByDate(this)" class="form-control">
-                                            <button id="close-smena-button" type="submit" class="d-none">button</button>
+                                                onchange="filterByDate(this.value)" class="form-control">
+                                            <button id="open-smena-button" type="submit" class="d-none">button</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
+                            @if ($date == null)
+                                <div class="d-flex align-items-center justify-content-center">
+                                    {!! $historyshifts->links() !!}
+                                </div>
+                            @endif
                             <div class="row">
-                                @foreach ($checkedshifts as $item)
+                                @foreach ($historyshifts as $item)
                                     <div class="col-md-12">
                                         <div class="row mb-5 mt-5 pt-2 pb-2"
                                             style="border: 1px solid black; border-radius:15px;">
@@ -342,15 +356,21 @@
                                             <div class="col-md-12 mt-5">
                                                 <div class="row">
                                                     <div class="col-md-2 col-sm-4 col-md-2 mb-3">
-                                                        @if (json_decode($item->admin_check)->check == 'ok')
+                                                        @if ($item->admin_check == null)
                                                             <button type="button"
-                                                                class="btn btn-block btn-outline-info active">Tasdiqlangan
+                                                                class="btn btn-block btn-outline-info active">Tekshirilmagan
                                                             </button>
                                                         @else
-                                                            <button type="button"
-                                                                class="btn btn-block btn-outline-info active">
-                                                                {{ json_decode($item->admin_check)->check }}
-                                                            </button>
+                                                            @if (json_decode($item->admin_check)->check == 'ok')
+                                                                <button type="button"
+                                                                    class="btn btn-block btn-outline-info active">Tasdiqlangan
+                                                                </button>
+                                                            @else
+                                                                <button type="button"
+                                                                    class="btn btn-block btn-outline-info active">
+                                                                    {{ json_decode($item->admin_check)->check }}
+                                                                </button>
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 </div>
@@ -359,11 +379,6 @@
                                     </div>
                                 @endforeach
                             </div>
-                            @if ($paginated)
-                                <div class="d-flex align-items-center justify-content-center">
-                                    {!! $checkedshifts->links() !!}
-                                </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -376,8 +391,12 @@
 @endsection
 @section('admin_script')
     <script>
-        function filterByDate(data) {
-            $('#close-smena-button').click();
+        function filterByDate(value) {
+            if(!value){
+                location.href = "{{ route('open-smena') }}"
+            } else {
+                $('#open-smena-button').click();
+            }
         }
 
         function shiftAnsver(id, ansver) {

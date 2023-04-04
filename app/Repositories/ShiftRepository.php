@@ -18,20 +18,23 @@ class ShiftRepository implements ShiftRepositoryInterface
       ->where('active', $active)
       ->orderBy('id', 'DESC')->get();
   }
-  public function checked($date, &$paginated, $column,$active)
+  public function history($date, $column, $active)
   {
     $query = Shift::with('user', 'pharmacy', 'user.region')
       // ->whereDate('created_at', '>=', '2023-01-30')
       ->whereDate('created_at', '>=', '2023-03-07')
-      ->where($column, '!=', NULL)
-      ->whereIn('active', $active)->orderBy('id','DESC');
-    if ($date !== NULL) {
-      $paginated = false;
-      $checkedshifts = $query->whereDate('created_at', $date)->orderBy('id', 'ASC')->get();
+      ->where($column,'!=', NULL)
+      ->where(function($q) use ($active) {
+        if($active == 2) {
+          return $q->where('active', $active);
+        }
+      });
+    if ($date != NULL) {
+      $historyshifts = $query->whereDate('created_at', $date)->orderBy('id', 'DESC')->get();
     } else {
-      $checkedshifts = $query->orderBy('id', 'ASC')->paginate(10);
+      $historyshifts = $query->orderBy('id', 'DESC')->paginate(10);
     }
-    return $checkedshifts;
+    return $historyshifts;
   }
 
   public function update($shift_id, $values)

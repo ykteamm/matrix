@@ -50,22 +50,21 @@ class ToolzController extends Controller
     public function openSmena(Request $request)
     {
         $date = $request->input('smena_date');
-        $paginated = true;
+        $page = $request->input('page');
         $host = substr(request()->getHttpHost(), 0, 3);
-        $uncheckedshifts = $this->shiftRepository->unchecked();
-        $checkedshifts = $this->shiftRepository->checked($date, $paginated, 'admin_check', [0, 1]);
-        // return $checkedshifts;
-        return view('toolz.open-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
+        $uncheckedshifts = $this->shiftRepository->unchecked('admin_check', 1);
+        $historyshifts = $this->shiftRepository->history($date, 'admin_check', 1);
+        return view('toolz.open-smena', compact('page','historyshifts', 'host', 'uncheckedshifts', 'date'));
     }
 
     public function closeSmena(Request $request)
     {
         $date = $request->input('smena_date');
-        $paginated = true;
+        $page = $request->input('page');
         $host = substr(request()->getHttpHost(), 0, 3);
         $uncheckedshifts = $this->shiftRepository->unchecked('admin_check_close', 2);
-        $checkedshifts = $this->shiftRepository->checked($date, $paginated, 'admin_check_close', [2]);
-        return view('toolz.close-smena', compact('checkedshifts', 'host', 'uncheckedshifts', 'date', 'paginated'));
+        $historyshifts = $this->shiftRepository->history($date, 'admin_check_close', 2);
+        return view('toolz.close-smena', compact('page','historyshifts', 'host', 'uncheckedshifts', 'date'));
     }
 
     public function adminCheckOpenSmena(Request $request)
