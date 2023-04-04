@@ -149,11 +149,17 @@ class WorkDayServices
         {
             return 0;
         }
+        
+        $th_start_work = $this->getSpecialStartDay($date,$user_id);
+        $th_end_work = $this->getSpecialFinishDay($date,$user_id);
+
         $shift = Shift::whereDate('created_at',$date)->where('user_id',$user_id)->where('pharma_id','!=',42)->first();
 
         if($shift == NULL)
         {
-            $all_diff = 0;
+            $all_diff = (strtotime($th_end_work) - strtotime($th_start_work))/60;
+
+            // $all_diff = 0;
         }else{
 
             if($shift->close_date == null)
@@ -172,8 +178,7 @@ class WorkDayServices
 
             $open_date = date('H:i:s',strtotime($shift->open_date));
 
-            $th_start_work = $this->getSpecialStartDay($date,$user_id);
-            $th_end_work = $this->getSpecialFinishDay($date,$user_id);
+            
 
             
             if(strtotime($open_date) > strtotime($th_start_work))
