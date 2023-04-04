@@ -149,7 +149,7 @@ class WorkDayServices
         {
             return 0;
         }
-        
+
         $th_start_work = $this->getSpecialStartDay($date,$user_id);
         $th_end_work = $this->getSpecialFinishDay($date,$user_id);
 
@@ -159,6 +159,10 @@ class WorkDayServices
         {
             $all_diff = (strtotime($th_end_work) - strtotime($th_start_work))/60;
 
+            if($all_diff/60 > 4)
+            {
+                $all_diff = $all_diff - 60;
+            }
             // $all_diff = 0;
         }else{
 
@@ -179,7 +183,12 @@ class WorkDayServices
             $open_date = date('H:i:s',strtotime($shift->open_date));
 
             
+            $all_diff_g = (strtotime($close_date) - strtotime($open_date))/60;
 
+            if($all_diff_g/60 > 4)
+            {
+                $all_diff_g = $all_diff_g - 60;
+            }
             
             if(strtotime($open_date) > strtotime($th_start_work))
             {
@@ -188,6 +197,9 @@ class WorkDayServices
                 {
                     $diff_open = 0;
                 }
+
+                
+
             }else{
                 $diff_open = 0;
             }
@@ -206,6 +218,10 @@ class WorkDayServices
             $all_diff = $diff_open + $diff_close;
         }
         // dd($all_diff);
+        // if($all_diff != 0)
+        // {
+        //     $all_diff = $all_diff - $all_diff_g
+        // }
 
         return $all_diff;
     }
@@ -216,8 +232,13 @@ class WorkDayServices
         ->whereDate('start','<=',$date)
         ->orderBy('id','DESC')
         ->first();
-        
-        return $work->start_work;
+        if($work == null)
+        {
+            $date = '09:00:00';
+        }else{
+            $date = $work->start_work;
+        }
+        return $date;
     }
     public function getSpecialFinishDay($date,$user_id)
     {
@@ -225,7 +246,13 @@ class WorkDayServices
         ->whereDate('start','<=',$date)
         ->orderBy('id','DESC')
         ->first();
-        return $work->finish_work;
+        if($work == null)
+        {
+            $date = '18:00:00';
+        }else{
+            $date = $work->finish_work;
+        }
+        return $date;
     }
     public function getOneMinutSum($user_id,$month,$date)
     {
@@ -337,13 +364,55 @@ class WorkDayServices
 
             $names = $user->last_name.' '.$user->first_name;
 
-            $st[] = array('maosh' =>maosh($month_sol),'summa' => $month_sol,'jarima' => $jarima,'time' => $time,'id' => $this->user_id,'name' => $names);
-        // }
+            // $arr_days = $this->getMonthMaoshKunlik($date_begin,$date_end);
+
+            $st = array('maosh' =>maosh($month_sol),'summa' => $month_sol,'jarima' => $jarima,'time' => $time,'id' => $this->user_id,'name' => $names);
+        
+        
+        
+            // }
             // dd($this->user_id);
             // dd($date);
-
+        
         return $st;
 
     }
+
+    public function getMonthMaoshKunlik($month)
+    {
+        $date = $month.'-01';
+            // $date = date('Y-m-d',(strtotime ( '-'.$i.' month' , strtotime ( Carbon::now() ) ) ));
+            $date_begin = $this->getFirstDate($date);
+            $date_end = $this->getLastDate($date);
+        $Variable1 = strtotime($date_begin);
+        $Variable2 = strtotime($date_end);
+        $arr = [];
+        for ($currentDate = $Variable2; $currentDate >= $Variable1;$currentDate -= (86400)) 
+        {  
+            
+            $day_sol = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+                ->whereDate('tg_productssold.created_at',date('Y-m-d', $currentDate))
+                ->where('tg_productssold.user_id',$this->user_id)
+                ->get()[0]->allprice;
+            if($day_sol == NULL)
+                {
+                    $day_sol = 0;
+                }
+            if($currentDate >= strtotime('2023-03-15') && $currentDate != strtotime(date('Y-m-d')) && $currentDate < strtotime(date('Y-m-d')))
+            {
+                $jarima = $this->getDayJarima(date('Y-m-d', $currentDate));
+                $minut = $this->getMinutesDate(date('Y-m-d', $currentDate),$this->user_id);
+            }else{
+                $jarima = 0;
+                $minut = 0;
+            }
+            $arr[date('Y-m-d', $currentDate)] = array('id' => $this->user_id,'maosh' => maosh($day_sol),'jarima' => $jarima,'minut' => $minut);
+                
+        }
+
+        return $arr;
+    }
+
 
 }

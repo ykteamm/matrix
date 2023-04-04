@@ -234,6 +234,8 @@ Route::post('user-test', [UserController::class,'userTest'])->name('user-test');
 Route::post('user-new', [UserController::class,'userNew'])->name('user-new');
 Route::get('user-money', [UserController::class, 'userMoney'])->name('user-money');
 
+Route::get('user-money/{id}/{month}', [UserController::class, 'userMoneyProfil'])->name('user-money-profil');
+
 Route::get('medicine/accept/{id}/create',[\App\Http\Controllers\AcceptProductController::class,'create'])->name('accept.med.create');
 Route::get('medicine/accept/{id}/show/{time?}',[\App\Http\Controllers\AcceptProductController::class,'show'])->name('accept.med.show');
 Route::get('medicine/accept',[\App\Http\Controllers\AcceptProductController::class,'index'])->name('accept.med');

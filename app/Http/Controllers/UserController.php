@@ -53,13 +53,27 @@ class UserController extends Controller
             $service = new WorkDayServices($id);
 
             $userData = $service->getMonthMaosh($month);
-            $data[] = $userData[0];
+            $data[] = $userData;
             
         }
+
+        // return $data;
         $yearMonths = ['03.2023','04.2023'];
+        // return $month;
         return view('userControl.user-money', compact('data', 'yearMonths', 'month'));
     }
+    public function userMoneyProfil($id,$month)
+    {
+        $service = new WorkDayServices($id);
 
+        $userData = $service->getMonthMaoshKunlik($month);
+
+        $yearMonths = ['2023-03','2023-04'];
+
+        return view('userControl.user-money-profil', compact('userData', 'yearMonths', 'month','id'));
+
+        // return $userData;
+    }
     public function index()
     {
         $users = User::where('status', 1)->where('rm', '!=', 1)
