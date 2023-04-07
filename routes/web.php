@@ -41,7 +41,7 @@ use App\Http\Controllers\TrendController;
     Route::post('edit/purchase', [App\Http\Controllers\NovatioController::class,'editPurchase']);
 
     Route::post('/user/cancel', [UserController::class,'userCancel']);
-    Route::post('/user/success', [UserController::class,'userSuccess']);
+    Route::post('/user-success/{id}', [UserController::class,'userSuccess'])->name('user-success');
 
     Route::post('/user/shift-open', [ToolzController::class,'adminCheckOpenSmena'])->name("admin-check-open-smena");
     Route::post('/user/shift-close', [ToolzController::class,'adminCheckCloseSmena'])->name("admin-check-close-smena");

@@ -15,79 +15,83 @@
                             @php
                                 $user = json_decode($item->elchi);
                             @endphp
-                            <div class="row mb-5 mt-5 pt-2 pb-2" style="border: 1px solid black; border-radius:15px;">
-                                <div class="col-md-4">
-                                    <div class="mt-4">
-                                        @if($host == 'mat')
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$user->passport }}" alt="Profile Image">
-                                        @else
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
-                                        @endif
-                                    </div>
+                            <form action="{{route('user-success',$item->id)}}" method="POST">
+                                @csrf
+                                <div class="row mb-5 mt-5 pt-2 pb-2" style="border: 1px solid black; border-radius:15px;">
+                                    <div class="col-md-4">
+                                        <div class="mt-4">
+                                            @if($host == 'mat')
+                                            <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/{{$user->passport }}" alt="Profile Image">
+                                            @else
+                                            <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                            @endif
+                                        </div>
 
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mt-4">
-                                        @if($host == 'mat')
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$user->photo}}" alt="Profile Image">
-                                        @else
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
-                                        @endif
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="widget settings-menu">
-                                        <ul>
-                                        <li class="nav-item">
-                                        <a href="settings.html" class="nav-link active">
-                                        <i class="far fa-user"></i>  <span>{{$user->last_name}} {{$user->first_name}}</span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="preferences.html" class="nav-link">
-                                        <i class="fas fa-cog"></i>  <span>{{date('d.m.Y',strtotime($user->year.'-'.$user->month.'-'.$user->day))}} </span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="tax-types.html" class="nav-link">
-                                        <i class="far fa-check-square"></i>  <span> {{$region[$user->region]}}, {{$district[$user->district]}} </span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="expense-category.html" class="nav-link">
-                                        <i class="far fa-list-alt"></i>  
-                                        <span> 
-                                            @if ($user->lavozim == 1)
-                                                Elchi
+                                    <div class="col-md-4">
+                                        <div class="mt-4">
+                                            @if($host == 'mat')
+                                            <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/photo/{{$user->photo}}" alt="Profile Image">
+                                            @else
+                                            <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                             @endif
-                                            @if ($user->lavozim == 2)
-                                                Provizor 
-                                            @endif
-                                        </span>
-                                        </a>
-                                        </li>
-                                        <li class="nav-item">
-                                        <a href="notifications.html" class="nav-link">
-                                        <i class="far fa-bell"></i>  <span>{{$user->phone}} </span>
-                                        </a>
-                                        </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-5">
-                                    <div class="row">
-                                        <div class="col-md-6 col-sm-4 col-md-2 mb-3">
-                                            <button type="button" class="btn btn-block btn-outline-primary active" onclick="success(`{{$item->id}}`)">Qabul qilish </button>
-                                        </div>
-                                        <div class="col-md-6 col-sm-4 col-md-2 mb-3">
-                                            <button type="button" class="btn btn-block btn-outline-warning active" onclick="cancel(`{{$item->id}}`)" >Bekor qilish </button>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-4 col-md-2 col-xl mb-3 mb-1 d-none input{{$item->id}}">
-                                        <input type="textarea" class="form-control" name="comment{{$item->id}}" placeholder="Izoh yozing...">
+                                    <div class="col-md-4">
+                                        <div class="widget settings-menu">
+                                            <ul>
+                                            <li class="nav-item">
+                                            <a href="settings.html" class="nav-link active">
+                                            <i class="far fa-user"></i>  <span>{{$user->last_name}} {{$user->first_name}}</span>
+                                            </a>
+                                            </li>
+                                            <li class="nav-item">
+                                            <a href="preferences.html" class="nav-link">
+                                            <i class="fas fa-cog"></i>  <span>{{date('d.m.Y',strtotime($user->year.'-'.$user->month.'-'.$user->day))}} </span>
+                                            </a>
+                                            </li>
+                                            <li class="nav-item">
+                                            <a href="tax-types.html" class="nav-link">
+                                            <i class="far fa-check-square"></i>  <span> {{$region[$user->region]}}, {{$district[$user->district]}} </span>
+                                            </a>
+                                            </li>
+                                            <li class="nav-item">
+                                            <a href="expense-category.html" class="nav-link">
+                                            <i class="far fa-list-alt"></i>  
+                                            <span> 
+                                                @if ($user->lavozim == 1)
+                                                    Elchi
+                                                @endif
+                                                @if ($user->lavozim == 2)
+                                                    Provizor 
+                                                @endif
+                                            </span>
+                                            </a>
+                                            </li>
+                                            <li class="nav-item">
+                                            <a href="notifications.html" class="nav-link">
+                                            <i class="far fa-bell"></i>  <span>{{$user->phone}} </span>
+                                            </a>
+                                            </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-5">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-4 col-md-2 mb-3">
+                                                <button type="submit" class="btn btn-block btn-outline-primary active">Qabul qilish </button>
+                                            </div>
+                                            <div class="col-md-6 col-sm-4 col-md-2 mb-3">
+                                                <button type="button" class="btn btn-block btn-outline-warning active" onclick="cancel(`{{$item->id}}`)" >Bekor qilish </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-4 col-md-2 col-xl mb-3 mb-1 d-none input{{$item->id}}">
+                                            <input type="textarea" class="form-control" name="comment{{$item->id}}" placeholder="Izoh yozing...">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                            </form>
                         @endif
                     @endforeach
                     

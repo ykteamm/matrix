@@ -165,7 +165,6 @@ class WorkDayServices
             }
             // $all_diff = 0;
         }else{
-
             if($shift->close_date == null)
             {
                 $table = ProductSold::where('user_id',$shift->user_id)->whereDate('created_at',$shift->created_at)->orderByDesc('id')->value('created_at');
@@ -197,13 +196,9 @@ class WorkDayServices
                 {
                     $diff_open = 0;
                 }
-
-                
-
             }else{
                 $diff_open = 0;
             }
-
             if(strtotime($close_date) < strtotime($th_end_work))
             {
                 $diff_close = (strtotime($th_end_work) - strtotime($close_date))/60;
@@ -214,7 +209,6 @@ class WorkDayServices
             }else{
                 $diff_close = 0;
             }
-
             $all_diff = $diff_open + $diff_close;
         }
         // dd($all_diff);

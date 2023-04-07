@@ -415,27 +415,39 @@ class ElchilarService
 
     public function plan($elchi,$month,$endofmonth)
     {
-        $plan_sum=[];
         $planday=[];
         $i=0;
         $cal=Calendar:: select('work_day')->where('year_month',date('m.Y',strtotime($month)))->first();
         foreach ($elchi as $item){
-            $plan_sum[$i]=0;
-            $plans=Plan::where('user_id',$item->id)
+            // $plan_sum[$i]=0;
+            // $plans=Plan::where('user_id',$item->id)
+            //     ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+            //     ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
+            // foreach ($plans as $plan){
+            //     $narx=DB::table('tg_prices')
+            //         ->select('tg_prices.price')
+            //         ->where('tg_prices.shablon_id',$plan->shablon_id)
+            //         ->where('tg_prices.medicine_id',$plan->medicine_id)->first();
+            //     if(isset($narx->price)){
+            //         $plan_sum[$i]+=$plan->number*$narx->price;
+            //     }
+            // }
+            // $planday[$i]=$plan_sum[$i]/$cal->work_day$cal->work_day;
+
+            $plans=DB::table('user_plans')->where('user_id',$item->id)
                 ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
                 ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
-            foreach ($plans as $plan){
-                $narx=DB::table('tg_prices')
-                    ->select('tg_prices.price')
-                    ->where('tg_prices.shablon_id',$plan->shablon_id)
-                    ->where('tg_prices.medicine_id',$plan->medicine_id)->first();
-//                dd($narx->price);
-                if(isset($narx->price)){
-                    $plan_sum[$i]+=$plan->number*$narx->price;
-                }
+            if(count($plans) > 0)
+            {
+                $plan_sum[$item->id] = $plans[0]->plan;
+                $planday[$item->id] = $plan_sum[$item->id]/$cal->work_day;
+            }else{
+                $plan_sum[$item->id] = 0;
+                $planday[$item->id] = 0;
             }
-            $planday[$i]=$plan_sum[$i]/$cal->work_day;
-            $i++;
+
+            // $i++;
+
         }
         $item=new ElchiTimeItems();
         $item->plan=$plan_sum;

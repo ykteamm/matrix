@@ -624,8 +624,10 @@ class UserController extends Controller
             'status' => 200,
         ];
     }
-    public function userSuccess(Request $request)
+    public function userSuccess(Request $request,$id)
     {
+
+        return $id;
         $user = TestRegister::where('id', $request->id)->first('elchi');
         $user = json_decode($user->elchi);
 
