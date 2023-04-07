@@ -9,9 +9,7 @@
                 <div class="card bg-white">
                     {{-- <div class="card-body"> --}}
                     <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded nav-justified">
-                        <li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab1"
-                                data-toggle="tab">Yangi </a></li>
-                        <li class="nav-item"><a class="nav-link" href="#solid-rounded-justified-tab2"
+                        <li class="nav-item"><a class="nav-link active" href="#solid-rounded-justified-tab2"
                                 data-toggle="tab">Tarix </a></li>
                     </ul>
                     <div class="btn-group d-flex justify-content-end">
@@ -20,8 +18,8 @@
                                 Sana
                             </div>
                             <div class="col-md-12">
-                                <form action="{{ route('king.history', ['date' => 'date']) }}" method="GET">
-                                    <input value="{{ $date }}" name="smena_date" type="date"
+                                <form action="{{ route('king.history') }}" method="GET">
+                                    <input value="{{ $date }}" name="_date" type="date"
                                         onchange="filterByDate(this)" class="form-control">
                                     <button id="close-smena-button" type="submit" class="d-none">button</button>
                                 </form>
@@ -30,7 +28,7 @@
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane show active" id="solid-rounded-justified-tab1">
-                            @if ($paginated)
+                            @if (!$date)
                                 <div class="d-flex mb-4 align-items-center justify-content-center">
                                     {!! $solds->links() !!}
                                 </div>
@@ -119,7 +117,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                            @if ($paginated)
+                            @if (!$date)
                                 <div class="d-flex align-items-center justify-content-center">
                                     {!! $solds->links() !!}
                                 </div>
@@ -137,7 +135,11 @@
 @section('admin_script')
     <script>
         function filterByDate(data) {
-            $('#close-smena-button').click();
+            if(data.value) {
+                $('#close-smena-button').click();
+            } else {
+                location.href = "{{ route('king.history') }}"
+            }
         }
 
         function ansver(id, ansver) {

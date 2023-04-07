@@ -131,24 +131,23 @@ class ToolzController extends Controller
         $host = substr(request()->getHttpHost(), 0, 3);
         return view('toolz.king-sold', compact('solds', 'host'));
     }
-    public function kingSoldHistory(Request $request, $date)
+    public function kingSoldHistory(Request $request)
     {
-        $date = $request->input('smena_date');
-        // dd($date);
-        $paginated = true;
+        $host = substr(request()->getHttpHost(), 0, 3);
         $solds = KingSold::with('order', 'order.sold', 'order.sold.medicine', 'order.user')
             ->whereDate('created_at', '>=', '2023-01-30')
-            ->where('image', '!=', 'add');
+            ->where(function () use ($request) {
 
-        $host = substr(request()->getHttpHost(), 0, 3);
+            })
+            ->where('image', '!=', 'add')
+            ->orderBy('id', 'DESC');
 
-        if ($date !== NULL) {
-            $paginated = false;
-            $solds = $solds->whereDate('created_at', $date)->orderBy('id', 'DESC')->get();
+        if ($date = $request->input('_date')) {
+            $solds = $solds->whereDate('created_at', $date)->get();
         } else {
-            $solds = $solds->orderBy('id', 'DESC')->paginate(10);
+            $solds = $solds->paginate(10);
         }
-        return view('toolz.king-sold-history', compact('solds', 'host', 'date', 'paginated'));
+        return view('toolz.king-sold-history', compact('solds', 'host', 'date'));
     }
 
     public function kingSoldAnsver(Request $request)
