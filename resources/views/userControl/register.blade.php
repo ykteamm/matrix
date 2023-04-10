@@ -76,6 +76,53 @@
                                             </ul>
                                         </div>
                                     </div>
+
+                                    
+                                    <div class="col-md-12 mt-5">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 col-md-2 mb-3">
+                                                <select class="form-control form-control-sm"
+                                                    name='pharma_id' required>
+                                                    <option value="" disabled selected hidden>
+                                                        Apteka tanlang</option>
+                                                    @foreach ($pharmacy as $pharm)
+                                                        @if ($pharm->region_id == $user->region)
+                                                        <option value='{{ $pharm->id }}'>
+                                                            {{ $pharm->name }}
+                                                        </option>
+                                                        @endif
+                                                        
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-md-2 mb-3">
+                                                <select class="form-control form-control-sm"
+                                                    name='teacher_id' required>
+                                                    <option value="" disabled selected hidden>
+                                                        Ustoz tanlang</option>
+                                                    @foreach ($teacher as $teach)
+                                                        @if ($teach->user->region_id == $user->region)
+                                                        <option value='{{ $teach->user->id }}'>
+                                                            {{ $teach->user->last_name }} {{ $teach->user->first_name }}
+                                                        </option>
+                                                        @endif
+                                                        
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-md-2 mb-3">
+                                                <input id="timepicker" 
+                                                type="time" timeformat="24h" class="form-control form-control-sm"
+                                                name="start_work" required>
+                                                <input id="timepicker" 
+                                                type="time" timeformat="24h" class="form-control form-control-sm"
+                                                name="end_work" required>
+                                            </div>
+
+                                            
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-12 mt-5">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-4 col-md-2 mb-3">

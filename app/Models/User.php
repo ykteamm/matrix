@@ -73,6 +73,11 @@ class User extends Model
     {
         return $this->hasOne(DailyWork::class, 'user_id', 'id');
     }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class, 'user_id', 'id');
+    }
 //
 //    public function tools()
 //    {

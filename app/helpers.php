@@ -260,6 +260,7 @@ if (!function_exists('h_positions')) {
         $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';
         $h_positions['toolz'] = 'Toolz Bot';
+        $h_positions['teacher'] = 'Ustoz - shogird';
         $h_positions['narx'] = 'Narx';
         $h_positions['zavod'] = 'Zavod';
         $h_positions['control'] = 'User control';

@@ -17,9 +17,12 @@ use App\Models\ElchiExercise;
 use App\Models\ElchiUserExercise;
 use App\Models\NewElchi;
 use App\Models\Pharmacy;
+use App\Models\PharmacyUser;
 use App\Models\ProductSold;
 use App\Models\TestRegister;
 use App\Models\Region;
+use App\Models\Teacher;
+use App\Models\TeacherUser;
 use App\Models\UserBattle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -589,6 +592,11 @@ class UserController extends Controller
         $district = DB::table('tg_district')->pluck('name', 'id');
         $host = substr(request()->getHttpHost(), 0, 3);
 
+
+        $pharmacy = Pharmacy::all();
+        $teacher = Teacher::all();
+
+        // return $teacher;
         // return $registers;
         // $register = TestRegister::join('tg_region', function ($join) {
         //     $join->on(function ($on) {
@@ -596,7 +604,7 @@ class UserController extends Controller
         //     });
         // })->get();
 
-        return view('userControl.register', compact('registers', 'region', 'district', 'host'));
+        return view('userControl.register', compact('registers', 'region', 'district', 'host','pharmacy','teacher'));
     }
     public function userCancel(Request $request)
     {
@@ -627,9 +635,10 @@ class UserController extends Controller
     public function userSuccess(Request $request,$id)
     {
 
-        return $id;
-        $user = TestRegister::where('id', $request->id)->first('elchi');
+
+        $user = TestRegister::where('id', $id)->first('elchi');
         $user = json_decode($user->elchi);
+        // return $user;
 
         $last_user = User::orderBy('id', 'DESC')->first('username');
         $username = 'nvt' . (intval(substr($last_user->username, 3)) + 1);
@@ -669,11 +678,11 @@ class UserController extends Controller
             'level' => 0,
             'rm' => 0
         ]);
-        $new_work_day = DB::table('daily_works')->insert([
-            'user_id' => $new,
-            'start_work' => '09:00:00',
-            'finish_work' => '18:00:00',
-        ]);
+        // $new_work_day = DB::table('daily_works')->insert([
+        //     'user_id' => $new,
+        //     'start_work' => '09:00:00',
+        //     'finish_work' => '18:00:00',
+        // ]);
         if ($new) {
             $response = Http::post('notify.eskiz.uz/api/auth/login', [
                 'email' => 'mubashirov2002@gmail.com',
@@ -692,10 +701,28 @@ class UserController extends Controller
                     'status' => 1,
                 ]);
             }
+
+            DailyWork::create([
+                'user_id' => $new,
+                'start_work' => $request->start_work,
+                'finish_work' => $request->end_work,
+                'start' => date("Y-m-d")
+            ]);
+
+            PharmacyUser::create([
+                'user_id' => $new,
+                'pharma_id' => $request->pharma_id,
+            ]);
+
+            TeacherUser::create([
+                'teacher_id' => $request->teacher_id,
+                'user_id' => $new,
+            ]);
+
+
+
         }
 
-        return [
-            'status' => 200
-        ];
+        return redirect()->back();
     }
 }

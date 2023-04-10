@@ -99,6 +99,18 @@
             @endif
             @endisset
 
+
+            @isset(Session::get('per')['teacher'])
+             @if(Session::get('per')['teacher'] == 'true')
+             <li class="submenu">
+               <a href="settings.html"><i class="feather-sliders"></i>  <span> Ustoz-shogird </span><span class="menu-arrow"></span></a>
+               <ul style="display: none;">
+                  <li><a href="{{route('add-teacher')}}">Ustoz tayinlash</a></li>
+                </ul>
+            </li>
+              @endif
+            @endisset
+
             @isset(Session::get('per')['toolz'])
             @if(Session::get('per')['toolz'] == 'true')
            <li class="submenu">
