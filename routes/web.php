@@ -261,8 +261,8 @@ Route::get('pharm/users/all/show',[\App\Http\Controllers\PharmUsersController::c
 Route::get('pharm/users/all/show-by-pharmacy',[\App\Http\Controllers\PharmUsersController::class,'allshowbypharm'])->name('pharm.users.bypharm');
 Route::get('pharm/users/{id}/edit',[\App\Http\Controllers\PharmUsersController::class,'edit'])->name('pharm.users.edit');
 Route::get('pharm/users/{id}/edit-by-pharmacy',[\App\Http\Controllers\PharmUsersController::class,'editby'])->name('pharm.users.editby');
-Route::post('pharm/users/{id}/update',[\App\Http\Controllers\PharmUsersController::class,'updateby'])->name('pharm.users.update');
-Route::post('pharm/users/{id}/update-by',[\App\Http\Controllers\PharmUsersController::class,'updateby'])->name('pharm.users.updateby');
+Route::post('pharm/users/{id}/update',[\App\Http\Controllers\PharmUsersController::class,'updateByUser'])->name('pharm.users.update');
+Route::post('pharm/users/{id}/update-by',[\App\Http\Controllers\PharmUsersController::class,'updateByPharmacy'])->name('pharm.users.updateby');
 Route::get('pharm/users/{id}/show',[\App\Http\Controllers\PharmUsersController::class,'oneshow'])->name('pharm.users.one');
 Route::post('pharm/users/store',[\App\Http\Controllers\PharmUsersController::class,'store'])->name('pharm.users.store');
 

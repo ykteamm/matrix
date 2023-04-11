@@ -81,7 +81,53 @@ class PharmUsersController extends Controller
         return view('pharmuser.editby',compact('id','pharm_user','users','pharmacy'));
     }
 
-    public function updateby(Request $request, $id)
+    public function updateByPharmacy(Request $request, $id)
+    {
+        $r=$request->all();
+        unset($r['_token']);
+        // dd($r, $id);
+        if(isset($r['user_id'])){
+
+            $pharm_user=PharmUser::where('pharmacy_id',$id)->get();
+            // dd($pharm_user);
+            if(isset($pharm_user[0])) {
+                foreach ($pharm_user as $p) {
+                    $i = 0;
+
+                    foreach ($r['user_id'] as $uid) {
+
+                        $query = PharmUser::where('pharmacy_id', $id)->where('user_id', $uid)->first();
+                        if (!$query) {
+                            $newP = new PharmUser();
+                            $newP->pharmacy_id = $id;
+                            $newP->user_id = $uid;
+                            $newP->save();
+                        }
+                        if ($p->user_id == $uid) {
+                            $i++;
+                        }
+
+                    }
+                    if ($i == 0) {
+                        PharmUser::where('pharmacy_id', $id)->where('user_id', $p->user_id)->delete();
+                    }
+                }
+            }else{
+                foreach ($r['user_id'] as $uid) {
+                    $p = new PharmUser();
+                    $p->pharmacy_id = $id;
+                    $p->user_id = $uid;
+                    $p->save();
+                }
+            }
+        }else{
+            PharmUser::where('pharmacy_id',$id)->delete();
+        }
+        return redirect()->route('pharm.users.bypharm');
+
+    }
+
+    public function updateByUser(Request $request, $id)
     {
         $r=$request->all();
         unset($r['_token']);
