@@ -19,8 +19,7 @@ class PharmUsersController extends Controller
         foreach ($phar_user as $id){
             $arr[]=$id->user_id;
         }
-        $users=User::where('status',1)
-            ->where('admin',TRUE)
+        $users=User::where('admin',TRUE)
             ->whereNotIn('id',$arr)
             ->get();
         $pharmacies=Pharmacy::all();
