@@ -95,7 +95,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-4 col-sm-4 col-md-2 mb-3">
+                                            {{-- <div class="col-md-4 col-sm-4 col-md-2 mb-3">
                                                 <select class="form-control form-control-sm"
                                                     name='teacher_id' required>
                                                     <option value="" disabled selected hidden>
@@ -109,7 +109,7 @@
                                                         
                                                     @endforeach
                                                 </select>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-4 col-sm-4 col-md-2 mb-3">
                                                 <input id="timepicker" 
                                                 type="time" timeformat="24h" class="form-control form-control-sm"

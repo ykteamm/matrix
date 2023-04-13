@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTeacherUsersTable extends Migration
+class CreateDayMedicinesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateTeacherUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('teacher_users', function (Blueprint $table) {
+        Schema::create('day_medicines', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('teacher_id')->constrained('teachers');
-            $table->foreignId('teacher_id');
-            $table->foreignId('user_id');
-            $table->integer('first_view')->default(0);
-            $table->integer('day')->default(0);
+            $table->integer('day');
+            $table->longText('name');
+            $table->json('medicines');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateTeacherUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teacher_users');
+        Schema::dropIfExists('day_medicines');
     }
 }

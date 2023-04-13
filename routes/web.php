@@ -12,6 +12,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrendController;
+use App\Http\Controllers\TeacherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -292,6 +293,9 @@ Route::get('king-sold-history', [ToolzController::class,'kingSoldHistory'])->nam
 Route::get('king-liga', [ToolzController::class,'kingSoldLiga'])->name('king-liga');
 Route::post('king-liga-store', [ToolzController::class,'kingSoldLigaStore'])->name('user-add-liga.king');
 Route::post('king-liga-delete', [ToolzController::class,'kingSoldLigaDelete'])->name('user-delete-liga.king');
+
+Route::get('add-teacher', [TeacherController::class,'index'])->name('add-teacher'); 
+Route::post('store-teacher', [TeacherController::class,'store'])->name('teacher.store'); 
 
 });
 

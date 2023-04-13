@@ -665,7 +665,6 @@ class UserController extends Controller
             'admin' => FALSE,
             'write_time' => date_now(),
             'salary' => 1500000,
-            // 'image' => $user->photo,/
             'pr' => $password,
             'tg_file_id' => NULL,
             'rol_id' => 27,
@@ -676,7 +675,11 @@ class UserController extends Controller
             'image_url' => 'https://telegra.ph//file/04f99aa16eebd4af2a42c.jpg',
             'status' => 0,
             'level' => 0,
-            'rm' => 0
+            'rm' => 0,
+            // 'first_enter' => 0,
+            // 'img_photo' => $user->photo,
+            // 'img_passport' => $user->passport,
+
         ]);
         // $new_work_day = DB::table('daily_works')->insert([
         //     'user_id' => $new,
@@ -706,7 +709,7 @@ class UserController extends Controller
                 'user_id' => $new,
                 'start_work' => $request->start_work,
                 'finish_work' => $request->end_work,
-                'start' => date("Y-m-d")
+                'start' => '2023-03-15'
             ]);
 
             PharmacyUser::create([
@@ -714,10 +717,10 @@ class UserController extends Controller
                 'pharma_id' => $request->pharma_id,
             ]);
 
-            TeacherUser::create([
-                'teacher_id' => $request->teacher_id,
-                'user_id' => $new,
-            ]);
+            // TeacherUser::create([
+            //     'teacher_id' => $request->teacher_id,
+            //     'user_id' => $new,
+            // ]);
 
 
 
