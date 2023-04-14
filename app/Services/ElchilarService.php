@@ -208,12 +208,13 @@ class ElchilarService
                 
                 if(isset($user->allprice))
                 {
-                    if(count($date) == 0)
-                    {
-                        $prog = 0;
-                    }else{
-                        $prog = (count($all_work_day)/$remain)*$user->allprice;
-                    }
+                    // if(count($date) == 0)
+                    // {
+                    //     $prog = 0;
+                    // }else{
+                    //     $prog = (count($all_work_day)/$remain)*$user->allprice;
+                    // }
+                    $prog = ($user->allprice*13)/30;
                 }else{
                     $prog = 0;
                 }
