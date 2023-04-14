@@ -198,26 +198,40 @@ class ElchilarService
                     }
                 }
 
-                $user = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
-                    ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
-                    ->where('tg_user.id','=',$elch->id)
-                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->groupBy('tg_user.id')->first();
-                    // dd($all_work_day);
-                
-                if(isset($user->allprice))
+                $month_sol = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+                ->whereDate('tg_productssold.created_at','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('tg_productssold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->where('tg_productssold.user_id',$elch->id)
+                ->get()[0]->allprice;
+
+                if($month_sol == NULL)
                 {
+                    $month_sol = 0;
+                    $prog = 0;
+
+                }else{
+                    $prog = ($month_sol*30)/13;
+
+                }
+                // $user = DB::table('tg_productssold')
+                //     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
+                //     ->whereIn(DB::raw('DATE(tg_productssold.created_at)'), $date)
+                //     ->where('tg_user.id','=',$elch->id)
+                //     ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                //     ->groupBy('tg_user.id')->first();
+                
+                // if(isset($user->allprice))
+                // {
                     // if(count($date) == 0)
                     // {
                     //     $prog = 0;
                     // }else{
                     //     $prog = (count($all_work_day)/$remain)*$user->allprice;
                     // }
-                    $prog = ($user->allprice*30)/13;
-                }else{
-                    $prog = 0;
-                }
+                // }else{
+                //     $prog = 0;
+                // }
 
                 $king_soldis = DB::table('tg_king_sold')
                     ->selectRaw('count(tg_king_sold.id) as count')
