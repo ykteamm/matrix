@@ -214,7 +214,7 @@ class ElchilarService
                     // }else{
                     //     $prog = (count($all_work_day)/$remain)*$user->allprice;
                     // }
-                    $prog = ($user->allprice*13)/30;
+                    $prog = ($user->allprice*30)/13;
                 }else{
                     $prog = 0;
                 }
