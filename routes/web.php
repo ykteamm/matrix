@@ -297,6 +297,12 @@ Route::post('king-liga-delete', [ToolzController::class,'kingSoldLigaDelete'])->
 Route::get('add-teacher', [TeacherController::class,'index'])->name('add-teacher'); 
 Route::post('store-teacher', [TeacherController::class,'store'])->name('teacher.store'); 
 
+
+Route::get('provizor', [ToolzController::class,'provizor'])->name('provizor');
+Route::post('provizor-add', [ToolzController::class,'provizorAdd'])->name('provizor-add');
+Route::post('provizor-lose', [ToolzController::class,'provizorLose'])->name('provizor-lose');
+
+
 });
 
 // });

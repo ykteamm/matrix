@@ -64,6 +64,9 @@
           }
 
       @endphp
+
+
+
 <div class="content headbot">
     <div class="row">
        <div class="col-12 col-xl-4 d-flex flex-wrap">

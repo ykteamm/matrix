@@ -121,6 +121,7 @@
                  <li><a href="{{route('king.sold')}}">Shox yurish</a></li>
                  <li><a href="{{route('king.history',['date'=>date('Y-m-d')])}}">Shox yurish tarix</a></li>
                  <li><a href="{{route('king-liga')}}">Shox yurish Liga</a></li>
+                 <li><a href="{{route('provizor')}}">Shox yurish Liga</a></li>
                </ul>
            </li>
            @endif

@@ -16,7 +16,7 @@
                  <div class="col-md-12">
                     <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button2" name="a_all"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bugun </button>
                     <div class="dropdown-menu timeclass">
-                    <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy </a>
+                    <a href="#" onclick="timeElchi('a_month')" class="dropdown-item" id="a_all">Oy</a>
 
                        <a href="#" onclick="timeElchi('a_today')" class="dropdown-item" id="a_today"> Bugun </a>
                        <a href="#" onclick="timeElchi('a_week')" class="dropdown-item" id="a_week">Hafta </a>
@@ -290,6 +290,11 @@
                      </div>
             </div>
 
+            <div id="fffmodalin">
+            </div>
+            <div id="fffmodal">
+            </div>
+
 @endif
 @endisset
 @endsection
@@ -530,7 +535,35 @@
 
 
 // });
+                    $('#fffmodal').remove();
+                    $('#fffmodalin').append('<div id="fffmodal"></div>');
                 $.each(response.dashboard, function(index, value){
+                    
+
+                    var fffmodal = '';
+
+
+                        fffmodal = fffmodal + '<div class="modal fade" id="addmemberwer'+value.id +'">'+
+                        '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">'+
+                            '<div class="modal-content">'+
+                                '<div class="modal-header">'+
+                                    '</div>'+
+                                    '<div class="modal-body">'+
+                                        '<ul class="list-group">'+
+                                            'fff'+
+                                            '</ul>'+
+                                            '</div>'+
+                                            '<div class="modal-footer">'+
+                                                '<button type="submit" class="btn btn-primary">Saqlash</button>'+
+                                                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Yopish</button>'+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>';
+                    $('#fffmodal').append(fffmodal);
+                                    
+                    
+                    
 
                 if(response.myid == value.id || response.regid == value.id)
                 {
@@ -611,8 +644,9 @@
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
                                             '<div class="d-flex justify-content-between">'+
+                                                 
 
-                                            '<h4 style="color:#05f705;height:45px;">'+ value.region +'</h4>'+
+                                            '<h4 style="color:#05f705;height:45px;cursor:pointer;" data-toggle="modal" data-target="#addmemberwer'+ value.id +'">'+ value.region +'</h4>'+
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
 
                                             '</div>'+

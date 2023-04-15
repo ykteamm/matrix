@@ -7,6 +7,8 @@ use DB;
 use Session;
 use Carbon\Carbon;
 use App\Models\PurchaseJournal;
+use App\Models\User;
+
 class NovatioController extends Controller
 {
     public function region(Request $request)
@@ -276,6 +278,7 @@ class NovatioController extends Controller
     }
     public function regionChart(Request $request)
     {
+        
         if ($request->time == 'a_today') {
             $date_begin = date_now();
             $date_end = date_now();
@@ -377,14 +380,14 @@ class NovatioController extends Controller
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
         $users = DB::table('tg_user')
-        ->whereIn('tg_user.status',[1,2])
+        // ->whereIn('tg_user.status',[1,2])
 
         ->get();
 
 
         }else{
             $users = DB::table('tg_user')
-            ->whereIn('tg_user.status',[1,2])
+            // ->whereIn('tg_user.status',[1,2])
 
             ->whereIn('region_id',$r_id_array)->get();
 
@@ -460,7 +463,7 @@ class NovatioController extends Controller
         $usersummaArray = [];
         $catarray = [];
         $c_summa = 0;
-        // return $sum;
+        $asd_summa = [];
         foreach ($regions as $key => $value) {
             foreach ($sum as $keys => $values) {
                 if($value->id == $values->r_id)
@@ -468,7 +471,20 @@ class NovatioController extends Controller
                     $summa = $summa + ($values->m_number * $values->price);
                 }
 
+                foreach ($users as $ke => $va) {
+                    if($va->id == $values->u_id && $va->region_id == $value->id)
+                    {
+                        if(!isset($asd_summa[$va->id]))
+                        {
+                            $asd_summa[$va->id] = 0;
+                        }
+                        $asd_summa[$va->id] = $asd_summa[$va->id] + ($values->m_number * $values->price);
+                    }
+
+                }
             }
+
+            
 
             
             foreach ($fsum as $fkeys => $fvalues) {
@@ -514,12 +530,17 @@ class NovatioController extends Controller
 
             }
             $ddd = $this->bestMonthSold();
+            
             $rrr = $this->bestRegion($ddd,$value->id);
-            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id,'best'=>$rrr);
+
+            
+
+            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id,'best'=>$rrr,'us' => $asd_summa);
             $summa = 0;
             $fsumma = 0;
 
         }
+        // return $array;
         foreach ($users as $keyf => $valuef) {
             foreach ($sum as $keys => $values) {
                 if($valuef->id == $values->u_id)
@@ -666,11 +687,28 @@ class NovatioController extends Controller
             ->orderBy('allprice','ASC')
             ->groupBy('tg_user.id','tg_user.first_name','tg_user.last_name')->get();
 
+            $use = [];
+            if(date('d') == 1)
+            {
+                $st = 1;
+            }else{
+                $st = date('d')-1;
+            }
+            $en = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->lastOfMonth()->format('d');
 
 
-            $newarray[] = array('best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
+            // return $st;
+            foreach ($ar['us'] as $keyrt => $valuert) {
+                $user = User::find($keyrt);
+                $prog = floor(($valuert*$en)/$st);
+
+                $use[] = array('f' => $user->first_name,'l' => $user->last_name,'id' => $keyrt,'sum' => $valuert,'prog' => $prog);
+            }
+            
+
+            $newarray[] = array('use' =>$use, 'best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }
-
+        // return $newarray;
         $newuserarray = [];
         foreach($userArray as $userar)
         {

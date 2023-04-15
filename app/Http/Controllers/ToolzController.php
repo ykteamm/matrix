@@ -424,4 +424,27 @@ class ToolzController extends Controller
 
         return view('toolz.king-sold-report', compact('user_id', 'region_id', 'total', 'pText', 'pkey', 'king_solds', 'regions', 'users', 'regkey', 'regText', 'dateText', 'dateTexte'));
     }
+    
+    public function provizor()
+    {
+        $users = User::where('specialty_id', 1)->get();
+
+        $provizor = User::where('specialty_id', 9)->get();
+
+        return view('toolz.provizor', compact('users', 'provizor'));
+    }
+    public function provizorAdd(Request $request)
+    {
+        $update = DB::table('tg_user')->where('id',$request->user_id)->update([
+            'specialty_id' => 9,
+        ]);
+        return redirect()->back();
+    }
+    public function provizorLose(Request $request)
+    {
+        $update = DB::table('tg_user')->where('id',$request->user_id)->update([
+            'specialty_id' => 1,
+        ]);
+        return redirect()->back();
+    }
 }

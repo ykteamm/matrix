@@ -644,6 +644,19 @@ class UserController extends Controller
         $username = 'nvt' . (intval(substr($last_user->username, 3)) + 1);
         $password = rand(1000, 9999);
 
+        if(intval($user->lavozim) == 1)
+        {
+            $spe_id = 1;
+            $status = 0;
+            if(!isset($request->teacher_id))
+            {
+                return redirect()->back();
+            }
+        }else{
+            $spe_id = 9;
+            $status = 1;
+        }
+
         $new = DB::table('tg_user')->insertGetId([
             'password' => Hash::make($password),
             'last_login' => NULL,
@@ -658,7 +671,7 @@ class UserController extends Controller
             'date_joined' => date_now(),
             'district_id' => $user->district,
             'region_id' => $user->region,
-            'specialty_id' => 1,
+            'specialty_id' => $spe_id,
             'email' => NULL,
             'tg_id' => 990821015,
             'birthday' => $user->year . '-' . $user->month . '-' . $user->day,
@@ -673,12 +686,12 @@ class UserController extends Controller
             'image_change' => TRUE,
             'pharmacy_id' => NULL,
             'image_url' => 'https://telegra.ph//file/04f99aa16eebd4af2a42c.jpg',
-            'status' => 0,
+            'status' => $status,
             'level' => 0,
             'rm' => 0,
-            // 'first_enter' => 0,
-            // 'img_photo' => $user->photo,
-            // 'img_passport' => $user->passport,
+            'first_enter' => 0,
+            'img_photo' => $user->photo,
+            'img_passport' => $user->passport,
 
         ]);
         // $new_work_day = DB::table('daily_works')->insert([
@@ -717,10 +730,14 @@ class UserController extends Controller
                 'pharma_id' => $request->pharma_id,
             ]);
 
-            // TeacherUser::create([
-            //     'teacher_id' => $request->teacher_id,
-            //     'user_id' => $new,
-            // ]);
+            if(intval($user->lavozim) == 1)
+            {
+                TeacherUser::create([
+                    'teacher_id' => $request->teacher_id,
+                    'user_id' => $new,
+                ]);
+            }
+            
 
 
 

@@ -212,7 +212,6 @@ class ElchilarService
 
                 }else{
                     $prog = ($month_sol*30)/14;
-
                 }
                 // $user = DB::table('tg_productssold')
                 //     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
