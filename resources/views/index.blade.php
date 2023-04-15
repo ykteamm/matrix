@@ -539,9 +539,21 @@
                     $('#fffmodalin').append('<div id="fffmodal"></div>');
                 $.each(response.dashboard, function(index, value){
                     
+                    var fgh1 = '';
+                    var fgh12 = '';
+
+                    var dfg21 = 0;
+                    var dfg22 = 0;
+
+                    $.each(value.use, function(ing, vag){
+                        dfg21 = dfg21 + vag.sum;
+                        dfg22 = dfg22 + vag.prog;
+                        fgh1 = fgh1 + '<tr><td>'+ vag.f + vag.l+'</td><td>'+ vag.sum +'</td><td>'+vag.prog+'</td></tr>';
+                    });
+
+                        fgh12 = fgh12 + '<tr><td>Jami</td><td>'+ dfg21 +'</td><td>'+dfg22+'</td></tr>';
 
                     var fffmodal = '';
-
 
                         fffmodal = fffmodal + '<div class="modal fade" id="addmemberwer'+value.id +'">'+
                         '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">'+
@@ -549,9 +561,21 @@
                                 '<div class="modal-header">'+
                                     '</div>'+
                                     '<div class="modal-body">'+
-                                        '<ul class="list-group">'+
-                                            'fff'+
-                                            '</ul>'+
+                                        '<div class="table-responsive">'+
+                                            '<table class="table mb-0">'+
+                                                '<thead>'+
+                                                    '<tr>'+
+                                                        '<th>FIO</th>'+
+                                                        '<th>FAKT</th>'+
+                                                        '<th>PROGNOZ</th>'+
+                                                        '</tr>'+
+                                                        '</thead>'+
+                                                        '<tbody>'+
+                                                                fgh1+
+                                                                fgh12+
+                                                                '</tbody>'+
+                                                                '</table>'+
+                                                                '</div>'+
                                             '</div>'+
                                             '<div class="modal-footer">'+
                                                 '<button type="submit" class="btn btn-primary">Saqlash</button>'+
@@ -650,6 +674,18 @@
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
 
                                             '</div>'+
+                                            '<div class="d-flex justify-content-between">'+
+
+                                                '<div style="background: #00bfff8f;padding: 3px 3px;border-radius: 8px;text-align: center;">'+
+                                                 '<h4 style="color:#05f705;">User</h4>'+
+                                                 '<h4 style="color:#05f705;">'+ value.useriz +'</h4>'+
+                                                '</div>'+
+                                                '<div style="background: #00bfff8f;padding: 3px 3px;border-radius: 8px;text-align: center;">'+
+                                                 '<h4 style="color:#05f705;">Provizor</h4>'+
+                                                 '<h4 style="color:#05f705;">'+value.proviz +'</h4>'+
+                                                 '</div>'+
+     
+                                                 '</div>'+
                                             bestsoldRegion +
                                             '<div class="d-flex justify-content-between">'+
 

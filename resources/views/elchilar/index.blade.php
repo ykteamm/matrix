@@ -272,19 +272,24 @@
                                         </div>
                                     </td>
                                     <td class="fixed p-0">
-                                        @php
+                                        @if ($item->sid == 9)
+                                            Provizor
+                                        @else
+                                            @php
                                             $date_joined = strtotime($item->date_joined);
                                             $now = strtotime(now());
                                             $dayDifference = round(($now - $date_joined) / 86400);
-                                        @endphp
-                                        @if ($dayDifference < 50)
-                                            <span
-                                                class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->date_joined)) }}
-                                                ({{ $dayDifference }} kun)
-                                            </span>
-                                        @else
-                                            Eski elchi
+                                            @endphp
+                                            @if ($dayDifference < 50)
+                                                <span
+                                                    class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->date_joined)) }}
+                                                    ({{ $dayDifference }} kun)
+                                                </span>
+                                            @else
+                                                Eski elchi
+                                            @endif
                                         @endif
+                                        
                                     </td>
                                     <td class="fixed p-0">
                                         @if (count($item->pharmacy) == 0)

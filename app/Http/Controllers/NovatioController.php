@@ -474,11 +474,11 @@ class NovatioController extends Controller
                 foreach ($users as $ke => $va) {
                     if($va->id == $values->u_id && $va->region_id == $value->id)
                     {
-                        if(!isset($asd_summa[$va->id]))
+                        if(!isset($asd_summa[$value->id][$va->id]))
                         {
-                            $asd_summa[$va->id] = 0;
+                            $asd_summa[$value->id][$va->id] = 0;
                         }
-                        $asd_summa[$va->id] = $asd_summa[$va->id] + ($values->m_number * $values->price);
+                        $asd_summa[$value->id][$va->id] = $asd_summa[$value->id][$va->id] + ($values->m_number * $values->price);
                     }
 
                 }
@@ -533,9 +533,14 @@ class NovatioController extends Controller
             
             $rrr = $this->bestRegion($ddd,$value->id);
 
-            
+            if(isset($asd_summa[$value->id]))
+            {
+                $asdd = $asd_summa[$value->id];
+            }else{
+                $asdd = [];
+            }
 
-            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id,'best'=>$rrr,'us' => $asd_summa);
+            $array[] = array('summa' => $summa,'region' => $value->name,'icon' =>$icon,'id' => $value->id,'best'=>$rrr,'us' => $asdd);
             $summa = 0;
             $fsumma = 0;
 
@@ -698,15 +703,23 @@ class NovatioController extends Controller
 
 
             // return $st;
+            $proviz = 0;
+            $useriz = 0;
             foreach ($ar['us'] as $keyrt => $valuert) {
                 $user = User::find($keyrt);
+                if($user->specialty_id == 1)
+                {
+                    $useriz += $valuert;
+                }else{
+                    $proviz += $valuert;
+                }
                 $prog = floor(($valuert*$en)/$st);
 
                 $use[] = array('f' => $user->first_name,'l' => $user->last_name,'id' => $keyrt,'sum' => $valuert,'prog' => $prog);
             }
-            
 
-            $newarray[] = array('use' =>$use, 'best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
+
+            $newarray[] = array('useriz' => $useriz,'proviz' => $proviz,'use' =>$use, 'best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }
         // return $newarray;
         $newuserarray = [];

@@ -43,7 +43,7 @@ class ElchilarService
             if($regions == 0 || $regions == 1)
             {
                 $elchi = User::with('pharmacy')
-                ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
                 
@@ -211,7 +211,18 @@ class ElchilarService
                     $prog = 0;
 
                 }else{
-                    $prog = ($month_sol*30)/14;
+                    $use = [];
+                    if(date('d') == 1)
+                    {
+                        $st = 1;
+                    }else{
+                        $st = date('d')-1;
+                    }
+                    // $en = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->lastOfMonth()->format('d');
+
+                    $prog = floor(($month_sol*$endofmonth)/$st);
+
+                    // $prog = ($month_sol*30)/14;
                 }
                 // $user = DB::table('tg_productssold')
                 //     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
