@@ -211,7 +211,7 @@ class ElchilarService
                     $prog = 0;
 
                 }else{
-                    $prog = ($month_sol*30)/13;
+                    $prog = ($month_sol*30)/14;
 
                 }
                 // $user = DB::table('tg_productssold')
