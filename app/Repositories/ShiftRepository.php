@@ -9,24 +9,26 @@ use Illuminate\Support\Facades\Session;
 
 class ShiftRepository implements ShiftRepositoryInterface
 {
-  public function unchecked($column = 'admin_check', $active = 1)
+  public function unchecked($column, $active)
   {
     return Shift::with('user', 'pharmacy', 'user.region')
-      // ->whereDate('created_at', '>=', '2023-01-30')
-      ->whereDate('created_at', '>=', '2023-03-7')
-      ->where($column, NULL)
-      ->where('active', $active)
+      ->where('created_at', '>', '2023-04-10')
+      ->where(function ($query) use ($column, $active) {
+        if ($active == 1) {
+          return $query->where($column, '=', NULL);
+        } else {
+          return $query->where($column, '=', NULL)->where('active', $active);
+        }
+      })
       ->orderBy('id', 'DESC')->get();
   }
   public function history($date, $column, $active)
   {
     $query = Shift::with('user', 'pharmacy', 'user.region')
-      // ->whereDate('created_at', '>=', '2023-01-30')
-      ->whereDate('created_at', '>=', '2023-03-07')
-      ->where($column,'!=', NULL)
-      ->where(function($q) use ($active) {
-        if($active == 2) {
-          return $q->where('active', $active);
+      ->where('created_at', '>', '2023-03-01')
+      ->where(function ($query) use ($column, $active) {
+        if ($active == 2) {
+          return $query->where('active', $active);
         }
       });
     if ($date != NULL) {
