@@ -718,6 +718,8 @@ class NovatioController extends Controller
                 $use[] = array('f' => $user->first_name,'l' => $user->last_name,'id' => $keyrt,'sum' => $valuert,'prog' => $prog);
             }
 
+            $useriz = number_format($useriz,0,',','.');
+            $proviz = number_format($proviz,0,',','.');
 
             $newarray[] = array('useriz' => $useriz,'proviz' => $proviz,'use' =>$use, 'best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
         }

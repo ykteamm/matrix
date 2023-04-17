@@ -101,11 +101,11 @@
                                                     <option value="" disabled selected hidden>
                                                         Ustoz tanlang</option>
                                                     @foreach ($teacher as $teach)
-                                                        @if ($teach->user->region_id == $user->region)
+                                                        {{-- @if ($teach->user->region_id == $user->region) --}}
                                                         <option value='{{ $teach->user->id }}'>
                                                             {{ $teach->user->last_name }} {{ $teach->user->first_name }}
                                                         </option>
-                                                        @endif
+                                                        {{-- @endif --}}
                                                         
                                                     @endforeach
                                                 </select>

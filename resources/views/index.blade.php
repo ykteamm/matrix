@@ -663,6 +663,12 @@
 
                             '</div>';
                     }
+                    var dfg22 = 0;
+
+                    $.each(value.use, function(ing, vag){
+                        dfg22 = dfg22 + vag.prog;
+                    });
+
                     var $row = $('<div class="col-12 col-md-'+md+' col-lg-'+lg+' d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
@@ -674,6 +680,13 @@
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
 
                                             '</div>'+
+                                            '<div class="d-flex justify-content-between">'+
+                                                 
+
+                                                 '<h6 style="color:#05f705;height:45px;">Prognoz</h6>'+
+                                                 '<h6 style="color:#05f705;height:45px;">'+dfg22 +'</h6>'+
+     
+                                                 '</div>'+
                                             '<div class="d-flex justify-content-between">'+
 
                                                 '<div style="background: #00bfff8f;padding: 3px 3px;border-radius: 8px;text-align: center;">'+
