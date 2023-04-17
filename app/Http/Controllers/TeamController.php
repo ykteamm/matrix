@@ -375,34 +375,58 @@ class TeamController extends Controller
                 $arrayDate[$Store] = $Store2;
                 
             }
-        $d=[];
-        $i=1;
-        foreach ($arrayDate as $key => $value) {
-            $start_day = $key;
-            $end_day = $value;
-            $json = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($start_day)))->value('day_json');
-            $json = json_decode($json);
-            $s=[];
-            foreach ($json as $keyd => $valude) {
-                if($valude == 'true')
+            // dd($arrayDate);
+        $round = 0;
+        $battle = [];
+        
+        foreach ($arrayDate as $startOfMonth => $endOfMonth) {
+            $round += 1;
+            $battle[$startOfMonth] = [];
+            $battle[$startOfMonth][$round] = [];
+            $dayCount = (int)date("d", strtotime($endOfMonth));
+            $startOfMonthWeekDay = (int)date("w", strtotime($startOfMonth));
+            $is = false;
+            for ($i = 0; $i < $dayCount; $i++) {
+                $currentWeekDay = (int)date("w", strtotime("+$i day", strtotime($startOfMonth)));
+                if($currentWeekDay != 0)
                 {
-                    $s[]=$keyd+1;
+                    if($i == 0 && $startOfMonthWeekDay == 4) {
+                        $battle[$startOfMonth][$round][] = date("Y-m-d", strtotime("+$i day", strtotime($startOfMonth)));
+                        continue;
+                    }
+                    if($i == 1 && $startOfMonthWeekDay == 4) {
+                        $battle[$startOfMonth][$round][] = date("Y-m-d", strtotime("+$i day", strtotime($startOfMonth)));
+                        continue;
+                    }
+                    if($i == 0 && $startOfMonthWeekDay == 5) {
+                        $battle[$startOfMonth][$round][] = date("Y-m-d", strtotime("+$i day", strtotime($startOfMonth)));
+                        continue;
+                    }
+                    if($i == ($dayCount - 1) && $currentWeekDay == 5) {
+                        $battle[$startOfMonth][$round][] = date("Y-m-d", strtotime("+$i day", strtotime($startOfMonth)));
+                        continue;       
+                    }
+                    if($currentWeekDay == 5) {
+                        $round += 1;
+                        $battle[$startOfMonth][$round] = [];
+                    }
+                    $battle[$startOfMonth][$round][] = date("Y-m-d", strtotime("+$i day", strtotime($startOfMonth)));
                 }
             }
-            $chunks = array_chunk($s,7);
-            foreach ($chunks as $ke => $val) {
-                // dd($val);
+        }
+        // dd($battle);
+        foreach ($battle as $month => $rounds) {
+           foreach ($rounds as $round => $days) {
                 $new_battle = new TeamBattle([
                     'team1_id' => $inputs['team1_id'],
                     'team2_id' => $inputs['team2_id'],
-                    'month' => $start_day,
-                    'round' => $i,
-                    'start_day' => date('Y-m',strtotime($start_day)).'-'.$val[0],
-                    'end_day' => date('Y-m',strtotime($start_day)).'-'.$val[count($val)-1],
+                    'month' => $month,
+                    'round' => $round,
+                    'start_day' => $days[0],
+                    'end_day' => $days[count($days)-1],
                 ]);
                 $new_battle->save();
-                $i += 1;
-            }
+           }
         }
         // return $d['2023-02-01'];
         // $new_battle = new TeamBattle([
