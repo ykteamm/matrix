@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BattleNewsController;
 use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\LocaleController;
@@ -302,7 +303,12 @@ Route::get('provizor', [ToolzController::class,'provizor'])->name('provizor');
 Route::post('provizor-add', [ToolzController::class,'provizorAdd'])->name('provizor-add');
 Route::post('provizor-lose', [ToolzController::class,'provizorLose'])->name('provizor-lose');
 
-
+// BATTLE NEWS
+Route::get('battlenews', [BattleNewsController::class, 'index'])->name('openNews');
+Route::get('create-news', [BattleNewsController::class, 'create'])->name('createNews');
+Route::get('show-news/{id}', [BattleNewsController::class, 'show'])->name('showNws');
+Route::post('store-news', [BattleNewsController::class, 'store'])->name('storeNews');
+Route::post('/store-news-images', [BattleNewsController::class, 'uploadImages'])->name('uploadImages');
 });
 
 // });

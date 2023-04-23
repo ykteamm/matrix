@@ -12,6 +12,8 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'https://blackjack.novatio.uz/sms'
+        'https://blackjack.novatio.uz/sms',
+        'http://127.0.0.1:8000/store-news-images',
+        'http://matrix.novatio.uz/store-news-images'
     ];
 }

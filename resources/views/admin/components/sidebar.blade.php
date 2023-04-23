@@ -316,6 +316,16 @@
                   </li>
                @endif
               @endisset
+              @isset(Session::get('per')['rol'])
+             @if(Session::get('per')['rol'] == 'true')
+             <li>
+               <a href="{{ route('openNews') }}">
+                  <i class="feather-filter"></i>
+                  <span>News</span>
+               </a>
+             </li>
+             @endisset
+             @endif
               @isset(Session::get('per')['all_user'])
              @if(Session::get('per')['all_user'] == 'true')
               <li>
