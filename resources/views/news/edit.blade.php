@@ -39,19 +39,19 @@
             </div>
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('storeNews') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ route('updateNews', ['id' => $nw->id]) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="newsTitle">
                         Sarlavha
                     </label>
-                    <input name="title" class="form-control form-control-sm" type="text">
+                    <input name="title" value="{{ $nw->title }}" class="form-control form-control-sm" type="text">
                 </div>
                 <div class="form-group">
                     <label for="newsText">
                         Matn
                     </label>
-                    <textarea name="body" id="newsText" class="ckeditor form-control"></textarea>
+                    <textarea name="body" id="newsText" class="ckeditor form-control">{{ $nw->body }}</textarea>
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-primary btn-sm" type="submit">

@@ -2,24 +2,46 @@
 @section('admin_content')
     <div class="pointer" style="margin-top:110px;">
         <div class="container mt-5">
-            <div class="my-3 text-end">
+            @if (Session::get('newsError'))
+                <div class="alert alert-danger">
+                    {{ Session::get('newsError') }}
+                </div>
+            @endif
+            <div class="my-3 text-end" style="text-align: end">
                 <a class="btn btn-primary" href="{{ route('createNews') }}">
                     Yangilik qo'shish
                 </a>
             </div>
-            @foreach ($allNews as $alN)
+            @foreach ($news as $nw)
                 <div class="card border border-left-primary">
                     <div class="p-4 d-flex align-items-center justify-content-between"
                         style="border-left:5px solid red;border-top-left-radius: 10px;border-bottom-left-radius: 10px">
-                        <div style="font-size:18px;font-weight:600">
-                            {{ $alN->title }}
-                            @if ($alN->status == 'special')
-                            @endif
+                        <a href="{{ route('showNews', ['id' => $nw->id]) }}">
+                            <div style="font-size:18px;font-weight:600;overflow:hidden" class="pr-3">
+                                {{ $nw->title }}
+                            </div>
+                        </a>
+                        <div class="modal fade" id="deleteNews" tabindex="-1" role="dialog"
+                            aria-labelledby="deleteNewsTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center justify-content-center">
+                                        <h4>O'chirishni hohlaysizmi ?</h4>
+                                    </div>
+                                    <div class="modal-footer d-block">
+                                        <form class="d-flex align-items-center justify-content-around"
+                                            action="{{ route('deleteNews', ['id' => $nw->id]) }}" method="POST">
+                                            @csrf
+                                            <button type="button" class="btn btn-primary"
+                                                data-dismiss="modal">Yo'q</button>
+                                            <button type="submit" class="btn btn-danger">Ha</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <a @if ($alN->status == 'special')
-                                href="{{ route('showNws', ['id' => json_decode($alN->info)->newsId]) }}"
-                            @endif  @if ($alN->status != 'special') disabled @endif class="btn btn-sm btn-success mr-1">
+                            <a href="{{ route('showNews', ['id' => $nw->id]) }}" class="btn btn-sm btn-success mr-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-eye" viewBox="0 0 16 16">
                                     <path
@@ -28,7 +50,8 @@
                                         d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                                 </svg>
                             </a>
-                            <button @if ($alN->status != 'special') disabled @endif class="btn btn-sm btn-success mr-1">
+                            <a href="{{ route('editNews', ['id' => $nw->id]) }}"
+                                class="btn btn-sm btn-warning text-black mr-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path
@@ -36,8 +59,8 @@
                                     <path fill-rule="evenodd"
                                         d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                 </svg>
-                            </button>
-                            <button @if ($alN->status != 'special') disabled @endif class="btn btn-sm btn-danger mr-1">
+                            </a>
+                            <button class="btn btn-sm btn-danger mr-1" data-toggle="modal" data-target="#deleteNews">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-trash" viewBox="0 0 16 16">
                                     <path

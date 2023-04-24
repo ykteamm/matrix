@@ -306,9 +306,13 @@ Route::post('provizor-lose', [ToolzController::class,'provizorLose'])->name('pro
 // BATTLE NEWS
 Route::get('battlenews', [BattleNewsController::class, 'index'])->name('openNews');
 Route::get('create-news', [BattleNewsController::class, 'create'])->name('createNews');
-Route::get('show-news/{id}', [BattleNewsController::class, 'show'])->name('showNws');
+Route::get('show-news/{id}', [BattleNewsController::class, 'show'])->name('showNews');
+Route::get('edit-news/{id}', [BattleNewsController::class, 'edit'])->name('editNews');
+Route::post('update-news/{id}', [BattleNewsController::class, 'update'])->name('updateNews');
+Route::post('delete-news/{id}', [BattleNewsController::class, 'delete'])->name('deleteNews');
 Route::post('store-news', [BattleNewsController::class, 'store'])->name('storeNews');
 Route::post('/store-news-images', [BattleNewsController::class, 'uploadImages'])->name('uploadImages');
+Route::get('/old-news-images', [BattleNewsController::class, 'uploadedImages'])->name('uploadedImages');
 });
 
 // });
