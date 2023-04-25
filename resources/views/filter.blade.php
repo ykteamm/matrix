@@ -75,9 +75,9 @@
                            <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button4" name="all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Hammasi</button>
                            <div class="dropdown-menu" style="overflow-y:scroll; height:400px;">
                               <a href="#" onclick="users('Hammasi','all')" class="dropdown-item" id="addregionall"> Hammasi </a>
-                              @foreach($users as $user)
+                              {{-- @foreach($users as $user)
                               <a href="#" onclick="users(`{{$user->last_name}}{{$user->first_name}}`,`{{$user->id}}`)" class="dropdown-item regionall"> {{$user->last_name}}{{$user->first_name}}</a>
-                              @endforeach
+                              @endforeach --}}
                            </div>
                         </div>
                      </div>
@@ -222,6 +222,23 @@
                         var strTime = hours + ':' + minutes + ' ' + ampm;
                         return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
                         }
+         function searchName(value)
+         {
+            $('.filter-search-name').each(function() {
+               
+               // $('.filter-search-name').css('display','');
+
+               var str = $(this).text();
+               if(str.toLowerCase().includes(value.toLowerCase()))
+               {
+                  console.log(str);
+                  $(this).css('display','');
+
+               }else{
+                  $(this).css('display','none');
+               }
+            });
+         }
        function ageChart(name,id,ids,cate){
           if(cate){
           var cate = $("#age_button3").attr('title');
@@ -255,16 +272,20 @@
                 if(response) {
                     console.log(response)
                   $('.regionall').remove();
+                  
+                  
 
                   $.each(response.reid, function(index, value){
 
-                     var $row = $('<a onclick="users(`'+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall df" ><strong>'
-                         + value.username +'</strong>'+" | "+ value.last_name +"  "+ value.first_name +
-                                  '</a>');
+                     var $row = $('<a onclick="users(`'+value.last_name+' '+ value.first_name+'`,`'+value.id+'`)" href="#" class="dropdown-item regionall df filter-search-name" ><span class=""><strong>'
+                         + value.username +" | "+'</strong>'+ value.last_name +"  "+ value.first_name +
+                                  '</span></a>');
                      $('#addregionall').after($row);
 
                   });
+                  var $filter = $('<input onkeyup="searchName(this.value)" class="dropdown-item regionall df" style="border:1px solid blue;border-radius:8px" type="search" id="forsearchfiter" placeholder="Qidirish">');
 
+                  $('#addregionall').after($filter);
 
                    $('.fortr').remove();
 

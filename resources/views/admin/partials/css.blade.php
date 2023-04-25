@@ -20,7 +20,10 @@
     {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> --}}
     
     <style>
-        
+        .select2-dropdown .select2-dropdown--below
+        {
+            width: 100% !important;
+        }
         .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
             color: rgb(0, 0, 0);
             background-color: #ffffff !important;

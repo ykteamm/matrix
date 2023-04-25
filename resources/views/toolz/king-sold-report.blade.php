@@ -42,26 +42,27 @@
                                                 {{ $pText }}</button>
                                             <div class="dropdown-menu"
                                                 style="left:150px !important;overflow-y:scroll; height:400px;">
+                                                <input type="search" onkeyup="filterKSB(this.value)" style="border:1px solid blue;border-radius:8px;" class="mr-3 ml-3 pr-2 pl-2">
                                                 <a href="#" onclick="pharm('Hammasi','all')" class="dropdown-item"
                                                     id="tgregion"> Hammasi </a>
                                                 @foreach ($users as $keyd => $p)
                                                     @if ($regkey == 'all')
                                                         <a href="#"
                                                             onclick="pharm(`{{ $p->last_name . '' . $p->first_name }}`,`{{ $p->id }}`)"
-                                                            class="dropdown-item pharm{{ $p->region_id }} allpharm">
-                                                            {{ $p->last_name }} {{ $p->first_name }} </a>
+                                                            class="dropdown-item pharm{{ $p->region_id }} allpharm filter-ksb-name">
+                                                            <span>{{ $p->last_name }} {{ $p->first_name }}</span> </a>
                                                     @else
                                                         <?php $pa = $p->region_id; ?>
                                                         @if ($regkey == $p->region_id)
                                                             <a href="#"
                                                                 onclick="pharm(`{{ $p->last_name . '' . $p->first_name }}`,`{{ $p->id }}`)"
-                                                                class="dropdown-item pharm{{ $p->region_id }} allpharm">
-                                                                {{ $p->last_name }} {{ $p->first_name }} </a>
+                                                                class="dropdown-item pharm{{ $p->region_id }} allpharm filter-ksb-name">
+                                                                <span>{{ $p->last_name }} {{ $p->first_name }}</span> </a>
                                                         @else
                                                             <a style="display:none;" href="#"
                                                                 onclick="pharm(`{{ $p->last_name . '' . $p->first_name }}`,`{{ $p->id }}`)"
-                                                                class="dropdown-item pharm{{ $p->region_id }} allpharm">
-                                                                {{ $p->last_name }} {{ $p->first_name }} </a>
+                                                                class="dropdown-item pharm{{ $p->region_id }} allpharm filter-ksb-name">
+                                                                <span>{{ $p->last_name }} {{ $p->first_name }}</span> </a>
                                                         @endif
                                                     @endif
                                                 @endforeach
@@ -239,6 +240,24 @@
 @endsection
 @section('admin_script')
     <script>
+        function filterKSB(value)
+        {
+            $('.filter-ksb-name').each(function() {
+               
+
+               var str = $(this).text();
+            //    console.log(str);
+
+               if(str.toLowerCase().includes(value.toLowerCase()))
+               {
+                //   console.log(str);
+                  $(this).css('display','');
+
+               }else{
+                  $(this).css('display','none');
+               }
+            });
+        }
         function dates(key, text) {
             $('#age_button2').text(text);
             $('#age_button2').attr('name', key);

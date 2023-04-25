@@ -144,7 +144,10 @@ class NovatioController extends Controller
 
             // }else
             $reid = DB::table('tg_user')
-            ->where('tg_user.status',1)
+            ->whereIn('tg_user.status',[0,1])
+            ->where('tg_user.rm',0)
+            ->orderBy('id','DESC')
+
             ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->get();
@@ -164,8 +167,8 @@ class NovatioController extends Controller
                 ->where('tg_order.id','<=',$order_end)
                 ->where('tg_category.id','>=',$cate_begin)
                 ->where('tg_category.id','<=',$cate_end)
-                ->where('tg_user.status',1)
-
+                ->whereIn('tg_user.status',[0,1])
+                ->where('tg_user.rm',0)
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
@@ -176,10 +179,13 @@ class NovatioController extends Controller
                 ->get();
         }else{
             $reid = DB::table('tg_user')
-            ->where('tg_user.status',1)
+            ->whereIn('tg_user.status',[0,1])
+            ->where('tg_user.rm',0)
             ->where('tg_region.id',$inputs['id'])
             ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->orderBy('id','DESC')
+
             ->get();
 
         $user = DB::table('tg_productssold')->where('tg_region.id',$inputs['id'])
@@ -193,7 +199,8 @@ class NovatioController extends Controller
                 ->where('tg_order.id','<=',$order_end)
                 ->where('tg_category.id','>=',$cate_begin)
                 ->where('tg_category.id','<=',$cate_end)
-                ->where('tg_user.status',1)
+                ->whereIn('tg_user.status',[0,1])
+                ->where('tg_user.rm',0)
 
         ->join('tg_user','tg_user.id','tg_productssold.user_id')
         ->join('tg_region','tg_region.id','tg_user.region_id')
@@ -380,7 +387,8 @@ class NovatioController extends Controller
         if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
         {
         $users = DB::table('tg_user')
-        // ->whereIn('tg_user.status',[1,2])
+        ->whereIn('tg_user.status',[1,0])
+        ->where('tg_user.rm',0)
 
         ->get();
 
@@ -388,6 +396,8 @@ class NovatioController extends Controller
         }else{
             $users = DB::table('tg_user')
             // ->whereIn('tg_user.status',[1,2])
+            ->where('tg_user.rm',0)
+            ->whereIn('tg_user.status',[1,0])
 
             ->whereIn('region_id',$r_id_array)->get();
 

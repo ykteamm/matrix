@@ -359,6 +359,8 @@ class ToolzController extends Controller
 
         $users = DB::table('tg_user')->select('first_name', 'last_name', 'id', 'region_id')
             ->whereIn('id', $this->kingSoldService->getUserId('all'))
+            ->where('tg_user.rm',0)
+            ->whereIn('tg_user.status',[1,0])
             ->get();
 
         $dates = $this->kingSoldService->day($date);

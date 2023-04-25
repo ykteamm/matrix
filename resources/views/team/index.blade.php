@@ -257,7 +257,11 @@
 @endforeach
 @endsection
 @section('admin_script')
-   <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css"></script>
+    <script>
+        $(function () {
+            $("select").select2();
+        });
     $('input[name="datetimes"]').daterangepicker({
         locale: {
         format: 'DD.MM.YY'

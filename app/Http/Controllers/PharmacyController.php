@@ -368,7 +368,7 @@ class PharmacyController extends Controller
         $pusers = PharmacyUser::select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_pharmacy_users.*')
         ->join('tg_user','tg_user.id','tg_pharmacy_users.user_id')
         ->get();
-        $users = DB::table('tg_user')->where('admin',FALSE)->get();
+        $users = DB::table('tg_user')->where('rm',0)->whereIn('status',[0,1])->get();
 
         $farm_sold = DB::table('tg_productssold')
         ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.pharm_id')

@@ -484,6 +484,7 @@ class HomeController extends Controller
         $users = DB::table('tg_user')
         ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
         ->join('tg_region','tg_region.id','tg_user.region_id')
+        ->where('tg_user.rm',0)
         ->get();
         }else{
             $r_id_array = [];
@@ -497,6 +498,7 @@ class HomeController extends Controller
             ->whereIn('tg_region.id',$r_id_array)
             ->select('tg_region.id as tid','tg_user.id','tg_user.username','tg_user.first_name','tg_user.last_name')
             ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->where('tg_user.rm',0)
             ->get();
         }
         $medicine = DB::table('tg_medicine')->get();
