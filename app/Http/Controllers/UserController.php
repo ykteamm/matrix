@@ -543,7 +543,7 @@ class UserController extends Controller
             ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
             ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
             ->groupBy('tg_user.id', 'daily_works.id', 'region_name')
-            ->where('daily_works.active', 1)
+            // ->where('daily_works.active', 1)
             ->orderBy('tg_user.id', 'DESC')
             ->get();
         // dd($users[0]);
