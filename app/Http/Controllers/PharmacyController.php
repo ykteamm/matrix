@@ -25,7 +25,7 @@ class PharmacyController extends Controller
             'created_at' => $lastPharm->created_at,
             'tg_id' => $lastPharm->tg_id,
             'day_count' => $lastPharm->day_count,
-            'slug' => substr($lastPharm->slug, 0, 3).((int)substr($lastPharm->slug, 3) + 1),
+            'slug' => substr($lastPharm->slug, 0, 3).((int)substr($lastPharm->slug, 3) + 10),
             'region_id' => $request->input('region_id')
         ]);
         DB::table('tg_shablon_pharmacies')->insert([

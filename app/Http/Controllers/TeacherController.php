@@ -21,6 +21,7 @@ class TeacherController extends Controller
         ]);
     }
 
+
     public function store(Request $request)
     {
         $teacher = new Teacher([
@@ -30,6 +31,20 @@ class TeacherController extends Controller
         $teacher->save();
 
         return redirect()->back();
+    }
+
+    public function shogird()
+    {
+        $users = User::where('status',1)->get();
+
+        $teachers = Teacher::where('active',1)->get();
+
+        
+
+        return view('teacher.shogird',[
+            'teachers' => $teachers,
+            'users' => $users,
+        ]);
     }
 
 }

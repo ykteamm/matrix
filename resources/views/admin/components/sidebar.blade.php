@@ -118,6 +118,7 @@
                <a href="settings.html"><i class="fas fa-graduation-cap"></i>  <span> Ustoz-shogird </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
                   <li><a href="{{route('add-teacher')}}">Ustoz tayinlash</a></li>
+                  <li><a href="{{route('add-shogird')}}">Shogird tayinlash</a></li>
                 </ul>
             </li>
               @endif
