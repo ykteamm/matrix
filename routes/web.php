@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BattleNewsController;
+use App\Http\Controllers\DublicatController;
 use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\LocaleController;
@@ -299,6 +300,11 @@ Route::get('add-teacher', [TeacherController::class,'index'])->name('add-teacher
 Route::post('store-teacher', [TeacherController::class,'store'])->name('teacher.store'); 
 
 Route::get('add-shogird', [TeacherController::class,'shogird'])->name('add-shogird'); 
+Route::post('shogird-teacher', [TeacherController::class,'shogirdStore'])->name('shogird.store'); 
+
+
+Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index'); 
+Route::post('dublicat-store', [DublicatController::class,'store'])->name('dublicat.store'); 
 
 Route::get('provizor', [ToolzController::class,'provizor'])->name('provizor');
 Route::post('provizor-add', [ToolzController::class,'provizorAdd'])->name('provizor-add');

@@ -132,6 +132,7 @@
                  <li><a href="{{route('open-smena')}}">Smena ochish</a></li>
                  <li><a href="{{route('close-smena')}}">Smena yopish</a></li>
                  <li><a href="{{route('provizor')}}">Provizor tayinlash</a></li>
+                 <li><a href="{{route('dublicat.index')}}">Duclicat elchilar</a></li>
                </ul>
            </li>
            @endif
