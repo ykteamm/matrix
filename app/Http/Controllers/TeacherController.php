@@ -50,8 +50,18 @@ class TeacherController extends Controller
             'teachers_user' => $teachers_user,
         ]);
 
+    }
 
-
+    public function shogirdUpdateTime(Request $request) 
+    {
+        $inputs=$request->all();
+        unset($inputs['_token']);
+        foreach ($inputs as $id => $time) {
+            TeacherUser::where('id', $id)->update([
+                'week_date' => $time
+            ]);
+        }
+        return redirect()->back();
     }
 
     public function shogirdStore(Request $request)
