@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductSold;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use tidy;
 
 class DublicatController extends Controller
 {
@@ -14,36 +11,61 @@ class DublicatController extends Controller
     {
         $inputs = $request->all();
         unset($inputs['_token']);
-        // dd($inputs);
         foreach ($inputs as $key => $id) {
-            if($newUser = DB::table('new_user_one_months')->where('user_id', $id)->first()) {
+            if(DB::table('new_user_one_months')->where('user_id', $id)->first()) {
                 DB::table('new_user_one_months')->where('user_id', $id)->delete();
             }
-            if($exercise = DB::table('tg_elchi_exercise')->where('user_id', $id)->first()) {
+            if(DB::table('tg_elchi_exercise')->where('user_id', $id)->first()) {
                 DB::table('tg_elchi_exercise')->where('user_id', $id)->delete();
             }
-            if($level = DB::table('tg_elchi_level')->where('user_id', $id)->first()) {
+            if(DB::table('tg_elchi_level')->where('user_id', $id)->first()) {
                 DB::table('tg_elchi_level')->where('user_id', $id)->delete();
             }
-            if($elixir = DB::table('tg_elchi_elexir')->where('user_id', $id)->first()) {
+            if(DB::table('tg_elchi_elexir')->where('user_id', $id)->first()) {
                 DB::table('tg_elchi_elexir')->where('user_id', $id)->delete();
             }
-            if($ball = DB::table('tg_balls')->where('user_id', $id)->first()) {
+            if(DB::table('tg_balls')->where('user_id', $id)->first()) {
                 DB::table('tg_balls')->where('user_id', $id)->delete();
             }
-            if($teacher = DB::table('teachers')->where('user_id', $id)->first()) {
-                DB::table('teachers')->where('user_id', $id)->delete();
+            if(DB::table('elexir_histories')->where('user_id', $id)->first()) {
+                DB::table('elexir_histories')->where('user_id', $id)->delete();
             }
-            if($battle1 = DB::table('tg_battle')->where('user1_id', $id)->first()) {
-                DB::table('tg_battle')->where('user1_id', $id)->delete();
+            if(DB::table('daily_works')->where('user_id', $id)->first()) {
+                DB::table('daily_works')->where('user_id', $id)->delete();
             }
-            if($battle2 = DB::table('tg_battle')->where('user2_id', $id)->first()) {
-                DB::table('tg_battle')->where('user2_id', $id)->delete();
+            if(DB::table('liga_king_users')->where('user_id', $id)->first()) {
+                DB::table('liga_king_users')->where('user_id', $id)->delete();
             }
+            if(DB::table('teacher_users')->where('user_id', $id)->first()) {
+                DB::table('teacher_users')->where('user_id', $id)->delete();
+            }
+            if(DB::table('tg_pharm_users')->where('user_id', $id)->first()) {
+                DB::table('tg_pharm_users')->where('user_id', $id)->delete();
+            }
+            if(DB::table('tg_pharmacy_users')->where('user_id', $id)->first()) {
+                DB::table('tg_pharmacy_users')->where('user_id', $id)->delete();
+            }
+            if(DB::table('tg_plans')->where('user_id', $id)->first()) {
+                DB::table('tg_plans')->where('user_id', $id)->delete();
+            }
+            if(DB::table('tg_planweeks')->where('user_id', $id)->first()) {
+                DB::table('tg_planweeks')->where('user_id', $id)->delete();
+            }
+            if(DB::table('tg_shift')->where('user_id', $id)->first()) {
+                DB::table('tg_shift')->where('user_id', $id)->delete();
+            }
+            if(DB::table('tg_members')->where('user_id', $id)->first()) {
+                DB::table('tg_members')->where('user_id', $id)->delete();
+            }
+            if(DB::table('user_plans')->where('user_id', $id)->first()) {
+                DB::table('user_plans')->where('user_id', $id)->delete();
+            }
+            
             DB::table('tg_user')->where('id', $id)->delete();
         }
         return redirect()->back();
     }
+
     public function index()
     {
         $duplicateUsers = [];
@@ -51,48 +73,20 @@ class DublicatController extends Controller
             $duplicateUsers[$key] = [];
             foreach ($duplicates as $id) {
                 try {
-                    $duplicateUsers[$key][] =
-                        DB::select(
-                            "SELECT 
+                    $duplicateUsers[$key][] = DB::select("SELECT 
                         COALESCE(SUM(p.number * p.price_product), 0) AS prodaja, 
-                        u.id, u.username, u.pr,
-                        u.first_name,
-                        u.last_name,
-                        u.date_joined,
-                        u.phone_number
+                        u.id, u.username, u.pr, u.first_name,
+                        u.last_name, u.date_joined, u.phone_number
                         FROM tg_user AS u
                         LEFT JOIN tg_productssold AS p ON p.user_id = u.id
                         WHERE u.id = ?       
-                        GROUP BY u.id",
-                            [$id]
+                        GROUP BY u.id", [$id]
                         )[0];
                 } catch (\Throwable $th) {
                     $duplicateUsers[$key][] = ['id' => $id, 'error' => $th->getMessage()];
                 }
             }
         }
-        // $newUserFirst = DB::table('new_user_one_months')->where('user_id', 243)->get();
-        // $exerciseFirst = DB::table('tg_elchi_exercise')->where('user_id', 243)->get();
-        // $levelFirst = DB::table('tg_elchi_level')->where('user_id', 243)->get();
-        // $elixirFirst = DB::table('tg_elchi_elexir')->where('user_id', 243)->get();
-        // $ballFirst = DB::table('tg_balls')->where('user_id', 243)->get();
-        // $newUserUser = DB::table('new_user_one_months')->where('user_id', 242)->get();
-        // $exerciseUser = DB::table('tg_elchi_exercise')->where('user_id', 242)->get();
-        // $levelUser = DB::table('tg_elchi_level')->where('user_id', 242)->get();
-        // $elixirUser = DB::table('tg_elchi_elexir')->where('user_id', 242)->get();
-        // $ballUser = DB::table('tg_balls')->where('user_id', 242)->get();
-        // $prodajaFirst = DB::table('tg_productssold')
-        //     ->selectRaw('SUM(number * price_product) AS prodaja')
-        //     ->where('user_id', 243)->value('prodaja') ;
-        // $prodajaUser = DB::table('tg_productssold')
-        //     ->selectRaw('SUM(number * price_product) AS prodaja')
-        //     ->where('user_id', 242)->value('prodaja');
-        // dd(
-        //     compact('newUserFirst', 'exerciseFirst', 'levelFirst', 'elixirFirst', 'ballFirst', 'prodajaFirst'),
-        //     compact('newUserUser', 'exerciseUser', 'levelUser', 'elixirUser', 'ballUser', 'prodajaUser')
-        // );
-        // dd($duplicateUsers);
-        // return $duplicateUsers;
         return view('dublicat.index', compact('duplicateUsers'));
     }
 
