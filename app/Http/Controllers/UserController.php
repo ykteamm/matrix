@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\Ball;
 use App\Models\BattleDay;
 use App\Models\BattleHistory;
+use App\Models\Calendar;
 use App\Models\DailyWork;
 use App\Models\ElchiBattleSetting;
 use App\Models\Medicine;
@@ -47,31 +48,63 @@ class UserController extends Controller
     {
         $data = [];
         // return 3232;
-        $month = $request->input('_month')??'2023-04';
+        $month = $request->input('_month')??date('Y-m');
+
+
+        $currentDate = date('Y-m-d');
+
+        $last_date = Carbon::createFromFormat('Y-m-d', $month.'-01')
+                        ->lastOfMonth()
+                        ->format('Y-m-d');
+
+        if(strtotime($currentDate) > strtotime($last_date))
+        {
+            $active = 1;
+        }else{
+            $active = 0;
+        }
         
+        // $active = 1;
+
         $users = User::where('status',1)->pluck('id')->toArray();
         
         foreach ($users as $id) {
             
-            $service = new WorkDayServices($id);
+            $service = new WorkDayServices($id,$active);
 
             $userData = $service->getMonthMaosh($month);
             $data[] = $userData;
             
         }
-
-        // return $data;
-        $yearMonths = ['03.2023','04.2023'];
+        $yearMonths = Calendar::whereDate('created_at','>=','2023-02-24')->pluck('year_month')->toArray();
+        // return $calendar;
         // return $month;
         return view('userControl.user-money', compact('data', 'yearMonths', 'month'));
     }
     public function userMoneyProfil($id,$month)
     {
-        $service = new WorkDayServices($id);
+        $currentDate = date('Y-m-d');
+
+        $last_date = Carbon::createFromFormat('Y-m-d', $month.'-01')
+                        ->lastOfMonth()
+                        ->format('Y-m-d');
+
+        if(strtotime($currentDate) > strtotime($last_date))
+        {
+            $active = 1;
+        }else{
+            $active = 0;
+        }
+        
+        // $active = 1;
+        
+        $service = new WorkDayServices($id,$active);
 
         $userData = $service->getMonthMaoshKunlik($month);
 
-        $yearMonths = ['2023-03','2023-04'];
+        // $yearMonths = ['2023-03','2023-04'];
+
+        $yearMonths = Calendar::whereDate('created_at','>=','2023-02-24')->pluck('year_month')->toArray();
 
         return view('userControl.user-money-profil', compact('userData', 'yearMonths', 'month','id'));
 

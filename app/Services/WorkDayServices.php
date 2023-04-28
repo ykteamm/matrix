@@ -17,7 +17,8 @@ class WorkDayServices
     public $start_work;
     public $end_work;
     public $user_id;
-    public function __construct($id)
+    public $active;
+    public function __construct($id,$act)
     {
         $work = DailyWork::where('user_id',$id)->first();
 
@@ -38,6 +39,9 @@ class WorkDayServices
         $this->start_work = $work->start_work;
         $this->end_work = $work->finish_work;
         $this->user_id = $id;
+
+        $this->active = $act;
+
     }
 
     public function getReport()
@@ -83,7 +87,10 @@ class WorkDayServices
                     $date = date('Y-m-d', $currentDate);
                     // $jarima = $this->getDayJarima('2023-03-22');
                     $jarima = $this->getDayJarima($date);
-                    $sum += $jarima;
+                    if($jarima != 123123)
+                    {
+                        $sum += $jarima;
+                    }
                     $sum2[] = array('jarima' => $jarima,'date' => $date);
 
                 }                    
@@ -109,7 +116,10 @@ class WorkDayServices
                 {
                     $date = date('Y-m-d', $currentDate);
                     $minut = $this->getMinutesDate($date,$this->user_id);
-                    $sum += $minut;
+                    if($minut != 123123)
+                    {
+                        $sum += $minut;
+                    }
                     $sum2[] = array('time' => $minut,'date' => $date);
                 }                    
             }
@@ -119,19 +129,52 @@ class WorkDayServices
     }
     public function getDayJarima($date)
     {
-        $sum = $this->getOneMinutSum($this->user_id,date('Y-m',strtotime($date)),$date);
-        $maosh = $this->getTaqqoslash($sum);
-        $jar = $this->getOneMinutJarima(date('m.Y',strtotime($date)),$maosh);
         $minut = $this->getMinutesDate($date,$this->user_id);
 
-        // dd($minut);
-        return floor($jar*$minut);
+        if($minut == 123123)
+        {
+            return $minut;
+        }
+        $shift = Shift::whereDate('created_at',$date)->where('user_id',$this->user_id)->where('pharma_id','!=',42)->first();
+
+        $def = 0;
+
+        if($shift == null)
+        {
+            $def = 1;
+        }
+
+        $sum = $this->getOneMinutSum($this->user_id,date('Y-m',strtotime($date)),$date,$def);
+        $maosh = $this->getTaqqoslash($sum);
+        $jar = $this->getOneMinutJarima($date,$maosh);
+
+        $one_day_minut = $this->getDayMinutes($date,$this->user_id);
+
+        $j = floor($jar*$minut/$one_day_minut);
+
+        // dd($maosh);
+        return $j;
+    }
+    public function getDayMinutes($date,$user_id)
+    {
+        $th_start_work = $this->getSpecialStartDay($date,$user_id);
+        $th_end_work = $this->getSpecialFinishDay($date,$user_id);
+
+        $all_diff = (strtotime($th_end_work) - strtotime($th_start_work))/60;
+
+        if($all_diff/60 > 4)
+        {
+            $all_diff = $all_diff - 60;
+        }
+
+        return $all_diff/60;
     }
     public function getMinutesDate($date,$user_id)
     {
 
 
 
+        // dd($date);
 
         $day = $this->getWorkInMonth(date('m.Y',strtotime($date)));
         $day_json = json_decode($day->day_json);
@@ -157,13 +200,18 @@ class WorkDayServices
 
         if($shift == NULL)
         {
-            $all_diff = (strtotime($th_end_work) - strtotime($th_start_work))/60;
-
-            if($all_diff/60 > 4)
+            if($this->active == 1)
             {
-                $all_diff = $all_diff - 60;
+                $all_diff = (strtotime($th_end_work) - strtotime($th_start_work))/60;
+
+                if($all_diff/60 > 4)
+                {
+                    $all_diff = $all_diff - 60;
+                }
+            }else{
+                $all_diff = 123123;
             }
-            // $all_diff = 0;
+            
         }else{
             if($shift->close_date == null)
             {
@@ -248,15 +296,27 @@ class WorkDayServices
         }
         return $date;
     }
-    public function getOneMinutSum($user_id,$month,$date)
+    public function getOneMinutSum($user_id,$month,$date,$def)
     {
-
-        $summa = DB::table('tg_productssold')
+        $start_month = $this->getFirstDate($month.'-01');
+        $end_month = $this->getLastDate($month.'-01');
+        if($def == 1)
+        {
+            $summa = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+            ->whereDate('tg_productssold.created_at','>=',$start_month)
+            ->whereDate('tg_productssold.created_at','<=',$end_month)
+            ->where('tg_productssold.user_id','=',$user_id)
+            ->first()->allprice;
+        }else{
+            $summa = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
             ->whereDate('tg_productssold.created_at','>=',$month.'-01')
             ->whereDate('tg_productssold.created_at','<=',$date)
             ->where('tg_productssold.user_id','=',$user_id)
             ->first()->allprice;
+        }
+        
         if($summa == NULL)
         {
             $summa = 0;
@@ -266,28 +326,57 @@ class WorkDayServices
 
     public function getTaqqoslash($sum)
     {   
-        if($sum < 15000000)
+        // if($sum < 15000000)
+        // {
+        //     $compare = 2000000;
+        // }elseif($sum >= 15000000 && $sum < 25000000)
+        // {
+        //     $compare = ($sum*20)/150;
+        // }elseif($sum >= 25000000 && $sum < 35000000)
+        // {
+        //     $compare = ($sum*35)/150;
+        // }else{
+        //     $compare = ($sum*50)/150;
+        // }
+        // return $compare;
+        if($sum < 25000000)
         {
-            $compare = 2000000;
-        }elseif($sum >= 15000000 && $sum < 25000000)
-        {
-            $compare = ($sum*20)/150;
-        }elseif($sum >= 25000000 && $sum < 35000000)
-        {
-            $compare = ($sum*35)/150;
+            $koef = 2000000/15000000;
+            $oylik = $sum*$koef;
+        }elseif ($sum >= 25000000 && $sum < 35000000) {
+            $koef = 3500000/25000000;
+            $oylik = $sum*$koef;
         }else{
-            $compare = ($sum*50)/150;
+            $koef = 5000000/35000000;
+            $oylik = $sum*$koef;
         }
-        return $compare;
+        
+        return $oylik;
     }
 
     public function getOneMinutJarima($month,$sum)
     {
-        $work_day = $this->getWorkInMonth($month)->work_day;
+        $start_month = $this->getFirstDate($month);
+        $end_month = $this->getLastDate($month);
 
-        $all_minuts = $work_day*24*60;
+        $start = strtotime($start_month);
+        $end = strtotime($end_month);
+
+        $count = 0;
+        while(date('Y-m-d', $start) <= date('Y-m-d', $end)){
+            $count += date('w', $start) == 0 ? 0 : 1;
+            $start = strtotime("+1 day", $start);
+        }
+
+        // $work_day = $this->getWorkInMonth($month)->work_day;
+
+        // $add_array = json_decode($this->getWorkInMonth($month)->add_day);
+
+        $all_minuts = $count*60;
 
         $jar = $sum/$all_minuts;
+
+        // dd($count);
 
         return $jar;
     }
@@ -405,7 +494,8 @@ class WorkDayServices
                 
         }
 
-        return $arr;
+        // return $arr;
+        dd($arr);
     }
 
 

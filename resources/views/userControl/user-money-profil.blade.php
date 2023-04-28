@@ -11,7 +11,7 @@
                     <div class="dropdown-menu" style="z-index: 100000">
 
                         @foreach ($yearMonths as $m)
-                            <a href="{{route('user-money-profil',['id' => $id,'month' => $m])}}" class="dropdown-item">
+                            <a href="{{route('user-money-profil',['id' => $id,'month' => date('Y-m', strtotime($m.'-01'))])}}" class="dropdown-item">
                                 {{ date('m.Y', strtotime($m.'-01')) }} </a>
                         @endforeach
                     </div>
@@ -39,9 +39,16 @@
                                             {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
                                             <td> {{$key }}</td>
                                             <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
+                                            @if ($user['jarima'] == 123123)
+                                                <td style="color:red;">Oy oxirida qoshiladi</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            @else
                                             <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
                                             <td>{{ number_format($user['minut'],0,',',' ') }} minut</td>
                                             <td>{{ number_format(floor($user['minut']/60),0,',',' ') }} soat</td>
+                                            @endif
+                                            
                                             {{-- <td>
                                                 {{ $user['total']['days'] }}:d-
                                                 {{ number_format($user['total']['hours']) }}:h-
