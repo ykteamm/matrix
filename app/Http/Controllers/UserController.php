@@ -65,16 +65,23 @@ class UserController extends Controller
         }
         
         // $active = 1;
-
-        $users = User::where('status',1)->pluck('id')->toArray();
-        
-        foreach ($users as $id) {
-            
-            $service = new WorkDayServices($id,$active);
-
-            $userData = $service->getMonthMaosh($month);
-            $data[] = $userData;
-            
+        $data = [];
+        $regions = DB::table('tg_region')
+            ->selectRaw('tg_region.*, COUNT(tg_region.id) AS count')
+            ->leftJoin('tg_user', 'tg_user.region_id', 'tg_region.id')
+            ->orderBy('count', 'DESC')
+            ->groupBy('tg_region.id')
+            ->get();
+        foreach ($regions as $region) {
+            $reg = ['sum' => 0, 'users' => [], 'name' => $region->name, 'id' => $region->id];
+            $users = User::where('status', 1)->where('region_id', $region->id)->pluck('id')->toArray();     
+            foreach ($users as $id) {            
+                $service = new WorkDayServices($id,$active);
+                $userData = $service->getMonthMaosh($month);
+                $reg['sum'] += $userData['maosh'] - $userData['jarima'];
+                $reg['users'][] = $userData;   
+            }
+            $data[$region->name] = $reg;
         }
         $yearMonths = Calendar::whereDate('created_at','>=','2023-02-24')->pluck('year_month')->toArray();
         // return $calendar;
