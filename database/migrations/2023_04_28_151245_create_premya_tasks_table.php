@@ -16,7 +16,7 @@ class CreatePremyaTasksTable extends Migration
         Schema::create('premya_tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('tg_user', 'id')->onDelete('CASCADE');
-            $table->foreignId('premya_id')->constrained('premya', 'id')->onDelete('CASCADE');
+            $table->foreignId('premya_id')->constrained('premyas', 'id')->onDelete('CASCADE');
             $table->integer('prodaja');
             $table->timestamps();
         });

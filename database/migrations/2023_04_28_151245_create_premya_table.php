@@ -28,6 +28,6 @@ class CreatePremyaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('premya_tasks');
+        Schema::dropIfExists('premyas');
     }
 }
