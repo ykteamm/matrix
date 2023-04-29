@@ -5,7 +5,7 @@
             <div class="card-header" style="text-align:center">
                 <h3 style="overflow: hidden">{{ $nw->title }}</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="newsBody">
                 <?php echo htmlspecialchars_decode(htmlentities($nw->body)); ?>
             </div>
             <div class="card-footer">
@@ -53,3 +53,18 @@
         </div>
     </div>
 @endsection
+<style>
+    @media only screen and (max-width:500px) {
+        #newsBody img {
+            width: 100%;
+        }
+    }
+
+    [data-sceditor-emoticon] {
+        width: 20px !important;
+    }
+
+    #newsBody iframe {
+        width: 100% !important;
+    }
+</style>

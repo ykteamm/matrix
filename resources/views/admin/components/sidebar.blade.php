@@ -133,6 +133,7 @@
                  <li><a href="{{route('close-smena')}}">Smena yopish</a></li>
                  <li><a href="{{route('provizor')}}">Provizor tayinlash</a></li>
                  <li><a href="{{route('dublicat.index')}}">Duclicat elchilar</a></li>
+                 <li><a href="{{route('premya.index')}}">Premyalar</a></li>
                </ul>
            </li>
            @endif

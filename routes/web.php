@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PremyaTaskController;
 use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrendController;
@@ -322,5 +323,8 @@ Route::post('store-news', [BattleNewsController::class, 'store'])->name('storeNe
 Route::post('/store-news-images', [BattleNewsController::class, 'uploadImages'])->name('uploadImages');
 Route::get('/old-news-images', [BattleNewsController::class, 'uploadedImages'])->name('uploadedImages');
 });
+
+// PREMYA 
+Route::get('premya-tasks', [PremyaTaskController::class, 'index'])->name('premya.index');
 
 // });

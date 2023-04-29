@@ -47,11 +47,25 @@
                     </label>
                     <input name="title" class="form-control form-control-sm" type="text">
                 </div>
-                <div class="form-group">
-                    <label for="newsText">
-                        Matn
-                    </label>
-                    <textarea name="body" id="newsText" class="ckeditor form-control"></textarea>
+                <div class="form-group w-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label for="newsText" class="d-flex align-items-center justify-content-center m-0">
+                           <span> Matn</span>
+                        </label>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <select id="sceditortheme" class="form-control form-control-sm p-1">
+                                <option value="default">Theme</option>
+                                <option value="defaultdark">Default dark</option>
+                                <option value="modern">Modern</option>
+                                <option value="office-toolbar">Office Toolbar</option>
+                                <option value="office">Office</option>
+                                <option value="square">Square</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-100 w-lg-100 mt-1">
+                        <textarea id="sceditor" name="body"  style="height:300px;width:100.5%;"></textarea>
+                    </div>
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-primary btn-sm" type="submit">
