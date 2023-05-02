@@ -16,6 +16,7 @@ class TeamBattle extends Model
         'team2_id',
         'month',
         'round',
+        'monthround',
         'win',
         'lose',
         'start_day',

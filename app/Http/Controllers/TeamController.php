@@ -413,15 +413,18 @@ class TeamController extends Controller
                     $battle[$startOfMonth][$round][] = date("Y-m-d", strtotime("+$i day", strtotime($startOfMonth)));
                 }
             }
-        }
+        }   
         // dd($battle);
         foreach ($battle as $month => $rounds) {
+            $monthRound = 0;
            foreach ($rounds as $round => $days) {
+                $monthRound += 1;
                 $new_battle = new TeamBattle([
                     'team1_id' => $inputs['team1_id'],
                     'team2_id' => $inputs['team2_id'],
                     'month' => $month,
                     'round' => $round,
+                    'monthround' => $monthRound,
                     'start_day' => $days[0],
                     'end_day' => $days[count($days)-1],
                 ]);
