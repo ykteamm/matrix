@@ -251,8 +251,8 @@ class ElchilarService
                     ->join('tg_order','tg_order.id','tg_king_sold.order_id')
                     ->join('tg_user','tg_user.id','tg_order.user_id')
                     ->get();
-
-                $elchi_prognoz[$elch->id] = $prog;
+                $proggg = myPrognoz($elch->id);
+                $elchi_prognoz[$elch->id] = $proggg;
                 $king_sold[$elch->id] = $king_soldis[0]->count;
                 // $king_sold[$elch->id] = $king_sold[0]->count;
 

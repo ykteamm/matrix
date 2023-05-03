@@ -134,6 +134,7 @@
                  <li><a href="{{route('provizor')}}">Provizor tayinlash</a></li>
                  <li><a href="{{route('dublicat.index')}}">Duclicat elchilar</a></li>
                  <li><a href="{{route('premya.index')}}">Premyalar</a></li>
+                 <li><a href="{{route('kingliga.index')}}">Ligalar</a></li>
                </ul>
            </li>
            @endif

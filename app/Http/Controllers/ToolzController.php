@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\Repositories\HelperRepository;
 use App\Interfaces\Repositories\SMSRepository;
 use App\Interfaces\Repositories\ShiftRepository;
+use App\Models\KingLiga;
 use App\Models\KingSold;
 use App\Models\LigaKingSold;
 use App\Models\LigaKingUser;
@@ -44,7 +45,7 @@ class ToolzController extends Controller
         'xalat_yoq' => 'Xalat yo\'q',
         'lokatsiya_notogri' => 'Lokatsiya noto\'g\'ri'
     ];
-    
+
     private const MIN_FINE = 10000;
 
     public function openSmena(Request $request)
@@ -54,7 +55,7 @@ class ToolzController extends Controller
         $host = substr(request()->getHttpHost(), 0, 3);
         $uncheckedshifts = $this->shiftRepository->unchecked('admin_check', 1);
         $historyshifts = $this->shiftRepository->history($date, 'admin_check', 1);
-        return view('toolz.open-smena', compact('page','historyshifts', 'host', 'uncheckedshifts', 'date'));
+        return view('toolz.open-smena', compact('page', 'historyshifts', 'host', 'uncheckedshifts', 'date'));
     }
 
     public function closeSmena(Request $request)
@@ -64,7 +65,59 @@ class ToolzController extends Controller
         $host = substr(request()->getHttpHost(), 0, 3);
         $uncheckedshifts = $this->shiftRepository->unchecked('admin_check_close', 2);
         $historyshifts = $this->shiftRepository->history($date, 'admin_check_close', 2);
-        return view('toolz.close-smena', compact('page','historyshifts', 'host', 'uncheckedshifts', 'date'));
+        return view('toolz.close-smena', compact('page', 'historyshifts', 'host', 'uncheckedshifts', 'date'));
+    }
+
+    public function kingLigas()
+    {
+        $ligas = KingLiga::orderBy('id', 'ASC')->get();
+        function exeptions($ligasInfo)
+        {
+            $exf = [];
+            foreach ($ligasInfo as $liga) {
+                $exf = array_merge($exf, json_decode($liga->ex));
+            }
+            return array_unique($exf);
+        }
+        $ligaUserIds = exeptions($ligas);
+        $usersWithOutLiga = User::whereNotIn('id', $ligaUserIds)->select('id', 'first_name AS f', 'last_name AS l')->where('status', 1)->get();
+        $usersWithLiga = [];
+        foreach ($ligas as $liga) {
+            $lUids = json_decode($liga->ex);
+            if (count($lUids) > 0) {
+                $usersWithLiga[$liga->name] = User::whereIn('id', $lUids)->select('id', 'first_name AS f', 'last_name AS l')->get();
+            } else {
+                $usersWithLiga[$liga->name] = [];
+            }
+        }
+        return view('toolz.king-ligas', compact('ligas', 'usersWithOutLiga', 'usersWithLiga'));
+    }
+    public function kingLigasUpdate(Request $request)
+    {
+        $inputs = $request->all();
+        unset($inputs['_token']);
+        foreach ($inputs as $userId => $ligaName) {
+            if (strpos($userId, 'm') == 1) {
+                $liga = KingLiga::where('name', $ligaName)->first();
+                $users = json_decode($liga->ex);
+                $id = (int)substr($userId, 3);
+                $index = array_search($id, $users);
+                array_splice($users, $index, 1);
+                KingLiga::where('name', $ligaName)->update([
+                    'ex' => json_encode($users)
+                ]);
+            }
+            if (strpos($userId, 'd') == 1) {
+                $liga = KingLiga::where('name', $ligaName)->first();
+                $users = json_decode($liga->ex);
+                $id = (int)substr($userId, 4);
+                array_push($users, $id);
+                KingLiga::where('name', $ligaName)->update([
+                    'ex' => json_encode($users)
+                ]);
+            }
+        }
+        return back();
     }
 
     public function adminCheckOpenSmena(Request $request)
@@ -137,7 +190,6 @@ class ToolzController extends Controller
         $solds = KingSold::with('order', 'order.sold', 'order.sold.medicine', 'order.user')
             ->whereDate('created_at', '>=', '2023-01-30')
             ->where(function () use ($request) {
-
             })
             ->where('image', '!=', 'add')
             ->orderBy('id', 'DESC');
@@ -350,7 +402,7 @@ class ToolzController extends Controller
     }
     public function kingSoldSearch($user_id, $region_id, $date)
     {
-        
+
         $king_solds = $this->kingSoldService->kingSoldSearch($user_id, $region_id, $date);
 
         $regions = DB::table('tg_region')
@@ -359,8 +411,8 @@ class ToolzController extends Controller
 
         $users = DB::table('tg_user')->select('first_name', 'last_name', 'id', 'region_id')
             ->whereIn('id', $this->kingSoldService->getUserId('all'))
-            ->where('tg_user.rm',0)
-            ->whereIn('tg_user.status',[1,0])
+            ->where('tg_user.rm', 0)
+            ->whereIn('tg_user.status', [1, 0])
             ->get();
 
         $dates = $this->kingSoldService->day($date);
@@ -385,7 +437,7 @@ class ToolzController extends Controller
         }
 
         $total = [];
-   
+
         foreach ($king_solds as $king) {
             if ($user_id == 'all' && $region_id == 'all') {
                 foreach ($regions as $reg) {
@@ -426,7 +478,7 @@ class ToolzController extends Controller
 
         return view('toolz.king-sold-report', compact('user_id', 'region_id', 'total', 'pText', 'pkey', 'king_solds', 'regions', 'users', 'regkey', 'regText', 'dateText', 'dateTexte'));
     }
-    
+
     public function provizor()
     {
         $users = User::where('specialty_id', 1)->get();
@@ -437,14 +489,14 @@ class ToolzController extends Controller
     }
     public function provizorAdd(Request $request)
     {
-        $update = DB::table('tg_user')->where('id',$request->user_id)->update([
+        $update = DB::table('tg_user')->where('id', $request->user_id)->update([
             'specialty_id' => 9,
         ]);
         return redirect()->back();
     }
     public function provizorLose(Request $request)
     {
-        $update = DB::table('tg_user')->where('id',$request->user_id)->update([
+        $update = DB::table('tg_user')->where('id', $request->user_id)->update([
             'specialty_id' => 1,
         ]);
         return redirect()->back();

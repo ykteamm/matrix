@@ -7,7 +7,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Carbon\Carbon;
 use App\Models\Knowledge;
+use Illuminate\Support\Facades\Auth;
 
+if(!function_exists('myPrognoz')){
+    function myPrognoz($id) {
+        $start = Carbon::now()->startOfMonth()->format("Y-m-d");
+        $end = Carbon::now()->endOfMonth()->format("d");
+        $now = Carbon::now()->format("Y-m-d");
+        $fakt = DB::select(
+            "SELECT 
+            COALESCE(SUM(CASE WHEN DATE(p.created_at) BETWEEN ? AND ? THEN p.number * p.price_product ELSE 0 END), 0) AS allprice
+            FROM tg_productssold AS p
+            WHERE p.user_id = ?",
+            [$start, $now, $id]
+        );
+        $koef = 0;
+        if(count($fakt) > 0) {
+            $koef = round($fakt[0]->allprice / (int)date("d")); 
+        }
+        $prognoz = $koef * $end;
+        return $prognoz;
+    }
+}
 
 if(!function_exists('maosh')){
     function maosh($sum) {
