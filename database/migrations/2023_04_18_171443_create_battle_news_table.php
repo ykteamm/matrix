@@ -13,7 +13,7 @@ class CreateBattleNewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('battle_news', function (Blueprint $table) {
+        Schema::create('special_battle_news', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->text('body');

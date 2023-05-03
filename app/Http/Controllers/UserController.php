@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\Ball;
 use App\Models\BattleDay;
 use App\Models\BattleHistory;
+use App\Models\Blacklist;
 use App\Models\Calendar;
 use App\Models\DailyWork;
 use App\Models\ElchiBattleSetting;
@@ -44,26 +45,57 @@ class UserController extends Controller
     {
         $this->userMoney = $um;
     }
+    public function blackList()
+    {
+        $blackList = fn($active) => DB::select("SELECT
+            u.id,
+            u.first_name AS f,
+            u.last_name AS l,
+            b.active,
+            COALESCE(SUM(CASE WHEN DATE(p.created_at) BETWEEN DATE(date_trunc('month', now()))  AND DATE(date_trunc('month', now()) + interval '1 month - 1 day') THEN p.number * p.price_product END), 0) AS nowmonth,
+            COALESCE(SUM(CASE WHEN DATE(p.created_at) BETWEEN DATE(date_trunc('month', now()) - interval '1 month')  AND DATE(date_trunc('month', now()) - interval '1 day') THEN p.number * p.price_product END), 0) AS onemonthago,
+            COALESCE(SUM(CASE WHEN DATE(p.created_at) BETWEEN DATE(date_trunc('month', now()) - interval '2 month')  AND DATE(date_trunc('month', now()) - interval '1 month 1 day') THEN p.number * p.price_product END), 0) AS twomonthago
+            FROM blacklists AS b
+            LEFT JOIN tg_user AS u ON u.id = b.user_id
+            LEFT JOIN tg_productssold AS p ON p.user_id = u.id
+            WHERE b.active = ?
+            GROUP BY u.id, b.id
+        ", [$active]);
+
+        $blocked = $blackList(1);
+        $other = $blackList(0);
+        return view('userControl.blacklist', compact('blocked', 'other'));
+    }
+    public function blackListRemove(Request $request)
+    {
+        $inputs = $request->all();
+        unset($inputs['_token']);
+        foreach ($inputs as $id => $id) {
+            Blacklist::where('user_id', $id)->update([
+                'active' => 0
+            ]);
+        }
+        return back();
+    }
     public function userMoney(Request $request)
     {
         $data = [];
         // return 3232;
-        $month = $request->input('_month')??date('Y-m');
+        $month = $request->input('_month') ?? date('Y-m');
 
 
         $currentDate = date('Y-m-d');
 
-        $last_date = Carbon::createFromFormat('Y-m-d', $month.'-01')
-                        ->lastOfMonth()
-                        ->format('Y-m-d');
+        $last_date = Carbon::createFromFormat('Y-m-d', $month . '-01')
+            ->lastOfMonth()
+            ->format('Y-m-d');
 
-        if(strtotime($currentDate) > strtotime($last_date))
-        {
+        if (strtotime($currentDate) > strtotime($last_date)) {
             $active = 1;
-        }else{
+        } else {
             $active = 0;
         }
-        
+
         // $active = 1;
         $data = [];
         $regions = DB::table('tg_region')
@@ -74,46 +106,45 @@ class UserController extends Controller
             ->get();
         foreach ($regions as $region) {
             $reg = ['sum' => 0, 'users' => [], 'name' => $region->name, 'id' => $region->id];
-            $users = User::where('status', 1)->where('region_id', $region->id)->pluck('id')->toArray();     
-            foreach ($users as $id) {            
-                $service = new WorkDayServices($id,$active);
+            $users = User::where('status', 1)->where('region_id', $region->id)->pluck('id')->toArray();
+            foreach ($users as $id) {
+                $service = new WorkDayServices($id, $active);
                 $userData = $service->getMonthMaosh($month);
                 $reg['sum'] += $userData['maosh'] - $userData['jarima'];
-                $reg['users'][] = $userData;   
+                $reg['users'][] = $userData;
             }
             $data[$region->name] = $reg;
         }
-        $yearMonths = Calendar::whereDate('created_at','>=','2023-02-24')->pluck('year_month')->toArray();
+        $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
         // return $calendar;
         // return $month;
         return view('userControl.user-money', compact('data', 'yearMonths', 'month'));
     }
-    public function userMoneyProfil($id,$month)
+    public function userMoneyProfil($id, $month)
     {
         $currentDate = date('Y-m-d');
 
-        $last_date = Carbon::createFromFormat('Y-m-d', $month.'-01')
-                        ->lastOfMonth()
-                        ->format('Y-m-d');
+        $last_date = Carbon::createFromFormat('Y-m-d', $month . '-01')
+            ->lastOfMonth()
+            ->format('Y-m-d');
 
-        if(strtotime($currentDate) > strtotime($last_date))
-        {
+        if (strtotime($currentDate) > strtotime($last_date)) {
             $active = 1;
-        }else{
+        } else {
             $active = 0;
         }
-        
+
         // $active = 1;
-        
-        $service = new WorkDayServices($id,$active);
+
+        $service = new WorkDayServices($id, $active);
 
         $userData = $service->getMonthMaoshKunlik($month);
 
         // $yearMonths = ['2023-03','2023-04'];
 
-        $yearMonths = Calendar::whereDate('created_at','>=','2023-02-24')->pluck('year_month')->toArray();
+        $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
 
-        return view('userControl.user-money-profil', compact('userData', 'yearMonths', 'month','id'));
+        return view('userControl.user-money-profil', compact('userData', 'yearMonths', 'month', 'id'));
 
         // return $userData;
     }
@@ -644,7 +675,7 @@ class UserController extends Controller
         //     });
         // })->get();
 
-        return view('userControl.register', compact('registers', 'region', 'district', 'host','pharmacy','teacher'));
+        return view('userControl.register', compact('registers', 'region', 'district', 'host', 'pharmacy', 'teacher'));
     }
     public function userCancel(Request $request)
     {
@@ -672,7 +703,7 @@ class UserController extends Controller
             'status' => 200,
         ];
     }
-    public function userSuccess(Request $request,$id)
+    public function userSuccess(Request $request, $id)
     {
 
 
@@ -684,15 +715,13 @@ class UserController extends Controller
         $username = 'nvt' . (intval(substr($last_user->username, 3)) + 1);
         $password = rand(1000, 9999);
 
-        if(intval($user->lavozim) == 1)
-        {
+        if (intval($user->lavozim) == 1) {
             $spe_id = 1;
             $status = 0;
-            if(!isset($request->teacher_id))
-            {
+            if (!isset($request->teacher_id)) {
                 return redirect()->back();
             }
-        }else{
+        } else {
             $spe_id = 9;
             $status = 1;
         }
@@ -770,17 +799,12 @@ class UserController extends Controller
                 'pharma_id' => $request->pharma_id,
             ]);
 
-            if(intval($user->lavozim) == 1)
-            {
+            if (intval($user->lavozim) == 1) {
                 TeacherUser::create([
                     'teacher_id' => $request->teacher_id,
                     'user_id' => $new,
                 ]);
             }
-            
-
-
-
         }
 
         return redirect()->back();
