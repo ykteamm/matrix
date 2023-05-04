@@ -92,6 +92,7 @@
             processData: false,
             success: (response) => {
                 let len = response.images.length;
+                console.log(response);
                 document.getElementById("newsUploadedImages").style.width = (len * 100) + "px"
                 response.images.forEach(item => {
                     $("#newsUploadedImages").append(`
@@ -136,6 +137,7 @@
             processData: false,
             success: (response) => {
                 let len = response.images.length;
+                console.log(response);
                 document.getElementById("newsUploadedImages").style.width = (len * 100) + "px"
                 response.images.forEach(item => {
                     $("#newsUploadedImages").append(`
