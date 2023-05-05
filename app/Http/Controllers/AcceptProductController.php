@@ -14,6 +14,7 @@ use App\Services\ElchiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\Calendar;
 
 class AcceptProductController extends Controller
 {
@@ -26,19 +27,13 @@ class AcceptProductController extends Controller
     public function index()
     {
         $id=Session::get('user')->id;
-//       $elchi_service=new ElchiService();
-//       $date=$elchi_service->day($time);
-//       $date_begin=$date->date_begin;
-//       $date_end=$date->date_end;
-//       $date_text=$date->dateText;
-//       $user=User::with('');
+        $user = User::find($id);
 
-        $pharmacies=User::where('id',$id)->with('admin_pharmacies')->get();
-//        dd($pharmacies[0]->admin_pharmacies[0]);
-        $user=User::where('id',$id)->first();
-        $count=$pharmacies[0]->admin_pharmacies->count();
+        $pharmacy = Pharmacy::all();
 
-        return view('acceptProduct.index',compact('pharmacies','user','count'));
+        // $count=$pharmacies[0]->admin_pharmacies->count();
+
+        return view('acceptProduct.index',compact('pharmacy','user'));
     }
 
     public function show($pharmacy_id,$month)
@@ -72,7 +67,9 @@ class AcceptProductController extends Controller
         $count=$accept_date->count();
         $id=Session::get('user')->id;
 
-        return view('acceptProduct.show',compact('month','pharm','months','med','accept','pharmacy_id','accept_date','count','id'));
+        $calendar = Calendar::all();
+
+        return view('acceptProduct.show',compact('month','pharm','months','med','accept','pharmacy_id','accept_date','count','id','calendar'));
     }
 
 
@@ -83,13 +80,15 @@ class AcceptProductController extends Controller
         $id=Session::get('user')->id;
         $r=$request->all();
 
-//        dd($r);
         unset($r['_token']);
         $created_by=$r['created_by'];
 
             unset($r['meeting-time']);
             unset($r['created_by']);
             $i=0;
+        
+            // dd($r);
+
             foreach ($r as $key=>$item){
 
                 if($i==0){
@@ -142,11 +141,11 @@ class AcceptProductController extends Controller
         $i=0;
 
         $user_id=Session::get('user')->id;
-//        dd($request->all());
+    //    dd($request->all());
+    //    dd($request['id']);
         foreach ($request['number'] as $item){
             $s=Accept::where('id',$request['id'][$i])->first();
 
-//            dd($s->medicine_id);
             $med=DB::table('tg_medicine')
                 ->selectRaw('tg_medicine.name,tg_medicine.id,tg_prices.price')
                 ->where('tg_medicine.id',$s->medicine_id)
@@ -156,6 +155,8 @@ class AcceptProductController extends Controller
                 ->groupBy('tg_medicine.id','tg_medicine.name','tg_prices.price')
                 ->orderBy('tg_medicine.id')
                 ->first();
+            
+                // dd($med);
 
             $s->number=$item;
             $s->price=$item*$med->price;

@@ -1,14 +1,12 @@
 @extends('admin.layouts.app')
 @section('admin_content')
     <div class="row calender-col mt-5 pt-5">
-        <div class="col-xl-8">
+        <div class="col-sm-12">
             <div class="card">
-                <div class="card-header no-border">
-                    <h4 class="card-title">Qoldiqlarni ko'rish uchun dorixonalardan birini tanlang </h4>
-                </div>
                 <div class="card-body">
+                <div class="dtBasicExamplest"></div>
                     <div class="table-responsive">
-                        <table class="table mb-0">
+                        <table class="table mb-0 dtBasicExamplest12">
                             <thead>
                             <tr>
                                 <th><strong>No</strong></th>
@@ -18,12 +16,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($pharmacies[0]->admin_pharmacies as $p)
+                            @foreach($pharmacy as $key => $p)
                             <tr>
-                                <td>{{$loop->index+1}}</td>
-                                <td>{{$p->pharmacies->slug}} </td>
-                                <td><a href="{{route('stock.med.show',['id'=>$p->pharmacies->id,'time'=>date('Y-m')])}}">{{$p->pharmacies->name}}</a> </td>
-                                <td>{{$p->pharmacies->region->name}}</td>
+                                <td>{{$key+1}}</td>
+                                <td> {{$p->slug}} </td>
+                                <td><a href="{{route('stock.med.show',['id'=>$p->id,'time'=>date('Y-m')])}}" class="badge badge-primary">{{$p->name}}</a> </td>
+                                <td>{{$p->region->name}}</td>
                             </tr>
                             @endforeach
                             </tbody>

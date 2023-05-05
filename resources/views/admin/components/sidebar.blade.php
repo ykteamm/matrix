@@ -171,7 +171,13 @@
 
              
              
-                
+             <li class="submenu">
+               <a href="settings.html"><i class="fas fa-balance-scale-left"></i>  <span> Ostatka2 </span><span class="menu-arrow"></span></a>
+               <ul style="display: none;">
+                     <li><a href="{{route('compare')}}"><span>Ostatka</span></a>
+                     </li>
+               </ul>
+            </li>
 
              
                 <li class="submenu">

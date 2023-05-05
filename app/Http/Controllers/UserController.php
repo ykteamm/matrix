@@ -98,6 +98,7 @@ class UserController extends Controller
 
         // $active = 1;
         $data = [];
+        $regions = Region::all();
         $regions = DB::table('tg_region')
             ->selectRaw('tg_region.*, COUNT(tg_region.id) AS count')
             ->leftJoin('tg_user', 'tg_user.region_id', 'tg_region.id')
@@ -106,7 +107,7 @@ class UserController extends Controller
             ->get();
         foreach ($regions as $region) {
             $reg = ['sum' => 0, 'users' => [], 'name' => $region->name, 'id' => $region->id];
-            $users = User::where('status', 1)->where('region_id', $region->id)->pluck('id')->toArray();
+            $users = User::whereIn('status', [0,1,2])->where('region_id', $region->id)->pluck('id')->toArray();
             foreach ($users as $id) {
                 $service = new WorkDayServices($id, $active);
                 $userData = $service->getMonthMaosh($month);
@@ -115,6 +116,8 @@ class UserController extends Controller
             }
             $data[$region->name] = $reg;
         }
+
+        // dd($regions);
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
         // return $calendar;
         // return $month;
@@ -144,6 +147,7 @@ class UserController extends Controller
 
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
 
+        // dd($userData);
         return view('userControl.user-money-profil', compact('userData', 'yearMonths', 'month', 'id'));
 
         // return $userData;
@@ -166,7 +170,7 @@ class UserController extends Controller
         //     if (isset($d->data)) {
         //         $arr[] = array('id' => $user->id, 'tg_id' => $user->tg_id, 'data' => $d->data);
         //     }
-        // }    
+        // }
         return view('userControl.index', compact('users', 'testusers', 'unemployes', 'newemployes', 'rms', 'caps'));
     }
 

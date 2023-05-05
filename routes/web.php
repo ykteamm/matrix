@@ -12,6 +12,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PremyaTaskController;
+use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrendController;
@@ -326,6 +327,12 @@ Route::post('delete-news/{id}', [BattleNewsController::class, 'delete'])->name('
 Route::post('store-news', [BattleNewsController::class, 'store'])->name('storeNews');
 Route::post('/store-news-images', [BattleNewsController::class, 'uploadImages'])->name('uploadImages');
 Route::get('/old-news-images', [BattleNewsController::class, 'uploadedImages'])->name('uploadedImages');
+
+//ostatka2.0 - start
+Route::resource('residual', ResidualController::class);
+
+//ostatka2.0 - end
+
 });
 
 // PREMYA 

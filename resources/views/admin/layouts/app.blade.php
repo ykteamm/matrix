@@ -239,6 +239,11 @@ $(document).ready(function () {
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
   }).buttons().container().appendTo('#dtBasicExample1212');
   
+  $('.dtBasicExamplest12').DataTable({
+    "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+  }).buttons().container().appendTo('.dtBasicExamplest');
+
   $('.dataTables_length').addClass('bs-select');
 });
         $("#hospital_name").change(function(){

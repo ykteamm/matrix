@@ -54,20 +54,20 @@ class WorkDayServices
             $Variable1 = strtotime($start_month);
             $Variable2 = strtotime($end_month);
             $sum = 0;
-            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
-            {   
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400))
+            {
 
-                if($currentDate < strtotime(date('Y-m-d')) && $currentDate >= strtotime('2023-03-15')) 
+                if($currentDate < strtotime(date('Y-m-d')) && $currentDate >= strtotime('2023-03-15'))
                 {
                     $date = date('Y-m-d', $currentDate);
                     $jarima = $this->getDayJarima($date);
                     $arrayDate[] = $jarima;
-                }                    
+                }
             }
-        
+
         dd($arrayDate);
 
-    } 
+    }
     public function getReportAllSum($month)
     {
 
@@ -80,8 +80,8 @@ class WorkDayServices
             $sum = 0;
             $sum2 = [];
 
-            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
-            {   
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400))
+            {
                 if($currentDate < strtotime(date('Y-m-d')) && $currentDate >= strtotime('2023-03-15'))
                 {
                     $date = date('Y-m-d', $currentDate);
@@ -93,10 +93,10 @@ class WorkDayServices
                     }
                     $sum2[] = array('jarima' => $jarima,'date' => $date);
 
-                }                    
+                }
             }
             // dd($sum2);
-        
+
         return $sum;
 
     }
@@ -110,9 +110,9 @@ class WorkDayServices
             $Variable2 = strtotime($end_month);
             $sum = 0;
             $sum2 = [];
-            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400)) 
-            {   
-                if($currentDate < strtotime(date('Y-m-d')) && $currentDate >= strtotime('2023-03-15')) 
+            for ($currentDate = $Variable1; $currentDate <= $Variable2;$currentDate += (86400))
+            {
+                if($currentDate < strtotime(date('Y-m-d')) && $currentDate >= strtotime('2023-03-15'))
                 {
                     $date = date('Y-m-d', $currentDate);
                     $minut = $this->getMinutesDate($date,$this->user_id);
@@ -121,9 +121,9 @@ class WorkDayServices
                         $sum += $minut;
                     }
                     $sum2[] = array('time' => $minut,'date' => $date);
-                }                    
+                }
             }
-        
+
         return $sum;
 
     }
@@ -211,7 +211,7 @@ class WorkDayServices
             }else{
                 $all_diff = 123123;
             }
-            
+
         }else{
             if($shift->close_date == null)
             {
@@ -229,14 +229,14 @@ class WorkDayServices
 
             $open_date = date('H:i:s',strtotime($shift->open_date));
 
-            
+
             $all_diff_g = (strtotime($close_date) - strtotime($open_date))/60;
 
             if($all_diff_g/60 > 4)
             {
                 $all_diff_g = $all_diff_g - 60;
             }
-            
+
             if(strtotime($open_date) > strtotime($th_start_work))
             {
                 $diff_open = (strtotime($open_date) - strtotime($th_start_work))/60;
@@ -316,16 +316,16 @@ class WorkDayServices
             ->where('tg_productssold.user_id','=',$user_id)
             ->first()->allprice;
         }
-        
+
         if($summa == NULL)
         {
             $summa = 0;
         }
         return $summa;
-    }   
+    }
 
     public function getTaqqoslash($sum)
-    {   
+    {
         // if($sum < 15000000)
         // {
         //     $compare = 2000000;
@@ -350,7 +350,7 @@ class WorkDayServices
             $koef = 5000000/35000000;
             $oylik = $sum*$koef;
         }
-        
+
         return $oylik;
     }
 
@@ -400,7 +400,7 @@ class WorkDayServices
     {
         $cal = Calendar::where('year_month',$month)->first();
         return $cal;
-    }   
+    }
 
     public function getFirstDate($date)
     {
@@ -450,13 +450,13 @@ class WorkDayServices
             // $arr_days = $this->getMonthMaoshKunlik($date_begin,$date_end);
 
             $st = array('maosh' =>maosh($month_sol),'summa' => $month_sol,'jarima' => $jarima,'time' => $time,'id' => $this->user_id,'name' => $names);
-        
-        
-        
+
+
+
             // }
             // dd($this->user_id);
             // dd($date);
-        
+
         return $st;
 
     }
@@ -470,9 +470,9 @@ class WorkDayServices
         $Variable1 = strtotime($date_begin);
         $Variable2 = strtotime($date_end);
         $arr = [];
-        for ($currentDate = $Variable2; $currentDate >= $Variable1;$currentDate -= (86400)) 
-        {  
-            
+        for ($currentDate = $Variable2; $currentDate >= $Variable1;$currentDate -= (86400))
+        {
+
             $day_sol = DB::table('tg_productssold')
                 ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
                 ->whereDate('tg_productssold.created_at',date('Y-m-d', $currentDate))
@@ -486,16 +486,19 @@ class WorkDayServices
             {
                 $jarima = $this->getDayJarima(date('Y-m-d', $currentDate));
                 $minut = $this->getMinutesDate(date('Y-m-d', $currentDate),$this->user_id);
+                $shifts = Shift::where('user_id',$this->user_id)->whereDate('open_date','=',date('Y-m-d', $currentDate))->first();
+
             }else{
                 $jarima = 0;
                 $minut = 0;
+                $shifts = null;
             }
-            $arr[date('Y-m-d', $currentDate)] = array('id' => $this->user_id,'maosh' => maosh($day_sol),'jarima' => $jarima,'minut' => $minut);
-                
+            $arr[date('Y-m-d', $currentDate)] = array('id' => $this->user_id,'maosh' => maosh($day_sol),'jarima' => $jarima,'minut' => $minut,'shift' => $shifts);
+
         }
 
-        // return $arr;
-        dd($arr);
+        return $arr;
+        // dd($arr);
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accept;
+use App\Models\Calendar;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
 use App\Models\Stock;
@@ -24,17 +25,12 @@ class StockController extends Controller
     public function index()
     {
         $id=Session::get('user')->id;
-//       $elchi_service=new ElchiService();
-//       $date=$elchi_service->day($time);
-//       $date_begin=$date->date_begin;
-//       $date_end=$date->date_end;
-//       $date_text=$date->dateText;
-//       $user=User::with('');
 
-        $pharmacies=User::where('id',$id)->with('admin_pharmacies')->get();
-//        dd($pharmacies[0]->admin_pharmacies[0]);
-        $user=User::where('id',$id)->first();
-        return view('stockProduct.index',compact('pharmacies','user'));
+        $user = User::find($id);
+
+        $pharmacy = Pharmacy::all();
+
+        return view('stockProduct.index',compact('user','pharmacy'));
     }
 
 
@@ -65,7 +61,12 @@ class StockController extends Controller
 //        dd($pharm);
         $count=$stock_date->count();
         $id=Session::get('user')->id;
-        return view('stockProduct.show',compact('month','pharm','months','med','stock','pharmacy_id','stock_date','count','id'));
+
+        $calendar = Calendar::all();
+        
+        // dd($calendar);
+
+        return view('stockProduct.show',compact('month','pharm','months','med','stock','pharmacy_id','stock_date','count','id','calendar'));
     }
 
     public function delete($pharmacy_id,$date)
@@ -92,7 +93,6 @@ class StockController extends Controller
     {
         $id=Session::get('user')->id;
         $r=$request->all();
-//        dd($r);
         unset($r['_token']);
         $created_by=$r['created_by'];
         if(isset($r['meeting-time'])){
@@ -101,6 +101,8 @@ class StockController extends Controller
             $date_time=date('Y-m-d H-i-s');
         }
         $q=Stock::where('date',$date_time)->first();
+        
+
         if(!isset($q)){
             unset($r['meeting-time']);
             unset($r['created_by']);

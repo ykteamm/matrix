@@ -24,6 +24,8 @@
                                 <thead>
                                     <tr>
                                         <th>Kun</th>
+                                        <th>Smena ochilgan vaqt</th>
+                                        <th>Smena yopilgan vaqt</th>
                                         <th>Maosh</th>
                                         <th>Kesiladigan summa</th>
                                         <th>Kechikgan vaqt (minut)</th>
@@ -38,7 +40,39 @@
                                         <tr>
                                             {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
                                             <td> {{$key }}</td>
+                                            <td>
+                                                @if ($user['shift'])
+                                                    @if ($user['shift']->pharmacy_id == 42)
+                                                        Tashqi Savdo
+                                                    @else
+                                                        @if ($user['shift']->open_date)
+                                                            {{date('H:i',strtotime($user['shift']->open_date))}}
+                                                        @else
+                                                            ---
+                                                        @endif
+
+                                                    @endif
+                                                @else
+                                                    ---
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($user['shift'])
+                                                    @if ($user['shift']->pharmacy_id == 42)
+                                                        Tashqi Savdo
+                                                    @else
+                                                        @if ($user['shift']->close_date)
+                                                            {{date('H:i',strtotime($user['shift']->close_date))}}
+                                                        @else
+                                                            ---
+                                                        @endif
+                                                    @endif
+                                                @else
+                                                    ---
+                                                @endif
+                                            </td>
                                             <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
+
                                             @if ($user['jarima'] == 123123)
                                                 <td style="color:red;">Oy oxirida qoshiladi</td>
                                                 <td>-</td>
@@ -48,7 +82,7 @@
                                             <td>{{ number_format($user['minut'],0,',',' ') }} minut</td>
                                             <td>{{ number_format(floor($user['minut']/60),0,',',' ') }} soat</td>
                                             @endif
-                                            
+
                                             {{-- <td>
                                                 {{ $user['total']['days'] }}:d-
                                                 {{ number_format($user['total']['hours']) }}:h-
