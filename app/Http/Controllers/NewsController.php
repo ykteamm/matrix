@@ -87,10 +87,15 @@ class NewsController extends Controller
                 elseif ($info['mime'] == 'image/webp') 
                     $image = imagecreatefromwebp($img);
 
-                $destinationPath = public_path() . '/news/imgs/' . $imageName;
+                // $destinationPath = public_path() . '/news/imgs/' . $imageName;
                 // imagejpeg($image, $destinationPath, 30);
-                imagepng($image, $destinationPath, 80);
-                $pathname = asset('news/imgs/' . $imageName);
+                // imagepng($image, $destinationPath, 80);
+                // $pathname = asset('news/imgs/' . $imageName);
+                $imageName = $img->getClientOriginalName();
+                $destinationPath = public_path() . '/news/imgs';
+                $path = $img->move($destinationPath, $imageName);
+                $pathname = asset('news/imgs' . $imageName);
+                
             }
             News::create([
                 'title' => $title,
