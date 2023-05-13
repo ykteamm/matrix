@@ -92,10 +92,9 @@ class NewsController extends Controller
                 // imagepng($image, $destinationPath, 80);
                 // $pathname = asset('news/imgs/' . $imageName);
                 $imageName = $img->getClientOriginalName();
-                // dd($imageName);
                 $destinationPath = public_path() . '/news/imgs';
                 $path = $img->move($destinationPath, $imageName);
-                $pathname = asset('news/imgs' . $imageName);
+                $pathname = asset('news/imgs/' . $imageName);
                 
             }
             News::create([
@@ -118,21 +117,25 @@ class NewsController extends Controller
             $pathname = null;
             if($request->hasFile('img')) {
                 $img = $request->file('img');
-                $imageName = $img->getClientOriginalName();
-                $info = getimagesize($img);
-                if ($info['mime'] == 'image/jpeg') 
-                    $image = imagecreatefromjpeg($img);
-                elseif ($info['mime'] == 'image/gif') 
-                    $image = imagecreatefromgif($img);
+                // $imageName = $img->getClientOriginalName();
+                // $info = getimagesize($img);
+                // if ($info['mime'] == 'image/jpeg') 
+                //     $image = imagecreatefromjpeg($img);
+                // elseif ($info['mime'] == 'image/gif') 
+                //     $image = imagecreatefromgif($img);
 
-                elseif ($info['mime'] == 'image/png') 
-                    $image = imagecreatefrompng($img);
+                // elseif ($info['mime'] == 'image/png') 
+                //     $image = imagecreatefrompng($img);
                     
-                elseif ($info['mime'] == 'image/webp') 
-                    $image = imagecreatefromwebp($img);
+                // elseif ($info['mime'] == 'image/webp') 
+                //     $image = imagecreatefromwebp($img);
 
-                $destinationPath = public_path() . '/news/imgs/' . $imageName;
-                imagejpeg($image, $destinationPath, 30);
+                // $destinationPath = public_path() . '/news/imgs/' . $imageName;
+                // imagejpeg($image, $destinationPath, 30);
+                // $pathname = asset('news/imgs/' . $imageName);
+                $imageName = $img->getClientOriginalName();
+                $destinationPath = public_path() . '/news/imgs';
+                $path = $img->move($destinationPath, $imageName);
                 $pathname = asset('news/imgs/' . $imageName);
                 Storage::delete($new->img);
             }
