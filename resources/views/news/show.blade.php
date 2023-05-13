@@ -4,9 +4,10 @@
         <div class="card border border-1 rounded rounded-1 hover shadow">
             <div class="card-header" style="text-align:center">
                 <h3 style="overflow: hidden">{{ $nw->title }}</h3>
+                {{-- <img src="{{$nw->img}}" width="50" alt=""> --}}
             </div>
             <div class="card-body" id="newsBody">
-                <?php echo htmlspecialchars_decode(htmlentities($nw->body)); ?>
+                <?php echo htmlspecialchars_decode(htmlentities($nw->desc)); ?>
             </div>
             <div class="card-footer">
                 <div class="modal fade" id="deleteNews" tabindex="-1" role="dialog" aria-labelledby="deleteNewsTitle"

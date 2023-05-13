@@ -6,6 +6,7 @@ use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
@@ -318,15 +319,15 @@ Route::post('provizor-add', [ToolzController::class,'provizorAdd'])->name('provi
 Route::post('provizor-lose', [ToolzController::class,'provizorLose'])->name('provizor-lose');
 
 // BATTLE NEWS
-Route::get('battlenews', [BattleNewsController::class, 'index'])->name('openNews');
-Route::get('create-news', [BattleNewsController::class, 'create'])->name('createNews');
-Route::get('show-news/{id}', [BattleNewsController::class, 'show'])->name('showNews');
-Route::get('edit-news/{id}', [BattleNewsController::class, 'edit'])->name('editNews');
-Route::post('update-news/{id}', [BattleNewsController::class, 'update'])->name('updateNews');
-Route::post('delete-news/{id}', [BattleNewsController::class, 'delete'])->name('deleteNews');
-Route::post('store-news', [BattleNewsController::class, 'store'])->name('storeNews');
-Route::post('/store-news-images', [BattleNewsController::class, 'uploadImages'])->name('uploadImages');
-Route::get('/old-news-images', [BattleNewsController::class, 'uploadedImages'])->name('uploadedImages');
+Route::get('/allnews', [NewsController::class, 'index'])->name('openNews');
+Route::get('create-news', [NewsController::class, 'create'])->name('createNews');
+Route::get('show-news/{id}', [NewsController::class, 'show'])->name('showNews');
+Route::get('edit-news/{id}', [NewsController::class, 'edit'])->name('editNews');
+Route::post('update-news/{id}', [NewsController::class, 'update'])->name('updateNews');
+Route::post('delete-news/{id}', [NewsController::class, 'delete'])->name('deleteNews');
+Route::post('store-news', [NewsController::class, 'store'])->name('storeNews');
+Route::post('/store-news-images', [NewsController::class, 'uploadImages'])->name('uploadImages');
+Route::get('/old-news-images', [NewsController::class, 'uploadedImages'])->name('uploadedImages');
 
 //ostatka2.0 - start
 Route::resource('residual', ResidualController::class);

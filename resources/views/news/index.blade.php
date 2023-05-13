@@ -16,6 +16,9 @@
                 <div class="card border border-left-primary">
                     <div class="p-4 d-flex align-items-center justify-content-between"
                         style="border-left:5px solid red;border-top-left-radius: 10px;border-bottom-left-radius: 10px">
+                        <div>
+                            <img src="{{ $nw->img }}" width="50" alt="">
+                        </div>
                         <a href="{{ route('showNews', ['id' => $nw->id]) }}">
                             <div style="font-size:18px;font-weight:600;overflow:hidden" class="pr-3">
                                 {{ $nw->title }}
