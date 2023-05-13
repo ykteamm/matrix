@@ -91,7 +91,7 @@ class NewsController extends Controller
                 // imagejpeg($image, $destinationPath, 30);
                 // imagepng($image, $destinationPath, 80);
                 // $pathname = asset('news/imgs/' . $imageName);
-                $imageName = $img->getClientOriginalName();
+                $imageName = date("Y-m-d:h:m:s") . $img->getClientOriginalName();
                 $destinationPath = public_path() . '/news/imgs';
                 $path = $img->move($destinationPath, $imageName);
                 $pathname = asset('news/imgs/' . $imageName);
@@ -133,7 +133,7 @@ class NewsController extends Controller
                 // $destinationPath = public_path() . '/news/imgs/' . $imageName;
                 // imagejpeg($image, $destinationPath, 30);
                 // $pathname = asset('news/imgs/' . $imageName);
-                $imageName = $img->getClientOriginalName();
+                $imageName = date("Y-m-d:h:m:s") . $img->getClientOriginalName();
                 $destinationPath = public_path() . '/news/imgs';
                 $path = $img->move($destinationPath, $imageName);
                 $pathname = asset('news/imgs/' . $imageName);
