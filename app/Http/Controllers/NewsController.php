@@ -88,7 +88,8 @@ class NewsController extends Controller
                     $image = imagecreatefromwebp($img);
 
                 $destinationPath = public_path() . '/news/imgs/' . $imageName;
-                imagejpeg($image, $destinationPath, 30);
+                // imagejpeg($image, $destinationPath, 30);
+                imagepng($image, $destinationPath, 80);
                 $pathname = asset('news/imgs/' . $imageName);
             }
             News::create([
