@@ -15,7 +15,7 @@ if(!function_exists('myPrognoz')){
         $end = Carbon::now()->endOfMonth()->format("d");
         $now = Carbon::now()->format("Y-m-d");
         $fakt = DB::select(
-            "SELECT 
+            "SELECT
             COALESCE(SUM(CASE WHEN DATE(p.created_at) BETWEEN ? AND ? THEN p.number * p.price_product ELSE 0 END), 0) AS allprice
             FROM tg_productssold AS p
             WHERE p.user_id = ?",
@@ -23,7 +23,7 @@ if(!function_exists('myPrognoz')){
         );
         $koef = 0;
         if(count($fakt) > 0) {
-            $koef = round($fakt[0]->allprice / (int)date("d")); 
+            $koef = round($fakt[0]->allprice / (int)date("d"));
         }
         $prognoz = $koef * $end;
         return $prognoz;
@@ -43,7 +43,7 @@ if(!function_exists('maosh')){
             $koef = 5000000/35000000;
             $oylik = $sum*$koef;
         }
-        
+
         return $oylik;
     }
 }
@@ -399,5 +399,30 @@ if (!function_exists('numb')) {
             $format = number_format($number, 0, '', '.');
         }
         return $format;
+    }
+}
+
+if(!function_exists('getHostNameUrl')){
+    function getHostNameUrl() {
+
+        $host = substr(request()->getHttpHost(),0,3);
+
+        return 127;
+
+    }
+}
+
+if(!function_exists('getProvizorUrl')){
+    function getProvizorUrl() {
+
+        if(getHostNameUrl() == 127)
+        {
+            $url = 'http://127.0.0.1:8000';
+        }else{
+            $url = 'https://promo.novatio.uz';
+        }
+
+        return $url;
+
     }
 }
