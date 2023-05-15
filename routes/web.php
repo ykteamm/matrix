@@ -13,6 +13,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PremyaTaskController;
+use App\Http\Controllers\ProvizorController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
@@ -303,16 +304,16 @@ Route::post('king-liga-delete', [ToolzController::class,'kingSoldLigaDelete'])->
 Route::get('king-ligas', [ToolzController::class, 'kingLigas'])->name('kingliga.index');
 Route::post('king-ligas-update', [ToolzController::class, 'kingLigasUpdate'])->name('kingliga.update');
 
-Route::get('add-teacher', [TeacherController::class,'index'])->name('add-teacher'); 
-Route::post('store-teacher', [TeacherController::class,'store'])->name('teacher.store'); 
+Route::get('add-teacher', [TeacherController::class,'index'])->name('add-teacher');
+Route::post('store-teacher', [TeacherController::class,'store'])->name('teacher.store');
 
-Route::get('add-shogird', [TeacherController::class,'shogird'])->name('add-shogird'); 
-Route::post('shogird-teacher', [TeacherController::class,'shogirdStore'])->name('shogird.store'); 
-Route::post('shogird-teacher-update', [TeacherController::class,'shogirdUpdateTime'])->name('shogird.date'); 
+Route::get('add-shogird', [TeacherController::class,'shogird'])->name('add-shogird');
+Route::post('shogird-teacher', [TeacherController::class,'shogirdStore'])->name('shogird.store');
+Route::post('shogird-teacher-update', [TeacherController::class,'shogirdUpdateTime'])->name('shogird.date');
 
 
-Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index'); 
-Route::post('dublicat-store', [DublicatController::class,'store'])->name('dublicat.store'); 
+Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index');
+Route::post('dublicat-store', [DublicatController::class,'store'])->name('dublicat.store');
 
 Route::get('provizor', [ToolzController::class,'provizor'])->name('provizor');
 Route::post('provizor-add', [ToolzController::class,'provizorAdd'])->name('provizor-add');
@@ -334,9 +335,22 @@ Route::resource('residual', ResidualController::class);
 
 //ostatka2.0 - end
 
+//provizor - start
+Route::get('pro-order', [ProvizorController::class, 'index'])->name('pro-order');
+Route::get('change-status/{order_id}/{status}', [ProvizorController::class,'changeOrderStatus'])->name('orderpro.status');
+
+Route::get('pro-money', [ProvizorController::class, 'money'])->name('pro-money');
+Route::post('pro-money', [ProvizorController::class, 'moneyStore'])->name('pro-money.store');
+
+Route::get('pro-battle', [ProvizorController::class, 'battle'])->name('pro-battle');
+Route::post('pro-battle', [ProvizorController::class, 'battleStore'])->name('pro-battle.store');
+
+
+//provizor - end
+
 });
 
-// PREMYA 
+// PREMYA
 Route::get('premya-tasks', [PremyaTaskController::class, 'index'])->name('premya.index');
 
 // });

@@ -2,7 +2,7 @@
     <div class="sidebar-inner">
        <div id="sidebar-menu" style="height: 100vh; overflow-y: scroll" class="sidebar-menu">
           <ul>
-               <?php 
+               <?php
                   $cap = Session::get('cap');
                   $rm = Session::get('rm');
                ?>
@@ -94,8 +94,8 @@
                @endif
              @endisset
 
-            
-                 
+
+
             @isset(Session::get('per')['team'])
              @if(Session::get('per')['team'] == 'true')
             <li class="submenu">
@@ -124,6 +124,19 @@
               @endif
             @endisset
 
+            @isset(Session::get('per')['teacher'])
+             @if(Session::get('per')['teacher'] == 'true')
+             <li class="submenu">
+               <a href="settings.html"><i class="fas fa-graduation-cap"></i>  <span> Provizor </span><span class="menu-arrow"></span></a>
+               <ul style="display: none;">
+                  <li><a href="{{route('pro-order')}}">Buyurtmalar</a></li>
+                  <li><a href="{{route('pro-money')}}">Pul kelishi</a></li>
+                  <li><a href="{{route('pro-battle')}}">Jang</a></li>
+                </ul>
+            </li>
+              @endif
+            @endisset
+
             @isset(Session::get('per')['toolz'])
             @if(Session::get('per')['toolz'] == 'true')
            <li class="submenu">
@@ -140,11 +153,11 @@
            @endif
            @endisset
 
-            
 
-             
 
-             
+
+
+
              @isset(Session::get('per')['trend'])
              @if(Session::get('per')['trend'] == 'true')
 
@@ -160,7 +173,7 @@
                @endif
              @endisset
 
-             
+
              @isset(Session::get('per')['grade'])
              @if(Session::get('per')['grade'] == 'true')
              {{-- <li><a href="{{route('grade')}}"><i class="feather-filter"></i>  <span>Baholash </span></a> --}}
@@ -169,8 +182,8 @@
              @endisset
 
 
-             
-             
+
+
              <li class="submenu">
                <a href="settings.html"><i class="fas fa-balance-scale-left"></i>  <span> Ostatka2 </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
@@ -179,7 +192,7 @@
                </ul>
             </li>
 
-             
+
                 <li class="submenu">
                   <a href="settings.html"><i class="fas fa-balance-scale-left"></i>  <span> Ostatka </span><span class="menu-arrow"></span></a>
                   <ul style="display: none;">
@@ -267,7 +280,7 @@
            </li>
 
 
-            
+
 
              @isset(Session::get('per')['setting'])
              @if(Session::get('per')['setting'] == 'true')
@@ -384,7 +397,7 @@
              </li>
              @endisset
              @endif
-              
+
               <li class="mb-5"><a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fas fa-sign-out-alt"></i> <span> Chiqish </span></a>
                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                   @csrf
