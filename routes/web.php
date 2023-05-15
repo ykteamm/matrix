@@ -239,7 +239,7 @@ Route::post('user-cap', [UserController::class,'userCap'])->name('user-cap');
 Route::post('user-exit', [UserController::class,'userExit'])->name('user-exit');
 Route::post('user-test', [UserController::class,'userTest'])->name('user-test');
 Route::post('user-new', [UserController::class,'userNew'])->name('user-new');
-Route::get('user-money', [UserController::class, 'userMoney'])->name('user-money');
+Route::get('money/{region_id}/{month}', [UserController::class, 'userMoney'])->name('user-money');
 Route::get('blacklist', [UserController::class, 'blackList'])->name('blacklist.all');
 Route::post('blacklist-remove', [UserController::class, 'blackListRemove'])->name('blacklist.remove');
 

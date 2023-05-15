@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AllProduct;
 use App\Models\NewUsers;
 use App\Models\User;
 use App\Models\Member;
@@ -11,6 +12,7 @@ use App\Models\BattleHistory;
 use App\Models\Blacklist;
 use App\Models\Calendar;
 use App\Models\DailyWork;
+use App\Models\Detail;
 use App\Models\ElchiBattleSetting;
 use App\Models\Medicine;
 use App\Models\Price;
@@ -77,12 +79,15 @@ class UserController extends Controller
         }
         return back();
     }
-    public function userMoney(Request $request)
+    public function userMoney($region_id,$month)
     {
-        $data = [];
-        // return 3232;
-        $month = $request->input('_month') ?? date('Y-m');
 
+
+
+
+        $data = [];
+
+        // $month = $month->input('_month') ?? date('Y-m');
 
         $currentDate = date('Y-m-d');
 
@@ -96,18 +101,37 @@ class UserController extends Controller
             $active = 0;
         }
 
-        // $active = 1;
         $data = [];
         $regions = Region::all();
-        $regions = DB::table('tg_region')
+
+        // if($region_id == 'all')
+
+        $regText = Region::find($region_id);
+
+
+        $regi = DB::table('tg_region')
             ->selectRaw('tg_region.*, COUNT(tg_region.id) AS count')
+            ->where('tg_region.id',$region_id)
             ->leftJoin('tg_user', 'tg_user.region_id', 'tg_region.id')
             ->orderBy('count', 'DESC')
             ->groupBy('tg_region.id')
             ->get();
-        foreach ($regions as $region) {
+
+        foreach ($regi as $region) {
+
             $reg = ['sum' => 0, 'users' => [], 'name' => $region->name, 'id' => $region->id];
-            $users = User::whereIn('status', [0,1,2])->where('region_id', $region->id)->pluck('id')->toArray();
+
+            $users = ProductSold::select('tg_user.id')
+                ->whereDate('tg_productssold.created_at','>=',$month.'-01')
+                ->whereDate('tg_productssold.created_at','<=',$last_date)
+                ->whereIn('tg_user.status', [0,1,2])
+                ->where('tg_region.id', $region->id)
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->distinct('id')
+                ->pluck('id')
+                ->toArray();
+
             foreach ($users as $id) {
                 $service = new WorkDayServices($id, $active);
                 $userData = $service->getMonthMaosh($month);
@@ -117,11 +141,12 @@ class UserController extends Controller
             $data[$region->name] = $reg;
         }
 
-        // dd($regions);
+
+
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
-        // return $calendar;
-        // return $month;
-        return view('userControl.user-money', compact('data', 'yearMonths', 'month'));
+
+
+        return view('userControl.user-money', compact('data', 'yearMonths', 'month','regions','regText','region_id'));
     }
     public function userMoneyProfil($id, $month)
     {
@@ -148,6 +173,7 @@ class UserController extends Controller
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
 
         // dd($userData);
+
         return view('userControl.user-money-profil', compact('userData', 'yearMonths', 'month', 'id'));
 
         // return $userData;

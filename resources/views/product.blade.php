@@ -3,9 +3,9 @@
 <div class="content mt-1 main-wrapper">
    <div class="row gold-box">
       @include('admin.components.logo')
-  
+
         <div class="card flex-fill">
-         
+
          <div class="card flex-fill">
          <div style="border-bottom-radius:30px !important;margin-left:auto">
             <div class="justify-content-between align-items-center p-2" >
@@ -82,15 +82,15 @@
                </form>
             </div>
          </div>
-      </div>
+            </div>
 
        </div>
        <div class="card flex-fill">
-    
+
         <div style="border-bottom-radius:30px !important;margin-left:auto">
            <div class="justify-content-between align-items-center p-2 pr-5" >
-                
-                
+
+
                 <div class="btn-group">
                           <button type="button" class="btn btn-block btn-outline-primary" onclick="$('#tartib').css('display','');$('#notartib').css('display','none')"> Guruhlangan </button>
                 </div>
@@ -100,17 +100,17 @@
            </div>
         </div>
     </div>
-       
+
       </div>
 
       <div class="card-body headbot" id="tartib" style="display: none;">
         <ul class="nav nav-tabs nav-tabs-solid nav-justified">
-        
+
         @foreach ($category as $key => $citem)
         <li class="nav-item"><a class="nav-link @if($key == 1) active @endif " href="#solid-justified-tab{{$key+1}}" data-toggle="tab">{{$citem->name}}</a></li>
-           
+
         @endforeach
-        
+
         </ul>
         <div class="tab-content">
             @foreach ($category as $key => $citem)
@@ -122,7 +122,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table mb-0">
-                                        
+
                                     <thead>
                                         <tr>
                                             <th>Nomi</th>
@@ -136,7 +136,7 @@
                                             <th class="text-right">Action </th> --}}
                                         </tr>
                                     </thead>
-                                    
+
                                     <tbody>
                                         @foreach ($medic as $item)
                                         @if($citem->id == $item['cid'] && $item['nol'] == 1)
@@ -144,7 +144,7 @@
                                           @if($item['mid'] == $item2['mid'] && $item['cid'] == $item2['cid'])
                                         <tr
                                             >
-                                            
+
                                             {{-- <td class="pl-5">{{$citem->id}} </td> --}}
 
                                             <td><span title="{{$item['narx']}}" data-toggle="tooltip" data-placement="top">{{$item['name']}}</span> </td>
@@ -162,15 +162,15 @@
                             <td>0%</td>
 
                              @endif
-                                            
-                                            
+
+
                                         </tr>
                                         @endif
 
                                         @endforeach
 
                                         @endif
-                                        
+
                                         @endforeach
                                         @foreach ($medic as $item)
                                         @if($citem->id == $item['cid'] && $item['nol'] == 0)
@@ -192,11 +192,11 @@
                             <td>0%</td>
 
                              @endif
-                                            
-                                            
+
+
                                         </tr>
                                         @endif
-                                        
+
                                         @endforeach
 
                                         @endif
@@ -211,11 +211,11 @@
                     </div>
                 </div>
             @endforeach
-        
+
         </div>
       </div>
 
-      
+
      <div class="row headbot" id="notartib">
         <div class="col-sm-12">
            <div class="card">
@@ -238,10 +238,10 @@
                              <th class="text-right">Action </th> --}}
                           </tr>
                        </thead>
-                       
+
                        <tbody>
-                        
-                        
+
+
                           @foreach ($medic as $item)
                           @if($item['nol'] == 1)
                           @foreach ($medic2 as $item2)
@@ -254,7 +254,7 @@
                              <td>{{$item['number']}}</td>
                              <td class="sorting_1">
                               {{number_format($item['price'],0,",",".")}}
-                              
+
                            </td>
                              @if($item['price'] > $item2['price'])
                               @if($item2['price'] == 0)
@@ -263,7 +263,7 @@
                               @else
                              <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item2['price'],1)}}%</td>
 
-                              @endif  
+                              @endif
                              @elseif($item['price'] < $item2['price'])
                             <td><i class="fas fa-arrow-down mr-1" style="color:#f34539;"></i>{{number_format((($item2['price'] - $item['price'])*100)/$item2['price'],1)}}%</td>
                               @else
@@ -318,7 +318,7 @@
             $('.allpharm').css('display','none');
             $(`.pharm${id}`).css('display','');
          }
-         
+
       }
       function pharm(text,id)
       {

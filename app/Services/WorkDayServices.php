@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Calendar;
 use App\Models\DailyWork;
+use App\Models\Detail;
 use App\Models\ProductSold;
 use App\Models\Shift;
 use App\Models\User;
@@ -449,7 +450,29 @@ class WorkDayServices
 
             // $arr_days = $this->getMonthMaoshKunlik($date_begin,$date_end);
 
-            $st = array('maosh' =>maosh($month_sol),'summa' => $month_sol,'jarima' => $jarima,'time' => $time,'id' => $this->user_id,'name' => $names);
+            $shtraf = Detail::where('user_id',$this->user_id)->where('status',2)
+            ->whereDate('created_at','>=',$date_begin)
+            ->whereDate('created_at','<=',$date_end)
+            ->sum('price');
+
+            $premya = Detail::where('user_id',$this->user_id)->where('status',1)
+            ->whereDate('created_at','>=',$date_begin)
+            ->whereDate('created_at','<=',$date_end)
+            ->sum('price');
+
+            $specialty_id = User::find($this->user_id);
+
+            $st = array(
+                'maosh' =>maosh($month_sol),
+                'summa' => $month_sol,
+                'jarima' => $jarima,
+                'time' => $time,
+                'id' => $this->user_id,
+                'name' => $names,
+                'premya' => $premya,
+                'shtraf' => $shtraf,
+                'spec' => $specialty_id->specialty_id,
+            );
 
 
 
@@ -493,7 +516,24 @@ class WorkDayServices
                 $minut = 0;
                 $shifts = null;
             }
-            $arr[date('Y-m-d', $currentDate)] = array('id' => $this->user_id,'maosh' => maosh($day_sol),'jarima' => $jarima,'minut' => $minut,'shift' => $shifts);
+
+            $shtraf = Detail::where('user_id',$this->user_id)->where('status',2)
+            ->whereDate('created_at','=',date('Y-m-d', $currentDate))
+            ->first();
+
+            $premya = Detail::where('user_id',$this->user_id)->where('status',1)
+            ->whereDate('created_at','=',date('Y-m-d', $currentDate))
+            ->first();
+
+
+            $arr[date('Y-m-d', $currentDate)] = array('id' => $this->user_id,
+            'maosh' => maosh($day_sol),
+            'jarima' => $jarima,
+            'minut' => $minut,
+            'shift' => $shifts,
+            'shtraf' => $shtraf,
+            'premya' => $premya,
+        );
 
         }
 

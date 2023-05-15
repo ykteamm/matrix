@@ -27,6 +27,8 @@
                                         <th>Smena ochilgan vaqt</th>
                                         <th>Smena yopilgan vaqt</th>
                                         <th>Maosh</th>
+                                        <th>Premya</th>
+                                        <th>Shtraf</th>
                                         <th>Kesiladigan summa</th>
                                         <th>Kechikgan vaqt (minut)</th>
                                         <th>Kechikgan vaqt (soat)</th>
@@ -73,12 +75,34 @@
                                             </td>
                                             <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
 
+                                            <td style="width: 50px;">
+                                                @if ($user['premya'] == null)
+                                                    ---
+                                                @else
+                                                <span class="badge badge-primary">
+                                                    {{ number_format($user['premya']->price,0,',',' ') }}
+                                                </span>
+                                                <p >{{ $user['premya']->message }}</p>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($user['shtraf'] == null)
+                                                    ---
+                                                @else
+                                                <span class="badge badge-danger">
+                                                    {{ number_format($user['shtraf']->price,0,',',' ') }}
+                                                </span>
+                                                <p >{{ $user['shtraf']->message }}</p>
+
+                                                @endif
+                                            </td>
                                             @if ($user['jarima'] == 123123)
                                                 <td style="color:red;">Oy oxirida qoshiladi</td>
                                                 <td>-</td>
                                                 <td>-</td>
                                             @else
                                             <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
+
                                             <td>{{ number_format($user['minut'],0,',',' ') }} minut</td>
                                             <td>{{ number_format(floor($user['minut']/60),0,',',' ') }} soat</td>
                                             @endif
@@ -110,10 +134,4 @@
     </div>
 @endsection
 
-<script>
-    function selectMonth(monthBtn) {
-        var month = <?php echo json_encode($month); ?>;
-        var url = "{{ route('user-money') }}";
-        location.href = url + `?_month=${monthBtn.id}`
-    }
-</script>
+

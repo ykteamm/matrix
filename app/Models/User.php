@@ -48,6 +48,10 @@ class User extends Model
     {
         return $this->hasMany(Shift::class,'user_id','id');
     }
+    public function shift_30()
+    {
+        return $this->hasMany(Shift::class,'user_id','id')->whereDate('open_date','>=','2023-03-25');
+    }
     public function region()
     {
         return $this->belongsTo(Region::class,'region_id','id');

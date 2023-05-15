@@ -311,7 +311,7 @@
                      <li><a href="{{route('user-control')}}">Status</a></li>
                      <li><a href="{{route('user-register')}}">Registratsiya</a></li>
                      <li><a href="{{route('users-without-pharmacy')}}">New users</a></li>
-                     <li><a href="{{route('user-money')}}">User money</a></li>
+                     <li><a href="{{route('user-money',['region_id' => 5,'month' => date('Y-m')])}}">Oylik</a></li>
                      <li><a href="{{route('blacklist.all')}}">Bloklanganlar</a></li>
                      @isset(Session::get('per')['all_user'])
                      @if(Session::get('per')['all_user'] == 'true')
