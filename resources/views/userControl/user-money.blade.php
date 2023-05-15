@@ -35,7 +35,8 @@
                                             <tr>
                                                 <th>FIO</th>
                                                 <th>Fakt</th>
-                                                <th>Oylik</th>
+                                                <th>To'liq oylik</th>
+                                                <th>Natijaviy oylik</th>
                                                 <th>Kesiladigan summa</th>
                                                 <th>Kechikgan vaqt (minut)</th>
                                                 <th>Kechikgan vaqt (soat)</th>
@@ -47,6 +48,7 @@
                                                     <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td>
                                                     <td>{{ number_format($user['summa'],0,',',' ') }}</td>
                                                     <td style="font-weight:600;font-size:14px">{{ number_format($user['maosh'],0,',',' ') }}</td>
+                                                    <td style="font-weight:600;font-size:14px">{{ number_format(($user['maosh'] - $user['jarima']),0,',',' ') }}</td>
                                                     <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
                                                     <td>{{ number_format($user['time'],0,',',' ') }} minut</td>
                                                     <td>{{ number_format(floor($user['time']/60),0,',',' ') }} soat</td>
