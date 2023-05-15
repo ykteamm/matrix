@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use App\Models\TeacherUser;
+use App\Models\TeachGradeStar;
+use App\Models\TestReview;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TeacherController extends Controller
 {
-    
+
     public function index()
     {
         $teachers = User::where('status',1)->get();
@@ -52,7 +55,7 @@ class TeacherController extends Controller
 
     }
 
-    public function shogirdUpdateTime(Request $request) 
+    public function shogirdUpdateTime(Request $request)
     {
         $inputs=$request->all();
         unset($inputs['_token']);
@@ -77,5 +80,23 @@ class TeacherController extends Controller
         $teacher->save();
 
         return redirect()->back();
+    }
+
+    public function grade()
+    {
+        $baho = TeachGradeStar::with('tester','user')->where('star','!=',0)->orderBy('id','DESC')->get();
+
+
+
+
+        $savol_baho = TestReview::with('tester','user','test')->orderBy('id','DESC')
+        ->get();
+
+        // return $savol_baho;
+
+        return view('teacher.grade',[
+            'grades' => $baho,
+            'questions' => $savol_baho,
+        ]);
     }
 }

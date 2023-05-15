@@ -119,6 +119,7 @@
                <ul style="display: none;">
                   <li><a href="{{route('add-teacher')}}">Ustoz tayinlash</a></li>
                   <li><a href="{{route('add-shogird')}}">Shogird tayinlash</a></li>
+                  <li><a href="{{route('st-grade')}}">Baholashlar</a></li>
                 </ul>
             </li>
               @endif

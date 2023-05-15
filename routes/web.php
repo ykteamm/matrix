@@ -311,6 +311,8 @@ Route::get('add-shogird', [TeacherController::class,'shogird'])->name('add-shogi
 Route::post('shogird-teacher', [TeacherController::class,'shogirdStore'])->name('shogird.store');
 Route::post('shogird-teacher-update', [TeacherController::class,'shogirdUpdateTime'])->name('shogird.date');
 
+Route::get('st-grade', [TeacherController::class,'grade'])->name('st-grade');
+
 
 Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index');
 Route::post('dublicat-store', [DublicatController::class,'store'])->name('dublicat.store');
