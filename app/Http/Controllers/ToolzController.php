@@ -346,19 +346,19 @@ class ToolzController extends Controller
 
             $king_sold[] = '+998990316244';
             $king_sold[] = '+998995511944';
-            $response = Http::post('notify.eskiz.uz/api/auth/login', [
-                'email' => 'mubashirov2002@gmail.com',
-                'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
-            ]);
-            $token = $response['data']['token'];
-            foreach ($king_sold as $key => $value) {
-                $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
-                    'mobile_phone' => substr($value, 1),
-                    'message' => 'Jangchi !!! ' . ' ' . $user->last_name . ' ' . $user->first_name . ' ' . 'hozirgina shox yurish qildi.' . ' ' . 'Yutganga 200.000 som premiya beriladi!!! https://jang.novatio.uz',
-                    'from' => '4546',
-                    'callback_url' => 'http://0000.uz/test.php'
-                ]);
-            }
+            // $response = Http::post('notify.eskiz.uz/api/auth/login', [
+            //     'email' => 'mubashirov2002@gmail.com',
+            //     'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
+            // ]);
+            // $token = $response['data']['token'];
+            // foreach ($king_sold as $key => $value) {
+            //     $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
+            //         'mobile_phone' => substr($value, 1),
+            //         'message' => 'Jangchi !!! ' . ' ' . $user->last_name . ' ' . $user->first_name . ' ' . 'hozirgina shox yurish qildi.' . ' ' . 'Yutganga 200.000 som premiya beriladi!!! https://jang.novatio.uz',
+            //         'from' => '4546',
+            //         'callback_url' => 'http://0000.uz/test.php'
+            //     ]);
+            // }
         }
 
         return redirect()->back();

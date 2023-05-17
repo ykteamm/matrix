@@ -17,11 +17,11 @@ class SMSRepository implements SMSRepositoryInterface
   }
   public function sendSMS($phone, $msg)
   {
-    return Http::withToken($this->getToken())->post('notify.eskiz.uz/api/message/sms/send', [
-      'mobile_phone' => $phone,
-      'message' => $msg,
-      'from' => '4546',
-      'callback_url' => "http://0000.uz/test.php"
-  ]);
+    // return Http::withToken($this->getToken())->post('notify.eskiz.uz/api/message/sms/send', [
+    //   'mobile_phone' => $phone,
+    //   'message' => $msg,
+    //   'from' => '4546',
+    //   'callback_url' => "http://0000.uz/test.php"
+    // ]);
   }
 }
