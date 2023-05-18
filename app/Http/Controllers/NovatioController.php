@@ -285,7 +285,7 @@ class NovatioController extends Controller
     }
     public function regionChart(Request $request)
     {
-        
+
         if ($request->time == 'a_today') {
             $date_begin = date_now();
             $date_end = date_now();
@@ -494,9 +494,9 @@ class NovatioController extends Controller
                 }
             }
 
-            
 
-            
+
+
             foreach ($fsum as $fkeys => $fvalues) {
                 if($value->id == $fvalues->r_id)
                 {
@@ -512,7 +512,7 @@ class NovatioController extends Controller
                     $foiz = 100;
 
                 }else{
-                $foiz = number_format((($summa-$fsumma)*100)/$summa,2);
+                $foiz = number_format((($summa-$fsumma)*100)/$fsumma,2);
                 }
                 $icon = '<i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i><span style="font-family:Century Gothic";>'.$foiz.'% </span>';
 
@@ -540,7 +540,7 @@ class NovatioController extends Controller
 
             }
             $ddd = $this->bestMonthSold();
-            
+
             $rrr = $this->bestRegion($ddd,$value->id);
 
             if(isset($asd_summa[$value->id]))
@@ -675,8 +675,8 @@ class NovatioController extends Controller
             }
             $newcatarray[] = array('detail' => $catar['detail'],'tols'=> number_format($catar['summa'], 0, '', '.'),'summa' => $format,'name' => $catar['name'],'icon' => $catar['icon']);
         }
-        
-        
+
+
 
         // return $minus_users;
         $newarray = [];
@@ -715,6 +715,7 @@ class NovatioController extends Controller
             // return $st;
             $proviz = 0;
             $useriz = 0;
+            $progi = 0;
             foreach ($ar['us'] as $keyrt => $valuert) {
                 $user = User::find($keyrt);
                 if($user->specialty_id == 1)
@@ -725,13 +726,37 @@ class NovatioController extends Controller
                 }
                 $prog = floor(($valuert*$en)/$st);
 
+                $progi += $prog;
+
                 $use[] = array('f' => $user->first_name,'l' => $user->last_name,'id' => $keyrt,'sum' => $valuert,'prog' => $prog);
             }
 
             $useriz = number_format($useriz,0,',','.');
             $proviz = number_format($proviz,0,',','.');
 
-            $newarray[] = array('useriz' => $useriz,'proviz' => $proviz,'use' =>$use, 'best' => $ar['best'],'muser'=>$minus_users,'tols'=> number_format($ar['summa'], 0, '', '.'), 'summa' => $format,'region' => $ar['region'],'icon' => $ar['icon'],'id' =>$ar['id']);
+            $region_name = $ar['region'];
+
+            $find = strpos($region_name," ");
+            $v = substr($region_name,$find+1,1);
+            if($v == 'v')
+            {
+                $region_name = substr($region_name,0,$find);
+            }
+
+            if ($progi < 999999 && $progi > 999) {
+                // Anything less than a billion
+                $progi = number_format($progi / 1000) . 'K';
+            }else if ($progi < 999999999 && $progi > 999999) {
+                // Anything less than a billion
+                $progi = number_format($progi / 1000000,) . 'M';
+            }else {
+                $progi = number_format($progi, 0, '', '.');
+            }
+            $newarray[] = array('useriz' => $useriz,'proviz' => $proviz,
+            'use' => $use,'prog' => $progi, 'best' => $ar['best'],'muser'=>$minus_users,
+            'tols'=> number_format($ar['summa'], 0, '', '.'),
+            'summa' => $format,'region' => $region_name,
+            'icon' => $ar['icon'],'id' =>$ar['id']);
         }
         // return $newarray;
         $newuserarray = [];
@@ -1038,15 +1063,15 @@ class NovatioController extends Controller
         $b_date = date('Y-m-d',(strtotime ( '-10 day' , strtotime ( $b_date ) ) ));
         $e_date = date('2022-09-01');
         $mustang = [];
-        
+
         $arrayDate = array();
                 $Variable1 = strtotime($b_date);
                 $Variable2 = strtotime($e_date);
                 $sum = 0;
-                for ($currentDate = $Variable1; $currentDate >= $Variable2;$currentDate -= (30*86400)) 
-                {            
-                    $begin_month = $this->getFirstDate(date('Y-m-d',$currentDate));           
-                    $end_month = $this->getLastDate(date('Y-m-d',$currentDate));           
+                for ($currentDate = $Variable1; $currentDate >= $Variable2;$currentDate -= (30*86400))
+                {
+                    $begin_month = $this->getFirstDate(date('Y-m-d',$currentDate));
+                    $end_month = $this->getLastDate(date('Y-m-d',$currentDate));
                    $mustang[] = array('begin' => $begin_month,'end' => $end_month);
                 }
         return $mustang;
@@ -1068,7 +1093,7 @@ class NovatioController extends Controller
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
                 ->join('tg_category','tg_category.id','tg_medicine.category_id')
                 ->get()[0]->allprice;
-            
+
             if($sum == NULL)
             {
                 $sum=0;
@@ -1119,8 +1144,8 @@ class NovatioController extends Controller
         ->select('tg_knowledge_questions.*','tg_pill_questions.id as d_id')
         ->where('tg_knowledge.step',3)
         ->join('tg_condition_questions','tg_condition_questions.id','tg_knowledge_questions.condition_question_id')
-        ->join('tg_pill_questions','tg_pill_questions.id','tg_condition_questions.pill_question_id')                    
-        ->join('tg_knowledge','tg_knowledge.id','tg_pill_questions.knowledge_id')                    
+        ->join('tg_pill_questions','tg_pill_questions.id','tg_condition_questions.pill_question_id')
+        ->join('tg_knowledge','tg_knowledge.id','tg_pill_questions.knowledge_id')
         ->get();
 
         $all_dates = DB::table('tg_knowledge_grades')
@@ -1136,7 +1161,7 @@ class NovatioController extends Controller
                     }
             $grade_date_array = array_unique($grade_date_array);
                 $date_array = [];
-                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
+                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++)
                 {
                     if(in_array($i,$grade_date_array))
                     {
@@ -1145,11 +1170,11 @@ class NovatioController extends Controller
                     }else{
                         $date_array[] = array('day' => $i,'isset' => 0);
                     }
-                }     
+                }
         $grade_array = [];
         $know_grade_array = [];
         foreach($step_question as $key => $value)
-        {   
+        {
             if($value->step == 1)
             {
                 $pill_question = DB::table('tg_pill_questions')->where('knowledge_id',$value->id)->get();
@@ -1166,7 +1191,7 @@ class NovatioController extends Controller
                     ->join('tg_pill_questions','tg_pill_questions.id','tg_knowledge_grades.pill_id')
                     ->join('tg_user','tg_user.id','tg_knowledge_grades.teacher_id')
                     ->get();
-                    
+
                     $teacher = DB::table('tg_knowledge_grades')
                     ->select('tg_knowledge_grades.*','tg_pill_questions.name','tg_user.first_name','tg_user.last_name')
                     ->where('tg_knowledge_grades.user_id',$request->id)
@@ -1195,7 +1220,7 @@ class NovatioController extends Controller
                 }
 
             }
-            
+
             if($value->step == 3)
             {
                 $asd=[];
@@ -1315,7 +1340,7 @@ class NovatioController extends Controller
                 }
                 $grade_date_array = array_unique($grade_date_array);
                 $date_array = [];
-                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++) 
+                for($i=intval(date('d',strtotime($begin_day)));$i<=intval(date('d',strtotime($end_day)));$i++)
                 {
                     if(in_array($i,$grade_date_array))
                     {
@@ -1325,7 +1350,7 @@ class NovatioController extends Controller
                         $date_array[] = array('day' => $i,'isset' => 0);
                     }
                 }
-                
+
             return [
                 'dep' => 1,
                 'questions' => $questions,

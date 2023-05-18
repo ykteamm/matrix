@@ -7,7 +7,7 @@
         @include('admin.components.logo')
 
       <div class="card flex-fill">
-       
+
         <div class="btn-group mr-5 ml-auto">
            <div class="row">
                  <div class="col-md-12" align="center">
@@ -30,16 +30,16 @@
            </div>
 
         </div>
-        
-           
-        
+
+
+
      </div>
     </div>
     {{-- <div class="page-header"> --}}
         <div class="main-wrapper headbot">
             <div class="content">
                    <div class="col-xl-12 mt-3">
-                       <h3 style="text-align: center">                  
+                       <h3 style="text-align: center">
                         Hush kelibsiz!  <span style="font-weight:bold;color:rgb(8, 175, 28)">{{Session::get('user')->first_name}}</span>
                        </h3>
                     </div>
@@ -48,7 +48,7 @@
                     <div class="row" id="catid">
                     </div>
                     <div class="card flex-fill">
-       
+
                         <div class="btn-group mr-5 ml-auto">
                            <div class="row">
                                  <div class="col-md-12" align="center">
@@ -62,16 +62,16 @@
                                     </label>
                                 </div>
                         </div>
-                
+
                         </div>
-                        
+
                      </div>
                         <div class="row" id="regionid">
                         </div>
                     <div class="row calender-col">
                       <div class="col-xl-12" id="forvil">
                          <div class="card" style="height: 62%">
-                         
+
                             <div class="row" id="myregionid">
                             </div>
                             <div class="row" id="catid">
@@ -84,11 +84,11 @@
                                 <div id="rchart">
                                 </div>
                             </div>
-                   
+
                             <div class="row calender-col">
                                 <div class="col-xl-12" id="forvil">
                                     <div class="card">
-                                        
+
                                         <div class="card-header">
                                         <div class="card bg-white">
                                                 <div class="card-header">
@@ -118,7 +118,7 @@
                                     </div>
                                 <div class="col-xl-12">
                                 <div class="card">
-                                        
+
                                         <div class="card-header">
                                         <div class="card bg-white">
                                                 <div class="card-header">
@@ -147,9 +147,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-xl-12">
-                
+
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -167,7 +167,7 @@
                                     </div>
                                 </div>
                                 </div>
-                
+
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                                        @foreach ($hisob as $h)
                                        <tr>
                                           <td>{{$h->username}}</td>
-               
+
                                           <td>{{$h->last_name}} {{$h->first_name}}</td>
                                           <td>{{$h->phone_number}}</td>
                                           <td>{{$h->name}}</td>
@@ -208,7 +208,7 @@
                                           @endif
 
                                           @if ($h->admin_check == NULL)
-                                            <td>Tasdiqlanmadi</td>  
+                                            <td>Tasdiqlanmadi</td>
                                           @else
                                           @php
                                               $a = json_decode($h->admin_check);
@@ -227,10 +227,10 @@
                                             @else
                                             <td>Lokatsiya noto'g'ri</td>
                                           @endif
-                                          
-                                          
-                                          
-                                              
+
+
+
+
                                           @endif
 
                                           @if ($h->active == 1)
@@ -239,15 +239,15 @@
                                             @if ($h->active == 2)
                                                 <td>Smena yopiq</td>
                                             @endif
-                                            
+
                                         @if ($h->close_date == NULL)
                                         <td>{{number_format((intval(strtotime(date('Y-m-d H:i')))-intval(strtotime($h->open_date)))/(60*60),1)}} soat </td>
                                         @else
                                         <td>{{number_format((intval(strtotime($h->close_date))-intval(strtotime($h->open_date)))/(60*60),1)}} soat </td>
                                         @endif
-                                          
+
                                        </tr>
-                                       
+
                                        @endforeach
                                     </tbody>
                                  </table>
@@ -274,13 +274,13 @@
                                        @foreach ($nowork as $h)
                                        <tr>
                                           <td>{{$h->username}}</td>
-               
+
                                           <td>{{$h->last_name}} {{$h->first_name}}</td>
                                           <td>{{$h->phone_number}}</td>
                                           <td>{{$h->name}}</td>
-                                          
+
                                        </tr>
-                                       
+
                                        @endforeach
                                     </tbody>
                                  </table>
@@ -309,7 +309,7 @@
             $('#regionid').css('display','');
 
         }else{
-            
+
             $('#regionid').css('display','none');
             $('#dchart').css('display','');
 
@@ -387,7 +387,7 @@
                //  if(isset(response.ssumma[1] ))
                //  {
 
-                
+
                 var sortregion = {
                     series: [{
                     name: 'Summa',
@@ -461,7 +461,7 @@
     {
         name:'Summa',
       data: response.ssumma,
-      
+
     }
   ],
   chart: {
@@ -484,7 +484,7 @@
   dataLabels: {
     enabled: false
     // enabled: true,
-              
+
   },
   grid: {
     yaxis: {
@@ -496,7 +496,7 @@
   xaxis: {
 
     categories: response.sregion,
-   
+
   },
 //   yaxis: {
 //     labels: {
@@ -529,7 +529,7 @@
 //                         '</div>'+
 //                     '</div>'+
 //                 '</div>'+
-//             '</div>'); 
+//             '</div>');
 // }
 //     $('#myregionid').append($row);
 
@@ -538,7 +538,7 @@
                     $('#fffmodal').remove();
                     $('#fffmodalin').append('<div id="fffmodal"></div>');
                 $.each(response.dashboard, function(index, value){
-                    
+
                     var fgh1 = '';
                     var fgh12 = '';
 
@@ -585,9 +585,9 @@
                                                 '</div>'+
                                                 '</div>';
                     $('#fffmodal').append(fffmodal);
-                                    
-                    
-                    
+
+
+
 
                 if(response.myid == value.id || response.regid == value.id)
                 {
@@ -615,18 +615,18 @@
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
-                            '</div>'); 
+                            '</div>');
                 }
                 // if(response.regionid == false){
                     $('#myregionid').append($row);
                 // }else{
-                    
+
                 //     $('#regionid').append($row);
                 // }
 
                 });
                 if(countreg > 0 && countreg < 4)
-                {   
+                {
                     if(countreg%2 == 0){var md = 6; var lg=12/countreg;}else{var md = 12; var lg=12/countreg;}
 
                 }
@@ -636,7 +636,7 @@
                 else if(countreg == 9){var md = 6;var lg = 3;}
                 else{var md = 6;var lg = 3;}
                 $.each(response.dashboard, function(index, value){
-                
+
                 if(response.myid != value.id && response.regid != value.id)
                 {
                     var muser = '';
@@ -645,10 +645,9 @@
 
                         if(index == 0 || index == 1)
                         {
-                            muser = muser + '<h6 class="mt-2" style="color:#ffffff;text-align:left;margin-left:12px;"><span>'+
-                                value.last_name + '.' + value.first_name.charAt(0) + 
-                                '</span></h6>'+
-                                '<h6 style="color:#e96d6d;margin-top:1px;text-align:right;"><span style="">Qizil elchialar</span></h6>';
+                            muser = muser + '<h6 class="mt-2 text-center" style="color:#ffffff;text-align:left;margin-left:12px;"><span>'+
+                                value.last_name + ' ' + value.first_name +
+                                '</span></h6>';
 
                         }
                     });
@@ -656,73 +655,84 @@
 
                     if(value.best[0].bestsum != 0)
                     {
-                        bestsoldRegion = bestsoldRegion + '<div class="d-flex justify-content-between">'+
 
-                            '<h4 style="color:#00ffc4;height:45px;">'+ value.best[0].date +' <p>(best-month)</p></h4>'+
-                            '<h3 style="color:#00ffc4;height:45px;" title="'+value.best[0].bestsumText +'">'+value.best[0].bestsum +'</h3>'+
-
-                            '</div>';
+                        bestsoldRegion = bestsoldRegion + '<span style="font-size:20px;color:white;">'+ value.best[0].date +'</span>'+
+                        '<p style="color:#05f705;font-size:25px">'+value.best[0].bestsum+'</p>';
                     }
-                    var dfg22 = 0;
+                    var dfg22 = value.prog;
 
-                    $.each(value.use, function(ing, vag){
-                        dfg22 = dfg22 + vag.prog;
-                    });
+                    // $.each(value.use, function(ing, vag){
+                    //     dfg22 = dfg22 + vag.prog;
+                    // });
 
                     var $row = $('<div class="col-12 col-md-'+md+' col-lg-'+lg+' d-flex flex-wrap delregion">'+
                                 '<div class="card detail-box1">'+
                                     '<div class="card-body">'+
                                         '<div class="dash-contetnt">'+
                                             '<div class="d-flex justify-content-between">'+
-                                                 
 
-                                            '<h4 style="color:#05f705;height:45px;cursor:pointer;" data-toggle="modal" data-target="#addmemberwer'+ value.id +'">'+ value.region +'</h4>'+
+
+                                            '<h3 class="mt-2" style="color:white;height:45px;cursor:pointer;" data-toggle="modal" data-target="#addmemberwer'+ value.id +'">'+ value.region +'</h3>'+
                                             '<h1 style="color:#05f705;height:45px;" title="'+value.tols +'">'+value.summa +'</h1>'+
 
                                             '</div>'+
-                                            '<div class="d-flex justify-content-between">'+
-                                                 
 
-                                                 '<h6 style="color:#05f705;height:45px;">Prognoz</h6>'+
-                                                 '<h6 style="color:#05f705;height:45px;">'+dfg22 +'</h6>'+
-     
-                                                 '</div>'+
-                                            '<div class="d-flex justify-content-between">'+
-
-                                                '<div style="background: #00bfff8f;padding: 3px 3px;border-radius: 8px;text-align: center;">'+
-                                                 '<h4 style="color:#05f705;">User</h4>'+
-                                                 '<h4 style="color:#05f705;">'+ value.useriz +'</h4>'+
+                                            '<div class="text-center justify-content-between mt-3">'+
+                                                '<div class="row pl-3 pr-3">'+
+                                                    '<div style="background:#323584;border-radius:8px;box-shadow: 0px 0px 7px 2px #ffffff;" class="col-12 col-md-5 col-lg-5">'+
+                                                        bestsoldRegion +
+                                                    '</div>'+
+                                                    '<div class="col-12 col-md-2 col-lg-2">'+
+                                                    '</div>'+
+                                                    '<div style="background:#323584;border-radius:8px;box-shadow: 0px 0px 7px 2px #ffffff;" class="col-12 col-md-5 col-lg-5">'+
+                                                        '<span style="font-size:20px;color:white;">Prognoz</span>'+
+                                                        '<p style="color:#05f705;font-size:25px">'+dfg22 +'</p>'+
+                                                    '</div>'+
                                                 '</div>'+
-                                                '<div style="background: #00bfff8f;padding: 3px 3px;border-radius: 8px;text-align: center;">'+
-                                                 '<h4 style="color:#05f705;">Provizor</h4>'+
-                                                 '<h4 style="color:#05f705;">'+value.proviz +'</h4>'+
-                                                 '</div>'+
-     
-                                                 '</div>'+
-                                            bestsoldRegion +
-                                            '<div class="d-flex justify-content-between">'+
+                                            '</div>'+
+
+                                            '<div class="justify-content-between mt-3">'+
+                                                '<div class="row pl-3 pr-3">'+
+                                                    '<div style="background:#323584;border-radius:8px;box-shadow: 0px 0px 7px 2px #ffffff;" class="d-flex justify-content-between col-12 col-md-12 col-lg-12">'+
+                                                        '<span style="font-size:20px;color:white;" class="mt-1">Elchilar</span>'+
+
+                                                        '<span style="font-size:25px;color:#05f705;">'+ value.useriz +'</span>'+
+                                                    '</div>'+
+                                                    '<div style="background:#323584;border-radius:8px;box-shadow: 0px 0px 7px 2px #ffffff;" class="mt-2 d-flex justify-content-between col-12 col-md-12 col-lg-12">'+
+                                                        '<span style="font-size:20px;color:white;" class="mt-1">Provizorlar</span>'+
+
+                                                        '<span style="font-size:25px;color:#05f705;">'+ value.proviz +'</span>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>'+
+
+                                            '<div class="d-flex justify-content-between mt-3">'+
 
                                             '<h4 style="color:#ffffff;height:45px;">'+response.fd_begin +'-'+response.fd_end+'</h4>'+
                                             '<h4 style="color:#ffffff;height:45px;" title="'+value.tols +'">'+value.icon +'</h4>'+
 
-                                            '</div>'+ muser +
+                                            '</div>'+
+                                            '<div style="background: #f76262;padding: 1px 1px;border-radius: 10px;">'
+
+                                            + muser +
                                             // '<h6 class="mt-2" style="color:#ffffff;text-align:right;">'+value.icon +'</h6>'+
                                             // '<h6 style="color:#ffffff;margin-top:1px;"><span style="text-align:left;">'+response.fd_begin +'-'+nse.fd_respoend+'</span></h6>'+
 
+                                            '</div>'+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
-                             '</div>'); 
+                             '</div>');
                 }
                 // if(response.regionid == false){
                 //     $('#myregionid').append($row);
                 // }else{
-                    
+
                     $('#regionid').append($row);
                 // }
                 // if(response.regionid == false){$('#myregionid').append($row);}else{$('#regionid').append($row);}
                 });
-                
+
 
                 $('.delcat').remove();
                 var detail = 2;
@@ -741,7 +751,7 @@
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
-                             '</div>'); 
+                             '</div>');
                 $('#catid').append($row);
                 detail++
                 });
@@ -753,7 +763,7 @@
                 var $row2 = $('<tr class="deltr">'+
                                     '<td>'+ value2.name + '</td>'+
                                     '<td>'+ value2.summa +'</td>'+
-                                 '</tr>'); 
+                                 '</tr>');
                $('#userid').append($row2);
             });
 
@@ -800,7 +810,7 @@
                            var date1 = [year, ddate, day].join('-')
                            $("#age_button2").text(date1);
          $('#age_button2').click()
-         region(date1);    
+         region(date1);
 
       }
       function timeElchi(sd){
@@ -809,8 +819,8 @@
          region(sd)
 
       };
-      
-     
+
+
         // var chart = new ApexCharts(document.querySelector("#chart"), options);
         // chart.render();
 
@@ -840,7 +850,7 @@
       $(`.${data}`).addClass('active');
       hospital(db);
    }
-    
+
  </script>
   <script type="text/javascript">
      // Add active class to the current button (highlight it)

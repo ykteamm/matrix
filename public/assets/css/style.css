@@ -4489,7 +4489,9 @@ table.table-inbox tbody tr.checked {
 	background: #4f517f;
 	background: -moz-linear-gradient(45deg, rgba(79, 81, 127, 1) 0%, rgba(50, 53, 132, 1) 44%, rgba(50, 53, 132, 1) 100%);
 	background: -webkit-linear-gradient(45deg, rgba(79, 81, 127, 1) 0%, rgba(50, 53, 132, 1) 44%, rgba(50, 53, 132, 1) 100%);
-	background: linear-gradient(45deg, rgba(79, 81, 127, 1) 0%, rgba(50, 53, 132, 1) 44%, rgba(50, 53, 132, 1) 100%);
+	/* background: linear-gradient(45deg, rgba(79, 81, 127, 1) 0%, rgba(50, 53, 132, 1) 44%, rgba(50, 53, 132, 1) 100%); */
+    /* background: linear-gradientrgb(87 87 146) 0%, rgb(39 9 128) 44%, rgb(1 1 23) 100%); */
+    background: linear-gradient(45deg, rgb(87 87 146) 0%, rgb(39 9 128) 44%, rgb(1 1 23) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f517f', endColorstr='#323584', GradientType=1)
 }
 
