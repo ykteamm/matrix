@@ -28,6 +28,7 @@ use App\Models\Region;
 use App\Models\Teacher;
 use App\Models\TeacherUser;
 use App\Models\UserBattle;
+use App\Models\UserCrystall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -637,6 +638,38 @@ class UserController extends Controller
             ->get();
         return view('userControl.withoutpharm', compact('users'));
     }
+
+    public function usersCrystall()
+    {
+        $users = User::select('tg_user.id','tg_user.username','tg_user.first_name', 'tg_user.last_name', 'uc.crystall')
+            ->leftJoin('user_crystalls AS uc','uc.user_id', 'tg_user.id')
+            // ->where('tg_user.status', 1)
+            ->orderBy('tg_user.id', 'DESC')
+            ->get();
+        return view('userControl.users-crystall', compact('users'));
+    }
+
+    public function changeCrystall(Request $request)
+    {
+        $r = $request->all();
+        unset($r['_token']);
+        foreach ($r as $key => $value) {
+            $user_id = substr($key, 9);
+            $userCrystal = UserCrystall::where('user_id', $user_id)->first();
+            if($userCrystal) {
+                UserCrystall::where('id', $userCrystal->id)->update([
+                    'crystall' =>  $value
+                ]);
+            } else {
+                UserCrystall::create([
+                    'user_id' => $user_id,
+                    'crystall' => $value ?? 0
+                ]);
+            }
+        }
+        return back();
+    }
+
 
     public function allUsers()
     {

@@ -231,6 +231,8 @@ Route::get('user-register', [UserController::class,'userRegister'])->name('user-
 Route::get('users-without-pharmacy', [UserController::class,'userWithoutPharmacy'])->name('users-without-pharmacy');
 Route::post('user-bind-pharmacy', [UserController::class,'userBindPharmacy'])->name('user-bind-pharmacy.store');
 Route::get('users-all', [UserController::class,'allUsers'])->name('users-all');
+Route::get('users-crystall', [UserController::class,'usersCrystall'])->name('users-crystall');
+Route::post('change-crystall', [UserController::class,'changeCrystall'])->name('change-users-crystall');
 Route::post('assign-daily-work-time', [UserController::class, 'assignDailyWork'])->name('assign-daily-work-time');
 Route::post('user-control/add', [UserController::class,'addUser'])->name('user-add');
 Route::post('user-control/delete/{action}', [UserController::class,'controlWorker'])->name('user-delete');
