@@ -370,20 +370,33 @@
                                         @endif
 
 
-                                        @if ($sold[$item->id][$i] == 0)
+                                        @if ($sold[$item->id][$i]['sold'] == 0)
                                             <td style="display: none" onclick="days({{ $s }})"
                                                 class="days{{ $s }} p-0"
                                                 onmouseover="$(`.hover{{ $s }}`).css('cursor','pointer');"
                                                 data-bs-toggle="tooltip"
                                                 title="{{ $item->last_name }} {{ $item->first_name }}">
-                                                {{ number_format($sold[$item->id][$i], 0, '', '.') }}</span></td>
+                                                <span style="">
+                                                    <div>{{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}</div>
+                                                </span>
+                                            </td>
                                         @else
-                                            <td style="display: none" onclick="days({{ $s }})"
+                                            <td style="display: none;" onclick="days({{ $s }})"
                                                 class=" days{{ $s }} p-0"
                                                 onmouseover="$(`.hover{{ $s }}`).css('cursor','pointer');"
                                                 data-bs-toggle="tooltip"
-                                                title="{{ $item->last_name }} {{ $item->first_name }}"> <span
-                                                    class="days{{ $s }} badge bg-primary-light">{{ number_format($sold[$item->id][$i], 0, '', '.') }}</span>
+                                                title="{{ $item->last_name }} {{ $item->first_name }}"> 
+                                                <span class="days{{ $s }} badge bg-primary-light">
+                                                    {{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}
+                                                    <span style="
+                                                                background: rgb(17, 78, 139);
+                                                                padding: 1px 2px;
+                                                                font-size: 7px;
+                                                                color: white;
+                                                                border-radius: 5px;
+                                                                margin-left:4px" 
+                                                    >{{ $sold[$item->id][$i]['hour'].".".$sold[$item->id][$i]['minute'] }}</span>
+                                                </span>
                                             </td>
                                         @endif
                                         @php

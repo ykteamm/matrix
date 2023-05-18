@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Items\ElchilarKunlikItems;
 use App\Items\ElchiTimeItems;
 use App\Models\Calendar;
+use App\Models\DailyWork;
 use App\Models\Medicine;
 use App\Models\Plan;
 use App\Models\ProductSold;
@@ -13,6 +14,7 @@ use App\Models\User;
 use App\Models\Member;
 use App\Models\Team;
 use App\Models\PharmacyUser;
+use App\Models\Shift;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -573,9 +575,22 @@ class ElchilarService
         $sold2=[];
         foreach ($elchi as $key => $item){
             foreach ($days as $keys => $day) {
+                // $daily = DailyWork::where('active', 1)->where('user_id', $item->id)->first();
+                try {
+                    $smena = Shift::whereDate('created_at', $day)->where('user_id', $item->id)->first();
+                    $time = strtotime($smena->close_date) - strtotime($smena->open_date);
+                    $hour = (int)round($time/3600, 0);
+                    $minute = (int)round(($time%3600)/60, 0);
+                    if($hour > 5) {
+                        $hour -= 1;
+                    }
+                } catch (\Throwable $th) {
+                    $hour = 0;
+                    $minute = 0;
+                }
                 $MonthSold=ProductSold::where('user_id',$item->id)
                     ->whereDate('created_at','=', $day)->sum(DB::raw('price_product*number'));
-                $sold2[$keys]=$MonthSold;
+                $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute];
             }
             $sold[$item->id]=$sold2;
         }
@@ -907,7 +922,7 @@ class ElchilarService
                 if($j==0||$j==7||$j==14||$j==21){
                     $arr[$el->id][$s]=0;
                 }
-                $arr[$el->id][$s]+=$sold[$el->id][$j];
+                $arr[$el->id][$s]+=$sold[$el->id][$j]['sold'];
                 if($j==6||$j==13||$j==20){
                     $s++;
                 }
@@ -963,7 +978,7 @@ class ElchilarService
             $j=0;
             $tot_sold[$i]=0;
             foreach ($elchi as $item){
-                $tot_sold[$i]+=$sold[$item->id][$i];
+                $tot_sold[$i]+=$sold[$item->id][$i]['sold'];
                 $j++;
             }
             $i++;
