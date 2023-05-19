@@ -37,7 +37,7 @@ class ProvizorController extends Controller
             'order_id' => $order_id,
         ]);
 
-        return $response;
+        return $response[0]->id;
         // if($response)
         // {
         //     return redirect()->back();
