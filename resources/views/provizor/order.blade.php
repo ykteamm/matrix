@@ -32,7 +32,7 @@
                                     $sum_p = $sum_p + $order['quantity']*$order['product_price'];
                                 @endphp --}}
                               <tr>
-                                 <td>{{$order['premya']->name}}</td>
+                                 <td>{{$order['premya']['name']}}</td>
                                  <td>{{$order['quantity']}}</td>
                                  <td>{{number_format($order['quantity']*$order['product_price'],0,',',' ')}}</td>
                               </tr>
