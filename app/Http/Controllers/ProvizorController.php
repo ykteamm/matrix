@@ -37,12 +37,10 @@ class ProvizorController extends Controller
             'order_id' => $order_id,
         ]);
 
-        return $response;
-        // if($response)
-        // {
-        //     return redirect()->back();
-        // }
 
+        return view('provizor.order',[
+            'orders' => $response
+        ]);
     }
 
     public function money()
