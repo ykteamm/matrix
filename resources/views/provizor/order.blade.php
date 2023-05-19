@@ -28,8 +28,8 @@
                            @foreach ($orders as $order)
                               <tr>
                                 @php
-                                    $sum_q += $order['quantity'];
-                                    $sum_p += $$order['quantity']*$order['product_price'];
+                                    $sum_q = $sum_q + $order['quantity'];
+                                    $sum_p = $sum_p + $order['quantity']*$order['product_price'];
                                 @endphp
                                  <td>{{$order['premya']->name}}</td>
                                  <td>{{$order['quantity']}}</td>
