@@ -23,33 +23,30 @@
                         <tbody>
                             @php
                             $spe_order = $orders;
-                                // $sum_q = 0;
-                                // $sum_p = 0;
+                                $sum_q = 0;
+                                $sum_p = 0;
                                 $i = 0;
                             @endphp
                            @foreach ($spe_order as $key => $order)
-                                {{-- @php
-                                    $sum_q = $sum_q + $order['quantity'];
-                                    $sum_p = $sum_p + $order['quantity']*$order['product_price'];
-                                @endphp --}}
+                                @php
+                                    $sum_q = $sum_q + $spe_order[$i]['quantity'];
+                                    $sum_p = $sum_p + $spe_order[$i]['quantity']*$spe_order[$i]['product_price'];
+                                @endphp
                               <tr>
-                                 {{-- <td>{{$order['premya']['name']}}</td> --}}
+                                 <td>{{$spe_order[$i]['premya']->name}}</td>
                                  <td>{{$spe_order[$i]['quantity']}}</td>
-                                 {{-- <td>{{number_format($order['quantity']*$order['product_price'],0,',',' ')}}</td> --}}
+                                 <td>{{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}}</td>
                               </tr>
                               @php
                                 $i = $i + 1;
                             @endphp
                            @endforeach
-                           {{-- <tr>
+                           
+                         <tr>
                             <td>Jami</td>
                             <td>{{$sum_q}}</td>
                             <td>{{number_format($sum_p,0,',',' ')}}</td>
-                         </tr> {{-- <tr>
-                            <td>Jami</td>
-                            <td>{{$sum_q}}</td>
-                            <td>{{number_format($sum_p,0,',',' ')}}</td>
-                         </tr> --}}
+                         </tr>
                         </tbody>
                      </table>
                   </div>
