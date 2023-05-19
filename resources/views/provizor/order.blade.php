@@ -22,15 +22,16 @@
                         </thead>
                         <tbody>
                             @php
+                            $spe_order = $orders;
                                 $sum_q = 0;
                                 $sum_p = 0;
                             @endphp
-                           @foreach ($orders as $order)
-                              <tr>
+                           @foreach ($spe_order as $order)
                                 @php
                                     $sum_q = $sum_q + $order['quantity'];
                                     $sum_p = $sum_p + $order['quantity']*$order['product_price'];
                                 @endphp
+                              <tr>
                                  <td>{{$order['premya']->name}}</td>
                                  <td>{{$order['quantity']}}</td>
                                  <td>{{number_format($order['quantity']*$order['product_price'],0,',',' ')}}</td>
