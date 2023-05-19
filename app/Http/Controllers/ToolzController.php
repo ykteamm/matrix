@@ -71,49 +71,22 @@ class ToolzController extends Controller
     public function kingLigas()
     {
         $ligas = KingLiga::orderBy('id', 'ASC')->get();
-        function exeptions($ligasInfo)
-        {
-            $exf = [];
-            foreach ($ligasInfo as $liga) {
-                $exf = array_merge($exf, json_decode($liga->ex));
-            }
-            return array_unique($exf);
-        }
-        $ligaUserIds = exeptions($ligas);
-        $usersWithOutLiga = User::whereNotIn('id', $ligaUserIds)->select('id', 'first_name AS f', 'last_name AS l')->where('status', 1)->get();
-        $usersWithLiga = [];
-        foreach ($ligas as $liga) {
-            $lUids = json_decode($liga->ex);
-            if (count($lUids) > 0) {
-                $usersWithLiga[$liga->name] = User::whereIn('id', $lUids)->select('id', 'first_name AS f', 'last_name AS l')->get();
-            } else {
-                $usersWithLiga[$liga->name] = [];
-            }
-        }
-        return view('toolz.king-ligas', compact('ligas', 'usersWithOutLiga', 'usersWithLiga'));
+        $users = DB::table('tg_user AS u')
+        ->select('u.id', 'u.first_name AS f', 'u.last_name AS l', 'kl.id AS ligaid')
+        ->join('user_king_liga AS ul', 'ul.user_id', 'u.id')
+        ->join('king_ligas AS kl', 'kl.id', 'ul.king_liga_id')
+        ->get();
+        return view('toolz.king-ligas', compact('ligas','users'));
     }
     public function kingLigasUpdate(Request $request)
     {
         $inputs = $request->all();
         unset($inputs['_token']);
-        foreach ($inputs as $userId => $ligaName) {
-            if (strpos($userId, 'm') == 1) {
-                $liga = KingLiga::where('name', $ligaName)->first();
-                $users = json_decode($liga->ex);
-                $id = (int)substr($userId, 3);
-                $index = array_search($id, $users);
-                array_splice($users, $index, 1);
-                KingLiga::where('name', $ligaName)->update([
-                    'ex' => json_encode($users)
-                ]);
-            }
-            if (strpos($userId, 'd') == 1) {
-                $liga = KingLiga::where('name', $ligaName)->first();
-                $users = json_decode($liga->ex);
-                $id = (int)substr($userId, 4);
-                array_push($users, $id);
-                KingLiga::where('name', $ligaName)->update([
-                    'ex' => json_encode($users)
+        foreach ($inputs as $userId => $ligaId) {
+            $user_liga = DB::table('user_king_liga')->where('user_id', $userId)->where('king_liga_id', $ligaId)->first();
+            if(!$user_liga) {
+                DB::table('user_king_liga')->where('user_id', $userId)->update([
+                    'king_liga_id' => $ligaId
                 ]);
             }
         }
