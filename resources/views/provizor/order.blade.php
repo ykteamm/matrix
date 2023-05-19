@@ -25,6 +25,7 @@
                             $spe_order = $orders;
                                 // $sum_q = 0;
                                 // $sum_p = 0;
+                                $i = 0;
                             @endphp
                            @foreach ($spe_order as $key => $order)
                                 {{-- @php
@@ -33,9 +34,12 @@
                                 @endphp --}}
                               <tr>
                                  {{-- <td>{{$order['premya']['name']}}</td> --}}
-                                 <td>{{$spe_order[$key]['quantity']}}</td>
+                                 <td>{{$spe_order[$i]['quantity']}}</td>
                                  {{-- <td>{{number_format($order['quantity']*$order['product_price'],0,',',' ')}}</td> --}}
                               </tr>
+                              @php
+                                $i = $i + 1;
+                            @endphp
                            @endforeach
                            {{-- <tr>
                             <td>Jami</td>
