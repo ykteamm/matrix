@@ -33,7 +33,7 @@
                                     $sum_p = $sum_p + $spe_order[$i]['quantity']*$spe_order[$i]['product_price'];
                                 @endphp
                               <tr>
-                                 <td>{{$spe_order[$i]['product']->name}}</td>
+                                 <td>{{$spe_order[$i]['product']['name']}}</td>
                                  <td>{{$spe_order[$i]['quantity']}}</td>
                                  <td>{{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}}</td>
                               </tr>
