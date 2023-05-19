@@ -33,8 +33,8 @@
                                 @endphp --}}
                               <tr>
                                  {{-- <td>{{$order['premya']['name']}}</td> --}}
-                                 <td>{{$order['quantity']}}</td>
-                                 <td>{{number_format($order['quantity']*$order['product_price'],0,',',' ')}}</td>
+                                 <td>{{$order->quantity}}</td>
+                                 {{-- <td>{{number_format($order['quantity']*$order['product_price'],0,',',' ')}}</td> --}}
                               </tr>
                            @endforeach
                            {{-- <tr>
