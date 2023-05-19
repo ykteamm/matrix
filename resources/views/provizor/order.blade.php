@@ -28,6 +28,7 @@
                                 $i = 0;
                             @endphp
                            @foreach ($spe_order as $key => $order)
+                            @if(isset($spe_order[$i]))
                                 @php
                                     $sum_q = $sum_q + $spe_order[$i]['quantity'];
                                     $sum_p = $sum_p + $spe_order[$i]['quantity']*$spe_order[$i]['product_price'];
@@ -40,6 +41,7 @@
                               @php
                                 $i = $i + 1;
                             @endphp
+                            @endif
                            @endforeach
 
                          <tr>
