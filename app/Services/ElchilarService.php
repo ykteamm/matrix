@@ -45,14 +45,22 @@ class ElchilarService
             if($regions == 0 || $regions == 1)
             {
                 $elchi = User::with('pharmacy')
-                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
-                
+
                 if($all_or_new == 'new') {
-                    $elchi = $elchi
-                    ->where('tg_user.date_joined', '>', date("Y-m-d", (strtotime(date("Y-m-d")) - 30*86400)));
-                } else {
+                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1);
+                }elseif($all_or_new == 'elchi')
+                {
+                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1);
+
+                }
+                elseif($all_or_new == 'pro')
+                {
+                    $elchi = $elchi->where('tg_user.specialty_id', 9);
+                }
+                else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
                 }
@@ -67,17 +75,28 @@ class ElchilarService
             {
                 $elchi = User::with('pharmacy')
                 ->whereIn('tg_region.id',$regions)
-                ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+
+                // ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
 
                 if($all_or_new == 'new') {
-                    $elchi = $elchi
-                    ->where('tg_user.date_joined', '>', date("Y-m-d", (strtotime(date("Y-m-d")) - 30*86400)));
-                } else {
+                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1);
+                }elseif($all_or_new == 'elchi')
+                {
+                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1);
+
+                }
+                elseif($all_or_new == 'pro')
+                {
+                    $elchi = $elchi->where('tg_user.specialty_id', 9);
+                }
+                else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
                 }
+
                 if($climate == 'west') {
                     $elchi = $elchi->where('tg_region.side', 1);
                 } else if ($climate == 'east'){
@@ -85,7 +104,7 @@ class ElchilarService
                 }
                 $elchi = $elchi->orderBy('tg_region.side','ASC')->get();
             }
-            
+
         }
         else{
             $reg=[];
@@ -110,14 +129,24 @@ class ElchilarService
                 // ->where('tg_user.status',1)
                 // ->whereIn('tg_user.id',$yes_user_id)
                 ->whereIn('tg_user.region_id',$reg)
-                ->select('tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+
+                // ->select('tg_user.date_joined','tg_user.start_work','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id');
                 // ->orderBy('tg_region.side','ASC')->get();
 
                 if($all_or_new == 'new') {
-                    $elchi = $elchi
-                    ->where('tg_user.date_joined', '>', date("Y-m-d", (strtotime(date("Y-m-d")) - 30*86400)));
-                } else {
+                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1);
+                }elseif($all_or_new == 'elchi')
+                {
+                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1);
+
+                }
+                elseif($all_or_new == 'pro')
+                {
+                    $elchi = $elchi->where('tg_user.specialty_id', 9);
+                }
+                else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
                 }
@@ -135,6 +164,8 @@ class ElchilarService
         $all_work_day=[];
         $work_d=[];
         $king_sold=[];
+        $king_sold_month=[];
+        $best_month = [];
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         $cale_d = json_decode($cale->day_json);
         foreach($cale_d as $key => $c)
@@ -155,7 +186,7 @@ class ElchilarService
 
         if($old_month != $now_month)
         {
-            for ($i=$begin_date; $i <= $end_date; $i++) { 
+            for ($i=$begin_date; $i <= $end_date; $i++) {
                 if(in_array($i,$all_work_day))
                 {
                     $remain +=1;
@@ -163,15 +194,15 @@ class ElchilarService
             }
         }else{
         $end_date = intval(date('d',strtotime(date_now())));
-            
-            for ($i=$begin_date; $i < $end_date; $i++) { 
+
+            for ($i=$begin_date; $i < $end_date; $i++) {
                 if(in_array($i,$all_work_day))
                 {
                     $remain +=1;
                 }
             }
         }
-        
+
         // dd($elchi);
         foreach($elchi as $elch)
         {
@@ -232,7 +263,7 @@ class ElchilarService
                 //     ->where('tg_user.id','=',$elch->id)
                 //     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 //     ->groupBy('tg_user.id')->first();
-                
+
                 // if(isset($user->allprice))
                 // {
                     // if(count($date) == 0)
@@ -253,10 +284,27 @@ class ElchilarService
                     ->join('tg_order','tg_order.id','tg_king_sold.order_id')
                     ->join('tg_user','tg_user.id','tg_order.user_id')
                     ->get();
+                $king_sold[$elch->id] = $king_soldis[0]->count;
+
+                $king_soldis_month = DB::table('tg_king_sold')
+                ->selectRaw('count(tg_king_sold.id) as count')
+                ->where('tg_king_sold.admin_check',1)
+                ->where('tg_user.id',$elch->id)
+                ->whereDate('tg_king_sold.created_at','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('tg_king_sold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->join('tg_order','tg_order.id','tg_king_sold.order_id')
+                ->join('tg_user','tg_user.id','tg_order.user_id')
+                ->get();
+
+                $king_sold_month[$elch->id] = $king_soldis_month[0]->count;
+
+                $mustang = $this->bestMonthSold();
+
+                $best_month[$elch->id] = $this->bestRegion($mustang,$elch->id);
+
+
                 $proggg = myPrognoz($elch->id);
                 $elchi_prognoz[$elch->id] = $proggg;
-                $king_sold[$elch->id] = $king_soldis[0]->count;
-                // $king_sold[$elch->id] = $king_sold[0]->count;
 
                 $shift = DB::table('tg_shift')
                 ->selectRaw('count(tg_shift.id) as count')
@@ -278,7 +326,7 @@ class ElchilarService
                 // dd($endofmonth);
 
 
-            
+
         }
         // dd($elchi_prognoz);
 
@@ -311,6 +359,8 @@ class ElchilarService
         $data->elchi_fact=$fact;
         $data->elchi_prognoz=$elchi_prognoz;
         $data->king_sold=$king_sold;
+        $data->king_sold_month=$king_sold_month;
+        $data->best_month=$best_month;
         // dd($data->elchi);
      return $data;
     }
@@ -509,7 +559,7 @@ class ElchilarService
     {
         $start = Carbon::parse($month)->startOfMonth()->format("Y-m-d");
         $end = Carbon::parse($month)->endOfMonth()->format("Y-m-d");
-        
+
         $encane=[];
         foreach ($elchi as $item){
                         $sum = DB::table('tg_productssold')
@@ -1042,6 +1092,71 @@ class ElchilarService
     public function gsh($elchi)
     {
 
+    }
+
+    public function bestMonthSold()
+    {
+        $b_date = $this->getFirstDate(date('Y-m-d'));
+        $b_date = date('Y-m-d',(strtotime ( '-10 day' , strtotime ( $b_date ) ) ));
+        $e_date = date('2022-09-01');
+        $mustang = [];
+
+        $arrayDate = array();
+                $Variable1 = strtotime($b_date);
+                $Variable2 = strtotime($e_date);
+                $sum = 0;
+                for ($currentDate = $Variable1; $currentDate >= $Variable2;$currentDate -= (30*86400))
+                {
+                    $begin_month = $this->getFirstDate(date('Y-m-d',$currentDate));
+                    $end_month = $this->getLastDate(date('Y-m-d',$currentDate));
+                   $mustang[] = array('begin' => $begin_month,'end' => $end_month);
+                }
+        return $mustang;
+    }
+    public function bestRegion($mustang,$id)
+    {
+        $arr=[];
+        $max=0;
+        foreach ($mustang as $key => $value) {
+            $sum = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product*tg_productssold.number) as allprice')
+                ->where('user_id',$id)
+                ->whereDate('tg_productssold.created_at','>=',$value['begin'])
+                ->whereDate('tg_productssold.created_at','<=',$value['end'])
+                ->get()[0]->allprice;
+
+            if($sum == NULL)
+            {
+                $sum=0;
+            }
+            if($sum > $max)
+            {
+                $max = $sum;
+                $index=$value;
+            }
+        }
+        if($max == 0)
+        {
+            $arr[]=array('date' => 0, 'bestsum' => $max);
+        }else{
+            $arr[]=array('date' => date('m.Y',strtotime($index['begin'])), 'bestsum' => numb($max),'bestsumText' => $max);
+        }
+
+    return $arr;
+    }
+    public function getFirstDate($date)
+    {
+        $d = Carbon::createFromFormat('Y-m-d', $date)
+                        ->firstOfMonth()
+                        ->format('Y-m-d');
+        return $d;
+    }
+    public function getLastDate($date)
+    {
+        $d = Carbon::createFromFormat('Y-m-d', $date)
+                        ->lastOfMonth()
+                        ->format('Y-m-d');
+        return $d;
     }
 
 

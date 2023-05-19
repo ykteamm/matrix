@@ -43,7 +43,9 @@
 
                     <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
                         <a onclick="selectNewOrAll('all')" class="dropdown-item"> Hammasi </a>
-                        <a onclick="selectNewOrAll('new')" class="dropdown-item">Yangi elchilar </a>
+                        <a onclick="selectNewOrAll('elchi')" class="dropdown-item"> Elchi </a>
+                        <a onclick="selectNewOrAll('new')" class="dropdown-item"> Yangi elchi </a>
+                        <a onclick="selectNewOrAll('pro')" class="dropdown-item"> Provizor </a>
                     </div>
                 </div>
                 <div class="mb-2 d-flex  justify-content-end">
@@ -123,10 +125,13 @@
                             <td><strong>Garb/Sharq</strong></td>
                             <td class="text-center" style="width: 13rem;"><strong>Viloyat</strong> </td>
                             <td style="width: 17rem;" class="bg-success"><strong>Elchi</strong> </td>
-                            <td yle="width: 17rem;" class="bg-success"><strong>Yangi elchi</strong> </td>
+                            <td yle="width: 17rem;" class="bg-success"><strong>Status</strong> </td>
+                            <td style="width: 17rem;" class="bg-success"><strong>Ishga olingan sana</strong></td>
                             <td style="width: 13rem" onclick="yashir()"><strong>Dorixona</strong> </td>
                             <td class="yashir"><strong>Ishlagan kuni </strong></td>
-                            <td class="yashir"><strong>Shox </strong></td>
+                            <td class="yashir kunlik-shox" onclick="$('.oylik-shox').removeClass('d-none');$('.kunlik-shox').addClass('d-none')"><strong>Kunlik Shox</strong></td>
+                            <td class="yashir oylik-shox d-none" onclick="$('.oylik-shox').addClass('d-none');$('.kunlik-shox').removeClass('d-none')"><strong>Oylik Shox</strong></td>
+                            <td class="yashir"><strong>Eng yaxshi oy</strong></td>
                             <td class="yashir" onclick="yashir3()"><strong>Kunlik plan </strong></td>
                             <td class="yashir">
                                 <a onclick="yashir3()" class="yashir3"><strong>Fakt </strong></a>
@@ -180,22 +185,29 @@
                             <td>Jami</td>
                             <td class="text-center" style="width: 13rem;">Viloyatlar</td>
                             <td style="width: 17rem;" class="bg-success">Elchi</td>
-                            <td style="width: 17rem;" class="bg-success">Yangi Elchi</td>
+                            <td style="width: 17rem;" class="bg-success">Status</td>
+                            <td style="width: 17rem;" class="bg-success">Ishga olingan sana</td>
                             <td style="width: 13rem">Dorixonalar</td>
                             @php
-                                $sum_king_sold = 0;
+                                $day_works = 0;
                                 foreach ($day_work as $key => $value) {
-                                    $sum_king_sold += $value;
+                                    $day_works += $value;
                                 }
                             @endphp
-                            <td style="width: 6.5rem;" class="text-center">{{ $sum_king_sold }}</td>
+                            <td style="width: 6.5rem;" class="text-center">{{ $day_works }}</td>
                             @php
                                 $sum_king_sold = 0;
+                                $sum_king_sold_month = 0;
                                 foreach ($king_sold as $key => $value) {
                                     $sum_king_sold += $value;
                                 }
+                                foreach ($king_sold_month as $key => $value) {
+                                    $sum_king_sold_month += $value;
+                                }
                             @endphp
-                            <td style="width: 6.5rem;" class="text-center">{{ $sum_king_sold }}</td>
+                            <td style="width: 6.5rem;" class="text-center kunlik-shox">{{ $sum_king_sold }}</td>
+                            <td style="width: 6.5rem;" class="text-center oylik-shox d-none">{{ $sum_king_sold_month }}</td>
+                            <td style="width: 6.5rem;">Eng yaxshi oy</td>
                             <td style="width:6rem">{{ number_format($total_planday, 0, '', '.') }}</td>
                             <td style="width: 8.5rem">{{ number_format($total_fact, 0, '', '.') }}</td>
                             <td style="width: 6.5rem;">{{ number_format($total_plan, 0, '', '.') }}</td>
@@ -273,24 +285,39 @@
                                     </td>
                                     <td class="fixed p-0">
                                         @if ($item->sid == 9)
-                                            Provizor
+                                            <span class="badge badge-danger">Provizor</span>
                                         @else
-                                            @php
-                                            $date_joined = strtotime($item->date_joined);
-                                            $now = strtotime(now());
-                                            $dayDifference = round(($now - $date_joined) / 86400);
-                                            @endphp
-                                            @if ($dayDifference < 50)
-                                                <span
-                                                    class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->date_joined)) }}
-                                                    ({{ $dayDifference }} kun)
-                                                </span>
+                                            @if ($item->status == 1)
+                                                <span class="badge badge-primary">Elchi</span>
                                             @else
-                                                Eski elchi
+                                                <span class="badge badge-warning">Yangi elchi</span>
                                             @endif
                                         @endif
 
                                     </td>
+                                    <td class="fixed p-0">
+                                        @php
+                                            $date_joined = strtotime($item->date_joined);
+                                            $work_start = strtotime($item->date_joined);
+                                            $d26 = strtotime(date('2023-04-26'));
+                                        @endphp
+                                        @if ($date_joined < $d26)
+                                            <span
+                                                class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->date_joined)) }}
+                                            </span>
+                                        @else
+                                            @if($item->work_start != null)
+                                                <span
+                                                    class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->work_start)) }}
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="badge bg-primary-light">-
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </td>
+
                                     <td class="fixed p-0">
                                         @if (count($item->pharmacy) == 0)
                                             Aptekasi yoq
@@ -314,13 +341,36 @@
                                                 0
                                             @endif
                                         </span> </td>
-                                    <td class="yashir p-0 text-center"><span class="text-center">
+                                    <td class="yashir p-0 text-center kunlik-shox"><span class="text-center">
                                             @if (isset($king_sold[$item->id]))
                                                 {{ $king_sold[$item->id] }}
                                             @else
                                                 0
                                             @endif
-                                        </span> </td>
+                                        </span>
+                                    </td>
+
+                                    <td class="yashir p-0 text-center d-none oylik-shox"><span class="text-center">
+                                        @if (isset($king_sold_month[$item->id]))
+                                            {{ $king_sold_month[$item->id] }}
+                                        @else
+                                            0
+                                        @endif
+                                        </span>
+                                    </td>
+                                    <td class="yashir p-0 text-center"><span class="text-center">
+                                        @if (isset($best_month[$item->id]))
+                                             {{$best_month[$item->id][0]['bestsum']}}
+                                            @if($best_month[$item->id][0]['date'] != 0)
+                                            <p><span class="badge badge-info">
+                                                {{$best_month[$item->id][0]['date']}}
+                                            </span></p>
+                                            @endif
+                                        @else
+                                            0
+                                        @endif
+                                        </span>
+                                    </td>
                                     {{-- {{ dd($elchi_fact); }} --}}
                                     <td class="yashir p-0"><span
                                             class="badge bg-success-light">{{ number_format($plan_day[$item->id], 0, '', '.') }}</span>

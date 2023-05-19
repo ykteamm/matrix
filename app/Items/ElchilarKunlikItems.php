@@ -10,4 +10,6 @@ class ElchilarKunlikItems
     public $elchi_fact;
     public $elchi_prognoz;
     public $king_sold;
+    public $king_sold_month;
+    public $best_month;
 }

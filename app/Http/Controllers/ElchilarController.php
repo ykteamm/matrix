@@ -54,6 +54,8 @@ class ElchilarController extends Controller
         $elchi_fact = $data->elchi_fact;
         $elchi_prognoz = $data->elchi_prognoz;
         $king_sold = $data->king_sold;
+        $king_sold_month = $data->king_sold_month;
+        $best_month = $data->best_month;
         $day_work = $data->all_work_day;
         // dd($elchi, $elchi_fact[$elchi[0]->id]);
         $item = $this->service->plan($elchi, $month, $endofmonth);
@@ -80,6 +82,6 @@ class ElchilarController extends Controller
             $elchi = new Collection($elchi);
         }
         // dd($elchi);
-        return view('elchilar.index', compact('all_or_new', 'side', 'region', 'day_work', 'king_sold', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
+        return view('elchilar.index', compact('all_or_new', 'side', 'region', 'day_work', 'king_sold','king_sold_month','best_month', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
     }
 }

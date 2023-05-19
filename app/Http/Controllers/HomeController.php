@@ -118,10 +118,10 @@ class HomeController extends Controller
 
         return $search;
     }
-
     public function index()
     {
-        // return $elchi_battle;
+
+
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
         $rm = DB::table('tg_user')->where('id',$id)->value('rm');
@@ -297,7 +297,7 @@ class HomeController extends Controller
 
                                     }
                                 }
-                        
+
                     }
 
                 }
@@ -383,7 +383,7 @@ class HomeController extends Controller
         ->whereDate('tg_shift.open_date',Carbon::now())
         ->get();
 
-        
+
         $nowork = DB::table('tg_shift')
         ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
         ->join('tg_user','tg_user.id','tg_shift.user_id')
@@ -408,7 +408,7 @@ class HomeController extends Controller
         {
             return redirect()->route('blackjack');
         }
-        
+
         $team = Member::where('team_id',$cap->team_id)->pluck('user_id');
         $all = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
@@ -450,7 +450,7 @@ class HomeController extends Controller
             {
                 $maqsad = 200;
             }
-            
+
         $dayst = number_format(($maqsad-($all->allprice/1000000))/count($array),2);
 
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
@@ -978,7 +978,7 @@ class HomeController extends Controller
 
 
         }
-        // return $pill_array; 
+        // return $pill_array;
 
         $plan=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->exists();
         $ps=Plan::where('user_id',$id)->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->with('planweek')->get();
@@ -1274,7 +1274,7 @@ class HomeController extends Controller
 
             $elchilar[]=array('elchi'=>$item);
         }
-        
+
 //        dd($elchilar[0]['elchi']);
         // return $fsd;/
 
@@ -1440,7 +1440,7 @@ class HomeController extends Controller
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
                 ->get();
-                
+
                 $pText = DB::table('tg_pharmacy')->where('id',$pharm)->value('name');
                 $pkey = $pharm;
         }
@@ -1675,7 +1675,7 @@ class HomeController extends Controller
         // dd("ss");
         $ym = DB::table('tg_calendar')->where('year_month',$month)->value('day_json');
         $except_days = json_decode(DB::table('tg_calendar')->where('year_month',$month)->value('add_day'));
-        
+
         if($ym)
         {
             $ym_json = json_decode($ym);
@@ -1718,7 +1718,7 @@ class HomeController extends Controller
         $calendar = DB::table('tg_calendar')->where('year_month',$month)->first();
         $ym_json = json_decode($calendar->day_json);
         $except_days = json_decode($calendar->add_day);
-        
+
         if(count($ym_json) < $except_day) {
             return back()->with(['message' => (count($ym_json) + 1) . " dan kichik son kiriting"]);
         }
