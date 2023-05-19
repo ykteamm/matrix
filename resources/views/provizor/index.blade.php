@@ -64,11 +64,11 @@
                                     @elseif($elchi['status'] == 5)
 
                                     @else
-                                        
+
                                     @endif
 
                                     {{-- <a href="" class="mr-2"> <i class="fas fa-truck" style="color:blue;font-size:25px;"></i> </a> --}}
-                                    {{-- <a href="" class="mr-2"> <i class="fas fa-redo-alt" style="color:rgb(153, 11, 235);font-size:25px;"></i></a> --}}
+                                    <a href="{{route('order.product',['order_id' => $elchi['id']])}}" class="mr-2"> <i class="fas fa-eye" style="color:rgb(153, 11, 235);font-size:25px;"></i></a>
                                  </td>
                               </tr>
                            @endforeach

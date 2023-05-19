@@ -343,6 +343,8 @@ Route::resource('residual', ResidualController::class);
 Route::get('pro-order', [ProvizorController::class, 'index'])->name('pro-order');
 Route::get('change-status/{order_id}/{status}', [ProvizorController::class,'changeOrderStatus'])->name('orderpro.status');
 
+Route::get('order-product/{order_id}', [ProvizorController::class,'orderProduct'])->name('order.product');
+
 Route::get('pro-money', [ProvizorController::class, 'money'])->name('pro-money');
 Route::post('pro-money', [ProvizorController::class, 'moneyStore'])->name('pro-money.store');
 

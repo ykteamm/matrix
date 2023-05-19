@@ -31,6 +31,19 @@ class ProvizorController extends Controller
         }
     }
 
+    public function orderProduct($order_id)
+    {
+        $response = Http::post(getProvizorUrl().'/api/get-order', [
+            'order_id' => $order_id,
+        ]);
+
+        return $response;
+        // if($response)
+        // {
+        //     return redirect()->back();
+        // }
+    }
+
     public function money()
     {
 
