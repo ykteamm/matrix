@@ -31,31 +31,40 @@
                            @foreach ($orders as $elchi)
                               <tr>
                                  <td>{{$elchi['user']['last_name']}} {{$elchi['user']['first_name']}}</td>
-                                 <td>{{$elchi['order_price']}}</td>
-                                 <td>{{$elchi['promo_price']}}</td>
+                                 <td>{{number_format($elchi['order_price'],0,',',' ')}}</td>
+                                 <td>{{number_format($elchi['promo_price'],0,',',' ')}}</td>
                                  <td>
                                     @if($elchi['money_arrival'] == null)
                                         0
                                     @else
-                                    {{$elchi['money_arrival']}}
+                                    {{number_format($elchi['money_arrival'],0,',',' ')}}
 
                                     @endif
                                  </td>
-                                 <td>{{getRegion($elchi['user']['region_id'])}}</td>
+                                 <td>{{getRegionByid($elchi['user']['region_id'])}}</td>
                                  <td>{{getPharmacy($elchi['user']['pharmacy'][0]['pharmacy_id'])}}</td>
                                  <td></td>
-                                 <td>{{$elchi['created_at']}}</td>
+                                 <td>{{date('d.m.Y',strtotime($elchi['created_at']))}}</td>
                                  <td>
                                     @if($elchi['status'] == 1)
-                                        Buyurtma berildi
+                                    <span class="badge badge-warning">Buyurtma berildi</span>
+
+
                                     @elseif($elchi['status'] == 2)
-                                        Buyurtma qabul qilindi
+                                    <span class="badge badge-info"> Buyurtma qabul qilindi</span>
+
+
                                     @elseif($elchi['status'] == 3)
-                                        Buyurtma yetkazilmoqda
+                                    <span class="badge badge-success">Buyurtma yetkazilmoqda</span>
+
+
                                     @elseif($elchi['status'] == 5)
-                                        Buyurtma bekor qilindi
+                                    <span class="badge badge-danger">Buyurtma bekor qilindi</span>
+
                                     @else
-                                        Buyurtmani mijozda
+                                    <span class="badge badge-primary">Buyurtmani mijozda</span>
+
+
                                     @endif</td>
                                  <td>
                                     @if($elchi['status'] == 1)

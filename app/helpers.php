@@ -438,8 +438,8 @@ if(!function_exists('getPharmacy')){
 
     }
 }
-if(!function_exists('getRegion')){
-    function getRegion($id) {
+if(!function_exists('getRegionByid')){
+    function getRegionByid($id) {
 
         $p = Region::find($id)->name;
 
