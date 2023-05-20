@@ -42,7 +42,7 @@
                                     @endif
                                  </td>
                                  <td>{{getRegion($elchi['user']['region_id'])}}</td>
-                                 <td>{{getPharmacy($elchi['user']['pharmcy'][0]['pharmcy_id'])}}</td>
+                                 <td>{{getPharmacy($elchi['user']['pharmacy'][0]['pharmacy_id'])}}</td>
                                  <td></td>
                                  <td>{{$elchi['created_at']}}</td>
                                  <td>
