@@ -34,6 +34,7 @@ class ElchilarService
 
         $yes_user_id = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
+                    ->where('tg_user.rm','!=',1)
                     ->whereDate('tg_productssold.created_at','>=',date('Y-m',strtotime($month)).'-01')
                     ->whereDate('tg_productssold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
@@ -50,10 +51,12 @@ class ElchilarService
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
 
                 if($all_or_new == 'new') {
-                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1);
+                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
                 }elseif($all_or_new == 'elchi')
                 {
-                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1);
+                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
 
                 }
                 elseif($all_or_new == 'pro')
@@ -64,6 +67,7 @@ class ElchilarService
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
                 }
+
                 if($climate == 'west') {
                     $elchi = $elchi->where('tg_region.side', 1);
                 } else if ($climate == 'east'){
@@ -82,10 +86,12 @@ class ElchilarService
                 ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
 
                 if($all_or_new == 'new') {
-                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1);
+                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
                 }elseif($all_or_new == 'elchi')
                 {
-                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1);
+                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
 
                 }
                 elseif($all_or_new == 'pro')
@@ -136,10 +142,12 @@ class ElchilarService
                 // ->orderBy('tg_region.side','ASC')->get();
 
                 if($all_or_new == 'new') {
-                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1);
+                    $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
                 }elseif($all_or_new == 'elchi')
                 {
-                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1);
+                    $elchi = $elchi->where('tg_user.status', 1)->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
 
                 }
                 elseif($all_or_new == 'pro')
