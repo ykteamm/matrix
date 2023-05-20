@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Carbon\Carbon;
 use App\Models\Knowledge;
+use App\Models\Pharmacy;
+use App\Models\Region;
 use Illuminate\Support\Facades\Auth;
 
 if(!function_exists('myPrognoz')){
@@ -423,6 +425,25 @@ if(!function_exists('getProvizorUrl')){
         }
 
         return $url;
+
+    }
+}
+
+if(!function_exists('getPharmacy')){
+    function getPharmacy($id) {
+
+        $p = Pharmacy::find($id)->name;
+
+        return $p??'no';
+
+    }
+}
+if(!function_exists('getRegion')){
+    function getRegion($id) {
+
+        $p = Region::find($id)->name;
+
+        return $p??'no';
 
     }
 }

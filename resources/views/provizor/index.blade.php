@@ -19,6 +19,8 @@
                               <th>Buyurtma summasi</th>
                               <th>Promo summasi</th>
                               <th>Pul kelishi</th>
+                              <th>Viloyat</th>
+                              <th>Dorixona</th>
                               <th>Vaqti </th>
                               <th>Status </th>
                               <th>Holat</th>
@@ -39,6 +41,9 @@
 
                                     @endif
                                  </td>
+                                 <td>{{getRegion($elchi['user']['region_id'])}}</td>
+                                 <td>{{getPharmacy($elchi['user']['pharmcy'][0]['pharmcy_id'])}}</td>
+                                 <td></td>
                                  <td>{{$elchi['created_at']}}</td>
                                  <td>
                                     @if($elchi['status'] == 1)
