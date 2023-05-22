@@ -4,7 +4,7 @@
         <div class="col-sm-12">
             <div class="card" >
                 <div class="card-header d-flex justify-content-between">
-                    <h4 class="card-title row "> <strong>{{$pharm->name}}</strong> &nbsp<span class="text-danger">Qoldiqlar</span>  </h4>
+                    <h4 class="card-title row "> <strong>{{$pharm->name}}</strong> &nbsp<span class="text-primary ml-4">Taqqoslash</span>  </h4>
                     <div class="col-md-2 mb-2  justify-content-end">
                         <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
                         <div class="dropdown-menu" style="left:150px !important">
@@ -33,7 +33,7 @@
                                                 <th><strong>Dori nomi</strong> </th>
                                                 <th><strong>Qoldiqlar</strong> </th>
                                                 <th><strong>Kirib kelganlar</strong> </th>
-                                                <th><strong>soltilganlar</strong> </th>
+                                                <th><strong>Sotilganlar</strong> </th>
                                                 <th><strong>Xulosa</strong> </th>
                                                 {{-- <th onmouseover="$(this).css('cursor','pointer')"  style="background-color: #1a73e8"  class=""><strong style="color: #fff">Qoldiq</strong> </th> --}}
                                             </tr>
