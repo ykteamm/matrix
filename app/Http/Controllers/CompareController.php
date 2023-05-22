@@ -26,6 +26,49 @@ class CompareController extends Controller
         $ser=new ElchilarService();
         $months=$ser->month();
         $endofmonth=$ser->endmonth($month,$months);
+
+        $medicine = Medicine::orderBy('id')->get();
+        $stocks = [];
+        $accepts = [];
+        $solds = [];
+        $accept = 0;
+        foreach($medicine as $m)
+        {
+            $stock=Stock::where('pharmacy_id',$pharmacy_id)
+            ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('medicine_id',$m->id)
+            ->sum('number');
+
+            $stocks[$m->id] = $stock;
+
+            $accept=Accept::where('pharmacy_id',$pharmacy_id)
+            ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('medicine_id',$m->id)
+            ->sum('number');
+
+            $accepts[$m->id] = $accept;
+
+            $sold=DB::table('tg_productssold')->where('pharm_id',$pharmacy_id)
+            ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('medicine_id',$m->id)
+            ->sum('number');
+
+            $solds[$m->id] = $sold;
+
+        }
+
+        $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
+
+        return view('compare.show2',compact('accepts','stocks','solds','medicine','pharm','months','month','pharmacy_id'));
+
+        return $solds;
+
+        $ser=new ElchilarService();
+        $months=$ser->month();
+        $endofmonth=$ser->endmonth($month,$months);
         $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
         $stock=Stock::where('pharmacy_id',$pharmacy_id)
             ->select('date_time')
@@ -33,7 +76,11 @@ class CompareController extends Controller
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->orderBy('date_time')
             ->groupBy('date_time')->get();
+
+
         $med=Medicine::orderBy('id')->get();
+
+
         $arr_sold=[];
         $i=0;
         $stocks=[];
@@ -43,6 +90,7 @@ class CompareController extends Controller
         $compare=[];
         $stock_all=[];
         $comp=[];
+
         foreach ($stock as $s){
 
 
@@ -50,19 +98,22 @@ class CompareController extends Controller
             $st=Stock::where('date_time',$s->date_time)->get();
 
 //            dd($arr_qol);
-            if($i==0){
-                foreach ($st as $item){
-                    if($item->number==null){
-                        $arr_qol[$item->medicine_id]=0;
+            $a=$s->date_time;
 
-                    }else{
-                        $arr_qol[$item->medicine_id]=$item->number;
-                    }
+            // return $a;
 
-                }
-                $a=$s->date_time;
-            }
-            else{
+            // if($i==0){
+            //     foreach ($st as $item){
+            //         if($item->number==null){
+            //             $arr_qol[$item->medicine_id]=0;
+
+            //         }else{
+            //             $arr_qol[$item->medicine_id]=$item->number;
+            //         }
+
+            //     }
+            // }
+            // else{
                 $st=Stock::where('date_time',$a)->get();
                 foreach ($st as $item){
                     if($item->number==null){
@@ -108,17 +159,10 @@ class CompareController extends Controller
 
                 $a=$s->date_time;
 
-            }
-            $ss=Stock::where('pharmacy_id',$pharmacy_id)->where('date_time',$s->date_time)->with('medicine')->orderBy('medicine_id')->get();
-//            dd($ss[1]);
-            $t=1;
+            // }
 
-//            foreach ($ss as $item){
-//                if($item->number==$arr_qol[$t]){
-//
-//                }
-//                $t++;
-//            }
+            $ss=Stock::where('pharmacy_id',$pharmacy_id)->where('date_time',$s->date_time)->with('medicine')->orderBy('medicine_id')->get();
+            $t=1;
             $stocks[$i]=$ss;
             $arr_qol_all[]=$arr_qol;
             $count=0;
@@ -148,7 +192,7 @@ class CompareController extends Controller
 
         }
 
-
+        // return $arr_sold;
 
         return view('compare.show',compact('comp','pharm','month','months','stock_all','compare','arr_qol_all','pharmacy_id','stock','arr_accepts','stocks','med','arr_sold'));
     }

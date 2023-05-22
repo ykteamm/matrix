@@ -188,8 +188,23 @@
              <li class="submenu">
                <a href="settings.html"><i class="fas fa-balance-scale-left"></i>  <span> Ostatka2 </span><span class="menu-arrow"></span></a>
                <ul style="display: none;">
-                     <li><a href="{{route('compare')}}"><span>Ostatka</span></a>
-                     </li>
+
+                     @isset(Session::get('per')['accept'])
+                                @if(Session::get('per')['accept'] == 'true')
+                            <li><a href="{{route('accept.med')}}">Kiritilganlar</a></li>
+                                @endif
+                            @endisset
+                            @isset(Session::get('per')['stock'])
+                                @if(Session::get('per')['stock'] == 'true')
+                                        <li><a href="{{route('stock.med')}}">Qoldiqlar</a></li>
+                                @endif
+                            @endisset
+                            @isset(Session::get('per')['grade'])
+                     @if(Session::get('per')['grade'] == 'true')
+                           <li><a href="{{route('compare')}}"><span>Taqqoslash </span></a>
+                           </li>
+                     @endif
+                     @endisset
                </ul>
             </li>
 

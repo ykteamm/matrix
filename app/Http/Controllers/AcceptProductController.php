@@ -79,14 +79,14 @@ class AcceptProductController extends Controller
 
         $id=Session::get('user')->id;
         $r=$request->all();
-
+        $meting = $r['meeting-time'];
         unset($r['_token']);
         $created_by=$r['created_by'];
 
             unset($r['meeting-time']);
             unset($r['created_by']);
             $i=0;
-        
+
             // dd($r);
 
             foreach ($r as $key=>$item){
@@ -101,6 +101,7 @@ class AcceptProductController extends Controller
                     $accept->created_by=$created_by;
                     $accept->updated_by=$created_by;
                     $accept->pharmacy_id=$pharmacy_id;
+                    $accept->created_at=$meting;
                 }
                 if($i==1){
                     $accept->price=$item*$accept->number;
@@ -155,12 +156,14 @@ class AcceptProductController extends Controller
                 ->groupBy('tg_medicine.id','tg_medicine.name','tg_prices.price')
                 ->orderBy('tg_medicine.id')
                 ->first();
-            
+
                 // dd($med);
 
             $s->number=$item;
             $s->price=$item*$med->price;
             $s->updated_by=$user_id;
+            $s->updated_by=$user_id;
+
             $s->update();
             $i++;
         }

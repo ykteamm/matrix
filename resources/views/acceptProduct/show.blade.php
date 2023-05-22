@@ -24,7 +24,7 @@
                                 <div class="col-md-2 mb-2  justify-content-end">
                                     <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
                                     <div class="dropdown-menu" style="left:150px !important">
-                                        
+
                                         @foreach($calendar as $m)
                                             <a href="{{route('accept.med.show',['id'=>$pharmacy_id,'time'=>date('Y-m',strtotime('01.'.$m->year_month))])}}"  class="dropdown-item" > {{$m->year_month}} </a>
                                         @endforeach
@@ -44,13 +44,13 @@
                                                 <th class="text-center">
                                                     <div>
                                                         <p class="p-0 m-0 @if (!$tim) p-2 @endif">
-                                                            <span class="badge badge-secondary" style="font-size:15px;">{{date('d.m.Y H:i', strtotime($p->created_at))}}</span> 
+                                                            <span class="badge badge-secondary" style="font-size:15px;">{{date('d.m.Y H:i', strtotime($p->created_at))}}</span>
 
                                                         </p>
 
                                                         @if ($tim)
 
-                                                            <p class="p-0 m-0 pt-1"> 
+                                                            <p class="p-0 m-0 pt-1">
                                                                 <a href="{{route('accept.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->created_at])}}" class="mx-1"><i class="fas fa-edit" style="font-size: 18px;"></i></a>
                                                                 <a href="{{route('accept.med.delete',['pharmacy_id'=>$pharmacy_id,'date'=>$p->created_at])}}" class="mx-1"><i class="fas fa-trash" style="font-size: 18px;color:red;"></i></a>
                                                             </p>
@@ -96,7 +96,7 @@
                                         @endforeach
                                         </tbody>
                                             <div class="text-right " style="position: fixed;right: 1rem;top: 95vh; width: 100%"  >
-                                                <button type="submit" style="width: 83.5%; display: none" class="yashir btn btn-primary">Saqlash </button>
+                                                <button type="submit" style="width: 83.5%; display: none" class="yashir btn btn-primary">Saqlashd </button>
                                             </div>
                                         </form>
                                     </table>
