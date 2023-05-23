@@ -26,25 +26,25 @@
                                     $sum_q = 0;
                                     $sum_p = 0;
                                     // $i = 0;
-                                    // $i = count($spe_order);
+                                    $count = count($spe_order);
                                 @endphp
-                            @foreach ($spe_order as $key => $order)
-                            {{-- @if(isset($spe_order[$i])) --}}
-                            @php
-                                $i = $key;
-                            @endphp
-                                @php
-                                    $sum_q = $sum_q + $spe_order[$i]['quantity'];
-                                    $sum_p = $sum_p + $spe_order[$i]['quantity']*$spe_order[$i]['product_price'];
-                                @endphp
-                              <tr>
-                                 <td>{{$spe_order[$i]['product']['name']}}</td>
-                                 <td>{{$spe_order[$i]['quantity']}}</td>
-                                 <td>{{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}}</td>
-                              </tr>
+                                @for ($i = 0; $i < $count; $i++)
+                                @if(isset($spe_order[$i]))
+                                    @php
+                                        $sum_q = $sum_q + $spe_order[$i]['quantity'];
+                                        $sum_p = $sum_p + $spe_order[$i]['quantity']*$spe_order[$i]['product_price'];
+                                    @endphp
+                                    <tr>
+                                        <td>{{$spe_order[$i]['product']['name']}}</td>
+                                        <td>{{$spe_order[$i]['quantity']}}</td>
+                                        <td>{{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}}</td>
+                                    </tr>
 
-                            {{-- @endif --}}
-                            {{-- @php
+                                @endif
+                                @endfor
+                            {{-- @foreach ($spe_order as $key => $order)
+
+                            @php
                                 $i = $i + 1;
                             @endphp --}}
                            @endforeach
