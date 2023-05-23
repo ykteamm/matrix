@@ -26,7 +26,7 @@
                                     $sum_q = 0;
                                     $sum_p = 0;
                                     // $i = 0;
-                                    $count = count($spe_order);
+                                    // $count = count($spe_order);
                                 @endphp
                                 @for ($i = 0; $i < $count; $i++)
                                 @if(isset($spe_order[$i]))
