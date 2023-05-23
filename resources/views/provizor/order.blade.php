@@ -38,10 +38,11 @@
                                  <td>{{$spe_order[$i]['quantity']}}</td>
                                  <td>{{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}}</td>
                               </tr>
-                              @php
+
+                            @endif
+                            @php
                                 $i = $i + 1;
                             @endphp
-                            @endif
                            @endforeach
 
                          <tr>
