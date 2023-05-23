@@ -40,6 +40,7 @@ class ProvizorController extends Controller
         return view('provizor.order',[
             'orders' => $response['order'],
             'count' => $response['count'],
+            'name' => $response['name'],
         ]);
     }
 

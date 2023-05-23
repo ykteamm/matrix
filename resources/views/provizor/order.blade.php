@@ -8,6 +8,9 @@
    <div class="row headbot">
       <div class="col-sm-12">
          <div class="card mt-5">
+            <div class="text-center">
+                <h4><span class="badge badge-primary">{{$name}}</span></h4>
+            </div>
             <div class="card-body">
                <form action="{{ route('shogird.date') }}" method="POST">
                   @csrf
