@@ -47,7 +47,7 @@
                             @php
                                 $i = $i + 1;
                             @endphp --}}
-                           @endforeach
+                           {{-- @endforeach --}}
 
                          <tr>
                             <td>Jami</td>
