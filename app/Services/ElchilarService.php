@@ -46,9 +46,8 @@ class ElchilarService
             if($regions == 0 || $regions == 1)
             {
                 $elchi = User::with('pharmacy')
-                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
-                ->join('tg_region','tg_region.id','tg_user.region_id')
-                ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
+                ->select('tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->join('tg_region','tg_region.id','tg_user.region_id');
 
                 if($all_or_new == 'new') {
                     $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1)
@@ -79,11 +78,10 @@ class ElchilarService
             {
                 $elchi = User::with('pharmacy')
                 ->whereIn('tg_region.id',$regions)
-                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
 
                 // ->select('tg_new_elchi.created_at as new_created','tg_user.date_joined','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
-                ->join('tg_region','tg_region.id','tg_user.region_id')
-                ->leftjoin('tg_new_elchi','tg_new_elchi.user_id','tg_user.id');
+                ->join('tg_region','tg_region.id','tg_user.region_id');
 
                 if($all_or_new == 'new') {
                     $elchi = $elchi->where('tg_user.status', 0)->where('tg_user.specialty_id', 1)
@@ -135,7 +133,7 @@ class ElchilarService
                 // ->where('tg_user.status',1)
                 // ->whereIn('tg_user.id',$yes_user_id)
                 ->whereIn('tg_user.region_id',$reg)
-                ->select('tg_new_elchi.created_at as new_created','tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
+                ->select('tg_user.specialty_id as sid','tg_user.date_joined','tg_user.work_start','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
 
                 // ->select('tg_user.date_joined','tg_user.start_work','tg_user.pharmacy_id','tg_region.side as side','tg_user.image_url','tg_user.status','tg_region.id as rid','tg_region.name as v_name','tg_region.id as v_id','tg_user.username','tg_user.id','tg_user.last_name','tg_user.first_name')
                 ->join('tg_region','tg_region.id','tg_user.region_id');
