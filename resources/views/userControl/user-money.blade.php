@@ -72,7 +72,17 @@
                             <div class="d-flex align-items-center justify-content-between mb-3" style="background: darkturquoise;border-radius: 8px;
                             padding: 20px 40px;font-size:20px;">
                                 <div style="font-weight:700" class="supercell">{{ $region['name'] }}</div>
-                                <div class="supercell">{{ number_format($region['sum'], 0, '', ' ') }}</div>
+                                @php
+                                    $s = 0;
+                                @endphp
+                                @foreach ($region['users'] as $user)
+                                    @if ($user['spec'] == 1)
+                                        @php
+                                            $s = $s + $user['maosh'] - $user['jarima'] + $user['premya'] - $user['shtraf'];
+                                        @endphp
+                                    @endif
+                                @endforeach
+                                <div class="supercell">Umumiy oylik (elchi)  {{ number_format($s, 0, '', ' ') }}</div>
                             </div>
                             <div>
 
@@ -101,8 +111,12 @@
 
                                                 <tr>
                                                     <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td>
-                                                    <td>{{ number_format($user['summa'],0,',',' ') }}</td>
-                                                    <td style="font-weight:600;font-size:14px">{{ number_format($user['maosh'],0,',',' ') }}</td>
+                                                    <td> <span class="badge badge-warning">{{ number_format($user['summa'],0,',',' ') }}</span></td>
+                                                    <td style="font-weight:600;font-size:14px">
+                                                        <span class="badge badge-primary">
+                                                            {{ number_format($user['maosh'],0,',',' ') }}
+                                                        </span>
+                                                    </td>
                                                     <td>
                                                         <span class="badge badge-danger">
                                                             {{ number_format($user['jarima'],0,',',' ') }}

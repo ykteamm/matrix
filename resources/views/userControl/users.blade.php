@@ -6,13 +6,14 @@
                 <div class="card p-2">
                     <span class="text-center">All users</span>
                     <div class="card-body">
-                        
+
                         <form action="{{ route('assign-daily-work-time') }}" method="POST">
                             @csrf
                             <div class="table-responsive">
                                 <table class="table mb-0 example1">
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Username</th>
                                             <th>Parol</th>
                                             <th>FIO </th>
@@ -28,6 +29,7 @@
                                         @endphp
                                         @foreach ($users as $user)
                                             <tr>
+                                                <td>{{ $user->id }}</td>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->pr }}</td>
                                                 <td>{{ $user->last_name }} {{ $user->first_name }}</td>

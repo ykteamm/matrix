@@ -41,7 +41,10 @@
                                     @foreach ($userData as $key => $user)
                                         <tr>
                                             {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
-                                            <td> {{$key }}</td>
+                                            <td>
+                                                {{date('d.m.Y',strtotime($key)) }}
+                                                <p> <span class="badge badge-success"> {{ $user['hafta_kuni'] }} </span> </p>
+                                            </td>
                                             <td>
                                                 @if ($user['shift'])
                                                     @if ($user['shift']->pharmacy_id == 42)

@@ -178,6 +178,7 @@ class WorkDayServices
         // dd($date);
 
         $day = $this->getWorkInMonth(date('m.Y',strtotime($date)));
+
         $day_json = json_decode($day->day_json);
 
         $add_array = json_decode($day->add_day);
@@ -495,7 +496,29 @@ class WorkDayServices
         $arr = [];
         for ($currentDate = $Variable2; $currentDate >= $Variable1;$currentDate -= (86400))
         {
-
+            $hafta = date('w', $currentDate);
+            if($hafta == 0)
+            {
+                $hafta_kuni = 'Yakshanba';
+            }elseif($hafta == 1)
+            {
+                $hafta_kuni = 'Dushanba';
+            }elseif($hafta == 2)
+            {
+                $hafta_kuni = 'Seshanba';
+            }elseif($hafta == 3)
+            {
+                $hafta_kuni = 'Chorshanba';
+            }elseif($hafta == 4)
+            {
+                $hafta_kuni = 'Payshanba';
+            }elseif($hafta == 5)
+            {
+                $hafta_kuni = 'Juma';
+            }else
+            {
+                $hafta_kuni = 'Shanba';
+            }
             $day_sol = DB::table('tg_productssold')
                 ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
                 ->whereDate('tg_productssold.created_at',date('Y-m-d', $currentDate))
@@ -533,6 +556,7 @@ class WorkDayServices
             'shift' => $shifts,
             'shtraf' => $shtraf,
             'premya' => $premya,
+            'hafta_kuni' => $hafta_kuni,
         );
 
         }
