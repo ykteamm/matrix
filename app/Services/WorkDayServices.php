@@ -188,7 +188,15 @@ class WorkDayServices
 
         $ddd = $day_json[$day_s-1];
 
+        $if_user = DB::table('teacher_users')->where('user_id',$user_id)->first();
 
+        if($if_user)
+        {
+            if($date < '2023-03-15' || $ddd == 'false' || in_array($day_s,$add_array) || $date < $if_user->week_date)
+                {
+                    return 0;
+                }
+        }
 
         if($date < '2023-03-15' || $ddd == 'false' || in_array($day_s,$add_array))
         {
@@ -450,11 +458,29 @@ class WorkDayServices
             $names = $user->last_name.' '.$user->first_name;
 
             // $arr_days = $this->getMonthMaoshKunlik($date_begin,$date_end);
+            $shtr = getShtrafDefault($date_begin,$date_end,$this->user_id);
+            // $shtraf = DB::table('tg_details')
+            //     ->select('price','message',DB::raw('DATE(created_at)'))
+            //     ->where('user_id',Auth::id())
+            //     ->where('status',2)
+            //     ->whereDate('created_at','>=',$date_begin)
+            //     ->whereDate('created_at','<=',$date_end)
+            //     ->distinct('date')
+            //     ->get();
+            $shtraf = 0;
+            if(count($shtr) > 0)
+            {
+                foreach($shtr as $sh)
+                {
+                    $shtraf = $shtraf + $sh->price;
+                }
+            }
 
-            $shtraf = Detail::where('user_id',$this->user_id)->where('status',2)
-            ->whereDate('created_at','>=',$date_begin)
-            ->whereDate('created_at','<=',$date_end)
-            ->sum('price');
+
+            // $shtraf = Detail::where('user_id',$this->user_id)->where('status',2)
+            // ->whereDate('created_at','>=',$date_begin)
+            // ->whereDate('created_at','<=',$date_end)
+            // ->sum('price');
 
             $premya = Detail::where('user_id',$this->user_id)->where('status',1)
             ->whereDate('created_at','>=',$date_begin)
