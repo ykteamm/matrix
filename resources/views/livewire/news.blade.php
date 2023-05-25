@@ -44,6 +44,13 @@
             background: #fff;
             color: #333
         }
+        #newsBody img {
+            width: 100%;
+        }
+
+        #newsBody iframe {
+            width: 100%;
+        }
 
         @media only screen and (max-width:500px) {
             #newsBody img {
