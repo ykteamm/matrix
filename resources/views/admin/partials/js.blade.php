@@ -35,24 +35,28 @@
  <script type="text/javascript" src="{{ asset('/assets/plugins/daterangepicker/daterangepicker.min.js') }}"></script>
  {{-- <script src="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"></script> --}}
 
-{{-- EDITOR --}}
-<script src="{{ asset('sceditor/sceditor.min.js') }}"></script>
-<script src="{{ asset('sceditor/icons/monocons.js') }}"></script>
-<script src="{{ asset('sceditor/formats/xhtml.js') }}"></script>
-<script>
-    var textarea = document.getElementById('sceditor');
-    var sty = window.location.protocol + "//" + window.location.host + '/sceditor/themes/content/default.min.css';
-    sceditor.create(textarea, {
-        format: 'xhtml',
-        icons: 'monocons',
-        style: sty
-    });
+ {{-- EDITOR --}}
+ <script src="{{ asset('sceditor/sceditor.min.js') }}"></script>
+ <script src="{{ asset('sceditor/icons/monocons.js') }}"></script>
+ <script src="{{ asset('sceditor/formats/xhtml.js') }}"></script>
+ <script>
+     var textarea = document.getElementById('sceditor');
+     var sty = window.location.protocol + "//" + window.location.host + '/sceditor/themes/content/default.min.css';
+     sceditor.create(textarea, {
+         format: 'xhtml',
+         icons: 'monocons',
+         style: sty
+     });
 
-    var themeInput = document.getElementById('sceditortheme');
-    themeInput.onchange = function() {
-        var stys = window.location.protocol + "//" + window.location.host + '/sceditor/themes'
-        var theme = stys + "/"+ themeInput.value + '.min.css';
-        document.getElementById('theme-style').href = theme;
-    };
-</script>
+     var themeInput = document.getElementById('sceditortheme');
+     themeInput.onchange = function() {
+         var stys = window.location.protocol + "//" + window.location.host + '/sceditor/themes'
+         var theme = stys + "/" + themeInput.value + '.min.css';
+         document.getElementById('theme-style').href = theme;
+     };
 
+     function showNw(id) {
+        console.log(id);
+         $("#showNw" + id).click()
+     }
+ </script>

@@ -5,8 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class News extends Model
+class NewsLike extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'img', 'desc', 'publish'];
+    protected $fillable = [
+        'user_id',
+        'news_id',
+        'positive'
+    ];
 }

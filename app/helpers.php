@@ -32,6 +32,25 @@ if(!function_exists('myPrognoz')){
     }
 }
 
+if(!function_exists('getMonthName')){
+    function getMonthName($text) {
+        return [
+            'January' => 'Yanvar',
+            'February' => 'Fevral',
+            'March' => 'Mart',
+            'April' => 'Aprel',
+            'May' => 'May',
+            'June' => 'Iyun',
+            'July' => 'Iyul',
+            'August' => 'August',
+            'September' => 'Sentabr',
+            'October' => 'Oktabr',
+            'November' => 'Noyabr',
+            'December' => 'Dekabr'
+        ][$text];
+    }
+}
+
 if(!function_exists('maosh')){
     function maosh($sum) {
         if($sum < 25000000)
@@ -444,61 +463,6 @@ if(!function_exists('getRegionByid')){
         $p = Region::find($id)->name;
 
         return $p??'no';
-
-    }
-}
-if(!function_exists('getShtrafDefault')){
-    function getShtrafDefault($date_begin,$date_end,$user_id) {
-
-        $if_user = DB::table('teacher_users')->where('user_id',$user_id)->first();
-
-        if($if_user)
-        {
-            if(strtotime($if_user->week_date) > strtotime($date_end))
-            {
-                $exists = [];
-                return $exists;
-            }else{
-                if(strtotime($if_user->week_date) < strtotime($date_begin))
-                {
-                    $exists = DB::table('tg_details')
-                    ->select('price','message',DB::raw('DATE(created_at)'))
-                    ->where('user_id',$user_id)
-                    ->where('status',2)
-                    ->whereDate('created_at','>=',$date_begin)
-                    ->whereDate('created_at','<=',$date_end)
-                    ->distinct('date')
-                    ->get();
-                    return $exists;
-
-                }else{
-                    $exists = DB::table('tg_details')
-                    ->select('price','message',DB::raw('DATE(created_at)'))
-                    ->where('user_id',$user_id)
-                    ->where('status',2)
-                    ->whereDate('created_at','>=',$if_user->week_date)
-                    ->whereDate('created_at','<=',$date_end)
-                    ->distinct('date')
-                    ->get();
-
-                    return $exists;
-                }
-
-            }
-
-
-        }
-        $exists = DB::table('tg_details')
-        ->select('price','message',DB::raw('DATE(created_at)'))
-        ->where('user_id',Auth::id())
-        ->where('status',2)
-        ->whereDate('created_at','>=',$date_begin)
-        ->whereDate('created_at','<=',$date_end)
-        ->distinct('date')
-        ->get();
-
-        return $exists;
-
 
     }
 }

@@ -12,6 +12,9 @@
                     Yangilik qo'shish
                 </a>
             </div>
+            {{--  --}}
+            @include('news.showNw')
+            {{--  --}}
             @foreach ($news as $nw)
                 <div class="card border border-left-primary">
                     <div class="p-4 d-flex align-items-center justify-content-between"
@@ -44,7 +47,7 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <a href="{{ route('showNews', ['id' => $nw->id]) }}" class="btn btn-sm btn-success mr-2">
+                            <a onclick="showNw({{ $nw->id }})" data-toggle="modal" data-target="#showNws" class="btn btn-sm btn-success mr-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-eye" viewBox="0 0 16 16">
                                     <path

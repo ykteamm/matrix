@@ -21,7 +21,7 @@ class NewsController extends Controller
     public function show($id)
     {
         if ($nw = News::find($id)) {
-            return view('news.show', compact('nw'));
+            return view('news.see', compact('nw'));
         } else {
             return redirect("allnews")->with("newsError", "Not found");
         }
@@ -100,7 +100,8 @@ class NewsController extends Controller
             News::create([
                 'title' => $title,
                 'img' => $pathname,
-                'desc' => $desc
+                'desc' => $desc,
+                'publish' => isset($request->publish) ? true : false
             ]);
             return redirect("allnews");
         } catch (\Throwable $th) {
@@ -142,7 +143,8 @@ class NewsController extends Controller
             News::where('id', $id)->update([
                 'title' => $title,
                 'desc' => $desc,
-                'img' => $pathname ?? $new->img
+                'img' => $pathname ?? $new->img,
+                'publish' => isset($request->publish) ? true : false
             ]);
             return redirect("allnews");
         } catch (\Throwable $th) {

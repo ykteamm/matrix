@@ -49,7 +49,7 @@
                 </div>
                 <div class="form-group">
                     <label for="img" class="btn btn-primary btn-sm p-1">
-                        <span>Rasm</span>
+                        <span>Asosiy rasm</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-images" viewBox="0 0 16 16">
                             <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
@@ -58,6 +58,10 @@
                         </svg>
                     </label>
                     <input name="img" id="img" type="file" class="d-none">
+                </div>
+                <div class="form-group">
+                    <label for="publish">Publish</label>
+                    <input name="publish" type="checkbox" class="form-check" @if($nw->publish) checked @endif>
                 </div>
                 <div class="form-group w-100">
                     <div class="d-flex align-items-center justify-content-between">
