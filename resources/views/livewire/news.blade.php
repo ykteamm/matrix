@@ -52,6 +52,10 @@
             width: 100%;
         }
 
+        .battleNewsBody img, .battleNewsBody iframe {
+            width: 100%;
+        }
+
         @media only screen and (max-width:500px) {
             #newsBody img {
                 width: 100%;
@@ -179,7 +183,7 @@
                                 style="font-weight:600;overflow:hidden;font-size:17px;margin-bottom: 20px;">
                                 {{ $nw->title }}
                             </div>
-                            <div>
+                            <div class="battleNewsBody">
                                 <?php echo htmlspecialchars_decode(htmlentities($nw->desc)); ?>
                             </div>
                         </div>
