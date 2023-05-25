@@ -53,7 +53,7 @@
         }
 
         .battleNewsBody img, .battleNewsBody iframe {
-            width: 100%;
+            width: 100% !important;
         }
 
         @media only screen and (max-width:500px) {
