@@ -192,10 +192,28 @@ class WorkDayServices
 
         if($if_user)
         {
-            if($date < '2023-03-15' || $ddd == 'false' || in_array($day_s,$add_array) || $date < $if_user->week_date)
+            if(strtotime($date) < strtotime($if_user->week_date))
                 {
                     return 0;
                 }
+        }
+
+        $if_user_work = DB::table('tg_user')->where('id',$user_id)->first();
+
+        if($if_user_work)
+        {
+            if($if_user_work->work_start != null)
+            {
+                if(strtotime($date) < strtotime($if_user_work->work_start))
+                {
+                    return 0;
+                }
+            }else{
+                if(strtotime($date) < strtotime($if_user_work->date_joined))
+                {
+                    return 0;
+                }
+            }
         }
 
         if($date < '2023-03-15' || $ddd == 'false' || in_array($day_s,$add_array))
