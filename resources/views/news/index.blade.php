@@ -22,7 +22,7 @@
                         <div>
                             <img src="{{ $nw->img }}" width="50" alt="">
                         </div>
-                        <a href="{{ route('showNews', ['id' => $nw->id]) }}">
+                        <a onclick="showNw({{ $nw->id }})" data-toggle="modal" data-target="#showNws">
                             <div style="font-size:18px;font-weight:600;overflow:hidden" class="pr-3">
                                 {{ $nw->title }}
                             </div>
