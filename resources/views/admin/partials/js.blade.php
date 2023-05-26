@@ -56,7 +56,13 @@
      };
 
      function showNw(id) {
-        console.log(id);
          $("#showNw" + id).click()
      }
+     function showInfo(id) {
+        console.log(id);
+            $("#showInfo" + id).click()
+        }
+        function showVid(id) {
+            $("#showVid" + id).click()
+        }
  </script>

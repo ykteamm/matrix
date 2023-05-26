@@ -6,6 +6,7 @@ use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PillController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,8 @@ use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrendController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\VideoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -326,13 +329,29 @@ Route::post('provizor-lose', [ToolzController::class,'provizorLose'])->name('pro
 // BATTLE NEWS
 Route::get('/allnews', [NewsController::class, 'index'])->name('openNews');
 Route::get('create-news', [NewsController::class, 'create'])->name('createNews');
-Route::get('show-news/{id}', [NewsController::class, 'show'])->name('showNews');
 Route::get('edit-news/{id}', [NewsController::class, 'edit'])->name('editNews');
 Route::post('update-news/{id}', [NewsController::class, 'update'])->name('updateNews');
 Route::post('delete-news/{id}', [NewsController::class, 'delete'])->name('deleteNews');
 Route::post('store-news', [NewsController::class, 'store'])->name('storeNews');
+
 Route::post('/store-news-images', [NewsController::class, 'uploadImages'])->name('uploadImages');
 Route::get('/old-news-images', [NewsController::class, 'uploadedImages'])->name('uploadedImages');
+
+
+// INFO NEWS
+Route::get('/allinfos', [InfoController::class, 'index'])->name('openInfos');
+Route::get('create-infos', [InfoController::class, 'create'])->name('createInfos');
+Route::get('edit-infos/{id}', [InfoController::class, 'edit'])->name('editInfos');
+Route::post('update-infos/{id}', [InfoController::class, 'update'])->name('updateInfos');
+Route::post('delete-infos/{id}', [InfoController::class, 'delete'])->name('deleteInfos');
+Route::post('store-infos', [InfoController::class, 'store'])->name('storeInfos');
+// VIDEO NEWS
+Route::get('/allvideos', [VideoController::class, 'index'])->name('openVideos');
+Route::get('create-videos', [VideoController::class, 'create'])->name('createVideos');
+Route::get('edit-videos/{id}', [VideoController::class, 'edit'])->name('editVideos');
+Route::post('update-videos/{id}', [VideoController::class, 'update'])->name('updateVideos');
+Route::post('delete-videos/{id}', [VideoController::class, 'delete'])->name('deleteVideos');
+Route::post('store-videos', [VideoController::class, 'store'])->name('storeVideos');
 
 //ostatka2.0 - start
 Route::resource('residual', ResidualController::class);
