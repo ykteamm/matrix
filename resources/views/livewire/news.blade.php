@@ -79,11 +79,7 @@
             style="position:absolute;top:0px;left:0;right:0;font-size:22px">
             <div class="text-white pt-1 pl-0"
                 style="text-shadow: -1px 4px 0 #000, 3px 1px 0 #000, 3px -1px 0 #000, -1px -1px 0 #000">
-                @if ($nw)
-                    <div class="pl-0">{{ substr($nw->title, 0, 15) }}</div>
-                @else
-                    <div class="pl-0">Yangilik</div>
-                @endif
+                Jang news
             </div>
         </div>
         {{-- <div style="position: absolute; bottom:3px;left:0;right:0">

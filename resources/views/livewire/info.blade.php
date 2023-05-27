@@ -25,7 +25,7 @@
     </div>
     @if ($info)
         <div class="modal-body p-0" style="position: relative;">
-            @if ($info->img)
+            {{-- @if ($info->img)
                 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endif --}}
             <div style="position: relative;overflow:hidden">
                 <div style="margin: 0 5px;background:#f5f7fe" class="py-4 px-1">
                     <div>
