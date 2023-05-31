@@ -139,8 +139,8 @@ class ToolzController extends Controller
         }
         if ($fine !== 0 && $error !== '') {
             $this->helper->setDetail($fine, $izoh, $request->input('user_id'), $error);
-            $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
-            $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+            // $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+            // $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
         }
         $this->shiftRepository->updateAdminCheck($request->input('shift_id'), $error, 'admin_check_close');
         return back();
