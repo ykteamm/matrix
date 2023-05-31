@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="w-100 w-lg-100 mt-1">
-                        <textarea id="sceditor" name="desc"  style="height:300px;width:100.5%;"></textarea>
+                        <textarea id="sceditor" name="desc"  style="height:600px;width:100.5%;"></textarea>
                     </div>
                 </div>
                 <div class="mt-4">

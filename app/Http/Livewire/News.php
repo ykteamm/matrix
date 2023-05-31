@@ -3,92 +3,76 @@
 namespace App\Http\Livewire;
 
 use App\Models\News as ModelsNews;
+use App\Models\NewsEmoji;
 use App\Models\NewsLike;
+use App\Models\NewsReaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class News extends Component
 {
     public $newsIds = [];
     public $nw = null;
-    public $like = null;
-    public $dislike = null;
-    protected $listeners = ['showNw' => 'showNwMethod', 'like' => 'changeLike', 'dislike' => 'changeDislike'];
+    public $reaction = null;
+    public $emojies = [];
+    protected $listeners = ['showNw' => 'showNwMethod', 'reaction' => 'setReaction'];
+
+    public function mount()
+    {
+        $this->newsIds = ModelsNews::where('publish', true)->orderBy('id', "DESC")->pluck('id');
+    }
 
     public function showNwMethod($id)
     {
         try {
             $this->nw = ModelsNews::find($id);
-            $this->like = NewsLike::where('news_id', $this->nw->id)
-            ->where('user_id', Auth::id())
-            ->where('positive', true)
-            ->first();
-            $this->dislike = NewsLike::where('news_id', $this->nw->id)
-            ->where('user_id', Auth::id())
-            ->where('positive', false)
-            ->first();
+            $this->emojies = $this->getEmojies($id);
+            $this->reaction = NewsReaction::where('user_id', Auth::id())
+                ->where('news_id', $this->nw->id)
+                ->first();
         } catch (\Throwable $th) {
             dd($th->getMessage());
         }
     }
 
-    public function changeLike()
+    public function setReaction($emojiId)
     {
-        try {
-            if ($this->like) {
-                $this->delete('like', true);
+        $emoji = NewsEmoji::find($emojiId);
+        if ($this->reaction) {
+            NewsReaction::where('user_id', Auth::id())
+                ->where('news_id', $this->nw->id)
+                ->where('emoji_id', $this->reaction->emoji_id)
+                ->delete();
+            if ($this->reaction->emoji_id == $emojiId) {
+                $this->reaction = null;
             } else {
-                if ($this->dislike) {
-                    $this->delete('dislike', false);
-                }
-                $this->like = $this->create('like', true);
+                $this->reaction = NewsReaction::create([
+                    'user_id' => Auth::id(),
+                    'news_id' => $this->nw->id,
+                    'emoji_id' => $emoji->id
+                ]);
             }
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
+            $this->emojies = $this->getEmojies($this->nw->id);
+        } else {
+            $this->reaction = NewsReaction::create([
+                'user_id' => Auth::id(),
+                'news_id' => $this->nw->id,
+                'emoji_id' => $emoji->id
+            ]);
+            $this->emojies = $this->getEmojies($this->nw->id);
         }
     }
 
-    public function changeDislike()
+    public function getEmojies($id)
     {
-        try {
-            if ($this->dislike) {
-                $this->delete('dislike', false);
-            } else {
-                if ($this->like) {
-                    $this->delete('like', true);
-                }
-                $this->dislike = $this->create('dislike', false);
-            }
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
-        }
-    }
-
-    private function delete($like, $positive)
-    {
-        NewsLike::where('news_id', $this->nw->id)
-            ->where('user_id', Auth::id())
-            ->where('positive', $positive)
-            ->delete();
-        $this->nw->{$like} = $this->nw->{$like} - 1;
-        $this->nw->save();
-        $this->{$like} = null;
-    }
-
-    private function create($like, $positive)
-    {
-        $this->nw->{$like} = $this->nw->{$like} + 1;
-        $this->nw->save();
-        return NewsLike::create([
-            'user_id' => Auth::id(),
-            'news_id' => $this->nw->id,
-            'positive' => $positive
-        ]);
-    }
-
-    public function mount()
-    {
-        $this->newsIds = ModelsNews::orderBy('id', "DESC")->pluck('id');
+        return DB::table('news_emojies AS ne')
+            ->select('ne.icon', 'ne.id', DB::raw("sum(case when nw.id = $id then 1 else 0 end) as count"))
+            ->leftJoin('news_reactions AS nr', 'nr.emoji_id', 'ne.id')
+            ->leftJoin('news AS nw', 'nw.id', 'nr.news_id')
+            ->groupBy('ne.id')
+            ->orderBy('ne.id', "ASC")
+            ->get();
     }
 
     public function render()
