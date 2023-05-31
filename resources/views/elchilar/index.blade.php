@@ -90,7 +90,7 @@
                     </button>
 
                     <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
-                        <a onclick="allRegion()" class="dropdown-item"> Hammasi</a>
+                        <a onclick="allRegion()" class="dropdown-item"> Hammasi </a>
                         @php $i=1 @endphp
                         @foreach ($viloyatlar as $m)
                             <div class="d-flex mr-2">
@@ -207,7 +207,7 @@
                             @endphp
                             <td style="width: 6.5rem;" class="text-center kunlik-shox">{{ $sum_king_sold }}</td>
                             <td style="width: 6.5rem;" class="text-center oylik-shox d-none">{{ $sum_king_sold_month }}</td>
-                            <td style="width: 6.5rem;">Eng yaxshi oy</td>
+                            <td style="width: 6.5rem;">{{ number_format($all_best_month, 0, '', '.') }}</td>
                             <td style="width:6rem">{{ number_format($total_planday, 0, '', '.') }}</td>
                             <td style="width: 8.5rem">{{ number_format($total_fact, 0, '', '.') }}</td>
                             <td style="width: 6.5rem;">{{ number_format($total_plan, 0, '', '.') }}</td>

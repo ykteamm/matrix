@@ -172,6 +172,7 @@ class ElchilarService
         $king_sold=[];
         $king_sold_month=[];
         $best_month = [];
+        $all_best_month = 0;
         $cale = DB::table('tg_calendar')->where('year_month',date('m.Y',strtotime($month)))->first();
         $cale_d = json_decode($cale->day_json);
         foreach($cale_d as $key => $c)
@@ -308,6 +309,11 @@ class ElchilarService
 
                 $best_month[$elch->id] = $this->bestRegion($mustang,$elch->id);
 
+                if(isset($best_month[$elch->id][0]['bestsumText']))
+                {
+                    $all_best_month = $all_best_month + $best_month[$elch->id][0]['bestsumText'];
+                }
+
 
                 $proggg = myPrognoz($elch->id);
                 $elchi_prognoz[$elch->id] = $proggg;
@@ -367,7 +373,7 @@ class ElchilarService
         $data->king_sold=$king_sold;
         $data->king_sold_month=$king_sold_month;
         $data->best_month=$best_month;
-        // dd($data->elchi);
+        $data->all_best_month=$all_best_month;
      return $data;
     }
     public function capitan($month,$endofmonth,$user_id)

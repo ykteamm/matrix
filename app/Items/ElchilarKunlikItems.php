@@ -12,4 +12,5 @@ class ElchilarKunlikItems
     public $king_sold;
     public $king_sold_month;
     public $best_month;
+    public $all_best_month;
 }
