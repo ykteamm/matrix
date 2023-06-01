@@ -377,5 +377,6 @@ Route::post('pro-battle', [ProvizorController::class, 'battleStore'])->name('pro
 
 // PREMYA
 Route::get('premya-tasks', [PremyaTaskController::class, 'index'])->name('premya.index');
+Route::get('premya-active/{premya_id}', [PremyaTaskController::class, 'active'])->name('premya.active');
 
 // });

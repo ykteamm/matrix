@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Calendar;
 use App\Models\DailyWork;
 use App\Models\Detail;
+use App\Models\PremyaTask;
 use App\Models\ProductSold;
 use App\Models\Shift;
 use App\Models\User;
@@ -507,6 +508,15 @@ class WorkDayServices
 
             $specialty_id = User::find($this->user_id);
 
+
+            $money_premya = PremyaTask::with('premya')->where('user_id',$this->user_id)
+            ->whereDate('created_at','>=',$date_begin)
+            ->whereDate('created_at','<=',$date_end)
+            ->where('active',1)
+            ->orderBy('premya_id','ASC')
+            ->get();
+
+
             $st = array(
                 'maosh' =>maosh($month_sol),
                 'summa' => $month_sol,
@@ -517,6 +527,7 @@ class WorkDayServices
                 'premya' => $premya,
                 'shtraf' => $shtraf,
                 'spec' => $specialty_id->specialty_id,
+                'money_premya' => $money_premya
             );
 
 

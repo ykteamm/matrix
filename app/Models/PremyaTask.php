@@ -11,6 +11,12 @@ class PremyaTask extends Model
     protected $fillable = [
         'user_id',
         'premya_id',
-        'prodaja'
+        'prodaja',
+        'active',
     ];
+
+    public function premya()
+    {
+        return $this->belongsTo(Premya::class,'premya_id','id');
+    }
 }

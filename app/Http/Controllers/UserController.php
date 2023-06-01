@@ -143,7 +143,6 @@ class UserController extends Controller
         }
 
 
-
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
 
 

@@ -122,7 +122,15 @@
                                                             {{ number_format($user['jarima'],0,',',' ') }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ number_format($user['premya'],0,',',' ') }}</td>
+                                                    @php
+                                                    $su = 0;
+                                                        foreach ($user['money_premya'] as $key => $value) {
+                                                            $su = $su + $value->premya->premya;
+                                                        }
+                                                    @endphp
+                                                    <td>
+                                                        {{ number_format($user['premya']+$su,0,',',' ') }}
+                                                    </td>
                                                     <td>
                                                         @if ($user['shtraf'] > 0)
                                                             <span class="badge badge-danger">
@@ -134,7 +142,7 @@
                                                     </td>
                                                     <td style="font-weight:600;font-size:14px">
                                                         <span class="badge badge-success">
-                                                            {{ number_format(($user['maosh'] - $user['jarima'] + $user['premya'] - $user['shtraf']),0,',',' ') }}
+                                                            {{ number_format(($user['maosh'] - $user['jarima'] + $user['premya'] - $user['shtraf'] + $su),0,',',' ') }}
                                                         </span>
                                                     </td>
 

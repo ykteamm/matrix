@@ -15,6 +15,8 @@
                                         <th>Prodaja</th>
                                         <th>Topshiriq</th>
                                         <th>Premya</th>
+                                        <th>Sana</th>
+                                        <th>Xolati</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -25,6 +27,18 @@
                                             <td>{{ number_format($user->prodaja, 0, '', ' ') }}</td>
                                             <td>{{ number_format($user->task, 0, '', ' ') }}</td>
                                             <td>{{ number_format($user->premya, 0, '', ' ') }}</td>
+                                            <td>{{ date('d.m.Y',strtotime($user->created_at)) }}</td>
+                                            <td>
+                                                @if ($user->active == 1)
+                                                    <a href="{{route('premya.active',$user->tid)}}">
+                                                        <span class="badge badge-success">activ</span>
+                                                    </a>
+                                                @else
+                                                    <a href="{{route('premya.active',$user->tid)}}">
+                                                        <span class="badge badge-danger">activ emas</span>
+                                                    </a>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
