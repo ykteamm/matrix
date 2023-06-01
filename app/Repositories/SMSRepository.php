@@ -2,10 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\Repositories\SMSRepository as SMSRepositoryInterface;
 use Illuminate\Support\Facades\Http;
 
-class SMSRepository implements SMSRepositoryInterface
+class SMSRepository
 {
   public function getToken()
   {

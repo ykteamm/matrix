@@ -59,6 +59,11 @@
                     <div class="tab-content">
                         <div class="tab-pane @if ($date == null && $page == null) show active @endif"
                             id="solid-rounded-justified-tab1">
+                            @if (Session::get('openSmena'))
+                                <div class="alert alert-danger w-100">
+                                    {{ Session::get('openSmena') }}
+                                </div>
+                            @endif
                             <div class="row">
                                 @foreach ($uncheckedshifts as $item)
                                     <div class="col-md-12">
@@ -164,14 +169,12 @@
                                                     <div class="row">
                                                         <input type="text" class="d-none" name="shift_id"
                                                             value="{{ $item->id }}">
-                                                        <input type="text" class="d-none" name="test_id"
-                                                            value="{{ 4 }}">
                                                         <input type="text" class="d-none" name="user_id"
                                                             value="{{ $item->user_id }}">
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="kunSoni{{ $item->id }}" value="true"
+                                                                    id="kunSoni{{ $item->id }}" value="{{ $item->id }}"
                                                                     name="kun_soni">
                                                                 <label class="form-check-label"
                                                                     for="kunSoni{{ $item->id }}">
@@ -182,7 +185,7 @@
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="beyjikYoq{{ $item->id }}" value="true"
+                                                                    id="beyjikYoq{{ $item->id }}" value="beyjik_yoq"
                                                                     name="beyjik_yoq">
                                                                 <label class="form-check-label"
                                                                     for="beyjikYoq{{ $item->id }}">
@@ -193,7 +196,7 @@
                                                         <div class="col-sm-4 col-md-2 mb-3">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    id="xalatYoq{{ $item->id }}" value="true"
+                                                                    id="xalatYoq{{ $item->id }}" value="xalat_yoq"
                                                                     name="xalat_yoq">
                                                                 <label class="form-check-label"
                                                                     for="xalatYoq{{ $item->id }}">
@@ -205,7 +208,7 @@
                                                             <div class="form-check form-check-inline">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        id="lokatsiya{{ $item->id }}" value="true"
+                                                                        id="lokatsiya{{ $item->id }}" value="lokatsiya_notogri"
                                                                         name="lokatsiya_notogri">
                                                                     <label class="form-check-label"
                                                                         for="lokatsiya{{ $item->id }}">

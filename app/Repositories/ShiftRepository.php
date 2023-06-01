@@ -2,12 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\Repositories\ShiftRepository as ShiftRepositoryInterface;
 use App\Models\Shift;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class ShiftRepository implements ShiftRepositoryInterface
+class ShiftRepository
 {
   public function unchecked($column, $active)
   {
@@ -39,12 +38,15 @@ class ShiftRepository implements ShiftRepositoryInterface
     return $historyshifts;
   }
 
-  public function update($shift_id, $values)
+  public function update($shift_id, $active, $error)
   {
-    return Shift::where('id', $shift_id)->update($values);
+    return Shift::where('id', $shift_id)->update([
+      'active' => $active,
+      'admin_check' => ['check' => $error]
+    ]);
   }
 
-  public function updateAdminCheck($shift_id, $error, $column = 'admin_check')
+  public function updateAdminCheck($shift_id, $error, $column)
   {
     return Shift::where('id', $shift_id)->update([
       $column => array('check' => $error == '' ? "ok" : $error)

@@ -2,25 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\Repositories\HelperRepository;
-use App\Interfaces\Repositories\SMSRepository;
-use App\Interfaces\Repositories\ShiftRepository;
+use App\Repositories\HelperRepository;
+use App\Repositories\SMSRepository;
+use App\Repositories\ShiftRepository;
 use App\Models\KingLiga;
 use App\Models\KingSold;
 use App\Models\LigaKingSold;
 use App\Models\LigaKingUser;
 use App\Models\Order;
 use App\Models\ProductSold;
-use App\Models\Shift;
 use App\Models\User;
-use App\Models\UserBattle;
 use App\Services\KingSoldSearchService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Session;
 
 class ToolzController extends Controller
 {
@@ -97,53 +92,93 @@ class ToolzController extends Controller
     {
         $fine = 0;
         $error = '';
-        $inputs = $request->all();
+        $user_id = $request->input('user_id');
+        $shift_id = $request->input('shift_id');
+        $kun_soni = $request->input('kun_soni');
+        $beyjik_yoq = $request->input('beyjik_yoq');
+        $xalat_yoq = $request->input('xalat_yoq');
+        $lokatsiya_notogri = $request->input('lokatsiya_notogri');
         $izoh = $request->input('izoh');
-        // $phone = DB::table('tg_user')->where('id', $request->input('test_id'))->first()->phone_number;
-        $user = DB::table('tg_user')->where('id', $request->input('user_id'))->first();
-        $phone = $user->phone_number;
-        $message = "Hurmatli " . substr($user->last_name, 0, 1) . "." . substr($user->first_name, 0, 1) . "\n";
-        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh'], $inputs['test_id']);
-        foreach ($inputs as $key => $value) {
+        $user = User::find($user_id);
+
+        if ($kun_soni) {
+            $this->shiftRepository->update($shift_id, 0, "Kun soni yo'q. Qaytadan smena oching !");
+            $info = "Siz " . $user->first_name ." ". $user->last_name . " ning smena ochganligini kun soni yo'qligi tufayli yopdingiz ! Soat ". date("H:i"); 
+            return back()->with('openSmena', $info);
+        }
+        if($beyjik_yoq) {
+            $error .= static::ERRORS[$beyjik_yoq] . ". ";
             $fine += static::MIN_FINE;
-            $error .= static::ERRORS[$key] . '. ';
         }
-        if (isset($inputs['kun_soni']) || isset($inputs['lokatsiya_notogri'])) {
-            $this->shiftRepository->update($request->input('shift_id'), ['active' => 0, 'admin_check' => ['check' => $error]]);
-            // $this->smsRepository->sendSMS(substr($phone, 1), $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
-            // $this->smsRepository->sendSMS('998990821015', $message . "Sizning smenagiz qabul qilinmadi. Qaytadan smena oching. Sabab: " . $error);
-            return back();
+        if($xalat_yoq) {
+            $error .= static::ERRORS[$xalat_yoq] . ". ";
+            $fine += static::MIN_FINE;
         }
-        if ($fine !== 0 && $error !== '') {
-            $this->helper->setDetail($fine, $izoh, $request->input('user_id'), $error);
-            // $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
-            // $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+        if($lokatsiya_notogri) {
+            $error .= static::ERRORS[$lokatsiya_notogri] . ". ";
+            $fine += static::MIN_FINE;
         }
-        $this->shiftRepository->updateAdminCheck($request->input('shift_id'), $error);
-        return back();
+      
+        if ($beyjik_yoq || $xalat_yoq || $lokatsiya_notogri) {
+            $error = $izoh . " " . $error;
+            $this->helper->setDetail($user_id, $fine, $error);
+        }
+        $this->shiftRepository->updateAdminCheck($shift_id, $error, 'admin_check');
+        if($error == '') {
+            $msg = "Siz " . $user->first_name ." ". $user->last_name . " ning smena ochganligini tasdiqladingiz !";
+            return back()->with('openSmena', $msg);
+        } else {
+            $msg = "Siz " . $user->first_name ." ". $user->last_name . " ning smena ochganligini " . $error . " bilan tasdiqladingiz ! Jarima: " . number_format($fine, 0, '', " ");
+            return back()->with('openSmena', $msg);
+        }
     }
     public function adminCheckCloseSmena(Request $request)
     {
         $fine = 0;
         $error = '';
-        $inputs = $request->all();
+        $user_id = $request->input('user_id');
+        $shift_id = $request->input('shift_id');
+        $kun_soni = $request->input('kun_soni');
+        $beyjik_yoq = $request->input('beyjik_yoq');
+        $xalat_yoq = $request->input('xalat_yoq');
+        $lokatsiya_notogri = $request->input('lokatsiya_notogri');
         $izoh = $request->input('izoh');
-        // $phone = DB::table('tg_user')->where('id', $request->input('test_id'))->first()->phone_number;
-        $user = DB::table('tg_user')->where('id', $request->input('user_id'))->first();
-        $phone = $user->phone_number;
-        $message = "Hurmatli " . substr($user->last_name, 0, 1) . "." . substr($user->first_name, 0, 1) . "\n";
-        unset($inputs['_token'], $inputs['shift_id'], $inputs['user_id'], $inputs['izoh'], $inputs['test_id']);
-        foreach ($inputs as $key => $value) {
+        $user = User::find($user_id);
+
+        // if ($kun_soni) {
+        //     $this->shiftRepository->update($shift_id, 0, "Kun soni yo'q. Qaytadan smena oching !");
+        //     $info = "Siz " . $user->first_name ." ". $user->last_name . " ning smena yopganligini kun soni yo'qligi tufayli yopdingiz ! Soat ". date("H:i"); 
+        //     return back()->with('openSmena', $info);
+        // }
+        if($kun_soni) {
+            $error .= static::ERRORS[$kun_soni] . ". ";
             $fine += static::MIN_FINE;
-            $error .= static::ERRORS[$key] . '. ';
         }
-        if ($fine !== 0 && $error !== '') {
-            $this->helper->setDetail($fine, $izoh, $request->input('user_id'), $error);
-            // $this->smsRepository->sendSMS(substr($phone, 1), $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
-            // $this->smsRepository->sendSMS('998990821015', $message . $izoh . "\n" . $error . "Jarima: " . $fine . " so'm");
+        if($beyjik_yoq) {
+            $error .= static::ERRORS[$beyjik_yoq] . ". ";
+            $fine += static::MIN_FINE;
         }
-        $this->shiftRepository->updateAdminCheck($request->input('shift_id'), $error, 'admin_check_close');
-        return back();
+        if($xalat_yoq) {
+            $error .= static::ERRORS[$xalat_yoq] . ". ";
+            $fine += static::MIN_FINE;
+        }
+        if($lokatsiya_notogri) {
+            $error .= static::ERRORS[$lokatsiya_notogri] . ". ";
+            $fine += static::MIN_FINE;
+        }
+      
+        if ($beyjik_yoq || $xalat_yoq || $lokatsiya_notogri || $kun_soni) {
+            $error = $izoh . " " . $error;
+            $this->helper->setDetail($user_id, $fine, $error);
+        }
+        $this->shiftRepository->updateAdminCheck($shift_id, $error, 'admin_check_close');
+        if($error == '') {
+            $msg = "Siz " . $user->first_name ." ". $user->last_name . " ning smena yopganligini tasdiqladingiz !";
+            return back()->with('closeSmena', $msg);
+        } else {
+            $msg = "Siz " . $user->first_name ." ". $user->last_name . " ning smena yopganligini " . $error . " bilan tasdiqladingiz ! Jarima: " . number_format($fine, 0, '', " ");
+            return back()->with('closeSmena', $msg);
+        }
     }
 
 
