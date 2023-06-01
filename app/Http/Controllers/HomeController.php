@@ -2,33 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\UserSystemInfo;
-use App\Interfaces\Repositories\HelperRepository;
+use App\Repositories\HelperRepository;
 use App\Models\Plan;
-use App\Models\PlanWeek;
 use App\Models\ProductSold;
-use App\Services\PlanHomeControllerService;
-use App\Services\Sold;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Pharmacy;
 use App\Models\PharmacyUser;
-use App\Models\Position;
-use App\Models\Pill;
-use App\Models\Question;
-use App\Models\Region;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use Cache;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Config;
-use Jenssegers\Agent\Agent;
-use Storage;
 use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Http;
-use function PHPUnit\Framework\isEmpty;
 use App\Models\Knowledge;
 use App\Models\UserQuestion;
 use App\Models\PillQuestion;
@@ -37,7 +23,6 @@ use App\Models\KnowledgeQuestion;
 use App\Models\Member;
 use App\Models\Team;
 use App\Services\ElchilarService;
-use App\Services\ElchiBattleService;
 
 class HomeController extends Controller
 {
