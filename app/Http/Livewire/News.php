@@ -20,7 +20,7 @@ class News extends Component
 
     public function mount()
     {
-        $this->newsIds = ModelsNews::where('publish', true)->orderBy('id', "DESC")->pluck('id');
+        $this->newsIds = ModelsNews::orderBy('id', "DESC")->pluck('id');
     }
 
     public function showNwMethod($id)
