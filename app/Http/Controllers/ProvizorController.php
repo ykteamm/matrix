@@ -41,7 +41,27 @@ class ProvizorController extends Controller
             'orders' => $response['order'],
             'count' => $response['count'],
             'name' => $response['name'],
+            'order_id' => $order_id,
         ]);
+    }
+    public function orderProductUpdate(Request $request,$order_id)
+    {
+        $inputs = $request->all();
+
+        unset($inputs['_token']);
+        $product = [];
+        foreach($inputs['product'] as $key => $value)
+        {
+            $product[$key] = $value[0];
+        }
+
+        $response = Http::post(getProvizorUrl().'/api/order-update', [
+            'order_id' => $order_id,
+            'product' => $product,
+        ]);
+
+
+        return redirect()->back();
     }
 
     public function money()

@@ -364,6 +364,10 @@ Route::get('change-status/{order_id}/{status}', [ProvizorController::class,'chan
 
 Route::get('order-product/{order_id}', [ProvizorController::class,'orderProduct'])->name('order.product');
 
+Route::post('order-update/{order_id}', [ProvizorController::class,'orderProductUpdate'])->name('order.update');
+
+
+
 Route::get('pro-money', [ProvizorController::class, 'money'])->name('pro-money');
 Route::post('pro-money', [ProvizorController::class, 'moneyStore'])->name('pro-money.store');
 

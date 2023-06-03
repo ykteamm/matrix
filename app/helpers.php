@@ -428,7 +428,7 @@ if(!function_exists('getHostNameUrl')){
 
         $host = substr(request()->getHttpHost(),0,3);
 
-        return 127555;
+        return 12744;
 
     }
 }

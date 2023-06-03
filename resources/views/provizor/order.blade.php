@@ -12,7 +12,7 @@
                 <h4><span class="badge badge-primary">{{$name}}</span></h4>
             </div>
             <div class="card-body">
-               <form action="{{ route('shogird.date') }}" method="POST">
+               <form action="{{ route('order.update',$order_id) }}" method="POST">
                   @csrf
                   <div class="table-responsive">
                      <table class="table mb-0 example1">
@@ -25,6 +25,9 @@
                         </thead>
                         <tbody>
                                 @php
+
+                                $proId = [36,37,38,39,29,47];
+
                                 $spe_order = $orders;
                                     $sum_q = 0;
                                     $sum_p = 0;
@@ -39,33 +42,53 @@
                                     @endphp
                                     <tr>
                                         <td>{{$spe_order[$i]['product']['name']}}</td>
-                                        <td>{{$spe_order[$i]['quantity']}}</td>
-                                        <td>{{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}}</td>
+                                        <td>
+
+                                            @if(in_array($spe_order[$i]['product_id'],$proId))
+
+                                            <input type="text" value="{{$spe_order[$i]['quantity']}}" id="pro{{$spe_order[$i]['id']}}" class="allpro"
+                                                name="product[{{$spe_order[$i]['product_id']}}][]"
+                                                style="display:none;"
+
+                                                >
+                                                {{$spe_order[$i]['quantity']}}
+                                            @else
+
+                                                <input type="text" value="{{$spe_order[$i]['quantity']}}" id="pro{{$spe_order[$i]['id']}}" class="allpro"
+                                                name="product[{{$spe_order[$i]['product_id']}}][]"
+                                                onkeyup="upOrder(`{{$spe_order[$i]['product_price']}}`,`{{$spe_order[$i]['id']}}`)"
+
+                                                >
+                                            @endif
+
+                                            </td>
+                                        <td id="proprice{{$spe_order[$i]['id']}}">
+
+                                            <input type="text" disabled value="{{$spe_order[$i]['quantity']*$spe_order[$i]['product_price']}}" class="allprosum">
+
+                                            {{-- {{number_format($spe_order[$i]['quantity']*$spe_order[$i]['product_price'],0,',',' ')}} --}}
+
+                                        </td>
                                     </tr>
 
                                 @endif
                                 @endfor
-                            {{-- @foreach ($spe_order as $key => $order)
-
-                            @php
-                                $i = $i + 1;
-                            @endphp --}}
-                           {{-- @endforeach --}}
-
                          <tr>
                             <td>Jami</td>
-                            <td>{{$sum_q}}</td>
-                            <td>{{number_format($sum_p,0,',',' ')}}</td>
+                            <td id="allprosoni">{{$sum_q}}</td>
+                            <td id="allprosoni2">{{number_format($sum_p,0,',',' ')}}</td>
                          </tr>
                         </tbody>
                      </table>
+
                   </div>
-                  {{-- <div>
-                     <button type="submit" class="btn btn-primary w-100">
-                        Saqlash
-                     </button>
-                  </div> --}}
+                  <div class="col-md-12 text-right">
+                    <button type="submit" class="btn btn-primary">
+                        O'zgartirish
+                    </button>
+               </div>
                </form>
+
             </div>
          </div>
       </div>
@@ -78,5 +101,27 @@
     $(function () {
         $("select").select2();
     });
+    function upOrder(narxi,id)
+    {
+
+        var proId = [36,37,38,39,29,47];
+
+        var pro = $(`#pro${id}`).val();
+        $(`#proprice${id}`).text(pro*narxi);
+
+        var sumpor = 0
+        $('.allpro').each(function(){
+            sumpor += parseInt(this.value)
+        });
+        $('#allprosoni').text(sumpor);
+
+        var sumpor2 = 0
+        $('.allprosum').each(function(){
+            sumpor2 += parseInt(this.value)
+        });
+        sumpor2 = sumpor2 + pro*narxi;
+
+        $('#allprosoni2').text(sumpor2);
+    }
    </script>
 @endsection
