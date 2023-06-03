@@ -40,6 +40,66 @@
                                     </div>
                                 </form>
                             </div>
+
+                            @foreach ($moneys as $elchi)
+
+
+                            <div class="card-body">
+                                   <div class="table-responsive">
+                                      <table class="table mb-0 example1">
+                                         <thead>
+                                            <tr>
+                                               <th>FIO</th>
+                                               <th>Viloyat</th>
+                                               <th>Dorixona</th>
+                                               <th>Buyurtma summasi</th>
+                                               <th>Pul kelishi</th>
+                                               @foreach ($elchi['user']['history_money'] as $h)
+                                                  <th>{{date('d.m.Y',strtotime($h['add_date']))}}</th>
+                                               @endforeach
+                                               <th>Qarz</th>
+
+                                            </tr>
+                                         </thead>
+                                         <tbody>
+                                               <tr>
+                                                  <td>{{$elchi['user']['last_name']}} {{$elchi['user']['first_name']}}</td>
+                                                  <td>{{getRegionByid($elchi['user']['region_id'])}}</td>
+                                                  <td>{{getPharmacy($elchi['user']['pharmacy'][0]['pharmacy_id'])}}</td>
+                                                  <td>
+                                                    <span class="badge badge-primary">{{number_format($elchi['order_price'],0,',',' ')}}</span>
+                                                    </td>
+                                                  <td>
+                                                     @if($elchi['money_arrival'] == null)
+                                                         0
+                                                     @else
+                                                    <span class="badge badge-success">{{number_format($elchi['money_arrival'],0,',',' ')}}</span>
+
+
+                                                     @endif
+                                                  </td>
+                                                    @foreach ($elchi['user']['history_money'] as $h)
+                                                        <td>
+                                                        <span class="badge badge-info">{{number_format($h['money'],0,',',' ')}}</span>
+
+                                                        </td>
+                                                    @endforeach
+
+
+
+                                                    <td>
+
+                                                        <span class="badge badge-danger">{{number_format($elchi['order_price']-$elchi['money_arrival'],0,',',' ')}}</span>
+
+                                                    </td>
+                                                  {{-- <td>{{date('d.m.Y',strtotime($elchi['created_at']))}}</td> --}}
+                                               </tr>
+                                         </tbody>
+                                      </table>
+                                   </div>
+                            </div>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>

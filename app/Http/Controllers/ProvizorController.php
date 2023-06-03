@@ -49,9 +49,11 @@ class ProvizorController extends Controller
 
         $provizors = Http::get(getProvizorUrl().'/api/provizors')->collect();
 
+        $moneys = Http::get(getProvizorUrl().'/api/moneys')->collect();
 
         return view('provizor.money',[
-            'provizors' => $provizors
+            'provizors' => $provizors,
+            'moneys' => $moneys,
         ]);
 
     }
@@ -63,6 +65,8 @@ class ProvizorController extends Controller
             'money' => $request->money,
             'date' => $request->date,
         ]);
+
+        // return $response;
 
         if($response['status'] == 200)
         {

@@ -16,6 +16,7 @@
                         <thead>
                            <tr>
                               <th>FIO</th>
+                              <th>PASS</th>
                               <th>Buyurtma summasi</th>
                               <th>Promo summasi</th>
                               <th>Pul kelishi</th>
@@ -31,6 +32,7 @@
                            @foreach ($orders as $elchi)
                               <tr>
                                  <td>{{$elchi['user']['last_name']}} {{$elchi['user']['first_name']}}</td>
+                                 <td>{{$elchi['user']['pass']}}</td>
                                  <td>{{number_format($elchi['order_price'],0,',',' ')}}</td>
                                  <td>{{number_format($elchi['promo_price'],0,',',' ')}}</td>
                                  <td>
