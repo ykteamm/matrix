@@ -105,18 +105,34 @@ class UserController extends Controller
         $data = [];
         $regions = Region::all();
 
-        // if($region_id == 'all')
+        if($region_id == 'all')
+        {
+            $regText = 'Hammasi';
+        }else{
+            $regText = Region::find($region_id)->name;
+        }
 
-        $regText = Region::find($region_id);
+        if($region_id == 'all')
+        {
+            $regis = Region::pluck('id')->toArray();
 
-
-        $regi = DB::table('tg_region')
+            $regi = DB::table('tg_region')
+            ->selectRaw('tg_region.*, COUNT(tg_region.id) AS count')
+            ->whereIn('tg_region.id',$regis)
+            ->leftJoin('tg_user', 'tg_user.region_id', 'tg_region.id')
+            ->orderBy('count', 'DESC')
+            ->groupBy('tg_region.id')
+            ->get();
+        }else{
+            $regi = DB::table('tg_region')
             ->selectRaw('tg_region.*, COUNT(tg_region.id) AS count')
             ->where('tg_region.id',$region_id)
             ->leftJoin('tg_user', 'tg_user.region_id', 'tg_region.id')
             ->orderBy('count', 'DESC')
             ->groupBy('tg_region.id')
             ->get();
+        }
+
 
         foreach ($regi as $region) {
 

@@ -37,7 +37,7 @@
                                     <button type="button" class="btn btn-outline-primary dropdown-toggle" id="age_button2Money"
                                         name="{{$region_id}}" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        {{ $regText->name }}</button>
+                                        {{ $regText }}</button>
                                     <div class="dropdown-menu" style="z-index: 100000">
                                         <a href="#" onclick="selectRegionMoney(`all`,`Hammasi`)" class="dropdown-item"
                                             >
