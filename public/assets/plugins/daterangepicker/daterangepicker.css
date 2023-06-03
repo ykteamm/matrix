@@ -271,7 +271,8 @@
     display: none;
     line-height: 12px;
     vertical-align: middle;
-    margin-top: -611px;
+    position: absolute;
+    top: -67px;
     background: white;
   }
 
