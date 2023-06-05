@@ -21,12 +21,27 @@
                         <div class="card detail-box1">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap">
+                                    <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap" data-toggle="modal"
+                                    data-target="#kingSoldAll{{ $item->id }}" style="cursor: pointer">
                                         @if($host == 'mat')
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/king_sold/{{$item->image}}" alt="Profile Image">
+                                        <img id="avatarImg"  width="100%" class="avatar-img" src="https://jang.novatio.uz/images/users/king_sold/{{$item->image}}" alt="Profile Image">
                                         @else
-                                        <img id="avatarImg" height="500px" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
+                                        <img id="avatarImg"  width="100%" class="avatar-img" src="https://jang.novatio.uz/images/users/passport/1673874613.jpg" alt="Profile Image">
                                         @endif
+                                        <div class="modal fade" id="kingSoldAll{{ $item->id }}"
+                                            tabindex="-1" aria-labelledby="kingSoldAllLabel"
+                                            aria-hidden="true">
+                                            <div
+                                                class="modal-dialog modal-dialog-centered d-md-flex justify-content-md-center">
+                                                <div class="smena-image-detail">
+                                                    <button type="button"
+                                                        class="close bg-white rounded p-2 d-none d-md-block"
+                                                        data-dismiss="modal">&times;</button>
+                                                    <img style="max-width: 900px" src="https://jang.novatio.uz/images/users/king_sold/{{ $item->image }}"
+                                                        alt="Message image">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap ">
                                         <div class="widget settings-menu text-white ml-5">
