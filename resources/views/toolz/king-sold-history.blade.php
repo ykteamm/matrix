@@ -59,7 +59,7 @@
                                                                     <button type="button"
                                                                         class="close bg-white rounded p-2 d-none d-md-block"
                                                                         data-dismiss="modal">&times;</button>
-                                                                    <img src="https://jang.novatio.uz/images/users/king_sold/{{ $item->image }}"
+                                                                    <img style="max-width: 400px" src="https://jang.novatio.uz/images/users/king_sold/{{ $item->image }}"
                                                                         alt="Message image">
                                                                 </div>
                                                             </div>
