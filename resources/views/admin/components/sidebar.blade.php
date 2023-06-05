@@ -57,7 +57,7 @@
                             <ul style="display: none;">
                                 <li><a href="{{ route('king.sold') }}">Tasdiqlash</a></li>
                                 <li><a href="{{ route('king.history', ['date' => date('Y-m-d')]) }}">Tarix</a></li>
-                                <li><a href="{{ route('king-liga') }}">Liga</a></li>
+                                <li><a href="{{ route('kingliga.index') }}">Ligalar</a></li>
                                 <li><a
                                         href="{{ route('king-sold', ['user_id' => 'all', 'region_id' => 'all', 'date' => 'today']) }}"><span>Hisobot
                                         </span></a>
@@ -150,15 +150,13 @@
                 @isset(Session::get('per')['toolz'])
                     @if (Session::get('per')['toolz'] == 'true')
                         <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-toolbox"></i> <span> Toolz Bot </span><span
+                            <a href="settings.html"><i class="fas fa-toolbox"></i> <span> Smena </span><span
                                     class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a href="{{ route('open-smena') }}">Smena ochish</a></li>
                                 <li><a href="{{ route('close-smena') }}">Smena yopish</a></li>
                                 <li><a href="{{ route('provizor') }}">Provizor tayinlash</a></li>
-                                <li><a href="{{ route('dublicat.index') }}">Duclicat elchilar</a></li>
                                 <li><a href="{{ route('premya.index') }}">Premyalar</a></li>
-                                <li><a href="{{ route('kingliga.index') }}">Ligalar</a></li>
                             </ul>
                         </li>
                     @endif
@@ -351,6 +349,7 @@
                                         href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}">Oylik</a>
                                 </li>
                                 <li><a href="{{ route('blacklist.all') }}">Bloklanganlar</a></li>
+                                <li><a href="{{ route('dublicat.index') }}">Duclicat elchilar</a></li>
                                 <li><a href="{{ route('users-crystall') }}">User tashqi market</a></li>
                                 @isset(Session::get('per')['all_user'])
                                     @if (Session::get('per')['all_user'] == 'true')
