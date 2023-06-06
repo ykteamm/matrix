@@ -58,6 +58,7 @@
                                 <li><a href="{{ route('king.sold') }}">Tasdiqlash</a></li>
                                 <li><a href="{{ route('king.history', ['date' => date('Y-m-d')]) }}">Tarix</a></li>
                                 <li><a href="{{ route('kingliga.index') }}">Ligalar</a></li>
+                                <li><a href="{{ route('king-liga') }}">Turnir liga</a></li>
                                 <li><a
                                         href="{{ route('king-sold', ['user_id' => 'all', 'region_id' => 'all', 'date' => 'today']) }}"><span>Hisobot
                                         </span></a>

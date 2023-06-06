@@ -375,23 +375,8 @@ class ToolzController extends Controller
     public function kingSoldLiga()
     {
         $ligas = LigaKingSold::with('liga_user', 'liga_user.user')->get();
-
         $no_user = LigaKingUser::pluck('user_id')->toArray();
-
-        $endday = date('Y-m-d', (strtotime('-1 day', strtotime(Carbon::now()))));
-        $startday = date('Y-m-d', (strtotime('-14 day', strtotime(Carbon::now()))));
-        $transactions = ProductSold::whereBetween('created_at', [$startday, $endday])
-            ->distinct()
-            ->pluck('user_id')->toArray();
-        $user_in = [];
-        foreach ($transactions as $key => $value) {
-            if (!in_array($value, $no_user)) {
-                $user_in[] = $value;
-            }
-        }
-        // return $user_in;
-        $users = User::whereIn('id', $user_in)->get();
-        // return $users;
+        $users = User::whereNotIn('id', $no_user)->where('status', 1)->orWhere('status', 0)->get();
         return view('toolz.king-liga', compact('users', 'ligas'));
     }
     public function kingSoldLigaStore(Request $request)
