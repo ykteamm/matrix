@@ -88,4 +88,9 @@ class User extends Model
         return $this->hasOne(TeacherUser::class, 'user_id', 'id');
     }
 
+    public function turnir_member()
+    {
+        return $this->hasOne(TurnirMember::class, 'user_id', 'id');
+    }
+
 }

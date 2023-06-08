@@ -119,6 +119,19 @@
                     @endif
                 @endisset
 
+                @isset(Session::get('per')['turnir'])
+                    @if (Session::get('per')['turnir'] == 'true')
+                        <li class="submenu">
+                            <a href="settings.html"><i class="fas fa-gamepad"></i> <span> Turnir </span><span
+                                    class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{{ route('turnir-team') }}">Jamoalar</a></li>
+                                <li><a href="{{ route('turnir-group') }}">Guruhlar</a></li>
+                                <li><a href="{{ route('group-state') }}">Guruh bosqichi</a></li>
+                            </ul>
+                        </li>
+                    @endif
+                @endisset
 
                 @isset(Session::get('per')['teacher'])
                     @if (Session::get('per')['teacher'] == 'true')
