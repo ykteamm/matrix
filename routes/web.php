@@ -15,6 +15,7 @@ use App\Http\Middleware\LoginAuth;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PremyaTaskController;
 use App\Http\Controllers\ProvizorController;
+use App\Http\Controllers\RekrutController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ToolzController;
 use App\Http\Controllers\UserController;
@@ -385,7 +386,10 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('group-state', [TurnirController::class, 'groupState'])->name('group-state');
     Route::post('group-state-store', [TurnirController::class, 'groupStateStore'])->name('group-state.store');
     //TURNIR-END
-
+    //REKRUT-BEGIN
+    Route::get('rekrut-add-user', [RekrutController::class, 'addUser'])->name('rekrut-add-user');
+    Route::post('rekrut-save-user', [RekrutController::class, 'saveUser'])->name('rekrut-save-user');
+    //REKRUT-END
 });
 
 // PREMYA
