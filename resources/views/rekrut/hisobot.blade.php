@@ -24,10 +24,15 @@
                                                 @php
                                                     if ($d->status == 0) {
                                                         $col = '#ffffff';
+                                                        $icon = '';
                                                     } elseif($d->status == 1) {
                                                         $col = '#0bf24f';
+                                                        $icon = '<i class="fas fa-check"></i>';
+
                                                     }else{
                                                         $col = '#f20b0b';
+                                                        $icon = '<i class="fas fa-window-close"></i>';
+
                                                     }
                                                 @endphp
                                                     <div style="background:#323584;border-radius:8px;box-shadow: 0px 0px 7px 5px {{$col}};
@@ -37,13 +42,29 @@
                                                         >
 
                                                         <div class="accordion" id="accordionExample">
-                                                            <span
+
+                                                            <div class="d-flex justify-content-between">
+                                                                <span
                                                             style="font-size:20px;color:white;"
                                                             class="mt-1"
 
                                                             >{{$d->fname}}</span>
+                                                            <span
+                                                                style="font-size:20px;color:white;"
+                                                                class="mt-1"
+
+                                                                >
+                                                                @if ($d->status == 0)
+                                                                @elseif($d->status == 1)
+                                                                    <i class="fas fa-check" style="color: rgb(3, 255, 3)"></i>
+                                                                @else
+                                                                    <i class="fas fa-window-close" style="color: red"></i>
+                                                                @endif
+                                                            </span>
+                                                            </div>
+
                                                             <div id="collapseOne{{$d->id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                                <div class="card-body">
+                                                                <div class="card-body text-white">
                                                                    {{$d->comment}}
                                                                 </div>
                                                               </div>
