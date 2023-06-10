@@ -368,6 +368,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::post('order-update/{order_id}', [ProvizorController::class,'orderProductUpdate'])->name('order.update');
 
+    Route::get('provizor-hisobot', [ProvizorController::class, 'provizorHisobot'])->name('provizor-hisobot');
 
 
     Route::get('pro-money', [ProvizorController::class, 'money'])->name('pro-money');
@@ -386,7 +387,11 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('group-state', [TurnirController::class, 'groupState'])->name('group-state');
     Route::post('group-state-store', [TurnirController::class, 'groupStateStore'])->name('group-state.store');
     //TURNIR-END
+
     //REKRUT-BEGIN
+    Route::get('rekrut', [RekrutController::class, 'rekrut'])->name('rekrut');
+    Route::get('rekrut-hisobot', [RekrutController::class, 'rekrutHisobot'])->name('rekrut-hisobot');
+    Route::post('rekrut-check/{id}', [RekrutController::class, 'rekrutCheck'])->name('rekrut.check');
     Route::get('rekrut-add-user', [RekrutController::class, 'addUser'])->name('rekrut-add-user');
     Route::post('rekrut-save-user', [RekrutController::class, 'saveUser'])->name('rekrut-save-user');
     //REKRUT-END

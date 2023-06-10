@@ -43,6 +43,19 @@
                                 <span>Elchilar kunlik</span></a>
                     @endif
                 @endisset
+
+                @isset(Session::get('per')['rekrut-atchot'])
+                    @if (Session::get('per')['rekrut-atchot'] == 'true')
+                        <li><a href="{{ route('rekrut-hisobot') }}"><i class="fas fa-filter"></i> <span>Rekrut hisobot</span></a>
+                    @endif
+                @endisset
+
+                @isset(Session::get('per')['provizor-atchot'])
+                    @if (Session::get('per')['provizor-atchot'] == 'true')
+                        <li><a href="{{ route('provizor-hisobot') }}"><i class="fas fa-filter"></i> <span>Provizor hisobot</span></a>
+                    @endif
+                @endisset
+
                 @isset(Session::get('per')['elchi'])
                     @if (Session::get('per')['elchi'] == 'true')
                         {{-- <li><a href="{{route('elchi-list')}}"><i class="feather-users"></i>  <span>Elchilar</span></a> --}}
@@ -133,17 +146,14 @@
                     @endif
                 @endisset
 
-                @isset(Session::get('per')['turnir'])
-                    @if (Session::get('per')['turnir'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-gamepad"></i> <span> Rekrut </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('rekrut-add-user') }}">Elchi qo'shish</a></li>
-                                <li><a href="{{ route('turnir-group') }}">Guruhlar</a></li>
-                                <li><a href="{{ route('group-state') }}">Guruh bosqichi</a></li>
-                            </ul>
-                        </li>
+                @isset(Session::get('per')['rekrut'])
+                    @if (Session::get('per')['rekrut'] == 'true')
+
+                        @if (in_array(Session::get('user')->rm,[1,2]))
+                            <li><a href="{{ route('rekrut') }}"><i class="fas fa-filter"></i> <span>Rekruting</span></a>
+                        @else
+                        <li><a href="{{ route('rekrut-add-user') }}"><i class="fas fa-filter"></i> <span>Rekruting</span></a>
+                        @endif
                     @endif
                 @endisset
 

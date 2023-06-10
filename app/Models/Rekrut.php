@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Rekrut extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'full_name',
+        'phone',
+        'region_id',
+        'district_id',
+        'rm_id',
+    ];
 }

@@ -58,7 +58,38 @@
          </div>
          <div class="card-body">
             <div class="table-responsive">
-
+                <table class="table table-striped mb-0">
+                    <thead>
+                    <tr>
+                        <th>FIO </th>
+                        <th>Telefon</th>
+                        <th>RM </th>
+                        <th>Viloyat </th>
+                        <th>Tuman </th>
+                        <th>Xolati </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($rekruts as $rekrut)
+                        <tr>
+                            <td>{{$rekrut->fname}} </td>
+                            <td>{{$rekrut->phone}} </td>
+                            <td>{{$rekrut->f}} {{$rekrut->l}}</td>
+                            <td>{{$rekrut->r}} </td>
+                            <td>{{$rekrut->d}} </td>
+                            <td>
+                                @if ($rekrut->status == 0)
+                                    <span class="badge badge-primary">Ko'rilmagan</span>
+                                @elseif ($rekrut->status == 1)
+                                    <span class="badge badge-success">Tasdiqlangan</span>
+                                @else
+                                    <span class="badge badge-danger">Tasdiqlanmagan</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
       </div>

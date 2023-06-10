@@ -302,6 +302,10 @@ if (!function_exists('h_positions')) {
         $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';
         $h_positions['turnir'] = 'Turnir';
+        $h_positions['rekrut'] = 'Rekrut';
+        $h_positions['rekrut-atchot'] = 'Rekrut Hisobot';
+        $h_positions['provizor-atchot'] = 'Provizor Hisobot';
+
         $h_positions['toolz'] = 'Toolz Bot';
         $h_positions['teacher'] = 'Ustoz - shogird';
         $h_positions['narx'] = 'Narx';

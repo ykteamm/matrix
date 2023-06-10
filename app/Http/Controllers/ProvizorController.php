@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -14,6 +15,23 @@ class ProvizorController extends Controller
 
         return view('provizor.index',[
             'orders' => $orders
+        ]);
+
+    }
+    public function provizorHisobot()
+    {
+
+        $orders = Http::get(getProvizorUrl().'/api/hisobot')->collect();
+
+        $reg = [];
+
+        foreach ($orders as $key => $value) {
+            $reg[] = $value['region_id'];
+        }
+        $regions = Region::whereIn('id',$reg)->get();
+        return view('provizor.hisobot',[
+            'orders' => $orders,
+            'regions' => $regions
         ]);
 
     }
