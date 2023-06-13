@@ -141,6 +141,7 @@ class UserController extends Controller
             $users = ProductSold::select('tg_user.id')
                 ->whereDate('tg_productssold.created_at','>=',$month.'-01')
                 ->whereDate('tg_productssold.created_at','<=',$last_date)
+                // ->where('tg_user.id', 279)
                 ->whereIn('tg_user.status', [0,1,2])
                 ->where('tg_region.id', $region->id)
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
@@ -701,13 +702,24 @@ class UserController extends Controller
 
     public function assignDailyWork(Request $request)
     {
+        // return $request;
         $r = $request->all();
         unset($r['_token']);
         foreach ($r as $key => $value) {
             if ($value == 'change') {
                 $user_id = substr($key, 7);
-                $userDaily = DailyWork::where('user_id', $user_id)->orderBy('id', 'DESC')->first();
-                if ($userDaily) {
+
+
+
+
+                if($r['endwork_' . $user_id] != null)
+                {
+                    DB::table('tg_user')->where('id', $user_id)->update([
+                        'work_end' => $r['endwork_' . $user_id],
+                    ]);
+                }else{
+                    $userDaily = DailyWork::where('user_id', $user_id)->orderBy('id', 'DESC')->first();
+                    if ($userDaily) {
                     $ends = date('Y-m-d', (strtotime('-1 day', strtotime(date("Y-m-d")))));
 
                     DailyWork::where('id', $userDaily->id)->update([
@@ -721,14 +733,17 @@ class UserController extends Controller
                         'finish_work' => $r['finish_' . $user_id],
                         'start' => date("Y-m-d")
                     ]);
-                } else {
-                    DailyWork::create([
-                        'user_id' => $user_id,
-                        'start_work' => $r['start_' . $user_id],
-                        'finish_work' => $r['finish_' . $user_id],
-                        'start' => date("Y-m-d")
-                    ]);
+                    } else {
+                        DailyWork::create([
+                            'user_id' => $user_id,
+                            'start_work' => $r['start_' . $user_id],
+                            'finish_work' => $r['finish_' . $user_id],
+                            'start' => date("Y-m-d")
+                        ]);
+                    }
                 }
+
+
             }
         }
         return back();

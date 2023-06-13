@@ -20,6 +20,7 @@
                                             <th>Viloyat</th>
                                             <th>Ish boshlash</th>
                                             <th>Ish tugatish</th>
+                                            <th>Ishdan ketish</th>
                                             <th>Yangilash</th>
                                         </tr>
                                     </thead>
@@ -72,6 +73,25 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if ($user->work_end)
+                                                        <div id="endWork{{ $user->id }}">
+                                                            {{ $user->work_end }}
+                                                        </div>
+                                                        <div id="endWorkInput{{ $user->id }}" class="d-none">
+                                                            <input value="{{ $user->work_end }}" type="date"
+                                                                class="form-control form-control-sm"
+                                                                name="endwork.{{ $user->id }}">
+                                                        </div>
+                                                    @else
+                                                        <div class="">
+                                                            <input value="{{ $user->work_end }}" type="date"
+                                                                class="form-control form-control-sm"
+                                                                name="endwork.{{ $user->id }}"
+                                                                id="endwork.{{ $user->id }}">
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td>
                                                     <div class="form-check">
                                                         <input onchange="change(this, {{ $user->id }})" type="checkbox"
                                                             class="form-check-input" name="change.{{ $user->id }}"
@@ -116,6 +136,14 @@
         } else {
             $("#finishInput" + id).addClass('d-none');
             $("#finishTime" + id).removeClass('d-none');
+        }
+
+        if ($("#endWorkInput" + id).hasClass('d-none')) {
+            $("#endWorkInput" + id).removeClass('d-none')
+            $("#endWork" + id).addClass('d-none');
+        } else {
+            $("#endWorkInput" + id).addClass('d-none');
+            $("#endWork" + id).removeClass('d-none');
         }
     }
 </script>

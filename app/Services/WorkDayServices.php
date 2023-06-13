@@ -215,6 +215,14 @@ class WorkDayServices
                     return 0;
                 }
             }
+
+            if($if_user_work->work_end != null)
+            {
+                if(strtotime($date) >= strtotime($if_user_work->work_end))
+                {
+                    return 0;
+                }
+            }
         }
 
         if($date < '2023-03-15' || $ddd == 'false' || in_array($day_s,$add_array))
@@ -286,7 +294,13 @@ class WorkDayServices
             }else{
                 $diff_close = 0;
             }
-            $all_diff = $diff_open + $diff_close;
+
+            $shanba = 0;
+            if(date('w',strtotime($date)) == 6)
+            {
+                $shanba = 180;
+            }
+            $all_diff = $diff_open + $diff_close - $shanba;
         }
         // dd($all_diff);
         // if($all_diff != 0)
@@ -453,6 +467,8 @@ class WorkDayServices
         // for($i=$month;$i>=0;$i--)
         // for($i=0;$i<=$month;$i++)
         // {
+
+            // dd($month);
             $date = $month.'-01';
             // $date = date('Y-m-d',(strtotime ( '-'.$i.' month' , strtotime ( Carbon::now() ) ) ));
             $date_begin = $this->getFirstDate($date);
@@ -476,16 +492,8 @@ class WorkDayServices
 
             $names = $user->last_name.' '.$user->first_name;
 
-            // $arr_days = $this->getMonthMaoshKunlik($date_begin,$date_end);
             $shtr = getShtrafDefault($date_begin,$date_end,$this->user_id);
-            // $shtraf = DB::table('tg_details')
-            //     ->select('price','message',DB::raw('DATE(created_at)'))
-            //     ->where('user_id',Auth::id())
-            //     ->where('status',2)
-            //     ->whereDate('created_at','>=',$date_begin)
-            //     ->whereDate('created_at','<=',$date_end)
-            //     ->distinct('date')
-            //     ->get();
+
             $shtraf = 0;
             if(count($shtr) > 0)
             {
@@ -494,12 +502,6 @@ class WorkDayServices
                     $shtraf = $shtraf + $sh->price;
                 }
             }
-
-
-            // $shtraf = Detail::where('user_id',$this->user_id)->where('status',2)
-            // ->whereDate('created_at','>=',$date_begin)
-            // ->whereDate('created_at','<=',$date_end)
-            // ->sum('price');
 
             $premya = Detail::where('user_id',$this->user_id)->where('status',1)
             ->whereDate('created_at','>=',$date_begin)
