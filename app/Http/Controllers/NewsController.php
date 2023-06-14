@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use App\Models\NewsImages;
+use App\Models\User;
+use App\Notifications\NewsPublished;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
@@ -97,12 +100,18 @@ class NewsController extends Controller
                 $pathname = asset('news/imgs/' . $imageName);
                 
             }
-            News::create([
+            $news = News::create([
                 'title' => $title,
                 'img' => $pathname,
                 'desc' => $desc,
                 'publish' => isset($request->publish) ? true : false
             ]);
+            if(isset($request->publish)) {
+                $users = User::whereIn('status', [0,1])->get();
+                foreach($users as $user) {
+                    Notification::send($user, (new NewsPublished($news)));
+                }
+            }
             return redirect("allnews");
         } catch (\Throwable $th) {
             return redirect("allnews")->with("newsError", $th->getMessage());
@@ -146,6 +155,12 @@ class NewsController extends Controller
                 'img' => $pathname ?? $new->img,
                 'publish' => isset($request->publish) ? true : false
             ]);
+            if(isset($request->publish)) {
+                $users = User::whereIn('status', [0,1])->get();
+                foreach($users as $user) {
+                    Notification::send($user, (new NewsPublished($new)));
+                }
+            }
             return redirect("allnews");
         } catch (\Throwable $th) {
             return redirect("allnews")->with("newsError", $th->getMessage());
