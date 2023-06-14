@@ -361,6 +361,14 @@
                     @endif
                 @endisset
 
+                @isset(Session::get('per')['oylik'])
+                    @if (Session::get('per')['oylik'] == 'true')
+                        <li><a
+                            href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}">Oylik</a>
+                        </li>
+                    @endif
+                @endisset
+
                 @isset(Session::get('per')['narx'])
                     @if (Session::get('per')['narx'] == 'true')
                         <li class="submenu">
@@ -374,6 +382,7 @@
                     @endif
                 @endisset
 
+
                 @isset(Session::get('per')['control'])
                     @if (Session::get('per')['control'] == 'true')
                         <li class="submenu">
@@ -383,9 +392,7 @@
                                 <li><a href="{{ route('user-control') }}">Status</a></li>
                                 <li><a href="{{ route('user-register') }}">Registratsiya</a></li>
                                 <li><a href="{{ route('users-without-pharmacy') }}">New users</a></li>
-                                <li><a
-                                        href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}">Oylik</a>
-                                </li>
+
                                 <li><a href="{{ route('blacklist.all') }}">Bloklanganlar</a></li>
                                 <li><a href="{{ route('dublicat.index') }}">Duclicat elchilar</a></li>
                                 <li><a href="{{ route('users-crystall') }}">User tashqi market</a></li>

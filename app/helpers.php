@@ -303,6 +303,7 @@ if (!function_exists('h_positions')) {
         $h_positions['team'] = 'Jamoa';
         $h_positions['turnir'] = 'Turnir';
         $h_positions['rekrut'] = 'Rekrut';
+        $h_positions['oylik'] = 'Oylik';
         $h_positions['rekrut-atchot'] = 'Rekrut Hisobot';
         $h_positions['provizor-atchot'] = 'Provizor Hisobot';
 
