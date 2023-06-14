@@ -298,16 +298,27 @@ class WorkDayServices
             $shanba = 0;
             if(date('w',strtotime($date)) == 6)
             {
-                $shanba = 180;
+                $shanba = 120;
+                $all_diff = $diff_open + $diff_close;
+
+                if($all_diff > $shanba)
+                {
+                    $all_diff = $all_diff - $shanba;
+                }else{
+                    $all_diff = 0;
+                }
+            }else{
+                $all_diff = $diff_open + $diff_close;
             }
-            $all_diff = $diff_open + $diff_close - $shanba;
+
+
         }
         // dd($all_diff);
         // if($all_diff != 0)
         // {
         //     $all_diff = $all_diff - $all_diff_g
         // }
-
+            // dd($all_diff);
         return $all_diff;
     }
     public function getSpecialStartDay($date,$user_id)
