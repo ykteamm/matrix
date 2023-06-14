@@ -363,9 +363,9 @@
 
                 @isset(Session::get('per')['oylik'])
                     @if (Session::get('per')['oylik'] == 'true')
-                        <li><a
-                            href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}">Oylik</a>
-                        </li>
+                    <li><a href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}"><i class="fas fa-calendar-week"></i>
+                        <span>Oylik </span></a>
+                    </li>
                     @endif
                 @endisset
 
