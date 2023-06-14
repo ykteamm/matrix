@@ -429,6 +429,21 @@
                                                 <span style="">
                                                     <div>{{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}</div>
                                                 </span>
+                                                <div>
+                                                    @if ($sold[$item->id][$i]['open'] == null)
+                                                        <span class="badge bg-danger-light">
+                                                            Ishda emas
+                                                        </span>
+                                                    @else
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['open']))}}
+                                                        @if ($sold[$item->id][$i]['close'] == null)
+                                                        ---
+                                                        @else
+                                                            {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+
+                                                        @endif
+                                                    @endif
+                                                 </div>
                                             </td>
                                         @else
                                             <td style="display: none;" onclick="days({{ $s }})"
@@ -439,9 +454,6 @@
                                                 <span class="days{{ $s }} badge bg-primary-light">
                                                     {{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}
                                                 </span>
-
-                                                {{-- <div> --}}
-
                                                     <span style="
                                                                 background: rgb(17, 78, 139);
                                                                 padding: 3px 6px;
@@ -451,10 +463,12 @@
                                                                 margin-left:4px;"
                                                     >{{ $sold[$item->id][$i]['hour'].".".$sold[$item->id][$i]['minute'] }}
                                                 </span>
-
-                                                {{-- </div> --}}
-
-
+                                                <div>
+                                                    <span class="badge bg-warning-light">
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['open']))}} -
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+                                                    </span>
+                                                </div>
                                             </td>
                                         @endif
                                         @php

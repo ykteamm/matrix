@@ -650,9 +650,18 @@ class ElchilarService
                     $hour = 0;
                     $minute = 0;
                 }
+                $smena = Shift::whereDate('created_at', $day)->where('user_id', $item->id)->first();
+                if($smena)
+                {
+                    $open = $smena->open_date;
+                    $close = $smena->close_date;
+                }else{
+                    $open = 0;
+                    $close = 0;
+                }
                 $MonthSold=ProductSold::where('user_id',$item->id)
                     ->whereDate('created_at','=', $day)->sum(DB::raw('price_product*number'));
-                $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute];
+                $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
             }
             $sold[$item->id]=$sold2;
         }
