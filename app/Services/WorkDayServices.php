@@ -294,7 +294,7 @@ class WorkDayServices
             }else{
                 $diff_close = 0;
             }
-
+            
             $shanba = 0;
             if(date('w',strtotime($date)) == 6)
             {
