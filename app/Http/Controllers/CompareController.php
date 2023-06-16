@@ -55,27 +55,27 @@ class CompareController extends Controller
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->orderBy('id','DESC')
             ->first();
+            // return $dated;
+            // if($dated)
+            // {
+            //     $dat = $dated->date_time;
 
-            if($dated)
-            {
-                $dat = $dated->date_time;
+            //     $sold=DB::table('tg_productssold')->where('pharm_id',$pharmacy_id)
+            //     ->whereDate('created_at','>=',date('Y-m-d',strtotime($dat)))
+            //     ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            //     ->where('medicine_id',$m->id)
+            //     ->sum('number');
 
-                $sold=DB::table('tg_productssold')->where('pharm_id',$pharmacy_id)
-                ->whereDate('created_at','>=',date('Y-m-d',strtotime($dat)))
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
-                ->where('medicine_id',$m->id)
-                ->sum('number');
-
+            // $solds[$m->id] = $sold;
+            // }else{
+            $sold=DB::table('tg_productssold')->where('pharm_id',$pharmacy_id)
+            ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+            ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where('medicine_id',$m->id)
+            ->sum('number');
             $solds[$m->id] = $sold;
-            }else{
-                $sold=DB::table('tg_productssold')->where('pharm_id',$pharmacy_id)
-                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
-                ->where('medicine_id',$m->id)
-                ->sum('number');
-            $solds[$m->id] = $sold;
 
-            }
+            // }
 
 
 
