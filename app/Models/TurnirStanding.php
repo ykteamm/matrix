@@ -22,4 +22,12 @@ class TurnirStanding extends Model
         'month',
         'ends',
     ];
+    public function team1()
+    {
+        return $this->hasMany(TurnirTeam::class, 'id', 'team1_id');
+    }
+    public function team2()
+    {
+        return $this->hasMany(TurnirTeam::class, 'id', 'team2_id');
+    }
 }

@@ -9,32 +9,28 @@ use App\Models\TurnirPoint;
 use App\Models\TurnirStanding;
 use App\Models\TurnirTeam;
 use App\Models\TurnirTeamGroup;
+use App\Models\TurnirTour;
 use App\Models\User;
+use App\Services\TurnirService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TurnirController extends Controller
 {
     public function team()
     {
-        $teams = TurnirTeam::with(['turnir_member' => function ($q) {
-            $q->whereDate('month', date('Y-m') . '-01');
+        $month = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $teams = TurnirTeam::with(['turnir_member' => function ($q) use ($month) {
+            $q->whereDate('month', $month);
             $q->orderBy('tour');
         }, 'turnir_member.user' => function ($u) {
             $u->select('id', 'first_name', 'last_name');
-        }])
+        }])->get();
+        $memIds = TurnirMember::whereDate('month', $month)->pluck('user_id')->toArray();
+        $users = User::whereIn('status', [0, 1])
+            ->whereNotIn('id', $memIds)
+            ->orderBy('first_name', 'ASC')
             ->get();
-        // with('turnir_member','turnir_member.user')
-        // return $teams;
-        $users = User::whereIn('status', [0, 1])->orderBy('first_name', 'ASC')->get();
-
-        // $members = TurnirMember::with(['team' => function($team){
-        //     $team->select('id','name');
-        // },'user' => function($user){
-        //     $user->select('id','first_name','last_name');
-        // }])
-        // ->whereDate('month',date('Y-m').'-01')->orderBy('tour','ASC')->orderBy('team_id','ASC')->get();
-        // return $members;
-
         return view('turnir.team', [
             'teams' => $teams,
             'users' => $users
@@ -43,12 +39,13 @@ class TurnirController extends Controller
 
     public function group()
     {
-        $groups = TurnirGroup::with('team_group', 'team_group.group')->get();
-
-        $teams = TurnirTeam::all();
-
-
-        // return $teams;
+        $month = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $teamIds = TurnirTeamGroup::whereDate('month', $month)->pluck('team_id');
+        $groups = TurnirGroup::with(['team_groups' => function ($q) use ($month) {
+            $q->whereDate('month', $month);
+        }, 'team_groups.group'])
+            ->get();
+        $teams = TurnirTeam::whereNotIn('id', $teamIds)->get();
         return view('turnir.group', [
             'teams' => $teams,
             'groups' => $groups
@@ -57,32 +54,115 @@ class TurnirController extends Controller
 
     public function memberStore(Request $request)
     {
-        for ($i = 1; $i <= 3; $i++) {
-            $member = new TurnirMember;
-            $member->team_id = $request->team_id;
-            $member->user_id = $request->user_id;
-            $member->month = $request->month;
-            $member->tour = $i;
-            $member->save();
-        }
+        $member = TurnirMember::where('user_id', $request->user_id)
+            ->whereDate('month', $request->month)
+            ->first();
+        $count = TurnirTeam::with(['turnir_member' => function ($q) use ($request) {
+            $q->whereDate('month', $request->month)->where('tour', 1);
+        }])->where('id', $request->team_id)
+            ->first();
 
+        if ($count->turnir_member->count() < 2 && !$member) {
+            for ($i = 1; $i <= 3; $i++) {
+                $member = new TurnirMember;
+                $member->team_id = $request->team_id;
+                $member->user_id = $request->user_id;
+                $member->month = $request->month;
+                $member->tour = $i;
+                $member->save();
+            }
+        }
         return redirect()->back();
     }
 
     public function teamGroupStore(Request $request)
     {
-        $member = new TurnirTeamGroup();
-        $member->team_id = $request->team_id;
-        $member->group_id = $request->group_id;
-        $member->month = $request->month;
-        $member->save();
-
+        $teamGroup = TurnirTeamGroup::where('team_id', $request->team_id)
+            ->whereDate('month', $request->month)
+            ->first();
+        $count = TurnirGroup::with(['team_groups' => function ($q) use ($request) {
+            $q->whereDate('month', $request->month);
+        }])->where('id', $request->group_id)
+            ->first();
+        if ($count->team_groups->count() < 4 && !$teamGroup) {
+            $member = new TurnirTeamGroup();
+            $member->team_id = $request->team_id;
+            $member->group_id = $request->group_id;
+            $member->month = $request->month;
+            $member->save();
+        }
         return redirect()->back();
     }
 
     public function groupState()
     {
         return view('turnir.standing');
+    }
+
+    public function turnirTour()
+    {
+        return view('turnir.tour');
+    }
+
+    public function turnirTourStore(Request $request)
+    {
+        $tour = $request->tour;
+        $date_begin = $request->date_begin;
+        $date_end = $request->date_end;
+        $month = $request->month;
+        $tourDate = TurnirTour::whereDate('date_begin', '>=', $date_begin)
+            ->whereDate('date_end', '<=', $date_end)
+            ->first();
+        $tourT = TurnirTour::whereDate('month', $month)
+            ->where('tour', $tour)
+            ->first();
+        if (!$tourDate && !$tourT) {
+            TurnirTour::create([
+                'tour' => $tour,
+                'date_begin' => $date_begin,
+                'date_end' => $date_end,
+                'month' => $month,
+                'title' => $request->title
+            ]);
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
+    public function turnirPlayoff()
+    {
+        $service = new TurnirService;
+        $teams = $service->getTeamsWithoutBattle(1);
+        $battles = $service->getStandings(1);
+        return view('turnir.playoff', compact('teams', 'battles'));
+    }
+
+    public function turnirPlayoffStore(Request $request)
+    {
+        if ($request->team1_id == $request->team2_id) {
+            return redirect()->back();
+        }
+        $service = new TurnirService;
+        $service->storeMembersPointsBattles($request, 1);  
+        return redirect()->back();
+    }
+
+    public function turnirGames()
+    {
+        $service = new TurnirService;
+        $teams = $service->getTeamsWithoutBattle(0);
+        $battles = $service->getStandings(0);
+        return view('turnir.games', compact('teams', 'battles'));
+    }
+
+    public function turnirGamesStore(Request $request)
+    {
+        if ($request->team1_id == $request->team2_id) {
+            return redirect()->back();
+        }
+        $service = new TurnirService;
+        $service->storeMembersPointsBattles($request, 0);  
+        return redirect()->back();
     }
 
     public function groupStateStore(Request $request)
@@ -94,6 +174,7 @@ class TurnirController extends Controller
         }])->get();
 
         $teams = [];
+        $begin = $request->begin_date;
 
         foreach ($groups as $key => $group) {
             if (count($group->team_group) > 0) {
@@ -192,7 +273,6 @@ class TurnirController extends Controller
         }
 
         foreach ($teams as $key => $team) {
-
             $this->battleSave($team);
         }
 

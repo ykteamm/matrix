@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TurnirGroup extends Model
+class TurnirTour extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'name'
+        'tour',
+        'date_begin',
+        'date_end',
+        'month',
+        'title'
     ];
-
-    public function team_groups()
-    {
-        return $this->hasMany(TurnirTeamGroup::class,'group_id','id');
-    }
 }

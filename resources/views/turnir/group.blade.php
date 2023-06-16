@@ -44,16 +44,16 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    @foreach ($groups as $team)
+                    @foreach ($groups as $group)
                         <div class="text-left">
-                            <h3>{{$team->name}}</h3>
+                            <h3>{{$group->name}}</h3>
                         </div>
                         <table class="table mb-0">
                             <thead>
                                 <tr>
-                                @foreach ($team->team_group as $member)
+                                @foreach ($group->team_groups as $team_group)
 
-                                    <th>{{$member->team->name}}</th>
+                                    <th>{{$team_group->team->name}}</th>
                                 @endforeach
 
                                 </tr>

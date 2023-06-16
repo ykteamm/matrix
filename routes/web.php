@@ -384,6 +384,15 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('turnir-group', [TurnirController::class, 'group'])->name('turnir-group');
     Route::post('turnir-member-store', [TurnirController::class, 'memberStore'])->name('turnir-member.store');
     Route::post('team-group-store', [TurnirController::class, 'teamGroupStore'])->name('team-group.store');
+    Route::get('turnir-tour', [TurnirController::class, 'turnirTour'])->name('turnir-tour');
+    Route::post('turnir-tour-store', [TurnirController::class, 'turnirTourStore'])->name('turnir-tour-store');
+    
+    Route::get('turnir-playoff', [TurnirController::class, 'turnirPlayoff'])->name('turnir-playoff');
+    Route::post('turnir-playoff-store', [TurnirController::class, 'turnirPlayoffStore'])->name('turnir-playoff-store');
+    
+    Route::get('turnir-games', [TurnirController::class, 'turnirGames'])->name('turnir-games');
+    Route::post('turnir-games-store', [TurnirController::class, 'turnirGamesStore'])->name('turnir-games-store');
+    
     Route::get('group-state', [TurnirController::class, 'groupState'])->name('group-state');
     Route::post('group-state-store', [TurnirController::class, 'groupStateStore'])->name('group-state.store');
     //TURNIR-END

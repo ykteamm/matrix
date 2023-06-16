@@ -10,8 +10,14 @@ class TurnirTeam extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'status'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(TurnirMember::class,'team_id','id');
+    }
 
     public function turnir_member()
     {

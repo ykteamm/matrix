@@ -141,6 +141,9 @@
                                 <li><a href="{{ route('turnir-team') }}">Jamoalar</a></li>
                                 <li><a href="{{ route('turnir-group') }}">Guruhlar</a></li>
                                 <li><a href="{{ route('group-state') }}">Guruh bosqichi</a></li>
+                                <li><a href="{{ route('turnir-tour') }}">Turnir tur</a></li>
+                                <li><a href="{{ route('turnir-playoff') }}">Turnir play-off</a></li>
+                                <li><a href="{{ route('turnir-games') }}">Turnir games</a></li>
                             </ul>
                         </li>
                     @endif

@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TurnirGroup extends Model
+class TurnirPlayoff extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'name'
+        'month',
+        'node',
+        'to',
+        'battle_id'
     ];
-
-    public function team_groups()
-    {
-        return $this->hasMany(TurnirTeamGroup::class,'group_id','id');
-    }
 }
