@@ -15,6 +15,7 @@ class Video extends Model
         'url',
         'like',
         'dislike',
-        'publish'
+        'publish',
+        'category'
     ];
 }

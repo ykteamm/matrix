@@ -33,6 +33,7 @@ class VideoController extends Controller
         $title = $request->title;
         $url = $request->url;
         $desc = $request->desc;
+        $category = $request->category;
         try {
             $pathname = null;
             if ($request->hasFile('img')) {
@@ -47,6 +48,7 @@ class VideoController extends Controller
                 'img' => $pathname,
                 'desc' => $desc,
                 'url' => $url,
+                'category' => $category ?? 0,
                 'publish' => isset($request->publish) ? true : false
             ]);
             return redirect("allvideos");
@@ -60,6 +62,7 @@ class VideoController extends Controller
         $title = $request->title;
         $desc = $request->desc;
         $url = $request->url;
+        $category = $request->category;
         try {
             $video = Video::find($id);
             $pathname = null;
@@ -76,6 +79,7 @@ class VideoController extends Controller
                 'desc' => $desc,
                 'img' => $pathname ?? $video->img,
                 'url' => $url ?? $video->url,
+                'category' => $category ?? 0,
                 'publish' => isset($request->publish) ? true : false
             ]);
             return redirect("allvideos");

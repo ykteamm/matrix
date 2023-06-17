@@ -59,9 +59,19 @@
                     </label>
                     <input name="img" id="img" type="file" class="d-none">
                 </div>
-                <div class="form-group">
-                    <label for="publish">Publish</label>
-                    <input name="publish" type="checkbox" class="form-check">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="form-group">
+                        <label for="publish">Publish</label>
+                        <input name="publish" type="checkbox" class="form-check">
+                    </div>
+                    <div class="form-group">
+                        <label for="publish">Oddiy</label>
+                        <input name="category" type="radio" value="0" class="form-check">
+                    </div>
+                    <div class="form-group">
+                        <label for="publish">Novatio jang</label>
+                        <input name="category" type="radio" value="1" class="form-check">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="publish">Video URL</label>
