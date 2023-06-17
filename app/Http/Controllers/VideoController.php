@@ -79,7 +79,7 @@ class VideoController extends Controller
                 'desc' => $desc,
                 'img' => $pathname ?? $video->img,
                 'url' => $url ?? $video->url,
-                'category' => $category ?? 0,
+                'category' => $category ?? $video->category,
                 'publish' => isset($request->publish) ? true : false
             ]);
             return redirect("allvideos");
