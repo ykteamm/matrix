@@ -11,10 +11,21 @@ class ProvizorController extends Controller
     public function index()
     {
 
+        $orders222 = Http::get(getProvizorUrl().'/api/hisobot')->collect();
+
+        $reg = [];
+
+        foreach ($orders222 as $key => $value) {
+            $reg[] = $value['region_id'];
+        }
+        $regions = Region::whereIn('id',$reg)->get();
+
         $orders = Http::get(getProvizorUrl().'/api/orders')->collect();
 
         return view('provizor.index',[
-            'orders' => $orders
+            'orders222' => $orders222,
+            'orders' => $orders,
+            'regions' => $regions
         ]);
 
     }

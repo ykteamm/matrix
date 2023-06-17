@@ -40,97 +40,188 @@
                 @isset(Session::get('per')['elchi-day'])
                     @if (Session::get('per')['elchi-day'] == 'true')
                         <li><a href="{{ route('elchilar', ['month' => date('Y-m')]) }}"><i class="fas fa-users"></i>
-                                <span>Elchilar kunlik</span></a>
+                                <span>Elchi kunlik</span></a>
                     @endif
                 @endisset
 
-                @isset(Session::get('per')['rekrut-atchot'])
-                    @if (Session::get('per')['rekrut-atchot'] == 'true')
-                        <li><a href="{{ route('rekrut-hisobot') }}"><i class="fas fa-filter"></i> <span>Rekrut hisobot</span></a>
-                    @endif
-                @endisset
+                <li class="submenu">
+                    <a href="settings.html"><i class="fas fa-filter"></i> <span> Hisobotlar </span><span
+                            class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        @isset(Session::get('per')['rekrut-atchot'])
+                            @if (Session::get('per')['rekrut-atchot'] == 'true')
+                                <li><a href="{{ route('rekrut-hisobot') }}"><span>Rekrut</span></a>
+                            @endif
+                        @endisset
 
-                @isset(Session::get('per')['provizor-atchot'])
-                    @if (Session::get('per')['provizor-atchot'] == 'true')
-                        <li><a href="{{ route('provizor-hisobot') }}"><i class="fas fa-filter"></i> <span>Provizor hisobot</span></a>
-                    @endif
-                @endisset
+                        @isset(Session::get('per')['provizor-atchot'])
+                            @if (Session::get('per')['provizor-atchot'] == 'true')
+                                <li><a href="{{ route('provizor-hisobot') }}"><span>Provizor</span></a>
+                            @endif
+                        @endisset
 
-                @isset(Session::get('per')['elchi'])
-                    @if (Session::get('per')['elchi'] == 'true')
-                        {{-- <li><a href="{{route('elchi-list')}}"><i class="feather-users"></i>  <span>Elchilar</span></a> --}}
-                    @endif
-                @endisset
+                        @isset(Session::get('per')['user_pharmacy'])
+                            @if (Session::get('per')['user_pharmacy'] == 'true')
+                                <li><a href="{{ route('pharmacy-user', 'today') }}">
+                                        <span>Dorixona</span></a>
+                            @endif
+                        @endisset
 
-                @isset(Session::get('per')['king_sold'])
-                    @if (Session::get('per')['king_sold'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-crown"></i> <span> Shox yurish </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('king.sold') }}">Tasdiqlash</a></li>
-                                <li><a href="{{ route('king.history', ['date' => date('Y-m-d')]) }}">Tarix</a></li>
-                                <li><a href="{{ route('kingliga.index') }}">Ligalar</a></li>
-                                <li><a href="{{ route('king-liga') }}">Turnir liga</a></li>
-                                <li><a
-                                        href="{{ route('king-sold', ['user_id' => 'all', 'region_id' => 'all', 'date' => 'today']) }}"><span>Hisobot
-                                        </span></a>
-                            </ul>
-                        </li>
-                    @endif
-                @endisset
+                        @isset(Session::get('per')['pro'])
+                            @if (Session::get('per')['pro'] == 'true')
+                                <li><a href="{{ route('pro-list', ['time' => 'today', 'region' => 'all', 'pharm' => 'all']) }}"><span>Mahsulotlar </span></a>
+                                </li>
+                            @endif
+                        @endisset
+
+                        @isset(Session::get('per')['show_purchase'])
+                            @if (Session::get('per')['show_purchase'] == 'true')
+                                <li><a href="{{ route('purchase.journal') }}"><span>Taxrirlash
+                                            tarixi </span></a>
+                                </li>
+                            @endif
+                        @endisset
+
+                        @isset(Session::get('per')['oylik'])
+                            @if (Session::get('per')['oylik'] == 'true')
+                            <li><a href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}">
+                                <span>Oylik </span></a>
+                            </li>
+                            @endif
+                        @endisset
+
+                        @isset(Session::get('per')['trend'])
+                            @if (Session::get('per')['trend'] == 'true')
+                                <li class="submenu">
+                                    <a href="settings.html"><span> Trend </span><span
+                                            class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="{{ route('trend.region', 'three') }}">Viloyat</a></li>
+                                        <li><a href="{{ route('trend.product', 'three') }}">Mahsulot</a></li>
+                                        <li><a href="{{ route('trend.user', 'three') }}">Elchi</a></li>
+                                        <li><a href="{{ route('trend.pharmacy', 'three') }}">Dorixona</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endisset
+                    </ul>
+                </li>
+
+                <li class="submenu">
+                    <a href="settings.html"><i class="fas fa-crown"></i> <span> Toolz bot </span><span
+                            class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        @isset(Session::get('per')['king_sold'])
+                            @if (Session::get('per')['king_sold'] == 'true')
+                                <li class="submenu">
+                                    <a href="settings.html"><span> Shox yurish </span><span
+                                            class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="{{ route('king.sold') }}">Tasdiqlash</a></li>
+                                        <li><a href="{{ route('king.history', ['date' => date('Y-m-d')]) }}">Tarix</a></li>
+                                        <li><a href="{{ route('kingliga.index') }}">Ligalar</a></li>
+                                        <li><a href="{{ route('king-liga') }}">Turnir liga</a></li>
+                                        <li><a
+                                                href="{{ route('king-sold', ['user_id' => 'all', 'region_id' => 'all', 'date' => 'today']) }}"><span>Hisobot
+                                                </span></a>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endisset
+                        @isset(Session::get('per')['teacher'])
+                            @if (Session::get('per')['teacher'] == 'true')
+                                <li class="submenu">
+                                    <a href="settings.html"><span> Ustoz-shogird </span><span
+                                            class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="{{ route('add-teacher') }}">Ustoz tayinlash</a></li>
+                                        <li><a href="{{ route('add-shogird') }}">Shogird tayinlash</a></li>
+                                        <li><a href="{{ route('st-grade') }}">Baholashlar</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endisset
+
+                        @isset(Session::get('per')['toolz'])
+                            @if (Session::get('per')['toolz'] == 'true')
+                                <li class="submenu">
+                                    <a href="settings.html"><span> Smena </span><span
+                                            class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="{{ route('open-smena') }}">Smena ochish</a></li>
+                                        <li><a href="{{ route('close-smena') }}">Smena yopish</a></li>
+                                        <li><a href="{{ route('provizor') }}">Provizor tayinlash</a></li>
+                                        <li><a href="{{ route('premya.index') }}">Premyalar</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endisset
+
+                        @isset(Session::get('per')['rol'])
+                            @if (Session::get('per')['rol'] == 'true')
+                                <li class="submenu">
+                                    <a href="settings.html">
+                                    <span> News </span>
+                                    <span class="menu-arrow"></span>
+                                </a>
+                                    <ul style="display: none;">
+                                        <li><a href="{{ route('openNews') }}">News</a></li>
+                                        <li><a href="{{ route('openInfos') }}">Info</a></li>
+                                        <li><a href="{{ route('openVideos') }}">Videos</a></li>
+                                    </ul>
+                                </li>
+                            @endisset
+                        @endif
+
+                    </ul>
+                </li>
 
                 {{-- @isset(Session::get('per')['pharmacy'])
              @if (Session::get('per')['pharmacy'] == 'true')
              <li><a href="{{route('pharmacy-list','today')}}"><i class="feather-filter"></i>  <span>Dorixonalar</span></a>
              @endif
              @endisset --}}
-                @isset(Session::get('per')['user_pharmacy'])
-                    @if (Session::get('per')['user_pharmacy'] == 'true')
-                        <li><a href="{{ route('pharmacy-user', 'today') }}"><i class="fas fa-clinic-medical"></i>
-                                <span>Dorixona</span></a>
-                    @endif
-                @endisset
 
-                @isset(Session::get('per')['pro'])
-                    @if (Session::get('per')['pro'] == 'true')
-                        <li><a href="{{ route('pro-list', ['time' => 'today', 'region' => 'all', 'pharm' => 'all']) }}"><i
-                                    class="fas fa-pills"></i> <span>Mahsulotlar </span></a>
-                        </li>
-                    @endif
-                @endisset
 
-                @isset(Session::get('per')['team'])
-                    @if (Session::get('per')['team'] == 'true')
                         <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-synagogue"></i> <span> Jamoa </span><span
+                            <a href="settings.html"><i class="fas fa-synagogue"></i> <span> Jang </span><span
                                     class="menu-arrow"></span></a>
                             <ul style="display: none;">
-                                <li><a href="{{ route('team', ['time' => 'today']) }}"><span>Jamoalar</span></a>
-                                <li><a href="{{ route('team-battle') }}"><span>Jamoalar Jangi</span></a>
+                                @isset(Session::get('per')['team'])
+                                    @if (Session::get('per')['team'] == 'true')
+                                        <li class="submenu">
+                                            <a href="settings.html"><span> Jamoa </span><span
+                                                    class="menu-arrow"></span></a>
+                                            <ul style="display: none;">
+                                                <li><a href="{{ route('team', ['time' => 'today']) }}"><span>Jamoalar</span></a>
+                                                <li><a href="{{ route('team-battle') }}"><span>Jamoalar Jangi</span></a>
 
+                                            </ul>
+                                        </li>
+                                    @endif
+                                @endisset
+
+                                @isset(Session::get('per')['team'])
+                                    @if (Session::get('per')['team'] == 'true')
+                                        <li class="submenu">
+                                            <a href="settings.html"><span> Elchi </span><span
+                                                    class="menu-arrow"></span></a>
+                                            <ul style="display: none;">
+                                                <li><a href="{{ route('elchi-battle') }}">Jang</a></li>
+                                                <li><a href="{{ route('elchi-battle-select') }}">Elchi tanlash</a></li>
+                                                <li><a href="{{ route('elchi-battle-exercise') }}">Jang default topshiriq</a></li>
+                                                <li><a href="{{ route('elchi-user-battle-exercise') }}">Jang elchiga topshiriq</a></li>
+                                                <li><a href="{{ route('elchi-battle-setting') }}">Sozlamalar</a></li>
+                                            </ul>
+                                        </li>
+                                    @endif
+                                @endisset
                             </ul>
                         </li>
-                    @endif
-                @endisset
 
 
 
-                @isset(Session::get('per')['team'])
-                    @if (Session::get('per')['team'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-people-carry"></i> <span> Elchi jang </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('elchi-battle') }}">Jang</a></li>
-                                <li><a href="{{ route('elchi-battle-select') }}">Elchi tanlash</a></li>
-                                <li><a href="{{ route('elchi-battle-exercise') }}">Jang default topshiriq</a></li>
-                                <li><a href="{{ route('elchi-user-battle-exercise') }}">Jang elchiga topshiriq</a></li>
-                                <li><a href="{{ route('elchi-battle-setting') }}">Sozlamalar</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                @endisset
+
 
                 @isset(Session::get('per')['turnir'])
                     @if (Session::get('per')['turnir'] == 'true')
@@ -160,19 +251,7 @@
                     @endif
                 @endisset
 
-                @isset(Session::get('per')['teacher'])
-                    @if (Session::get('per')['teacher'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-graduation-cap"></i> <span> Ustoz-shogird </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('add-teacher') }}">Ustoz tayinlash</a></li>
-                                <li><a href="{{ route('add-shogird') }}">Shogird tayinlash</a></li>
-                                <li><a href="{{ route('st-grade') }}">Baholashlar</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                @endisset
+
 
                 @isset(Session::get('per')['teacher'])
                     @if (Session::get('per')['teacher'] == 'true')
@@ -188,40 +267,14 @@
                     @endif
                 @endisset
 
-                @isset(Session::get('per')['toolz'])
-                    @if (Session::get('per')['toolz'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-toolbox"></i> <span> Smena </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('open-smena') }}">Smena ochish</a></li>
-                                <li><a href="{{ route('close-smena') }}">Smena yopish</a></li>
-                                <li><a href="{{ route('provizor') }}">Provizor tayinlash</a></li>
-                                <li><a href="{{ route('premya.index') }}">Premyalar</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                @endisset
 
 
 
 
 
 
-                @isset(Session::get('per')['trend'])
-                    @if (Session::get('per')['trend'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-chart-line"></i> <span> Trend </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('trend.region', 'three') }}">Viloyat</a></li>
-                                <li><a href="{{ route('trend.product', 'three') }}">Mahsulot</a></li>
-                                <li><a href="{{ route('trend.user', 'three') }}">Elchi</a></li>
-                                <li><a href="{{ route('trend.pharmacy', 'three') }}">Dorixona</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                @endisset
+
+
 
 
                 @isset(Session::get('per')['grade'])
@@ -235,7 +288,7 @@
 
 
                 <li class="submenu">
-                    <a href="settings.html"><i class="fas fa-balance-scale-left"></i> <span> Ostatka2 </span><span
+                    <a href="settings.html"><i class="fas fa-balance-scale-left"></i> <span> Ostatka </span><span
                             class="menu-arrow"></span></a>
                     <ul style="display: none;">
 
@@ -259,62 +312,7 @@
                 </li>
 
 
-                <li class="submenu">
-                    <a href="settings.html"><i class="fas fa-balance-scale-left"></i> <span> Ostatka </span><span
-                            class="menu-arrow"></span></a>
-                    <ul style="display: none;">
-                        @isset(Session::get('per')['user-pharm'])
-                            @if (Session::get('per')['user-pharm'] == 'true')
-                                <li class="submenu">
-                                    <a href="settings.html"><span>User Dorixona</span><span class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-                                        <li><a href="{{ route('pharm.users') }}"> <span> Dorixona biriktirish</span></a>
-                                        </li>
-                                        <li class="submenu">
-                                            <a href="settings.html"> <span>Biriktirilganlar</span><span
-                                                    class="menu-arrow"></span></a>
-                                            <ul style="display: none;">
-                                                <li><a href="{{ route('pharm.users.bypharm') }}"> <span> Dorixona
-                                                            bo'yicha</span></a></li>
-                                                <li><a href="{{ route('pharm.users.all') }}"><span> Userlar
-                                                            bo'yicha</span></a></li>
-                                            </ul>
-
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endif
-                        @endisset
-                        @isset(Session::get('per')['accept'])
-                            @if (Session::get('per')['accept'] == 'true')
-                                <li class="submenu">
-                                    <a href="settings.html"> <span> Mahsulot kirim/qoldiq </span><span
-                                            class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-                                        @isset(Session::get('per')['accept'])
-                                            @if (Session::get('per')['accept'] == 'true')
-                                                <li><a href="{{ route('accept.med') }}">Kiritilganlar</a></li>
-                                            @endif
-                                        @endisset
-                                        @isset(Session::get('per')['stock'])
-                                            @if (Session::get('per')['stock'] == 'true')
-                                                <li><a href="{{ route('stock.med') }}">Qoldiqlar</a></li>
-                                            @endif
-                                        @endisset
-
-                                    </ul>
-                                </li>
-                            @endif
-                        @endisset
-                        @isset(Session::get('per')['grade'])
-                            @if (Session::get('per')['grade'] == 'true')
-                                <li><a href="{{ route('compare') }}"><span>Taqqoslash </span></a>
-                                </li>
-                            @endif
-                        @endisset
-                    </ul>
-                </li>
-                <li class="submenu">
+                {{-- <li class="submenu">
                     <a href="settings.html"><i class="fas fa-user-graduate"></i> <span> Baholash </span><span
                             class="menu-arrow"></span></a>
                     <ul style="display: none;">
@@ -351,39 +349,16 @@
                             @endif
                         @endisset
                     </ul>
-                </li>
+                </li> --}}
 
 
 
 
-                @isset(Session::get('per')['setting'])
-                    @if (Session::get('per')['setting'] == 'true')
-                        <li><a href="{{ route('setting', date('m.Y')) }}"><i class="fas fa-calendar-week"></i>
-                                <span>Kalendar </span></a>
-                        </li>
-                    @endif
-                @endisset
 
-                @isset(Session::get('per')['oylik'])
-                    @if (Session::get('per')['oylik'] == 'true')
-                    <li><a href="{{ route('user-money', ['region_id' => 5, 'month' => date('Y-m')]) }}"><i class="fas fa-calendar-week"></i>
-                        <span>Oylik </span></a>
-                    </li>
-                    @endif
-                @endisset
 
-                @isset(Session::get('per')['narx'])
-                    @if (Session::get('per')['narx'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html"><i class="fas fa-hand-holding-usd"></i> <span> Narx </span><span
-                                    class="menu-arrow"></span></a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('shablon.create') }}">Narx yaratish</a></li>
-                                <li><a href="{{ route('shablon.pharmacy') }}">Dorixona biriktirish</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                @endisset
+
+
+
 
 
                 @isset(Session::get('per')['control'])
@@ -429,13 +404,7 @@
             @endif
              @endisset --}}
 
-                @isset(Session::get('per')['show_purchase'])
-                    @if (Session::get('per')['show_purchase'] == 'true')
-                        <li><a href="{{ route('purchase.journal') }}"><i class="fas fa-history"></i> <span>Taxrirlash
-                                    tarixi </span></a>
-                        </li>
-                    @endif
-                @endisset
+
 
                 {{-- @isset(Session::get('per')['User'])
              @if (Session::get('per')['User'] == 'true')
@@ -476,23 +445,34 @@
                         </li>
                     @endif
                 @endisset
-                @isset(Session::get('per')['rol'])
-                    @if (Session::get('per')['rol'] == 'true')
-                        <li class="submenu">
-                            <a href="settings.html">
-                              <i class="fas fa-filter"></i>
-                              <span> News </span>
-                              <span class="menu-arrow"></span>
-                           </a>
-                            <ul style="display: none;">
-                                <li><a href="{{ route('openNews') }}">News</a></li>
-                                <li><a href="{{ route('openInfos') }}">Info</a></li>
-                                <li><a href="{{ route('openVideos') }}">Videos</a></li>
-                            </ul>
-                        </li>
-                    @endisset
-                @endif
-
+                <li class="submenu">
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                    <span> Sozlamalar </span>
+                    <span class="menu-arrow"></span>
+                    </a>
+                    <ul style="display: none;">
+                        @isset(Session::get('per')['narx'])
+                            @if (Session::get('per')['narx'] == 'true')
+                                <li class="submenu">
+                                    <a href="settings.html"><span> Narx </span><span
+                                            class="menu-arrow"></span></a>
+                                    <ul style="display: none;">
+                                        <li><a href="{{ route('shablon.create') }}">Narx yaratish</a></li>
+                                        <li><a href="{{ route('shablon.pharmacy') }}">Dorixona biriktirish</a></li>
+                                    </ul>
+                                </li>
+                            @endif
+                        @endisset
+                                @isset(Session::get('per')['setting'])
+                            @if (Session::get('per')['setting'] == 'true')
+                                <li><a href="{{ route('setting', date('m.Y')) }}"><i class="fas fa-calendar-week"></i>
+                                        <span>Kalendar </span></a>
+                                </li>
+                            @endif
+                        @endisset
+                    </ul>
+                </li>
                 <li class="mb-5"><a href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
                             class="fas fa-sign-out-alt"></i> <span> Chiqish </span></a>
