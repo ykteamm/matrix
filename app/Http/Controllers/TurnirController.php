@@ -101,7 +101,11 @@ class TurnirController extends Controller
 
     public function turnirTour()
     {
-        return view('turnir.tour');
+        $month = Carbon::now()->startOfMonth()->format('Y-m-d');
+
+        $tours = TurnirTour::whereDate('month', $month)->orderBy('tour', "ASC")->get();
+        // return $tours;
+        return view('turnir.tour', compact('tours'));
     }
 
     public function turnirTourStore(Request $request)
@@ -126,6 +130,23 @@ class TurnirController extends Controller
             ]);
             return redirect()->back();
         }
+        return redirect()->back();
+    }
+    public function turnirTourUpdate(Request $request)
+    {
+        $begin = $request->begin;
+        $end = $request->end;
+        $tour = $request->tour_id;
+        $month = Carbon::now()->startOfMonth()->format("Y-m-d");
+        TurnirTour::where('tour', $tour)->whereDate('month', $month)->update([
+            'date_begin' => $begin,
+            'date_end' => $end,
+            'title' => $request->title
+        ]);
+        TurnirStanding::where('tour', $tour)->whereDate('month', $month)->update([
+            'date_begin' => $begin,
+            'date_end' => $end,
+        ]);
         return redirect()->back();
     }
 
