@@ -120,7 +120,7 @@ class TurnirController extends Controller
         $tourT = TurnirTour::whereDate('month', $month)
             ->where('tour', $tour)
             ->first();
-        if (!$tourDate && !$tourT) {
+        if (!$tourDate || !$tourT) {
             TurnirTour::create([
                 'tour' => $tour,
                 'date_begin' => $date_begin,
