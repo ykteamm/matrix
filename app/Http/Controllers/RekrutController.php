@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Region;
 use App\Models\Rekrut;
+use App\Models\Teacher;
+use App\Models\TeacherUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +19,8 @@ class RekrutController extends Controller
         $districts = DB::table('tg_district')->get();
 
         $rms = User::where('rm',1)->get();
+
+        $teachers = Teacher::with('user')->get();
 
         $rekruts= DB::table('rekruts')
         ->select('tg_user.first_name as f','tg_user.last_name as l','tg_region.name as r',
@@ -33,6 +37,7 @@ class RekrutController extends Controller
             'districts' => $districts,
             'rms' => $rms,
             'rekruts' => $rekruts,
+            'teachers' => $teachers,
         ]);
 
     }

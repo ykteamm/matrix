@@ -387,13 +387,13 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('turnir-tour', [TurnirController::class, 'turnirTour'])->name('turnir-tour');
     Route::post('turnir-tour-store', [TurnirController::class, 'turnirTourStore'])->name('turnir-tour-store');
     Route::post('turnir-tour-update', [TurnirController::class, 'turnirTourUpdate'])->name('turnir-tour-update');
-    
+
     Route::get('turnir-playoff', [TurnirController::class, 'turnirPlayoff'])->name('turnir-playoff');
     Route::post('turnir-playoff-store', [TurnirController::class, 'turnirPlayoffStore'])->name('turnir-playoff-store');
-    
+
     Route::get('turnir-games', [TurnirController::class, 'turnirGames'])->name('turnir-games');
     Route::post('turnir-games-store', [TurnirController::class, 'turnirGamesStore'])->name('turnir-games-store');
-    
+
     Route::get('group-state', [TurnirController::class, 'groupState'])->name('group-state');
     Route::post('group-state-store', [TurnirController::class, 'groupStateStore'])->name('group-state.store');
     //TURNIR-END
@@ -405,6 +405,11 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('rekrut-add-user', [RekrutController::class, 'addUser'])->name('rekrut-add-user');
     Route::post('rekrut-save-user', [RekrutController::class, 'saveUser'])->name('rekrut-save-user');
     //REKRUT-END
+
+    //ORDER-BEGIN
+    Route::resource('order', OrderController::class);
+    //ORDER-END
+
 });
 
 // PREMYA

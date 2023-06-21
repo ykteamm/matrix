@@ -32,11 +32,15 @@
                         </div>
                         <div class="form-group col-md-4">
                             <select class="form-control form-control-sm" name='rm_id' required>
-                                <option value="" disabled selected hidden>RM</option>
+                                <option value="" disabled selected hidden>RM-USTOZ</option>
 
                                 @foreach ($rms as $rm)
                                     <option value='{{$rm->id}}' >{{$rm->first_name}} {{$rm->last_name}}</option>
                                 @endforeach
+                                @foreach ($teachers as $teach)
+                                    <option value='{{$teach->user->id}}' >{{$teach->user->first_name}} {{$teach->user->last_name}}</option>
+                                @endforeach
+
                             </select>
                         </div>
                         <div class="form-group col-md-4">

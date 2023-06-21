@@ -301,6 +301,7 @@ if (!function_exists('h_positions')) {
         $h_positions['user_pharmacy'] = 'Dorixona - user';
         $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';
+        $h_positions['order'] = 'Order';
         $h_positions['turnir'] = 'Turnir';
         $h_positions['rekrut'] = 'Rekrut';
         $h_positions['oylik'] = 'Oylik';

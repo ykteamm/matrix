@@ -108,6 +108,19 @@
                 </li>
 
                 <li class="submenu">
+                    <a href="settings.html"><i class="fas fa-crown"></i> <span> Order </span><span
+                            class="menu-arrow"></span></a>
+                    <ul style="display: none;">
+                        @isset(Session::get('per')['order'])
+                            @if (Session::get('per')['order'] == 'true')
+                                    <li><a href="{{ route('order.index') }}"><span>Buyurtma berish</span></a>
+                            @endif
+                        @endisset
+
+                    </ul>
+                </li>
+
+                <li class="submenu">
                     <a href="settings.html"><i class="fas fa-crown"></i> <span> Toolz bot </span><span
                             class="menu-arrow"></span></a>
                     <ul style="display: none;">
