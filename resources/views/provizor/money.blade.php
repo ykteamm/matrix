@@ -79,7 +79,7 @@
                                                      @endif
                                                   </td>
                                                         @foreach ($elchi['user']['history_money'] as $h)
-                                                            @if ($money_arrival > 0)
+                                                            @if ($elchi['money_arrival'] > 0)
                                                                 <td>
                                                                     <span class="badge badge-info">{{number_format($h['money'],0,',',' ')}}</span>
                                                                 </td>
