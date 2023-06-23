@@ -55,7 +55,9 @@
                                                <th>Buyurtma summasi</th>
                                                <th>Pul kelishi</th>
                                                @foreach ($elchi['user']['history_money'] as $h)
-                                                  <th>{{date('d.m.Y',strtotime($h['add_date']))}}</th>
+                                                    @if ($elchi['money_arrival'] > 0)
+                                                        <th>{{date('d.m.Y',strtotime($h['add_date']))}}</th>
+                                                    @endif
                                                @endforeach
                                                <th>Qarz</th>
 
