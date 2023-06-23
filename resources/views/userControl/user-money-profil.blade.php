@@ -39,7 +39,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($userData as $key => $user)
-                                    @if ($user['id'] == 269 && (strtotime($month) < '2023-06-01'))
+                                    @if ($user['id'] == 269)
                                     <tr>
                                         {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
                                         <td>
