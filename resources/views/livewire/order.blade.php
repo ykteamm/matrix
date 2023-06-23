@@ -60,6 +60,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <p><?php 
+                    // var_dump(strlen($prod_count[1]));
                         // echo '<pre>';
                         // print_r($order_product);
                         // echo '</pre>';
@@ -81,7 +82,7 @@
                             @foreach ($order_product as $key => $product)
                                 <tr>
                                     <td>{{$product['name']}}</td>
-                                    <td><input type="number" value="1" wire:keyup="input($event.target.value, {{$product['id']}})"></td>
+                                    <td><input type="text" value="{{$prod_count[$product['id']]}}"  wire:keyup="input($event.target.value, {{$product['id']}})"></td>
                                     <td>{{$product['price'][0]['price']}}</td>
                                     <td>
                                         @if (isset($prod_count[$product['id']]))

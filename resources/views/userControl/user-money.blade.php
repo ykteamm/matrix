@@ -108,7 +108,43 @@
                                         <tbody>
                                             @foreach ($region['users'] as $user)
                                             @if ($user['spec'] == 1)
+                                                @if ($user['id'] == 269 && (strtotime('01.' . $m) < '2023-06-01'))
+                                                <tr>
+                                                    <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td>
+                                                    <td> <span class="badge badge-warning">{{ number_format($user['summa'],0,',',' ') }}</span></td>
+                                                    <td style="font-weight:600;font-size:14px">
+                                                        <span class="badge badge-primary">
+                                                            {{ number_format($user['maosh'],0,',',' ') }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge badge-danger">
+                                                            0
+                                                        </span>
+                                                    </td>
+                                                    @php
+                                                    $su = 0;
+                                                        foreach ($user['money_premya'] as $key => $value) {
+                                                            $su = $su + $value->premya->premya;
+                                                        }
+                                                    @endphp
+                                                    <td>
+                                                        {{ number_format($user['premya']+$su,0,',',' ') }}
+                                                    </td>
+                                                    <td>
+                                                        
+                                                            0
+                                                    </td>
+                                                    <td style="font-weight:600;font-size:14px">
+                                                        <span class="badge badge-success">
+                                                            {{ number_format(($user['maosh'] + $user['premya'] + $su),0,',',' ') }}
+                                                        </span>
+                                                    </td>
 
+                                                    <td>0 minut</td>
+                                                    <td>0 soat</td>
+                                                </tr>
+                                                @else
                                                 <tr>
                                                     <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td>
                                                     <td> <span class="badge badge-warning">{{ number_format($user['summa'],0,',',' ') }}</span></td>
@@ -149,6 +185,8 @@
                                                     <td>{{ number_format($user['time'],0,',',' ') }} minut</td>
                                                     <td>{{ number_format(floor($user['time']/60),0,',',' ') }} soat</td>
                                                 </tr>
+                                                @endif
+
                                             @endif
 
                                             @endforeach
