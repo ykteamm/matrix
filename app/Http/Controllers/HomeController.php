@@ -20,7 +20,9 @@ use App\Models\UserQuestion;
 use App\Models\PillQuestion;
 use App\Models\ConditionQuestion;
 use App\Models\KnowledgeQuestion;
+use App\Models\Medicine;
 use App\Models\Member;
+use App\Models\Shablon;
 use App\Models\Team;
 use App\Services\ElchilarService;
 
@@ -106,7 +108,7 @@ class HomeController extends Controller
     public function index()
     {
 
-
+        
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
         $rm = DB::table('tg_user')->where('id',$id)->value('rm');

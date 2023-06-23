@@ -32,6 +32,15 @@ class CompareController extends Controller
         $accepts = [];
         $solds = [];
         $accept = 0;
+        $stock=Stock::where('pharmacy_id',$pharmacy_id)
+            // ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
+            // ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+            ->where(DB::raw("(DATE_FORMAT(created_at,'%Y-%m'))"),'>=',date('Y-m',strtotime($month)).'-01')
+            ->get();
+
+        
+
+        return $stock;
         foreach($medicine as $m)
         {
             $stock=Stock::where('pharmacy_id',$pharmacy_id)

@@ -78,15 +78,13 @@
 
                                                      @endif
                                                   </td>
-                                                    @foreach ($elchi['user']['history_money'] as $h)
-                                                        <td>
-                                                        <span class="badge badge-info">{{number_format($h['money'],0,',',' ')}}</span>
-
-                                                        </td>
-                                                    @endforeach
-
-
-
+                                                        @foreach ($elchi['user']['history_money'] as $h)
+                                                            @if ($money_arrival > 0)
+                                                                <td>
+                                                                    <span class="badge badge-info">{{number_format($h['money'],0,',',' ')}}</span>
+                                                                </td>
+                                                            @endif
+                                                        @endforeach
                                                     <td>
 
                                                         <span class="badge badge-danger">{{number_format($elchi['order_price']-$elchi['money_arrival'],0,',',' ')}}</span>
