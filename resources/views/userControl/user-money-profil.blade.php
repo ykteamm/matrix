@@ -39,93 +39,156 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($userData as $key => $user)
-                                        <tr>
-                                            {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
-                                            <td>
-                                                {{date('d.m.Y',strtotime($key)) }}
-                                                <p> <span class="badge badge-success"> {{ $user['hafta_kuni'] }} </span> </p>
-                                            </td>
-                                            <td>
-                                                @if ($user['shift'])
-                                                    @if ($user['shift']->pharmacy_id == 42)
-                                                        Tashqi Savdo
+                                    @if ($user['id'] == 269 && (strtotime($month) < '2023-06-01'))
+                                    <tr>
+                                        {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
+                                        <td>
+                                            {{date('d.m.Y',strtotime($key)) }}
+                                            <p> <span class="badge badge-success"> {{ $user['hafta_kuni'] }} </span> </p>
+                                        </td>
+                                        <td>
+                                            @if ($user['shift'])
+                                                @if ($user['shift']->pharmacy_id == 42)
+                                                    Tashqi Savdo
+                                                @else
+                                                    @if ($user['shift']->open_date)
+                                                        {{date('H:i',strtotime($user['shift']->open_date))}}
                                                     @else
-                                                        @if ($user['shift']->open_date)
-                                                            {{date('H:i',strtotime($user['shift']->open_date))}}
-                                                        @else
-                                                            ---
-                                                        @endif
-
+                                                        ---
                                                     @endif
-                                                @else
-                                                    ---
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($user['shift'])
-                                                    @if ($user['shift']->pharmacy_id == 42)
-                                                        Tashqi Savdo
-                                                    @else
-                                                        @if ($user['shift']->close_date)
-                                                            {{date('H:i',strtotime($user['shift']->close_date))}}
-                                                        @else
-                                                            ---
-                                                        @endif
-                                                    @endif
-                                                @else
-                                                    ---
-                                                @endif
-                                            </td>
-                                            <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
-
-                                            <td style="width: 50px;">
-                                                @if ($user['premya'] == null)
-                                                    ---
-                                                @else
-                                                <span class="badge badge-primary">
-                                                    {{ number_format($user['premya']->price,0,',',' ') }}
-                                                </span>
-                                                <p >{{ $user['premya']->message }}</p>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($user['shtraf'] == null)
-                                                    ---
-                                                @else
-                                                <span class="badge badge-danger">
-                                                    {{ number_format($user['shtraf']->price,0,',',' ') }}
-                                                </span>
-                                                <p >{{ $user['shtraf']->message }}</p>
 
                                                 @endif
-                                            </td>
-                                            @if ($user['jarima'] == 123123)
-                                                <td style="color:red;">Oy oxirida qoshiladi</td>
-                                                <td>-</td>
-                                                <td>-</td>
                                             @else
-                                            <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
-
-                                            <td>{{ number_format($user['minut'],0,',',' ') }} minut</td>
-                                            <td>{{ number_format(floor($user['minut']/60),0,',',' ') }} soat</td>
+                                                ---
                                             @endif
+                                        </td>
+                                        <td>
+                                            @if ($user['shift'])
+                                                @if ($user['shift']->pharmacy_id == 42)
+                                                    Tashqi Savdo
+                                                @else
+                                                    @if ($user['shift']->close_date)
+                                                        {{date('H:i',strtotime($user['shift']->close_date))}}
+                                                    @else
+                                                        ---
+                                                    @endif
+                                                @endif
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+                                        <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
 
-                                            {{-- <td>
-                                                {{ $user['total']['days'] }}:d-
-                                                {{ number_format($user['total']['hours']) }}:h-
-                                                {{ number_format($user['total']['minutes']) }}:m
-                                            </td>
-                                            <td>
-                                                {{ $user['minusTotal']['days'] }}:d-
-                                                {{ number_format($user['minusTotal']['hours']) }}:h-
-                                                {{ number_format($user['minusTotal']['minutes']) }}:m
-                                            </td>
-                                            <td>
-                                                {{ $user['workedTotal']['days'] }}:d-
-                                                {{ number_format($user['workedTotal']['hours']) }}:h-
-                                                {{ number_format($user['workedTotal']['minutes']) }}:m
-                                            </td> --}}
-                                        </tr>
+                                        <td style="width: 50px;">
+                                            @if ($user['premya'] == null)
+                                                ---
+                                            @else
+                                            <span class="badge badge-primary">
+                                                {{ number_format($user['premya']->price,0,',',' ') }}
+                                            </span>
+                                            <p >{{ $user['premya']->message }}</p>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{-- @if ($user['shtraf'] == null) --}}
+                                                ---
+                                            {{-- @else
+                                            <span class="badge badge-danger">
+                                                {{ number_format($user['shtraf']->price,0,',',' ') }}
+                                            </span>
+                                            <p >{{ $user['shtraf']->message }}</p>
+
+                                            @endif --}}
+                                        </td>
+                                        @if ($user['jarima'] == 123123)
+                                            <td style="color:red;">Oy oxirida qoshiladi</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        @else
+                                        <td>0</td>
+
+                                        <td>0 minut</td>
+                                        <td>0 soat</td>
+                                        @endif
+
+                        
+                                    </tr>
+                                    @else
+                                    <tr>
+                                        {{-- <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td> --}}
+                                        <td>
+                                            {{date('d.m.Y',strtotime($key)) }}
+                                            <p> <span class="badge badge-success"> {{ $user['hafta_kuni'] }} </span> </p>
+                                        </td>
+                                        <td>
+                                            @if ($user['shift'])
+                                                @if ($user['shift']->pharmacy_id == 42)
+                                                    Tashqi Savdo
+                                                @else
+                                                    @if ($user['shift']->open_date)
+                                                        {{date('H:i',strtotime($user['shift']->open_date))}}
+                                                    @else
+                                                        ---
+                                                    @endif
+
+                                                @endif
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user['shift'])
+                                                @if ($user['shift']->pharmacy_id == 42)
+                                                    Tashqi Savdo
+                                                @else
+                                                    @if ($user['shift']->close_date)
+                                                        {{date('H:i',strtotime($user['shift']->close_date))}}
+                                                    @else
+                                                        ---
+                                                    @endif
+                                                @endif
+                                            @else
+                                                ---
+                                            @endif
+                                        </td>
+                                        <td>{{ number_format($user['maosh'],0,',',' ') }}</td>
+
+                                        <td style="width: 50px;">
+                                            @if ($user['premya'] == null)
+                                                ---
+                                            @else
+                                            <span class="badge badge-primary">
+                                                {{ number_format($user['premya']->price,0,',',' ') }}
+                                            </span>
+                                            <p >{{ $user['premya']->message }}</p>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($user['shtraf'] == null)
+                                                ---
+                                            @else
+                                            <span class="badge badge-danger">
+                                                {{ number_format($user['shtraf']->price,0,',',' ') }}
+                                            </span>
+                                            <p >{{ $user['shtraf']->message }}</p>
+
+                                            @endif
+                                        </td>
+                                        @if ($user['jarima'] == 123123)
+                                            <td style="color:red;">Oy oxirida qoshiladi</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        @else
+                                        <td>{{ number_format($user['jarima'],0,',',' ') }}</td>
+
+                                        <td>{{ number_format($user['minut'],0,',',' ') }} minut</td>
+                                        <td>{{ number_format(floor($user['minut']/60),0,',',' ') }} soat</td>
+                                        @endif
+
+                        
+                                    </tr>
+                                    @endif
+                                       
                                     @endforeach
                                 </tbody>
                             </table>
