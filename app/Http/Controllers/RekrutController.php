@@ -18,7 +18,7 @@ class RekrutController extends Controller
         $regions = Region::all();
         $districts = DB::table('tg_district')->get();
 
-        $rms = User::where('rm',1)->get();
+        $rms = User::whereIn('rm',[1,2])->get();
 
         $teachers = Teacher::with('user')->get();
 

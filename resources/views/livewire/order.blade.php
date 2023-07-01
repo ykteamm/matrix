@@ -8,7 +8,7 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma raqami
                               {{-- <span class="badge badge-primary badge-pill">14</span> --}}
-                              <span>P000001</span>
+                              <span>P{{$code+1}}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma xolati
@@ -28,25 +28,34 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Skidka
-                              <span>10%</span>  
+                              <span>{{$skidka}} %</span>  
 
                               {{-- <span class="badge badge-primary badge-pill">14</span> --}}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma summasi
-                              <span>23 345 555</span>
+                              <span>{{array_sum($summa_array)}}</span>
 
                               {{-- <span class="badge badge-primary badge-pill">2</span> --}}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Skidka bilan
-                              <span>22 345 555</span>
+                              <span>{{array_sum($summa_array)-array_sum($summa_array)*$skidka/100}}</span>
 
                               {{-- <span class="badge badge-primary badge-pill">1</span> --}}
                             </li>
                           </ul>
                     </div>
                 </div>
+            </div>
+            <div class="m-3">
+                <select class="form-control" wire:modal="{{$pharmacy}}">
+                    <option selected disabled>Dorixona tanlang</option>
+                    
+                    @foreach ($pharmacy as $product)
+                        <option value="{{$product->id}}">{{$product->name}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="m-3">
                 <select class="form-control" wire:change="addProd($event.target.value)">
@@ -100,8 +109,7 @@
                 </div>
             </div>
             <div class="m-3">
-                <button class="btn btn-block btn-success">Saqlash</button>
-                
+                <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary">Saqlash</button>
             </div>
         </div>
     </div>
