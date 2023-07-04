@@ -16,6 +16,7 @@ class Order extends Component
 {
     public $products;
     public $pharmacy;
+    public $pharmacy_id;
     public $prod;
     public $code;
 
@@ -64,7 +65,11 @@ class Order extends Component
 
         $this->foiz($this->summa_array);
     }
+    public function addPharmacy($id){
 
+        $this->pharmacy_id = 4;
+
+    }
     public function addProd($id){
 
         if(!in_array($id,$this->prod_array))
@@ -136,9 +141,9 @@ class Order extends Component
             'discount' => $this->skidka,
             'summa' => array_sum($this->summa_array),
             'discount_summa' => array_sum($this->summa_array)-array_sum($this->summa_array)*$this->skidka/100,
-            'pharmcy_id' => $this->pharmacy
+            'pharmacy_id' => $this->pharmacy_id
         ]);
-        dd($new_order);
+        dd($new_order->id);
     }
 
     public function render()

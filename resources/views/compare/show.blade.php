@@ -1,118 +1,192 @@
 @extends('admin.layouts.app')
 @section('admin_content')
     <div class="row mt-5 pt-5">
+        
         <div class="col-sm-12">
-            <div class="card" >
-                <div class="card-header d-flex justify-content-between">
-                    <h4 class="card-title row "> <strong>{{$pharm->name}}</strong> &nbsp<span class="text-danger">Qoldiqlar</span>  </h4>
-                    <div class="col-md-2 mb-2  justify-content-end">
-                        <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
-                        <div class="dropdown-menu" style="left:150px !important">
-                            @php $i=1 @endphp
-                            @foreach($months as $m)
-                                @if($i<10)
-                                    <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                                @else
-                                    <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                                @endif
-                                @php $i++ @endphp
-                            @endforeach
-                        </div>
+            {{-- @if(isset($month_date) && count($month_date) == 0)
+                <h2>Bu oy uchun ostatka kiritilmagan </h2>
+            @else --}}
+            <div class="card-header d-flex justify-content-between">
+                <h4 class="card-title row "> <strong>{{$pharm->name}}</strong> &nbsp<span class="text-danger">Qoldiqlar</span>  </h4>
+                <div class="col-md-2 mb-2  justify-content-end">
+                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
+                    <div class="dropdown-menu" style="left:150px !important">
+                        @php $i=1 @endphp
+                        @foreach($months as $m)
+                            @if($i<10)
+                                <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                            @else
+                                <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
+                            @endif
+                            @php $i++ @endphp
+                        @endforeach
                     </div>
                 </div>
-                @php $i=0;@endphp
-                @foreach($stock as $s)
-                    @if($i!=0)
-                    <div class="row" onmouseover="$(this).css('cursor','pointer')">
-                        <div class="col-2"></div>
-                        <div class="col-8 m-1  d-flex justify-content-center text-center shadow {{$compare[$i]}}">
-                            <span><h3 onmouseover="$(this).css('cursor','pointer')" class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($last))}}</strong><small>{{date('H:i',strtotime($last))}}</small> &nbsp</h3></span>
-                            <span><h3 onmouseover="$(this).css('cursor','pointer')" class="{{$compare[$i]}}" onclick="yashir({{$i}})"><strong>{{date('d.m.y',strtotime($s->date_time))}}</strong><small>{{date('H:i',strtotime($s->date_time))}}</small></h3></span>
-                        </div>
-                        <div class="col-2"></div>
+            </div>
 
-                    </div>
-                    <div style="display: none"  class="row calender-col yashir{{$i}}">
-                        <div class="col-xl-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <thead>
-                                            <tr onmouseover="$(this).css('cursor','pointer')">
-                                                <th><strong>No</strong> </th>
-                                                <th><strong>Dori nomi</strong> </th>
-                                                <th><strong>Avvalgisi soni</strong> </th>
-                                                <th><strong>sotildi</strong> </th>
-                                                <th><strong>kirib kelgan</strong> </th>
-                                                <th onmouseover="$(this).css('cursor','pointer')"  style="background-color: #00d285;"><strong style="font-weight: 800; color: red">Jami</strong> </th>
-                                                <th onmouseover="$(this).css('cursor','pointer')"  style="background-color: #1a73e8"  class=""><strong style="color: #fff">Qoldiq</strong> </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @php $j=0;@endphp
-                                            @foreach($med as $m)
-                                                <tr onmouseover="$(this).css('cursor','pointer')">
-                                                    <td>{{$loop->index+1}} </td>
-                                                    <td>{{$m->name}} </td>
-                                                    @if($i==0)
-                                                        <td>{{$arr_qol_all[$i][$m->id]}}</td>
-                                                    @else
-                                                        <td>{{$stock_all[$i-1][$m->id]}}</td>
-                                                    @endif
-                                                    @if($i==0)
-                                                        <td>0 ta sotildi </td>
+            <div class="card" >
+                <ul class="nav nav-pills m-3" id="pills-tab" role="tablist">
+                    @foreach ($dates as $key => $item)
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link @if($key == 0) active @endif" id="pills{{$key}}-tab" data-toggle="pill" data-target="#pill{{$key}}-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                {{date('d.m.Y H:i',strtotime($item[0]))}} - {{date('d.m.Y H:i',strtotime($item[1]))}}
+                            </button>
+                        </li>
+                    @endforeach
+                </ul>
+                @if ($count_date == 0)
+                <div class="tab-content" id="pills-tabContent">
+                    @foreach ($dates as $key => $item)
 
-                                                    @else
-                                                        <td>
-                                                            @php $w=0; @endphp
-                                                            @foreach($arr_sold[$i-1] as $key=>$val)
-                                                                @if($key==$m->id)
-                                                                    @php $w++; @endphp
-                                                                    {{$val}}
-                                                                @endif
-                                                            @endforeach
-                                                            @if($w==0)
-                                                                0
-                                                            @endif
-                                                            ta sotildi
+                    <div class="tab-pane fade @if($key == 0) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
+                    
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                    <tr onmouseover="$(this).css('cursor','pointer')">
+                                        <th><strong>No</strong> </th>
+                                        <th><strong>Dori nomi</strong> </th>
+                                        <th><strong>Birinchi ostatka</strong> </th>
+                                        <th><strong>Kirib kelgan</strong> </th>
+                                        <th><strong>Sotilgan</strong> </th>
+                                        <th><strong>Xulosa</strong> </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($medicine as $m)
+                                        <tr onmouseover="$(this).css('cursor','pointer')">
+                                            <td>{{$loop->index+1}} </td>
+                                            <td>{{$m->name}} </td>
+                                            <td>{{$first_stocks[$key][$m->id]}} </td>
+                                            <td>{{$accepts[$key][$m->id]}} </td>
+                                            <td>{{$solds[$key][$m->id]}} </td>
 
-                                                        </td>
+                                            <td>
+                                                @php
+                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
+                                                @endphp
 
-                                                    @endif
-                                                    @if($i==0)
-                                                        <td>0 ta kelgan</td>
-                                                    @else
+                                                @if ( $count - $solds[$key][$m->id] == $second_stocks[$key][$m->id])
 
-                                                        @if(isset($arr_accepts[$i-1][$m->id]))
-                                                            <td>{{$arr_accepts[$i-1][$m->id]}} ta kelgan </td>
+                                                    <span class="badge badge-success" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
+                                                @endif
+
+                                                @if ( $count < $solds[$key][$m->id])
+
+                                                    <span class="badge badge-danger" > 
+                                                        @if ($solds[$key][$m->id]-$count > 0)
+                                                            {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
                                                         @else
-                                                            <td>0 ta kelgan</td>
+                                                            {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
                                                         @endif
-                                                    @endif
+                                                    </span>
+                                                    <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span>
 
-                                                    <td class="text-end" style="background-color: #00d285;color: white" >{{$arr_qol_all[$i][$m->id]}}</td>
-                                                @foreach($stocks[$i] as $key=>$s)
-                                                        @if($m->id==$key+1)
-                                                                <td class="text-white" style="{{$comp[$i][$m->id]}}">{{$s->number}}</td>
+
+                                                @else
+                                                        @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
+                                                            <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta(kam)</span>
+                                                        @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
+                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta(ko'p)</span>
                                                         @endif
-                                                    @endforeach
+                                                @endif
+
+                                                
+                                            </td>
 
 
-                                                </tr>
-                                                @php $j++;@endphp
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                    @endif
-                    @php $i++; $last=$s->date_time@endphp
 
-                @endforeach
+                    
+                    </div>
+                    @endforeach
+
+                  </div>
+                @else
+                    
+                  <div class="tab-content" id="pills-tabContent">
+                    @foreach ($dates as $key => $item)
+
+                    <div class="tab-pane fade @if($key == 0) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
+                    
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                    <tr onmouseover="$(this).css('cursor','pointer')">
+                                        <th><strong>No</strong> </th>
+                                        <th><strong>Dori nomi</strong> </th>
+                                        <th><strong>Birinchi ostatka</strong> </th>
+                                        <th><strong>Kirib kelgan</strong> </th>
+                                        <th><strong>Sotilgan</strong> </th>
+                                        <th><strong>Oxirgi ostatka</strong> </th>
+                                        <th><strong>Xulosa</strong> </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($medicine as $m)
+                                        <tr onmouseover="$(this).css('cursor','pointer')">
+                                            <td>{{$loop->index+1}} </td>
+                                            <td>{{$m->name}} </td>
+                                            <td>{{$first_stocks[$key][$m->id]}} </td>
+                                            <td>{{$accepts[$key][$m->id]}} </td>
+                                            <td>{{$solds[$key][$m->id]}} </td>
+                                            <td>{{$second_stocks[$key][$m->id]}} </td>
+
+                                            <td>
+                                                @php
+                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
+                                                @endphp
+
+                                                @if ( $count - $solds[$key][$m->id] == $second_stocks[$key][$m->id])
+
+                                                    <span class="badge badge-success" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
+                                                @endif
+
+                                                @if ( $count < $solds[$key][$m->id])
+
+                                                    <span class="badge badge-danger" > 
+                                                        @if ($solds[$key][$m->id]-$count > 0)
+                                                            {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
+                                                        @else
+                                                            {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
+                                                        @endif
+                                                    </span>
+                                                    <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span>
+
+
+                                                @else
+                                                        @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
+                                                            <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta(kam)</span>
+                                                        @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
+                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta(ko'p)</span>
+                                                        @endif
+                                                @endif
+
+                                                
+                                            </td>
+
+
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    
+                    </div>
+                    @endforeach
+
+                  </div>
+                @endif
+
                 </div>
             </div>
         </div>

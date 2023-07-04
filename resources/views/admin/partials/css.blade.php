@@ -25,10 +25,10 @@
         {
             width: 100% !important;
         }
-        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        /* .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
             color: rgb(0, 0, 0);
             background-color: #ffffff !important;
-        }
+        } */
         .cool-link {
             display: inline-block;
             color: #323584;

@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="m-3">
-                <select class="form-control" wire:modal="{{$pharmacy}}">
+                <select class="form-control" wire:change="addPharmacy($event.target.value)">
                     <option selected disabled>Dorixona tanlang</option>
                     
                     @foreach ($pharmacy as $product)

@@ -45,10 +45,10 @@
     <link href="{{ asset('/assets/css/dash_style.css') }}" rel="stylesheet">
 
     <style>
-      .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+      /* .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
             color: rgb(0, 0, 0);
             background-color: #ffffff !important;
-        }
+        } */
         .cool-link {
     display: inline-block;
     color: #323584;
