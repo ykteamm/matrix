@@ -6,6 +6,7 @@ use App\Models\Medicine;
 use App\Models\Pharmacy;
 use App\Models\Region;
 use App\Models\RmOrder;
+use App\Models\RmOrderProduct;
 use App\Models\Shablon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -143,7 +144,16 @@ class Order extends Component
             'discount_summa' => array_sum($this->summa_array)-array_sum($this->summa_array)*$this->skidka/100,
             'pharmacy_id' => $this->pharmacy_id
         ]);
-        dd($new_order->id);
+
+        foreach ($this->order_product as $key => $product) {
+                $new_order_product = RmOrderProduct::create([
+                    'order_id' => $new_order->id,
+                    'product_id' => $product['id'],
+                    'quantity' => $this->prod_count[$product['id']]
+                ]);
+        }
+        
+        $this->dispatchBrowserEvent('refresh-page'); 
     }
 
     public function render()

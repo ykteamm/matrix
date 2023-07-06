@@ -22,4 +22,9 @@ class RmOrder extends Model
         'outer',
     ];
 
+    public function order_product()
+    {
+        return $this->belongsToMany(RmOrderProduct::class,'order_id','id');
+    }
+
 }

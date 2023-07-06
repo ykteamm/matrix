@@ -8,6 +8,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
@@ -23,6 +24,8 @@ use App\Http\Controllers\TrendController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TurnirController;
 use App\Http\Controllers\VideoController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -407,7 +410,10 @@ Route::middleware([LoginAuth::class])->group(function () {
     //REKRUT-END
 
     //ORDER-BEGIN
-    Route::resource('order', OrderController::class);
+    Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('warehouse', [OrderController::class, 'warehouse'])->name('warehouse');
+    Route::get('shipment', [OrderController::class, 'shipment'])->name('shipment');
+    
     //ORDER-END
 
 });

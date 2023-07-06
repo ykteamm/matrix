@@ -1,26 +1,23 @@
 <div class="content main-wrapper ">
     <div class="row gold-box">
         <div class="card flex-fill mt-5">
+
             <div>
                 <div class="row justify-content-between p-3">
-                    <div class="col-md-4">
+                    {{-- <div class="col-md-4">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma raqami
-                              {{-- <span class="badge badge-primary badge-pill">14</span> --}}
                               <span>P{{$code+1}}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma xolati
                               <span>Ochiq</span>
 
-                              {{-- <span class="badge badge-primary badge-pill">2</span> --}}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma vaqti
                               <span>{{date('d.m.Y')}}</span>
-
-                              {{-- <span class="badge badge-primary badge-pill">1</span> --}}
                             </li>
                           </ul>
                     </div>
@@ -34,51 +31,32 @@
                                 
                                  %</span>  
 
-                              {{-- <span class="badge badge-primary badge-pill">14</span> --}}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma summasi
                               <span>{{array_sum($summa_array)}}</span>
 
-                              {{-- <span class="badge badge-primary badge-pill">2</span> --}}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Skidka bilan
                               <span>{{array_sum($summa_array)-array_sum($summa_array)*intval($skidka)/100}}</span>
 
-                              {{-- <span class="badge badge-primary badge-pill">1</span> --}}
                             </li>
                           </ul>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="m-3">
-                <select class="form-control" wire:change="addPharmacy($event.target.value)">
-                    <option selected disabled>Dorixona tanlang</option>
+                <select class="form-control" wire:change="selectOrder($event.target.value)">
+                    <option selected disabled>Orderni tanlang</option>
                     
-                    @foreach ($pharmacy as $product)
-                        <option value="{{$product->id}}">{{$product->name}}</option>
+                    @foreach ($orders as $order)
+                        <option value="{{$order->id}}">{{$order->number}}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="m-3">
-                <select class="form-control" wire:change="addProd($event.target.value)">
-                    <option selected disabled>Dori tanlang</option>
-                    
-                    @foreach ($products as $product)
-                        <option value="{{$product->id}}">{{$product->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="card-body">
+            {{-- <div class="card-body">
                 <div class="table-responsive">
-                    <p><?php 
-                    // var_dump(strlen($prod_count[1]));
-                        // echo '<pre>';
-                        // print_r($order_product);
-                        // echo '</pre>';
-
-                        ?></p>
                     <table class="table table-striped mb-0">
                         <thead>
                         <tr>
@@ -111,12 +89,12 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="m-3">
+            </div> --}}
+            {{-- <div class="m-3">
                 @if (count($order_product) > 0 && $pharmacy_id >= 1)
                     <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary">Saqlash</button>
                 @endif
-            </div>
+            </div> --}}
         </div>
     </div>
     <script>
