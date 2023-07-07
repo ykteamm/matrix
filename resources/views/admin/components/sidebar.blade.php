@@ -116,6 +116,7 @@
                                     <li><a href="{{ route('order.index') }}"><span>Buyurtma berish</span></a>
                             @endif
                         @endisset
+                                    <li><a href="{{ route('orders') }}"><span>Buyurtmalar</span></a>
                                     <li><a href="{{ route('warehouse') }}"><span>Sklad</span></a>
                                     <li><a href="{{ route('shipment') }}"><span>Otgruzka</span></a>
                     </ul>

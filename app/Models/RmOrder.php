@@ -11,6 +11,7 @@ class RmOrder extends Model
 
 
     protected $fillable = [
+        'id',
         'number',
         'status',
         'date',
@@ -22,9 +23,14 @@ class RmOrder extends Model
         'outer',
     ];
 
-    public function order_product()
+    public function pharmacy()
     {
-        return $this->belongsToMany(RmOrderProduct::class,'order_id','id');
+        return $this->belongsTo(Pharmacy::class,'pharmacy_id','id');
+    }
+
+    public function orderproduct()
+    {
+        return $this->hasMany(RmOrderProduct::class,'order_id','id');
     }
 
 }

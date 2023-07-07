@@ -411,6 +411,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     //ORDER-BEGIN
     Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('all-orders', [OrderController::class, 'allOrders'])->name('orders');
     Route::get('warehouse', [OrderController::class, 'warehouse'])->name('warehouse');
     Route::get('shipment', [OrderController::class, 'shipment'])->name('shipment');
     
