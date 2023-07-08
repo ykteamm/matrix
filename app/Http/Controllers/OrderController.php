@@ -11,16 +11,17 @@ class OrderController extends Controller
         return view('order.index');
     }
 
-
+    public function warehouse()
+    {
+        return view('order.warehouse');
+    }
+    
     public function allOrders()
     {
         return view('order.shipment');
     }
 
-    public function warehouse()
-    {
-        return view('order.warehouse');
-    }
+    
 
     public function shipment()
     {
