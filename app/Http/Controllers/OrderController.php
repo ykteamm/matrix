@@ -21,12 +21,20 @@ class OrderController extends Controller
         return view('order.shipment');
     }
 
-    
-
     public function shipment()
     {
         return view('order.shipment');
     }
 
+    public function money()
+    {
+        return view('order.money');
+    }
 
+    public function orderPage($order_id)
+    {
+        return view('order.page',[
+            'order_id' => $order_id
+        ]);
+    }
 }

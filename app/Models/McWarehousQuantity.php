@@ -16,4 +16,9 @@ class McWarehousQuantity extends Model
         'quantity',
         'active',
     ];
+
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class,'product_id','id');
+    }
 }

@@ -11,7 +11,7 @@
                             </li>
                             
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Buyurtma beruvchi
+                                Buyurtmachi
                                 <select class="form-control form-control-sm" wire:change="selectType($event.target.value)">
                                     <option selected disabled></option>
                                         <option value="1">Dorixona</option>

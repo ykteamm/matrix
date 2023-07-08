@@ -17,4 +17,9 @@ class McOrderDetail extends Model
         'debt',
         'price'
     ];
+
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class,'product_id','id');
+    }
 }

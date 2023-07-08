@@ -24,6 +24,7 @@ use App\Http\Controllers\TrendController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TurnirController;
 use App\Http\Controllers\VideoController;
+use App\Http\Livewire\McShipmentDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -411,9 +412,15 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     //ORDER-BEGIN
     Route::get('order', [OrderController::class, 'index'])->name('order.index');
+
+    Route::get('order/{order_id}', [OrderController::class, 'orderPage']);
+
+    // Route::get('order/{order_id}', [\App\Http\Livewire\McShipmentDetail::class, 'mount']);
+
     Route::get('all-orders', [OrderController::class, 'allOrders'])->name('orders');
     Route::get('warehouse', [OrderController::class, 'warehouse'])->name('warehouse');
     Route::get('shipment', [OrderController::class, 'shipment'])->name('shipment');
+    Route::get('money-coming', [OrderController::class, 'money'])->name('money-coming');
     
     //ORDER-END
 

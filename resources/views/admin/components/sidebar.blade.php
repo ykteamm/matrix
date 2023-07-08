@@ -118,7 +118,8 @@
                         @endisset
                                     <li><a href="{{ route('orders') }}"><span>Buyurtmalar</span></a>
                                     <li><a href="{{ route('warehouse') }}"><span>Sklad</span></a>
-                                    <li><a href="{{ route('shipment') }}"><span>Otgruzka</span></a>
+                                    {{-- <li><a href="{{ route('shipment') }}"><span>Otgruzka</span></a> --}}
+                                    <li><a href="{{ route('money-coming') }}"><span>Pul kelishi</span></a>
                     </ul>
                 </li>
 

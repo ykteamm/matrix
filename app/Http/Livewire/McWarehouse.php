@@ -11,18 +11,24 @@ use Livewire\Component;
 class McWarehouse extends Component
 {
 
+    public $warehouses;
     public $products;
+    public $ware_id;
+    public $prod_count = [];
 
-    protected $listeners = ['add' => 'addProd','delete' => 'deleteProd'];
+    protected $listeners = [
+        'select_Warehouse' => 'selectWarehouse',
+        'save' => 'saveData'
+    ];
 
 
     public function mount()
     {
         $medicines = Medicine::orderBy('id','ASC')->get();
-        $warehouses = ModelsMcWarehouse::orderBy('id','ASC')->get();
+        $this->warehouses = ModelsMcWarehouse::orderBy('id','ASC')->get();
 
         foreach ($medicines as $key => $value) {
-            foreach ($warehouses as $ware) {
+            foreach ($this->warehouses as $ware) {
 
                 $med = McWarehousQuantity::where('warehouse_id',$ware->id)
                 ->where('product_id',$value->id)->first();
@@ -36,30 +42,36 @@ class McWarehouse extends Component
             }
         }
         
-        $this->products = RmWarehouse::with('medicine')->orderBy('id')->get();
-
-        // dd($this->products[0]->medicine->name);
     }
 
-    public function addProd($id)
+    public function selectWarehouse($id)
     {
-        $product = RmWarehouse::where('product_id',$id)->first();
-        $product->quantity = $product->quantity + 1;
-        $product->save();
-        $this->dispatchBrowserEvent('refresh-page'); 
+        $this->products = McWarehousQuantity::where('warehouse_id',$id)->orderBy('id')->get();
 
+            foreach($this->products as $pr)
+            {
+                $this->prod_count[$pr->product_id] = 0;
+            }
+
+        $this->ware_id = $id;
     }
 
-    public function deleteProd($id)
+    public function addQuantity($quantity,$id)
     {
-        $product = RmWarehouse::where('product_id',$id)->first();
-        if($product->quantity > 0)
-        {
-            $product->quantity = $product->quantity - 1;
+        $this->prod_count[$id] = $quantity;
+    }
+
+    public function saveData()
+    {
+        foreach ($this->prod_count as $key => $value) {
+            $product = McWarehousQuantity::where('warehouse_id',$this->ware_id)
+                ->where('product_id',$key)->first();
+            $product->quantity = $product->quantity + $value;
             $product->save();
         }
+
         $this->dispatchBrowserEvent('refresh-page'); 
-        
+
     }
 
     public function render()
