@@ -87,7 +87,10 @@
                             <td>{{$rekrut->f}} {{$rekrut->l}}</td>
                             <td>{{$rekrut->r}} </td>
                             <td>{{$rekrut->d}} </td>
-                            <td>{{$rekrut->comment}} </td>
+                            <td >
+                                <div style="width: 200px;overflow: auto;">{{$rekrut->comment}}
+                                </div>
+                            </td>
                             <td>
                                 @if ($rekrut->status == 0)
                                     <span class="badge badge-primary">Ko'rilmagan</span>
