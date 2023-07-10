@@ -25,11 +25,12 @@ class RekrutController extends Controller
         $rekruts= DB::table('rekruts')
         ->select('tg_user.first_name as f','tg_user.last_name as l','tg_region.name as r',
                  'tg_region.name as r','tg_district.name as d',
-                 'rekruts.full_name as fname','rekruts.phone','rekruts.status'
+                 'rekruts.full_name as fname','rekruts.phone','rekruts.status','rekruts.id as rid','rekruts.comment'
                  )
         ->join('tg_user','tg_user.id','rekruts.rm_id')
         ->join('tg_region','tg_region.id','rekruts.region_id')
         ->join('tg_district','tg_district.id','rekruts.district_id')
+        ->orderBy('rid','ASC')
         ->get();
 
         return view('rekrut.add',[
@@ -112,4 +113,27 @@ class RekrutController extends Controller
         ]);
     }
 
+    public function change($id)
+    {
+        $rekrut = Rekrut::find($id);
+        $status = $rekrut->status;
+        if($status == 1)
+        {
+            $rekrut->status = 2;
+        }
+        if($status == 2)
+        {
+            $rekrut->status = 1;
+        }
+        $rekrut->save();
+
+        return redirect()->back();
+    }
+
+    public function delete($id)
+    {
+        $rekrut = Rekrut::destroy($id);
+
+        return redirect()->back();
+    }
 }

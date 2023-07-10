@@ -51,8 +51,12 @@
                             <input type="text"  name="phone" value="+998" class="form-control form-control-sm" required placeholder="Telefon"/>
                         </div>
 
-                        <div class="form-group col-md-2">
-                                <button type="submit" class="btn btn-primary"> Saqlash </button>
+                        <div class="form-group col-md-2 reksave">
+                                <button type="submit" class="btn btn-primary" onclick="$('#reksave').addClass('d-none');$('#reksave2').removeClass('d-none')"> Saqlash </button>
+                        </div>
+
+                        <div class="form-group col-md-2 reksave2 d-none">
+                            <button type="button" class="btn btn-primary"> Biroz kuting </button>
                         </div>
 
                     </div>
@@ -70,7 +74,9 @@
                         <th>RM </th>
                         <th>Viloyat </th>
                         <th>Tuman </th>
-                        <th>Xolati </th>
+                        <th>Izoh </th>
+                        <th>Status </th>
+                        <th>Harakat </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -81,6 +87,7 @@
                             <td>{{$rekrut->f}} {{$rekrut->l}}</td>
                             <td>{{$rekrut->r}} </td>
                             <td>{{$rekrut->d}} </td>
+                            <td>{{$rekrut->comment}} </td>
                             <td>
                                 @if ($rekrut->status == 0)
                                     <span class="badge badge-primary">Ko'rilmagan</span>
@@ -89,6 +96,14 @@
                                 @else
                                     <span class="badge badge-danger">Tasdiqlanmagan</span>
                                 @endif
+                            </td>
+                            <td>
+                                <a href="{{route('rekrut.delete',$rekrut->rid)}}">
+                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                </a>
+                                <a href="{{route('rekrut.change',$rekrut->rid)}}">
+                                    <button class="btn btn-primary"><i class="fas fa-exchange-alt"></i></button>
+                                </a>
                             </td>
                         </tr>
                     @endforeach

@@ -407,6 +407,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('rekrut-hisobot', [RekrutController::class, 'rekrutHisobot'])->name('rekrut-hisobot');
     Route::post('rekrut-check/{id}', [RekrutController::class, 'rekrutCheck'])->name('rekrut.check');
     Route::get('rekrut-add-user', [RekrutController::class, 'addUser'])->name('rekrut-add-user');
+    Route::get('rekrut-change/{id}', [RekrutController::class, 'change'])->name('rekrut.change');
+    Route::get('rekrut-delete/{id}', [RekrutController::class, 'delete'])->name('rekrut.delete');
     Route::post('rekrut-save-user', [RekrutController::class, 'saveUser'])->name('rekrut-save-user');
     //REKRUT-END
 
