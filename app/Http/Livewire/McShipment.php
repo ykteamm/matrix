@@ -46,6 +46,8 @@ class McShipment extends Component
 
     public $error;
 
+    public $money_view = 1;
+
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
     ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError'
     ];
@@ -244,6 +246,12 @@ class McShipment extends Component
                             $update = McOrderDetail::find($ord->id);
                             $update->debt = $update->debt + $ord->quantity - $this->products[$ord->product_id];
                             $update->save();
+
+                            $update_ware = McWarehousQuantity::where('warehouse_id',$this->ware_id)
+                            ->where('product_id',$ord->product_id)->first();
+                            $update_ware->quantity = $update_ware->quantity-$this->products[$ord->product_id];
+                            $update_ware->save();
+
                         }
                     }
 
@@ -254,6 +262,11 @@ class McShipment extends Component
                             $update = McOrderDetail::find($ord->id);
                             $update->debt = $update->debt - $this->products[$ord->product_id];
                             $update->save();
+
+                            $update_ware = McWarehousQuantity::where('warehouse_id',$this->ware_id)
+                            ->where('product_id',$ord->product_id)->first();
+                            $update_ware->quantity = $update_ware->quantity-$this->products[$ord->product_id];
+                            $update_ware->save();
                         }
                 }
 
@@ -293,6 +306,16 @@ class McShipment extends Component
 
     }   
 
+    public function moneyView()
+    {
+        if($this->money_view == 1)
+        {
+            $this->money_view = 2;
+        }else{
+            $this->money_view = 1;
+        }
+    }
+
     public function selectPayment($id)
     {
         $this->payment_id = $id;
@@ -305,14 +328,20 @@ class McShipment extends Component
     
     public function saveMoneyComing()
     {
-        McPaymentHistory::create([
-            'payment_id' => $this->payment_id,
-            'order_id' => $this->order_id,
-            'amount' => $this->amount
-        ]);
+        if($this->payment_id && $this->amount)
+        {
+            McPaymentHistory::create([
+                'payment_id' => $this->payment_id,
+                'order_id' => $this->order_id,
+                'amount' => $this->amount*100/100
+            ]);
 
-        $this->emit('shipment');
-        $this->restart = $this->order_id;
+        $this->dispatchBrowserEvent('refresh-page'); 
+
+        }else{
+            $this->error = 1;
+        }
+        
     }  
 
     public function runError()

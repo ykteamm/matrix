@@ -2,23 +2,36 @@
     <div class="row gold-box">
        
         <div class="card flex-fill mt-5">
-            <div class="justify-content-between">
-                <div class="mt-2">
-                    <a href="{{route('orders')}}">
-                        <button class="text-center btn-primary mb-1 ml-3">
-                            <i class="fas fa-arrow-left"> Buyurtmalar ro'yxatiga o'tish</i>
-                        </button>
-                    </a>
+            <div class="row justify-content-between pr-3">
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span>
+                                <a href="{{route('orders')}}">
+                                    <button class="text-center btn-primary mb-1 ml-3">
+                                        <i class="fas fa-arrow-left"> Buyurtmalar ro'yxatiga o'tish</i>
+                                    </button>
+                                </a>
+                            </span>
+                            <span></span>
+                        </li>
+                    </ul>
                 </div>
-                {{-- <div class="mt-2">
-                    <a href="{{route('orders')}}">
-                        <button class="text-center btn-primary mb-1 ml-3">
-                            <i class="fas fa-arrow-left"> Buyurtmalar ro'yxatiga o'tish</i>
-                        </button>
-                    </a>
-                </div> --}}
-            </div>
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="d-flex justify-content-between align-items-center">
+                        <span></span>
+                        <span>
+                            <button class="text-center btn-primary mb-1 ml-3" wire:click="moneyView">
+                                Pul kelishi <i class="fas fa-hand-holding-usd"></i>
+                            </button>
+                        </span>
+                        </li>
+                    </ul>
+                </div>
                 
+                            
+            </div>
             <div class="row justify-content-between p-3">
                 <div class="col-md-4">
                     <ul class="list-group">
@@ -97,6 +110,39 @@
 
                     </ul>
                 </div>
+
+                @if ($money_view == 2)
+                    <div class="col-md-4">
+                        
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                To'lov shaklini tanlang
+                            <span>
+                                <select class="form-control-sm" wire:change="selectPayment($event.target.value)">
+                                    <option selected disabled></option>
+                                    @foreach ($payments as $item)
+                                        <option value="{{$item->id}}">{{$item->type}}</option>
+                                    @endforeach
+                                </select>
+                            </span>  
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            To'lov summasi
+                            <span>
+                                <input type="text" class="form-control-sm" wire:change="addPayAmount($event.target.value)">
+                            </span>
+
+                            </li>
+
+                            <li class="list-group-item   text-center justify-content-between align-items-center">
+                                <button class="btn btn-success btn-sm" wire:click="$emit('saveMoney_Coming')">Saqlash</button>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                @endif
+
                 
                             
             </div>
@@ -203,10 +249,9 @@
             @endif
             @if($orders->order_detail_status != 1)
 
-                <div class="container m-auto text-center" style="background: #a5bcd9;padding:10px 20px;">
+                {{-- <div class="container m-auto text-center" style="background: #a5bcd9;padding:10px 20px;">
                     <h4>Pul kelishi</h4>
                     <div class="row">
-
                         <div class="col-md-4">
                                 <select class="form-control-lg" wire:change="selectPayment($event.target.value)">
                                     <option selected disabled>To'lov shaklini tanlang</option>
@@ -225,10 +270,7 @@
                         </div>
 
                     </div>
-                            
-
-
-                </div>
+                </div> --}}
 
             @endif
         </div>
