@@ -1,8 +1,24 @@
 <div class="content main-wrapper ">
     <div class="row gold-box">
        
-        @if ($page == 1)
         <div class="card flex-fill mt-5">
+            <div class="justify-content-between">
+                <div class="mt-2">
+                    <a href="{{route('orders')}}">
+                        <button class="text-center btn-primary mb-1 ml-3">
+                            <i class="fas fa-arrow-left"> Buyurtmalar ro'yxatiga o'tish</i>
+                        </button>
+                    </a>
+                </div>
+                {{-- <div class="mt-2">
+                    <a href="{{route('orders')}}">
+                        <button class="text-center btn-primary mb-1 ml-3">
+                            <i class="fas fa-arrow-left"> Buyurtmalar ro'yxatiga o'tish</i>
+                        </button>
+                    </a>
+                </div> --}}
+            </div>
+                
             <div class="row justify-content-between p-3">
                 <div class="col-md-4">
                     <ul class="list-group">
@@ -40,7 +56,7 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <button class="text-center btn-primary mb-1 ml-3" wire:click="$emit('order_List')">Buyurtmalar ro'yxatiga o'tish</button>
+                    
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Skidka
@@ -52,19 +68,16 @@
                             @endif
                             %</span>  
 
-                        {{-- <span class="badge badge-primary badge-pill">14</span> --}}
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Buyurtma summasi
                         <span>{{number_format($orders->price,0,',','.')}}</span>
 
-                        {{-- <span class="badge badge-primary badge-pill">2</span> --}}
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Skidka bilan
                         <span>{{number_format($orders->price - $orders->price*$discount/100,0,',','.')}}</span>
 
-                        {{-- <span class="badge badge-primary badge-pill">1</span> --}}
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -95,6 +108,13 @@
                         <tr>
                             <th>Dori</th>
                             <th>Buyurtma</th>
+                                @if($order_datail_status != 1)
+
+                                    @foreach ($detail_delivery_date as $item)
+                                        <th>{{date('d.m.Y H:i',strtotime($item))}}</th>
+                                    @endforeach
+
+                                @endif
                             @if($orders->order_detail_status != 3)
                                 <th>Otgruzka</th>
 
@@ -102,7 +122,10 @@
                                     <select class="form-control-sm" wire:change="selectWarehouse($event.target.value)">
                                         <option selected disabled></option>
                                             @foreach ($warehouses as $ware)
-                                                <option value="{{$ware->id}}">{{$ware->name}}</option>
+                                            
+                                                <option @if ($ware_id == $ware->id)
+                                                    selected
+                                                @endif value="{{$ware->id}}">{{$ware->name}}</option>
                                             @endforeach
                                     </select>
                                 </th>
@@ -127,8 +150,13 @@
                                 @endphp
                                     <tr>
                                         <td>{{$pro->medicine->name}}</td>
-                                        <td>{{$products[$pro->product_id]}}</td>
-
+                                        <td>{{$default_orders[$pro->product_id]}}</td>
+                                        
+                                        @if($order_datail_status != 1)
+                                            @foreach ($detail_delivery_date as $key => $item)
+                                                <td>{{$detail_delivery[$key][$pro->product_id]}}</td>
+                                            @endforeach
+                                        @endif
                                         @if($orders->order_detail_status != 3)
                                             
                                             <td><input type="text" value="{{$products[$pro->product_id]}}"  wire:keyup="changeQuantity($event.target.value,{{$pro->product_id}})"></td>
@@ -145,7 +173,7 @@
                                     </tr>
                                 @endforeach
                             @endisset
-                            <tr class="table-primary">
+                            {{-- <tr class="table-primary">
                                 <td>Jami</td>
                                 <td>{{$sum_order}}</td>
                                 @if($orders->order_detail_status != 3)
@@ -153,15 +181,25 @@
 
                                     <td>{{$sum_sklad}}</td>
                                 @endif
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
+                    {{-- <p>{{$saved}}</p> --}}
                 </div>
             </div>
-            @if ($saved == 2 && $delivery_id > 0)
+            @if ($saved != 2 && $error == 1)
                 <div class="m-3">
-                    <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary">Saqlash</button>
+                    <button class="btn btn-block btn-danger">Malumotlar to'liq emas <i wire:click="$emit('delete_Error')" class="fas fa-window-close"></i> </button>
                 </div>
+            @endif
+            @if($orders->order_detail_status != 3)
+
+                @if ($delivery_id > 0)
+                    <div class="m-3">
+                        <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary">Saqlash</button>
+                    </div>
+                @endif
+
             @endif
             @if($orders->order_detail_status != 1)
 
@@ -194,77 +232,7 @@
 
             @endif
         </div>
-        @else 
-            <div class="card flex-fill mt-5">
-                <div class="row">
 
-                    @foreach ($status_array as $key => $item)
-                        <div class="col-md-2 mb-1">
-                            <button class="btn btn-block 
-                            @if($key == $active_status)
-                            btn-primary
-                            @else
-                            btn-secondary
-                            @endif
-                            " wire:click="$emit('change_Status', {{$key}})">{{$item}}</button>
-                        </div>
-                    @endforeach
-    
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped mb-0">
-                            <thead>
-                            <tr>
-                                <th>Buyurtma raqami</th>
-                                <th>Buyurtma narxi</th>
-                                <th>Skidka narxi </th>
-                                <th>Skidka </th>
-                                <th>Buyurtma beruvchi </th>
-                                <th>Buyurtma vaqti </th>
-                                <th>Otgruzka </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @isset($orders)
-                                    
-                                @foreach ($orders as $key => $order)
-                                    <tr>
-                                        <td>{{$order->number}}</td>
-                                        <td>{{number_format($order->price,0,',','.')}}</td>
-                                        <td>{{number_format($order->price - $order->price*$order->discount/100),0,',','.'}}</td>
-                                        <td>{{$order->discount}}</td>
-                                        @if ($order->pharmacy != null)
-                                            <td>{{$order->pharmacy->name}}</td>
-                                        @else
-                                            <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
-                                        @endif
-                                        <td>{{date('d.m.Y',strtotime($order->order_date))}}</td>
-                                            <td>
-                                                
-                                                {{-- <a href="order/{{$order->id}}"> --}}
-                                                    <button  wire:click="$emit('shipment',{{$order->id}})" class="btn btn-primary" style="padding: 0px 5px;">
-                                                        <i class="fas fa-shipping-fast"></i>
-                                                    </button>
-                                                    {{-- <button  class="btn btn-primary" style="padding: 0px 5px;">
-                                                        <i class="fas fa-shipping-fast"></i>
-                                                    </button> --}}
-                                                {{-- </a> --}}
-                                            </td>
-                                        </tr>
-                                @endforeach
-                                @endisset
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-                
-            
-        
     </div>
     
     <script>
