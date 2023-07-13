@@ -62,6 +62,11 @@ class ElchilarService
                 {
                     $elchi = $elchi->where('tg_user.specialty_id', 9);
                 }
+                elseif($all_or_new == 'elchi_all')
+                {
+                    $elchi = $elchi->whereIn('tg_user.status', [0,1])->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
+                }
                 else {
                     $elchi = $elchi
                     ->whereIn('tg_user.id',$yes_user_id);
@@ -95,6 +100,10 @@ class ElchilarService
                 elseif($all_or_new == 'pro')
                 {
                     $elchi = $elchi->where('tg_user.specialty_id', 9);
+                }elseif($all_or_new == 'elchi_all')
+                {
+                    $elchi = $elchi->whereIn('tg_user.status', [0,1])->where('tg_user.specialty_id', 1)
+                    ->where('tg_user.rm','!=',1);
                 }
                 else {
                     $elchi = $elchi

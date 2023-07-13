@@ -36,13 +36,20 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         @if ($all_or_new == 'all')
                             Hammasi
-                        @else
+                        @elseif($all_or_new == 'new')
                             Yangi elchilar
+                        @elseif($all_or_new == 'elchi')
+                            Elchilar
+                        @elseif($all_or_new == 'elchi_all')
+                            Barcha Elchilar
+                        @elseif($all_or_new == 'pro')
+                            Provizor
                         @endif
                     </button>
 
                     <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
                         <a onclick="selectNewOrAll('all')" class="dropdown-item"> Hammasi </a>
+                        <a onclick="selectNewOrAll('elchi_all')" class="dropdown-item"> Barcha elchi </a>
                         <a onclick="selectNewOrAll('elchi')" class="dropdown-item"> Elchi </a>
                         <a onclick="selectNewOrAll('new')" class="dropdown-item"> Yangi elchi </a>
                         <a onclick="selectNewOrAll('pro')" class="dropdown-item"> Provizor </a>

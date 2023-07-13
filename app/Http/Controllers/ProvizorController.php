@@ -40,6 +40,7 @@ class ProvizorController extends Controller
             $reg[] = $value['region_id'];
         }
         $regions = Region::whereIn('id',$reg)->get();
+
         return view('provizor.hisobot',[
             'orders' => $orders,
             'regions' => $regions

@@ -74,12 +74,18 @@
 
                                                 @foreach ($orders as $ord)
                                                 @if ($r->id == $ord['region_id'])
-
+                                                    @php
+                                                        $all_price = 0;
+                                                        $pul = 0;
+                                                    @endphp
                                                      @foreach ($ord['order'] as $o)
                                                         @php
                                                         $all_price += $o['order_price'];
                                                         $pul += $o['money_arrival'];
                                                         @endphp
+                                                    @endforeach
+
+                                                    @if($all_price > 0)
                                                     <div style="background:#181a49;border-radius:8px;box-shadow: 0px 0px 7px 5px #ffffff;
                                                         cursor:pointer;display: none;"
                                                         class="col-12 col-md-12 col-lg-12 mt-4 pulkelishi{{$r->id}}"
@@ -96,19 +102,18 @@
                                                             style="font-size:20px;color:white;"
                                                             class="mt-1"
 
-                                                            >{{number_format($o['order_price'],0,',','.')}}</span>
+                                                            >{{number_format($all_price,0,',','.')}}</span>
 
                                                             <span
                                                             style="font-size:20px;color:white;"
                                                             class="mt-1"
 
-                                                            >{{number_format($o['money_arrival'],0,',','.')}}</span>
+                                                            >{{number_format($pul,0,',','.')}}</span>
                                                         </div>
 
 
                                                     </div>
-
-                                                    @endforeach
+                                                    @endif
 
 
                                                 @endif

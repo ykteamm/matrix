@@ -74,44 +74,49 @@
 
                                         @foreach ($orders222 as $ord)
                                         @if ($r->id == $ord['region_id'])
+                                                    @php
+                                                        $all_price = 0;
+                                                        $pul = 0;
+                                                    @endphp
+                                                     @foreach ($ord['order'] as $o)
+                                                        @php
+                                                        $all_price += $o['order_price'];
+                                                        $pul += $o['money_arrival'];
+                                                        @endphp
+                                                    @endforeach
 
-                                             @foreach ($ord['order'] as $o)
-                                                @php
-                                                $all_price += $o['order_price'];
-                                                $pul += $o['money_arrival'];
-                                                @endphp
-                                            <div style="background:#181a49;border-radius:8px;box-shadow: 0px 0px 7px 5px #ffffff;
-                                                cursor:pointer;display: none;"
-                                                class="col-12 col-md-12 col-lg-12 mt-4 pulkelishi{{$r->id}}"
-                                                >
-                                                <div class="text-center">
-                                                    <span
-                                                    style="font-size:20px;color:white;"
-                                                    class="mt-1"
+                                                    @if($all_price > 0)
+                                                    <div style="background:#181a49;border-radius:8px;box-shadow: 0px 0px 7px 5px #ffffff;
+                                                        cursor:pointer;display: none;"
+                                                        class="col-12 col-md-12 col-lg-12 mt-4 pulkelishi{{$r->id}}"
+                                                        >
+                                                        <div class="text-center">
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1"
 
-                                                    >{{$ord['first_name']}} {{$ord['last_name']}}</span>
-                                                </div>
-                                                <div class="d-flex justify-content-between ">
-                                                    <span
-                                                    style="font-size:20px;color:white;"
-                                                    class="mt-1"
+                                                            >{{$ord['first_name']}} {{$ord['last_name']}}</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between ">
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1"
 
-                                                    >{{number_format($o['order_price'],0,',','.')}}</span>
+                                                            >{{number_format($all_price,0,',','.')}}</span>
 
-                                                    <span
-                                                    style="font-size:20px;color:white;"
-                                                    class="mt-1"
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1"
 
-                                                    >{{number_format($o['money_arrival'],0,',','.')}}</span>
-                                                </div>
+                                                            >{{number_format($pul,0,',','.')}}</span>
+                                                        </div>
 
 
-                                            </div>
+                                                    </div>
+                                                    @endif
 
-                                            @endforeach
 
-
-                                        @endif
+                                                @endif
                                         @endforeach
                                     </div>
                                 </div>
@@ -132,10 +137,10 @@
                      <table class="table mb-0 example1">
                         <thead>
                            <tr>
-                              <th>FIO</th>
-                              <th>PASS</th>
-                              <th>Buyurtma summasi</th>
-                              <th>Promo summasi</th>
+                              <th onclick="$('.pass').toggle();">FIO</th>
+                              <th class="pass" style="display: none;">PASS</th>
+                              <th onclick="$('.money_com').toggle();">Buyurtma summasi</th>
+                              <th class="money_com" style="display: none;">Promo summasi</th>
                               <th>Pul kelishi</th>
                               <th>Viloyat</th>
                               <th>Dorixona</th>
@@ -149,9 +154,9 @@
                            @foreach ($orders as $elchi)
                               <tr>
                                  <td>{{$elchi['user']['last_name']}} {{$elchi['user']['first_name']}}</td>
-                                 <td>{{$elchi['user']['pass']}}</td>
+                                 <td class="pass" style="display: none;">{{$elchi['user']['pass']}}</td>
                                  <td>{{number_format($elchi['order_price'],0,',',' ')}}</td>
-                                 <td>{{number_format($elchi['promo_price'],0,',',' ')}}</td>
+                                 <td class="money_com" style="display: none;">{{number_format($elchi['promo_price'],0,',',' ')}}</td>
                                  <td>
                                     @if($elchi['money_arrival'] == null)
                                         0
@@ -162,7 +167,6 @@
                                  </td>
                                  <td>{{getRegionByid($elchi['user']['region_id'])}}</td>
                                  <td>{{getPharmacy($elchi['user']['pharmacy'][0]['pharmacy_id'])}}</td>
-                                 <td></td>
                                  <td>{{date('d.m.Y',strtotime($elchi['created_at']))}}</td>
                                  <td>
                                     @if($elchi['status'] == 1)
@@ -199,10 +203,43 @@
                                     @else
 
                                     @endif
-
-                                    {{-- <a href="" class="mr-2"> <i class="fas fa-truck" style="color:blue;font-size:25px;"></i> </a> --}}
+                                    @php
+                                        $ff = $elchi['id'];
+                                    @endphp
                                     <a href="{{route('order.product',['order_id' => $elchi['id']])}}" class="mr-2"> <i class="fas fa-eye" style="color:rgb(153, 11, 235);font-size:25px;"></i></a>
-                                 </td>
+                                    <span onclick="$('.eeee{{$ff}}').toggle();" class="mr-2 btn btn-primary btn-sm"> <i class="fas fa-plus"></i></span>
+                                 
+                                </td>
+                              </tr>
+                              <tr class="eeee{{$elchi['id']}}" style="display: none;">
+                                <td colspan="8">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Dori</th>
+                                                <th>Zakaz</th>
+                                                <th>Sotildi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($elchi['order_product'] as $item)
+                                                <tr>
+                                                    <td>{{$item['product']['name']}}</td>
+                                                    <td>{{$item['quantity']}}</td>
+                                                    @foreach ($elchi['order_stock'] as $e)
+                                                        @if ($e['product_id'] == $item['product_id'])
+                                                            @php
+                                                                $stock = $e['quantity'];
+                                                            @endphp
+                                                        @endif
+                                                    @endforeach
+                                                    <td>{{$stock??0}}</td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </td>
                               </tr>
                            @endforeach
                         </tbody>
