@@ -48,6 +48,10 @@ class McShipment extends Component
 
     public $money_view = 1;
 
+    public $payment_history = [];
+    public $payment_date;
+    public $payment_sum;
+
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
     ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError'
     ];
@@ -86,37 +90,42 @@ class McShipment extends Component
 
         if($this->order_datail_status != 1)
         {
-            // $this->detail_delivery = McOrderDelivery::where('order_id',$order_id)->pluck('quantity','product_id')->toArray();
             $this->detail_delivery_date = McOrderDelivery::where('order_id',$order_id)->distinct('created_at')->pluck('created_at')->toArray();
                 foreach ($this->detail_delivery_date as $key => $value) {
                     $delivery_q = McOrderDelivery::where('order_id',$order_id)->where('created_at',$value)->pluck('quantity','product_id')->toArray();
                     $this->detail_delivery[] = $delivery_q;
                 }
-
-            // dd($detail_delivery);
         }
         $this->payments = McPayment::all();
 
         $this->ware_products = McWarehousQuantity::where('warehouse_id',$this->ware_id)->pluck('quantity','product_id')->toArray();
 
+        $this->payment_date = McPaymentHistory::where('order_id',$order_id)->distinct('created_at')->pluck('created_at')->toArray();
+
+        $this->payment_sum = McPaymentHistory::where('order_id',$order_id)->sum('amount');
+
+        foreach ($this->payment_date as $key => $value) {
+            $paymnet_q = McPaymentHistory::where('order_id',$order_id)->where('created_at',$value)->pluck('amount','payment_id')->toArray();
+            $this->payment_history[] = $paymnet_q;
+        }
     }
 
 
     public function selectWarehouse($warehouse_id)
     {
+        $this->ware_id = $warehouse_id;
         $this->ware_products = McWarehousQuantity::where('warehouse_id',$warehouse_id)->pluck('quantity','product_id')->toArray();
+        // foreach ($this->default_orders as $pro_id => $quantity) {
+        //     if($quantity > $this->ware_products[$pro_id])
+        //     {
+        //         $this->saved = 1;
+        //     }
+        // }
 
-        foreach ($this->default_orders as $pro_id => $quantity) {
-            if($quantity > $this->ware_products[$pro_id])
-            {
-                $this->saved = 1;
-            }
-        }
-
-        if($this->saved != 1)
-        {
-            $this->saved = 2;
-        }
+        // if($this->saved != 1)
+        // {
+        //     $this->saved = 2;
+        // }
 
     }
 
@@ -133,27 +142,6 @@ class McShipment extends Component
         }
 
         $this->products[$id] = $quantity;
-
-        // $this->saved = 3;
-
-        // dd($this->products);
-
-        // foreach ($this->products as $pro_id => $quantity) {
-        //     if($quantity > $this->ware_products[$pro_id])
-        //     {
-        //         $this->saved = 1;
-        //     }
-        //     if($quantity = $this->ware_products[$pro_id])
-        //     {
-        //         $this->saved = 2;
-        //     }
-        // }
-
-
-        // if($this->saved != 1)
-        // {
-        //     $this->saved = 2;
-        // }
 
     }   
 

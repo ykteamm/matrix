@@ -107,7 +107,14 @@
                             @endif
 
                           </li>
+                          {{-- @if(count($payment_history) > 0) --}}
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Kelgan pul
 
+                                <span>{{number_format($payment_sum,0,',','.')}}</span>
+    
+                            </li>
+                          {{-- @endif --}}
                     </ul>
                 </div>
 
@@ -166,9 +173,7 @@
 
                                 <th>Sklad  
                                     <select class="form-control-sm" wire:change="selectWarehouse($event.target.value)">
-                                        <option selected disabled></option>
                                             @foreach ($warehouses as $ware)
-                                            
                                                 <option @if ($ware_id == $ware->id)
                                                     selected
                                                 @endif value="{{$ware->id}}">{{$ware->name}}</option>
@@ -238,6 +243,7 @@
                     <button class="btn btn-block btn-danger">Malumotlar to'liq emas <i wire:click="$emit('delete_Error')" class="fas fa-window-close"></i> </button>
                 </div>
             @endif
+
             @if($orders->order_detail_status != 3)
 
                 @if ($delivery_id > 0)
@@ -247,31 +253,39 @@
                 @endif
 
             @endif
-            @if($orders->order_detail_status != 1)
-
-                {{-- <div class="container m-auto text-center" style="background: #a5bcd9;padding:10px 20px;">
-                    <h4>Pul kelishi</h4>
-                    <div class="row">
-                        <div class="col-md-4">
-                                <select class="form-control-lg" wire:change="selectPayment($event.target.value)">
-                                    <option selected disabled>To'lov shaklini tanlang</option>
+            
+            @if(count($payment_history) > 0)
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                <th>Tolov turi</th>
+                                @foreach ($payment_date as $item)
+                                    <th>{{date('d.m.Y H:i',strtotime($item))}}</th>
+                                @endforeach
+                            </tr>
+                            </thead>
+                            <tbody>
                                     @foreach ($payments as $item)
-                                        <option value="{{$item->id}}">{{$item->type}}</option>
+                                        <tr>
+                                            <td>{{$item->type}}</td>
+
+                                            @foreach ($payment_history as $key => $item2)
+                                                    @if (isset($payment_history[$key][$item->id]))
+                                                        <td>
+                                                            {{number_format($payment_history[$key][$item->id],0,',','.')}}
+                                                        </td>
+                                                    @else
+                                                        <td>-</td>
+                                                    @endif
+                                            @endforeach
+                                        </tr>
                                     @endforeach
-                                </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <input type="text" class="form-control-lg" wire:change="addPayAmount($event.target.value)">
-                        </div>
-
-                        <div class="col-md-4">
-                            <button class="btn btn-success btn-lg" wire:click="$emit('saveMoney_Coming')">Saqlash</button>
-                        </div>
-
+                            </tbody>
+                        </table>
                     </div>
-                </div> --}}
-
+                </div>
             @endif
         </div>
 
