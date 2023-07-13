@@ -17,7 +17,7 @@ class CreateMcPaymentHistoriesTable extends Migration
             $table->id();
             $table->foreignId('payment_id');
             $table->foreignId('order_id');
-            $table->decimal('amount',8,2);
+            $table->float('amount');
             $table->timestamps();
         });
     }

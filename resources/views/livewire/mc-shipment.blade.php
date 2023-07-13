@@ -17,20 +17,20 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-4">
-                    <ul class="list-group">
-                        <li class="d-flex justify-content-between align-items-center">
-                        <span></span>
-                        <span>
-                            <button class="text-center btn-primary mb-1 ml-3" wire:click="moneyView">
-                                Pul kelishi <i class="fas fa-hand-holding-usd"></i>
-                            </button>
-                        </span>
-                        </li>
-                    </ul>
-                </div>
-                
-                            
+                @if ($orders->payment_status != 2)
+                    <div class="col-md-4">
+                        <ul class="list-group">
+                            <li class="d-flex justify-content-between align-items-center">
+                            <span></span>
+                            <span>
+                                <button class="text-center btn-primary mb-1 ml-3" wire:click="moneyView">
+                                    Pul kelishi <i class="fas fa-hand-holding-usd"></i>
+                                </button>
+                            </span>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
             </div>
             <div class="row justify-content-between p-3">
                 <div class="col-md-4">
@@ -43,12 +43,12 @@
                         
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Buyurtma xolati
-                        <span>{{$orders->status}}</span>
+                        <span>{{$status_array[$order_datail_status]}}</span>
 
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Buyurtma vaqti
-                        <span>{{date('d.m.Y',strtotime($orders->order_date))}}</span>
+                        <span>{{date('d.m.Y H:i',strtotime($orders->order_date))}}</span>
 
                         </li>
 
@@ -74,7 +74,7 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Skidka
                         <span>
-                            @if($this->discount == 1)
+                            @if ($orders->payment_status != 2)
                             <input type="text" value="{{$discount}}"  wire:keyup="changeDiscount($event.target.value)">
                             @else
                             {{$discount}}
@@ -111,7 +111,7 @@
                           <li class="list-group-item d-flex justify-content-between align-items-center">
                             Kelgan pul
 
-                                <span>{{number_format($payment_sum,0,',','.')}}</span>
+                                <span>{{number_format($payment_sum,0,',','.')}} (qarz {{$orders->price - $orders->price*$discount/100-$payment_sum}})</span>
     
                             </li>
                           {{-- @endif --}}
@@ -142,10 +142,16 @@
                             </li>
 
                             <li class="list-group-item   text-center justify-content-between align-items-center">
-                                <button class="btn btn-success btn-sm" wire:click="$emit('saveMoney_Coming')">Saqlash</button>
+                                <button class="btn btn-success btn-sm mcorderpaysave" wire:click="$emit('saveMoney_Coming')">Saqlash</button>
+                                <button class="btn btn-success btn-sm mcorderpaysavenone d-none">Biroz kuting..</button>
 
                             </li>
-
+                            <script>
+                                document.querySelector('.mcorderpaysave').addEventListener('click', () => {
+                                    document.querySelector('.mcorderpaysave').classList.add('d-none');
+                                    document.querySelector('.mcorderpaysavenone').classList.remove('d-none');
+                                }); 
+                            </script>
                         </ul>
                     </div>
                 @endif
@@ -248,8 +254,16 @@
 
                 @if ($delivery_id > 0)
                     <div class="m-3">
-                        <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary">Saqlash</button>
+                        <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary mcorderdelsave">Saqlash</button>
+                        <button type="button" class="btn btn-block btn-primary mcorderdelsavenone d-none">Biroz kuting...</button>
                     </div>
+
+                    <script>
+                        document.querySelector('.mcorderdelsave').addEventListener('click', () => {
+                            document.querySelector('.mcorderdelsave').classList.add('d-none');
+                            document.querySelector('.mcorderdelsavenone').classList.remove('d-none');
+                        }); 
+                    </script>
                 @endif
 
             @endif

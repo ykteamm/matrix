@@ -16,6 +16,8 @@ use App\Models\RmWarehouse;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
+use function PHPSTORM_META\elementType;
+
 class McShipment extends Component
 {
     public $orders;
@@ -59,6 +61,10 @@ class McShipment extends Component
 
     public function mount($order_id)
     {
+        $this->status_array[1] = 'Yangi';
+        $this->status_array[2] = 'Qarzdor';
+        $this->status_array[3] = 'Yakunlangan';
+
         $this->order_id = $order_id;
 
         $this->order_products = McOrderDetail::with('medicine')->where('order_id',$order_id)->orderBy('id','ASC')->get();
@@ -263,6 +269,7 @@ class McShipment extends Component
                     McOrderDelivery::create([
                         'order_id' => $this->order_id,
                         'order_detail_id' => $ord->id,
+                        'warehouse_id' => $this->ware_id,
                         'product_id' => $ord->product_id,
                         'quantity' => $this->products[$ord->product_id],
                         'price' => $ord->price,
@@ -281,7 +288,6 @@ class McShipment extends Component
 
                 McOrder::where('id',$this->order_id)->update([
                     'discount' => $this->discount,
-                    'status' => 2,
                     'order_detail_status' => $order_detail_status,
                     'delivery_id' => $this->delivery_id,
                 ]);
@@ -318,13 +324,32 @@ class McShipment extends Component
     {
         if($this->payment_id && $this->amount)
         {
-            McPaymentHistory::create([
-                'payment_id' => $this->payment_id,
-                'order_id' => $this->order_id,
-                'amount' => $this->amount*100/100
-            ]);
+            $sum_payment = McPaymentHistory::where('order_id',$this->order_id)->sum('amount');
+            $order = McOrder::find($this->order_id);
+            $order_payment = $order->price - $order->price*$order->discount/100;
+            if(($order_payment - $sum_payment) < $this->amount)
+            {
+                $this->error = 1;
 
-        $this->dispatchBrowserEvent('refresh-page'); 
+            }else{
+                McPaymentHistory::create([
+                    'payment_id' => $this->payment_id,
+                    'order_id' => $this->order_id,
+                    'amount' => $this->amount*100/100
+                ]);
+                
+                $sum_payment_all = McPaymentHistory::where('order_id',$this->order_id)->sum('amount');
+                if($sum_payment_all >= $order_payment)
+                {
+                    $upd = McOrder::find($this->order_id);
+                    $upd->payment_status = 2;
+                    $upd->save();
+                }
+                
+
+                $this->dispatchBrowserEvent('refresh-page'); 
+            }
+            
 
         }else{
             $this->error = 1;

@@ -12,18 +12,18 @@ class McOrder extends Model
     protected $fillable = [
         'id',
         'pharmacy_id',
+        'pro_pharmacy_id',
         'user_id',
         'employee_id',
         'delivery_id',
-        'payment_id',
         'number',
         'price',
         'discount',
-        'status',
         'order_detail_status',
         'payment_status',
         'order_date',
-        'outer'
+        'outer',
+        'prepayment'
     ];
 
     public function pharmacy()

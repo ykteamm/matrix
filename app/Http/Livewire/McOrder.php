@@ -28,6 +28,7 @@ class McOrder extends Component {
     public $prod_count = [];
     public $summa_array = [];
     public $prod_price = [];
+    public $skidka = 0;
     public $discount;
 
     protected $order_service;
@@ -81,12 +82,33 @@ class McOrder extends Component {
             $this->prod_price[$id] = $pr['price'][0]['price'];
 
             $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
+
+            $this->skidka = $this->with_foiz($this->summa_array);
+       
             
         }
         
 
     }
+    public function with_foiz($array)
+    {
+       $sum = array_sum($array);
 
+       if($sum < 5000000)
+       {
+        $s = 0;
+       }elseif($sum >= 5000000 && $sum < 10000000)
+       {
+        $s = 5;
+       }
+       elseif($sum >= 10000000 && $sum < 15000000)
+       {
+        $s = 10;
+       }else{
+        $s = 15;
+       }
+       return $s;
+    }
     public function deleteProd($key,$id) {
         if (($k = array_search($id, $this->prod_array)) !== false) {
             unset($this->prod_array[$k]);
@@ -94,6 +116,9 @@ class McOrder extends Component {
         unset($this->order_product[$key]);
 
         $this->summa_array[$id] = 0 * $this->prod_price[$id];
+
+        $this->skidka = $this->with_foiz($this->summa_array);
+
 
     }
     
@@ -108,6 +133,9 @@ class McOrder extends Component {
         $this->prod_count[$id] = $v;
 
         $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
+
+        $this->skidka = $this->with_foiz($this->summa_array);
+
 
     }
 
@@ -135,8 +163,8 @@ class McOrder extends Component {
             'employee_id' => Session::get('user')->id,
             'number' => 'P'.($this->code+1),
             'price' => array_sum($this->summa_array),
-            'discount' => $this->discount,
-            'order_date' => date('Y-m-d'),
+            'discount' => $this->skidka,
+            'order_date' => date('Y-m-d H:i:s'),
             'outer' => $this->outer,
 
         ]);
@@ -161,8 +189,8 @@ class McOrder extends Component {
             'employee_id' => Session::get('user')->id,
             'number' => 'P'.($this->code+1),
             'price' => array_sum($this->summa_array),
-            'discount' => $this->discount,
-            'order_date' => date('Y-m-d'),
+            'discount' => $this->skidka,
+            'order_date' => date('Y-m-d H:i:s'),
             'outer' => $this->outer,
 
         ]);

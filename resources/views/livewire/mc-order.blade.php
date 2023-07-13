@@ -9,7 +9,10 @@
                               Buyurtma raqami
                               <span>P{{$code+1}}</span>
                             </li>
-                            
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Buyurtma vaqti
+                                <span>{{date('d.m.Y H:i')}}</span>
+                              </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Buyurtmachi
                                 <select class="form-control form-control-sm" wire:change="selectType($event.target.value)">
@@ -22,26 +25,20 @@
                     </div>
                     <div class="col-md-4">
                         <ul class="list-group">
-                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
                               Skidka
                               <span>{{$skidka}}     %</span>  
-                            </li> --}}
+                            </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                               Buyurtma summasi
                               <span>{{number_format(array_sum($summa_array),0,',','.')}}</span>
                             </li>
+                            
+                              
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Buyurtma xolati
-                                <span>Ochiq</span>
-                              </li>
-                              <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Buyurtma vaqti
-                                <span>{{date('d.m.Y')}}</span>
-                              </li>
-                            {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                               Skidka bilan
                               <span>{{number_format(array_sum($summa_array)-array_sum($summa_array)*intval($skidka)/100,0,',','.')}}</span>
-                            </li> --}}
+                            </li>
                           </ul>
                     </div>
                 </div>
@@ -122,9 +119,16 @@
                 </div>
 
                 <div class="m-3">
-                        <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary">Saqlash</button>
+                        <button wire:click="$emit('save')" 
+                        type="button" class="btn btn-block btn-primary mcordersave">Saqlash</button>
+                        <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary mcordersavenonne d-none">Biroz kuting</button>
                 </div>
-
+                <script>
+                    document.querySelector('.mcordersave').addEventListener('click', () => {
+                        document.querySelector('.mcordersave').classList.add('d-none');
+                        document.querySelector('.mcordersavenonne').classList.remove('d-none');
+                    }); 
+                </script>
             @endif
 
             

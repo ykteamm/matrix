@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\McOrder;
 use App\Models\McOrderDetail;
+use App\Models\McPaymentHistory;
 use App\Models\Medicine;
 use App\Models\RmOrderProduct;
 use App\Models\RmWarehouse;
@@ -15,6 +16,7 @@ class Shipment extends Component
     public $warehouses;
     public $order_products =[];
     public $order_debt =[];
+    public $order_sum = [];
     public $products;
     public $medicine;
 
@@ -28,25 +30,22 @@ class Shipment extends Component
 
     public function mount()
     {
-        $this->status_array[1] = 'Yangi buyurtmalar';
-        $this->status_array[2] = 'Yakunlanmagan otgruzka';
-        $this->status_array[3] = 'To\'liq yakunlangan otgruzka';
+        $this->status_array[1] = 'Yangi';
+        $this->status_array[2] = 'Qarzdor';
+        $this->status_array[3] = 'Yakunlangan';
 
         $this->view_array[1] = 'align-justify';
         $this->view_array[2] = 'th';
 
         $this->orders = McOrder::with('pharmacy','user','employe','delivery','payment')
         ->where('order_detail_status',$this->active_status)->orderBy('id','ASC')->get();
-
         foreach ($this->orders as $key => $value) {
             $this->order_products[$value->id] = McOrderDetail::where('order_id',$value->id)->pluck('quantity','product_id')->toArray();
             $this->order_debt[$value->id] = McOrderDetail::where('order_id',$value->id)->pluck('debt','product_id')->toArray();
+            $this->order_sum[$value->id] = McPaymentHistory::where('order_id',$value->id)->sum('amount');
         }
-        // dd($this->order_products);
         $this->medicine = Medicine::orderBy('id','ASC')->get();
-
     }
-
     public function changeStatus($status)
     {
         $this->active_status = $status;
@@ -57,6 +56,7 @@ class Shipment extends Component
         foreach ($this->orders as $key => $value) {
             $this->order_products[$value->id] = McOrderDetail::where('order_id',$value->id)->pluck('quantity','product_id')->toArray();
             $this->order_debt[$value->id] = McOrderDetail::where('order_id',$value->id)->pluck('debt','product_id')->toArray();
+            $this->order_sum[$value->id] = McPaymentHistory::where('order_id',$value->id)->sum('amount');
 
         }
     }

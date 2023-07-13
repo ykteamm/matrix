@@ -149,8 +149,10 @@
                                 <th>Buyurtma narxi</th>
                                 <th>Skidka narxi </th>
                                 <th>Skidka </th>
+                                <th>Kelgan pul </th>
                                 <th>Buyurtma beruvchi </th>
                                 <th>Buyurtma vaqti </th>
+                                <th>Buyurtma Statusi </th>
                                 <th>Otgruzka </th>
                             </tr>
                             </thead>
@@ -161,14 +163,16 @@
                                     <tr>
                                         <td>{{$order->number}}</td>
                                         <td>{{number_format($order->price,0,',','.')}}</td>
-                                        <td>{{number_format($order->price - $order->price*$order->discount/100),0,',','.'}}</td>
-                                        <td>{{$order->discount}}</td>
+                                        <td>{{number_format($order->price - $order->price*$order->discount/100,0,',','.')}}</td>
+                                        <td>{{$order->discount}}%</td>
+                                        <td>{{number_format($order_sum[$order->id],0,',','.')}}</td>
                                         @if ($order->pharmacy != null)
                                             <td>{{$order->pharmacy->name}}</td>
                                         @else
                                             <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
                                         @endif
-                                        <td>{{date('d.m.Y',strtotime($order->order_date))}}</td>
+                                        <td>{{date('d.m.Y H:i',strtotime($order->order_date))}}</td>
+                                        <td>{{$status_array[$order->order_detail_status]}}</td>
                                             <td>
                                                 
                                                 <a href="order/{{$order->id}}">

@@ -18,6 +18,7 @@ class CreateMcOrderDeliveriesTable extends Migration
             $table->foreignId('order_id');
             $table->foreignId('order_detail_id');
             $table->foreignId('product_id');
+            $table->foreignId('warehouse_id');
             $table->integer('quantity');
             $table->integer('price');
             $table->timestamps();

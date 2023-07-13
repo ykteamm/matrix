@@ -13,6 +13,7 @@ class McOrderDelivery extends Model
         'id',
         'order_id',
         'order_detail_id',
+        'warehouse_id',
         'product_id',
         'quantity',
         'price'
