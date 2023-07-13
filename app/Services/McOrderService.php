@@ -6,6 +6,7 @@ use App\Models\Calendar;
 use App\Models\Pharmacy;
 use App\Models\Plan;
 use App\Models\PlanWeek;
+use App\Models\ProductSold;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,10 @@ class McOrderService
         $region_id = $this->getSpecialRegionId();
         if($this->type == 1)
         {
-            $pharmacy_or_user = Pharmacy::whereIn('region_id',$region_id)->get();
+            $pharmacy_or_user = Pharmacy::with('region')->whereIn('region_id',$region_id)->get();
+
+            
+
             $outer = 1;
 
         }else{

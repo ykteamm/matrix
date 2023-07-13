@@ -6,10 +6,12 @@ use App\Models\McOrder as ModelsMcOrder;
 use App\Models\McOrderDetail;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
+use App\Models\ProductSold;
 use App\Models\Region;
 use App\Models\RmOrder;
 use App\Models\RmOrderProduct;
 use App\Models\Shablon;
+use App\Models\User;
 use App\Services\McOrderService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -21,6 +23,8 @@ class McOrder extends Component {
     public $code;
     public $outer = 3;
     public $pharmacy_or_user;
+    public $pharmacy_pro;
+    public $pharmacy_no;
     public $pharmacy_or_user_id;
     public $products;
     public $prod_array = [];
@@ -33,22 +37,52 @@ class McOrder extends Component {
 
     protected $order_service;
 
-    protected $listeners = ['delete_prod' => 'deleteProd','save' => 'saveOrder'];
+    protected $listeners = ['delete_prod' => 'deleteProd','save' => 'saveOrder','addProd'];
     
 
     public function mount() {
-
         $this->code = ModelsMcOrder::count();
-        
     }
-
     public function selectType($value) {
 
         $this->order_service = new McOrderService($value);
 
         $this->outer = $this->order_service->getOuterType();
 
-        $this->pharmacy_or_user = $this->order_service->getPharmacyOrUser();
+        $region_id = $this->getSpecialRegionId();
+
+        if($this->outer == 1)
+        {
+            $pharm_ids = Pharmacy::pluck('id')->toArray();
+            $with_sold = ProductSold::distinct('pharm_id')->pluck('pharm_id')->toArray();
+            $apt = [];
+            $arr = [];
+            $pro = [33,36,38,53,61,104,110,111,114,116,117,119,129,130,131,132,134,135,139,145,146,147,148,151,155,159,160,163,164,165,166,167];
+            foreach ($pharm_ids as $key => $value) {
+                if(!in_array($value,$with_sold) && !in_array($value,$pro))
+                {
+                    $arr[] = $value;
+                }
+                if(in_array($value,$with_sold))
+                {
+                    $apt[] = $value;
+                }
+            }
+
+
+            $this->pharmacy_or_user = Pharmacy::with('region')->whereIn('id',$apt)->whereIn('region_id',$region_id)
+            ->orderBy('region_id','ASC')->get();
+
+            $this->pharmacy_pro = Pharmacy::with('region')->whereIn('id',$pro)->whereIn('region_id',$region_id)
+            ->orderBy('region_id','ASC')->get();
+
+            $this->pharmacy_no = Pharmacy::with('region')->whereIn('id',$arr)->whereIn('region_id',$region_id)
+            ->orderBy('region_id','ASC')->get();
+
+        }else{
+            $this->pharmacy_or_user = User::whereIn('region_id',$region_id)->get();
+
+        }
 
         $this->pharmacy_or_user_id = 0;
 
@@ -65,13 +99,12 @@ class McOrder extends Component {
     }
 
     public function addProd($id) {
-
         if(!in_array($id,$this->prod_array))
         {
             $this->prod_array[] = $id;
 
             $pr = Medicine::with(['price' => function($q){
-                $shablon_id = Shablon::where('active',false)->first();
+                $shablon_id = Shablon::where('id',5)->first();
                 $q->where('shablon_id',$shablon_id->id);
             }])->select('id','name','category_id')->where('id',$id)->first()->toArray();
             
@@ -211,7 +244,23 @@ class McOrder extends Component {
     {
         $this->dispatchBrowserEvent('refresh-page'); 
     }
+    public function getSpecialRegionId()
+    {
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+            {
+                $r_id_array = DB::table('tg_region')->pluck('id')->toArray();
+            }else{
+                $r_id_array = [];
+                foreach (Session::get('per') as $key => $value) {
+                    if (is_numeric($key)){
+                $r_id_array[] = $key;
+                    }
+                }
 
+            }
+
+        return $r_id_array;
+    }
     public function render()
     {
         return view('livewire.mc-order');

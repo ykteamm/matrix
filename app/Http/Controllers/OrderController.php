@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pharmacy;
+use App\Models\ProductSold;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -28,6 +31,8 @@ class OrderController extends Controller
 
     public function money()
     {
+        
+
         return view('order.money');
     }
 

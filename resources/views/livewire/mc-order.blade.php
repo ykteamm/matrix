@@ -49,7 +49,15 @@
                         <option selected disabled>Dorixona tanlang</option>
                         
                         @foreach ($pharmacy_or_user as $pu)
-                            <option value="{{$pu->id}}">{{$pu->name}}</option>
+                            <option value="{{$pu->id}}">{{$pu->name}} <span style="color:cornflowerblue">({{$pu->region->name}})</span></option>
+                        @endforeach
+
+                        @foreach ($pharmacy_pro as $pu)
+                            <option value="{{$pu->id}}" style="color: blue">{{$pu->name}} ({{$pu->region->name}})</option>
+                        @endforeach
+
+                        @foreach ($pharmacy_no as $pu)
+                            <option value="{{$pu->id}}" style="color: rgb(238, 39, 12)">{{$pu->name}} ({{$pu->region->name}})</option>
                         @endforeach
                     </select>
                 </div>
@@ -70,14 +78,28 @@
 
                 <div class="m-3">
                     <select class="form-control" wire:change="addProd($event.target.value)">
-                        <option selected disabled>Dori tanlang</option>
+                        {{-- <select class="form-control dorit" id="users-dropdown"> --}}
+                        <option selected disabled></option>
                         
                         @foreach ($products as $product)
                             <option value="{{$product->id}}">{{$product->name}}</option>
                         @endforeach
                     </select>
                 </div>
+                {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"></script>
+                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+                <script>
+                        $('#users-dropdown').select2();
 
+                    $(document).ready(function () {
+                        $('#users-dropdown').select2();
+                        $('#users-dropdown').on('change', function (e) {
+                            var data = $('#users-dropdown').select2("val");
+                            livewire.emit('addProd', data)
+                        });
+                    });
+                </script> --}}
             @endif
             
             @if (count($order_product) > 0)
