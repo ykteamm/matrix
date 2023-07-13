@@ -160,7 +160,7 @@
                             
             </div>
 
-            <div class="card-body">
+            <div class="card-body p-1 mb-2" style="border: 2px solid #6180b9;border-radius: 8px;">
                 <div class="table-responsive">
                     <table class="table table-striped mb-0">
                         <thead>
@@ -243,8 +243,7 @@
                     </table>
                     {{-- <p>{{$saved}}</p> --}}
                 </div>
-            </div>
-            @if ($saved != 2 && $error == 1)
+                @if ($saved != 2 && $error == 1)
                 <div class="m-3">
                     <button class="btn btn-block btn-danger">Malumotlar to'liq emas <i wire:click="$emit('delete_Error')" class="fas fa-window-close"></i> </button>
                 </div>
@@ -267,9 +266,11 @@
                 @endif
 
             @endif
+            </div>
+            
             
             @if(count($payment_history) > 0)
-                <div class="card-body">
+                <div class="card-body p-1" style="border: 2px solid #6180b9;border-radius: 8px;">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
