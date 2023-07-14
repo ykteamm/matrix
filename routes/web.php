@@ -372,6 +372,8 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::post('order-update/{order_id}', [ProvizorController::class,'orderProductUpdate'])->name('order.update');
 
+    Route::get('order-delete/{order_id}', [ProvizorController::class,'orderProductDelete'])->name('order.delete');
+
     Route::get('provizor-hisobot', [ProvizorController::class, 'provizorHisobot'])->name('provizor-hisobot');
 
 

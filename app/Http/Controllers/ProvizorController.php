@@ -94,6 +94,16 @@ class ProvizorController extends Controller
         return redirect()->back();
     }
 
+    public function orderProductDelete($order_id)
+    {
+
+        $response = Http::post(getProvizorUrl().'/api/order-delete', [
+            'order_id' => $order_id,
+        ]);
+
+        return redirect()->back();
+    }
+    
     public function money()
     {
 
