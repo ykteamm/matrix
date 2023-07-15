@@ -206,7 +206,7 @@
                                     @php
                                         $ff = $elchi['id'];
                                     @endphp
-                                    {{-- <a href="{{route('order.product',['order_id' => $elchi['id']])}}" class="mr-2"> <i class="fas fa-eye" style="color:rgb(153, 11, 235);font-size:25px;"></i></a> --}}
+                                    <a href="{{route('order.product',['order_id' => $elchi['id']])}}" class="mr-2"> <i class="fas fa-eye" style="color:rgb(153, 11, 235);font-size:25px;"></i></a>
                                     <span onclick="$('.eeee{{$ff}}').toggle();" class="mr-2 btn btn-primary btn-sm"> <i class="fas fa-plus"></i></span>
                                     
                                     @if (Session::get('user')->id == 37)
