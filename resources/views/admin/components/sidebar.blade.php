@@ -123,6 +123,18 @@
                     </ul>
                 </li>
 
+                @isset(Session::get('per')['order'])
+                @if (Session::get('per')['order'] == 'true')
+                    <li class="submenu">
+                        <a href="settings.html"><i class="fas fa-crown"></i> <span> Mijoz </span><span
+                                class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li><a href="{{ route('mijoz-banner') }}"><span>Banner</span></a>
+                        </ul>
+                    </li>
+                @endif
+                @endisset
+
                 <li class="submenu">
                     <a href="settings.html"><i class="fas fa-crown"></i> <span> Toolz bot </span><span
                             class="menu-arrow"></span></a>

@@ -7,6 +7,7 @@ use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\MijozController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PillController;
@@ -428,6 +429,13 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('money-coming', [OrderController::class, 'money'])->name('money-coming');
     
     //ORDER-END
+
+
+    //MIJOZ-BEGIN
+    Route::get('mijoz-banner', [MijozController::class, 'banner'])->name('mijoz-banner');
+    //MIJOZ-END
+
+    
 
 });
 
