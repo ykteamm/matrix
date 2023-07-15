@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\McOrder;
+use App\Models\McOrderDelivery;
+use App\Models\McOrderDetail;
+use App\Models\McPaymentHistory;
 use App\Models\Pharmacy;
 use App\Models\ProductSold;
 use App\Models\Region;
@@ -42,4 +46,15 @@ class OrderController extends Controller
             'order_id' => $order_id
         ]);
     }
+    public function orderDelete($order_id)
+    {
+
+        McOrder::destroy($order_id);
+        McOrderDetail::where('order_id',$order_id)->delete();
+        McOrderDelivery::where('order_id',$order_id)->delete();
+        McPaymentHistory::where('order_id',$order_id)->delete();
+
+        return redirect()->back();
+    }
+    
 }

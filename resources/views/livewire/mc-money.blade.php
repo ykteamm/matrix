@@ -15,7 +15,7 @@
                             <th>Skidka narxi </th>
                             <th>Kelgan pul </th>
                             <th>Qarz </th>
-                            <th>Harakat </th>
+                            <th onclick="$('.deletemcorder').toggle();">Harakat </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,13 +45,20 @@
                                         <td>
                                                 
                                             <a href="order/{{$order->id}}">
-                                                {{-- <button  wire:click="$emit('shipment',{{$order->id}})" class="btn btn-primary" style="padding: 0px 5px;">
-                                                    <i class="fas fa-shipping-fast"></i>
-                                                </button> --}}
                                                 <button  class="btn btn-primary" style="padding: 0px 5px;">
                                                     <i class="fas fa-shipping-fast"></i>
                                                 </button>
                                             </a>
+
+                                            @if (Session::get('user')->id == 37)
+                                                <a href="order-delete/{{$order->id}}" class="deletemcorder" style="display: none;">
+                                                    <button  class="btn btn-danger" style="padding: 0px 5px;">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </a>
+                                            @endif
+                                            
+                                            
                                         </td>
                                 </tr>
                             @endforeach

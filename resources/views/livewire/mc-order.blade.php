@@ -45,7 +45,33 @@
             </div>
             @if ($outer == 1)
                 <div class="m-3">
-                    <select class="form-control" wire:change="selectPharmacyOrUser($event.target.value)">
+                    <input type="text" class="form-control" 
+                    @if (isset($pharmacy_selected))
+                        value="{{$pharmacy_selected->name}}"
+                    @endif
+                    placeholder="Dorixona nomini yozing" wire:keyup="findPharmacy($event.target.value)">
+                        <ul class="list-group">
+                            @isset($pharmacy_or_user)
+                                @foreach ($pharmacy_or_user as $pu)
+                                <li class="list-group-item" wire:click="selectPharmacyOrUser({{$pu->id}})">
+                                    {{$pu->name}} <span style="color:cornflowerblue">({{$pu->region->name}})
+                                    </li>
+                                @endforeach
+                                @foreach ($pharmacy_pro as $pu)
+                                <li class="list-group-item" wire:click="selectPharmacyOrUser({{$pu->id}})" style="color:rgb(5, 90, 248)">
+                                    {{$pu->name}} <span style="color:cornflowerblue">({{$pu->region->name}})
+                                    </li>
+                                @endforeach
+                                @foreach ($pharmacy_no as $pu)
+                                <li class="list-group-item" wire:click="selectPharmacyOrUser({{$pu->id}})" style="color:rgb(236, 76, 13)">
+                                    {{$pu->name}} <span style="color:cornflowerblue">({{$pu->region->name}})
+                                    </li>
+                                @endforeach
+                            @endisset
+                            
+                        </ul>
+                    
+                    {{-- <select class="form-control" wire:change="selectPharmacyOrUser($event.target.value)">
                         <option selected disabled>Dorixona tanlang</option>
                         
                         @foreach ($pharmacy_or_user as $pu)
@@ -59,11 +85,12 @@
                         @foreach ($pharmacy_no as $pu)
                             <option value="{{$pu->id}}" style="color: rgb(238, 39, 12)">{{$pu->name}} ({{$pu->region->name}})</option>
                         @endforeach
-                    </select>
+                    </select> --}}
                 </div>
             @endif
             @if ($outer == 2)
                 <div class="m-3">
+                    
                     <select class="form-control" wire:change="selectPharmacyOrUser($event.target.value)">
                         <option selected disabled>Elchi tanlang</option>
                         
@@ -77,29 +104,26 @@
             @if ($pharmacy_or_user_id > 1)
 
                 <div class="m-3">
-                    <select class="form-control" wire:change="addProd($event.target.value)">
-                        {{-- <select class="form-control dorit" id="users-dropdown"> --}}
+                    <input type="text" class="form-control" placeholder="Dorini qidiring" wire:keyup="findMedicine($event.target.value)">
+                    <ul class="list-group">
+                        @isset($medicines)
+                            @foreach ($medicines as $pu)
+                            <li class="list-group-item" wire:click="addProd({{$pu->id}})">
+                                {{$pu->name}}
+                                </li>
+                            @endforeach
+                        @endisset
+                        
+                    </ul>
+                    {{-- <select class="form-control" wire:change="addProd($event.target.value)">
                         <option selected disabled></option>
                         
                         @foreach ($products as $product)
                             <option value="{{$product->id}}">{{$product->name}}</option>
                         @endforeach
-                    </select>
+                    </select> --}}
                 </div>
-                {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"></script>
-                <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-                <script>
-                        $('#users-dropdown').select2();
-
-                    $(document).ready(function () {
-                        $('#users-dropdown').select2();
-                        $('#users-dropdown').on('change', function (e) {
-                            var data = $('#users-dropdown').select2("val");
-                            livewire.emit('addProd', data)
-                        });
-                    });
-                </script> --}}
+                
             @endif
             
             @if (count($order_product) > 0)

@@ -372,7 +372,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::post('order-update/{order_id}', [ProvizorController::class,'orderProductUpdate'])->name('order.update');
 
-    Route::get('order-delete/{order_id}', [ProvizorController::class,'orderProductDelete'])->name('order.delete');
+    Route::get('order-delete-pro/{order_id}', [ProvizorController::class,'orderProductDelete'])->name('ordersdelete');
 
     Route::get('provizor-hisobot', [ProvizorController::class, 'provizorHisobot'])->name('provizor-hisobot');
 
@@ -418,6 +418,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('order', [OrderController::class, 'index'])->name('order.index');
 
     Route::get('order/{order_id}', [OrderController::class, 'orderPage']);
+    Route::get('order-delete/{order_id}', [OrderController::class, 'orderDelete']);
 
     // Route::get('order/{order_id}', [\App\Http\Livewire\McShipmentDetail::class, 'mount']);
 

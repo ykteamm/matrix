@@ -34,6 +34,9 @@ class McOrder extends Component {
     public $prod_price = [];
     public $skidka = 0;
     public $discount;
+    public $pharmacy_selected;
+    public $medicine_selected;
+    public $medicines;
 
     protected $order_service;
 
@@ -41,7 +44,7 @@ class McOrder extends Component {
     
 
     public function mount() {
-        $this->code = ModelsMcOrder::count();
+        $this->code = ModelsMcOrder::orderBy('id','DESC')->first()->id;
     }
     public function selectType($value) {
 
@@ -51,37 +54,9 @@ class McOrder extends Component {
 
         $region_id = $this->getSpecialRegionId();
 
-        if($this->outer == 1)
+        if($this->outer == 2)
         {
-            $pharm_ids = Pharmacy::pluck('id')->toArray();
-            $with_sold = ProductSold::distinct('pharm_id')->pluck('pharm_id')->toArray();
-            $apt = [];
-            $arr = [];
-            $pro = [33,36,38,53,61,104,110,111,114,116,117,119,129,130,131,132,134,135,139,145,146,147,148,151,155,159,160,163,164,165,166,167];
-            foreach ($pharm_ids as $key => $value) {
-                if(!in_array($value,$with_sold) && !in_array($value,$pro))
-                {
-                    $arr[] = $value;
-                }
-                if(in_array($value,$with_sold))
-                {
-                    $apt[] = $value;
-                }
-            }
-
-
-            $this->pharmacy_or_user = Pharmacy::with('region')->whereIn('id',$apt)->whereIn('region_id',$region_id)
-            ->orderBy('region_id','ASC')->get();
-
-            $this->pharmacy_pro = Pharmacy::with('region')->whereIn('id',$pro)->whereIn('region_id',$region_id)
-            ->orderBy('region_id','ASC')->get();
-
-            $this->pharmacy_no = Pharmacy::with('region')->whereIn('id',$arr)->whereIn('region_id',$region_id)
-            ->orderBy('region_id','ASC')->get();
-
-        }else{
-            $this->pharmacy_or_user = User::whereIn('region_id',$region_id)->get();
-
+            $this->pharmacy_or_user = User::whereIn('status',[0,1])->get();
         }
 
         $this->pharmacy_or_user_id = 0;
@@ -90,11 +65,75 @@ class McOrder extends Component {
 
     }
 
+    public function findPharmacy($search)
+    {
+        $region_id = $this->getSpecialRegionId();
+
+        $pharm_ids = Pharmacy::pluck('id')->toArray();
+        $with_sold = ProductSold::distinct('pharm_id')->pluck('pharm_id')->toArray();
+        $apt = [];
+        $arr = [];
+        $pro = [33,36,38,53,61,104,110,111,114,116,117,119,129,130,131,132,134,135,139,145,146,147,148,151,155,159,160,163,164,165,166,167];
+        foreach ($pharm_ids as $key => $value) {
+            if(!in_array($value,$with_sold) && !in_array($value,$pro))
+            {
+                $arr[] = $value;
+            }
+            if(in_array($value,$with_sold))
+            {
+                $apt[] = $value;
+            }
+        }
+
+        if($search != null)
+        {
+            $this->pharmacy_or_user = Pharmacy::with('region')->whereIn('id',$apt)->whereIn('region_id',$region_id)
+            ->where('name', 'iLIKE', '%'.$search.'%')
+            ->orderBy('region_id','ASC')->get();
+
+            $this->pharmacy_pro = Pharmacy::with('region')->whereIn('id',$pro)->whereIn('region_id',$region_id)
+            ->where('name', 'iLIKE', '%'.$search.'%')
+            ->orderBy('region_id','ASC')->get();
+
+            $this->pharmacy_no = Pharmacy::with('region')->whereIn('id',$arr)->whereIn('region_id',$region_id)
+            ->where('name', 'iLIKE', '%'.$search.'%')
+            ->orderBy('region_id','ASC')->get();
+        }else{
+            $search = '####';
+            $this->pharmacy_or_user = Pharmacy::with('region')->whereIn('id',$apt)->whereIn('region_id',$region_id)
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orderBy('region_id','ASC')->get();
+
+            $this->pharmacy_pro = Pharmacy::with('region')->whereIn('id',$pro)->whereIn('region_id',$region_id)
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orderBy('region_id','ASC')->get();
+
+            $this->pharmacy_no = Pharmacy::with('region')->whereIn('id',$arr)->whereIn('region_id',$region_id)
+            ->where('name', 'LIKE', '%'.$search.'%')
+            ->orderBy('region_id','ASC')->get();
+        }
+        
+
+
+    }
+    public function findMedicine($search)
+    {
+        if ($search != null) {
+            $this->medicines = Medicine::where('name', 'iLIKE', '%'.$search.'%')->orderBy('id','ASC')->get();
+        }else{
+            $search = '####';
+            $this->medicines = Medicine::where('name', 'iLIKE', '%'.$search.'%')->orderBy('id','ASC')->get();
+        }
+    }
     public function selectPharmacyOrUser($id) {
  
         $this->pharmacy_or_user_id = $id;
 
         $this->products = Medicine::all();
+
+        $this->pharmacy_selected = Pharmacy::find($id);
+
+        // $this->findPharmacy('####');
 
     }
 

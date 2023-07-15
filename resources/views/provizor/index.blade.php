@@ -206,11 +206,42 @@
                                     @php
                                         $ff = $elchi['id'];
                                     @endphp
-                                    <a href="{{route('order.product',['order_id' => $elchi['id']])}}" class="mr-2"> <i class="fas fa-eye" style="color:rgb(153, 11, 235);font-size:25px;"></i></a>
+                                    {{-- <a href="{{route('order.product',['order_id' => $elchi['id']])}}" class="mr-2"> <i class="fas fa-eye" style="color:rgb(153, 11, 235);font-size:25px;"></i></a> --}}
                                     <span onclick="$('.eeee{{$ff}}').toggle();" class="mr-2 btn btn-primary btn-sm"> <i class="fas fa-plus"></i></span>
+                                    
                                     @if (Session::get('user')->id == 37)
-                                        <a href="{{route('order.delete',['order_id' => $elchi['id']])}}" class="mr-2 btn btn-danger btn-sm"> <i class="fas fa-trash"></i></a>
+                                        <button style="background:#d32f13;color:#ffffff" onclick="myFunction3333({{$elchi['id']}})"> <i class="fas fa-trash"></i></button>
                                     @endif
+                                    
+                                    <p id="demo234"></p>
+                                   
+                                        <script>
+                                            function myFunction3333(id) {
+                                            let text = "Haqiqattan ham ushbu orderni ochirmoqchimisiz!\nIshonchingiz komilmi balki qayta tekshirib korarsiz.";
+                                            if (confirm(text) == true) {
+                                                text = "You pressed OK!";
+                                                delid = id;
+                                                
+                                            } else {
+                                                text = "You canceled!";
+                                                delid = 1231212312;
+                                            }
+                                            var url = <?php echo json_encode(getProvizorUrl()); ?>;
+                                            var url = url + '/api/order-delete';
+
+                                                fetch(url, {
+                                                    method: "POST",
+                                                    body: JSON.stringify({
+                                                        order_id: delid,
+                                                    }),
+                                                    headers: {
+                                                        "Content-type": "application/json; charset=UTF-8"
+                                                    }
+                                                    });
+                                            }
+                                        </script>
+
+                                    
                                  
                                 </td>
                               </tr>
