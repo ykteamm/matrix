@@ -101,6 +101,7 @@ class McShipment extends Component
                     $delivery_q = McOrderDelivery::where('order_id',$order_id)->where('created_at',$value)->pluck('quantity','product_id')->toArray();
                     $this->detail_delivery[] = $delivery_q;
                 }
+            dd($this->detail_delivery_date,$this->detail_delivery);
         }
         $this->payments = McPayment::all();
 
