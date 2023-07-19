@@ -433,6 +433,8 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     //MIJOZ-BEGIN
     Route::get('mijoz-banner', [MijozController::class, 'banner'])->name('mijoz-banner');
+    Route::post('mijoz-banner-save', [MijozController::class, 'bannerSave'])->name('mijoz-banner-save');
+    Route::post('mijoz-banner-update/{banner_id}', [MijozController::class, 'bannerUpdate'])->name('mijoz-banner-update');
     //MIJOZ-END
 
     

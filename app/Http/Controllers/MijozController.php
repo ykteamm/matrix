@@ -2,23 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MijozBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\File; 
 class MijozController extends Controller
 {
     public function banner()
     {
+        $banner = MijozBanner::first();
 
-        $users = DB::table('tg_productssold')
-        ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice, tg_productssold.user_id as id, tg_user.first_name AS f, tg_user.last_name AS l')
-        ->leftJoin('tg_user', 'tg_user.id', 'tg_productssold.user_id')
-        ->whereDate('tg_productssold.created_at', '>=', '2023-07-10')
-        ->whereDate('tg_productssold.created_at', '<=', '2023-07-15')
-        ->groupBy('tg_productssold.user_id', 'f', 'l')
-        ->orderBy('allprice', 'DESC')
-        ->get();
+        return view('mijoz.index',compact('banner'));
+    }
 
-        return view('mijoz.index',compact('users'));
+    public function bannerSave(Request $request)
+    {
+        
+        $file = $request->file('image') ;
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path().'/mijoz/banner';
+        $file->move($destinationPath,$fileName);
+        
+        MijozBanner::create([
+            'text' => $request->text,
+            'image' => $fileName
+        ]);
+
+
+        return redirect()->back();
+    }
+
+    public function bannerUpdate(Request $request,$banner_id)
+    {
+        
+        
+        $file = $request->file('image') ;
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path().'/mijoz/banner';
+        $file->move($destinationPath,$fileName);
+        
+
+        $banner = MijozBanner::find($banner_id);
+        $image_path = app_path("mijoz/banner/{$banner->image}");
+        if (File::exists($image_path)) {
+            unlink($image_path);
+        }
+
+        $banner->text = $request->text;
+        $banner->image = $fileName;
+        $banner->save();
+
+        
+
+        
+        return redirect()->back();
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class MijozBanner extends Model
 {
     use HasFactory, Notifiable;
 
@@ -16,5 +16,5 @@ class User extends Model
         'text',
         'image',
         'active'
-    ]
+    ];
 }

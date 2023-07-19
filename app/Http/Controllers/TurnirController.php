@@ -193,9 +193,9 @@ class TurnirController extends Controller
         $groups = TurnirGroup::with(['team_group' => function ($team) {
             $team->orderBy('id', 'ASC');
         }])->get();
-
         $teams = [];
         $begin = $request->begin_date;
+
 
         foreach ($groups as $key => $group) {
             if (count($group->team_group) > 0) {

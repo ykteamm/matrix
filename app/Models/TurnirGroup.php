@@ -13,7 +13,7 @@ class TurnirGroup extends Model
         'name'
     ];
 
-    public function team_groups()
+    public function team_group()
     {
         return $this->hasMany(TurnirTeamGroup::class,'group_id','id');
     }

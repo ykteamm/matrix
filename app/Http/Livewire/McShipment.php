@@ -13,6 +13,7 @@ use App\Models\McWarehousQuantity;
 use App\Models\RmOrder;
 use App\Models\RmOrderProduct;
 use App\Models\RmWarehouse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -53,6 +54,7 @@ class McShipment extends Component
     public $payment_history = [];
     public $payment_date;
     public $payment_sum;
+    public $order_sum;
 
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
     ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError'
@@ -80,6 +82,8 @@ class McShipment extends Component
 
         $this->orders = McOrder::with('pharmacy','user','employe','delivery','payment')->find($order_id);
         
+        
+
         $this->order_datail_status = $this->orders->order_detail_status;
 
         if($this->orders->delivery_id)
@@ -115,6 +119,8 @@ class McShipment extends Component
             $paymnet_q = McPaymentHistory::where('order_id',$order_id)->where('created_at',$value)->pluck('amount','payment_id')->toArray();
             $this->payment_history[] = $paymnet_q;
         }
+
+        $this->order_sum = McOrderDelivery::where('order_id',$order_id)->sum(DB::raw('quantity * price'));
     }
 
 
