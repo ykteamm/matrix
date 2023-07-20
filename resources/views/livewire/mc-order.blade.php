@@ -1,6 +1,29 @@
 <div class="content main-wrapper ">
     <div class="row gold-box">
         <div class="card flex-fill mt-5">
+            {{-- <div class="row justify-content-between pr-3">
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span>
+                            </span>
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-group">
+                        <li class="d-flex justify-content-between align-items-center">
+                        <span></span>
+                        <span>
+                            <button class="text-center btn-primary mb-1 ml-3" wire:click="predoplataF">
+                                Predoplata <i class="fas fa-hand-holding-usd"></i>
+                            </button>
+                        </span>
+                        </li>
+                    </ul>
+                </div>
+            </div> --}}
             <div>
                 <div class="row justify-content-between p-3">
                     <div class="col-md-4">
@@ -41,6 +64,43 @@
                             </li>
                           </ul>
                     </div>
+                    @if ($predoplata == 2)
+                    <div class="col-md-4">
+                        
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                To'lov shaklini tanlang
+                            <span>
+                                <select class="form-control-sm" wire:change="selectPayment($event.target.value)">
+                                    <option selected disabled></option>
+                                    @foreach ($payments as $item)
+                                        <option value="{{$item->id}}">{{$item->type}}</option>
+                                    @endforeach
+                                </select>
+                            </span>  
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            To'lov summasi
+                            <span>
+                                <input type="text" class="form-control-sm" wire:change="addPayAmount($event.target.value)">
+                            </span>
+
+                            </li>
+
+                            <li class="list-group-item   text-center justify-content-between align-items-center">
+                                <button class="btn btn-success btn-sm mcorderpaysave" wire:click="$emit('saveMoney_Coming')">Saqlash</button>
+                                <button class="btn btn-success btn-sm mcorderpaysavenone d-none">Biroz kuting..</button>
+
+                            </li>
+                            <script>
+                                document.querySelector('.mcorderpaysave').addEventListener('click', () => {
+                                    document.querySelector('.mcorderpaysave').classList.add('d-none');
+                                    document.querySelector('.mcorderpaysavenone').classList.remove('d-none');
+                                }); 
+                            </script>
+                        </ul>
+                    </div>
+                @endif
                 </div>
             </div>
             @if ($outer == 1)
@@ -70,22 +130,6 @@
                             @endisset
                             
                         </ul>
-                    
-                    {{-- <select class="form-control" wire:change="selectPharmacyOrUser($event.target.value)">
-                        <option selected disabled>Dorixona tanlang</option>
-                        
-                        @foreach ($pharmacy_or_user as $pu)
-                            <option value="{{$pu->id}}">{{$pu->name}} <span style="color:cornflowerblue">({{$pu->region->name}})</span></option>
-                        @endforeach
-
-                        @foreach ($pharmacy_pro as $pu)
-                            <option value="{{$pu->id}}" style="color: blue">{{$pu->name}} ({{$pu->region->name}})</option>
-                        @endforeach
-
-                        @foreach ($pharmacy_no as $pu)
-                            <option value="{{$pu->id}}" style="color: rgb(238, 39, 12)">{{$pu->name}} ({{$pu->region->name}})</option>
-                        @endforeach
-                    </select> --}}
                 </div>
             @endif
             @if ($outer == 2)
@@ -115,13 +159,6 @@
                         @endisset
                         
                     </ul>
-                    {{-- <select class="form-control" wire:change="addProd($event.target.value)">
-                        <option selected disabled></option>
-                        
-                        @foreach ($products as $product)
-                            <option value="{{$product->id}}">{{$product->name}}</option>
-                        @endforeach
-                    </select> --}}
                 </div>
                 
             @endif

@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\McOrder as ModelsMcOrder;
 use App\Models\McOrderDetail;
+use App\Models\McPayment;
+use App\Models\McPaymentHistory;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
 use App\Models\ProductSold;
@@ -37,14 +39,18 @@ class McOrder extends Component {
     public $pharmacy_selected;
     public $medicine_selected;
     public $medicines;
-
+    public $predoplata = 1;
+    public $payments;
     protected $order_service;
+    public $amount;
 
-    protected $listeners = ['delete_prod' => 'deleteProd','save' => 'saveOrder','addProd'];
+    protected $listeners = ['delete_prod' => 'deleteProd','save' => 'saveOrder','saveMoney_Coming' => 'saveMoneyComing','addProd'];
     
 
     public function mount() {
         $this->code = ModelsMcOrder::orderBy('id','DESC')->first()->id;
+        $this->payments = McPayment::all();
+
     }
     public function selectType($value) {
 
@@ -299,6 +305,42 @@ class McOrder extends Component {
             }
 
         return $r_id_array;
+    }
+
+    public function predoplataF()
+    {
+        if($this->predoplata == 1)
+        {
+            $this->predoplata = 2;
+        }else{
+            $this->predoplata = 1;
+        }
+    }
+    public function addPayAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+    public function selectPayment($id)
+    {
+        // $this->payment_id = $id;
+    }
+    public function saveMoneyComing()
+    {
+
+        $new_order = ModelsMcOrder::create([
+
+            'employee_id' => Session::get('user')->id,
+            'number' => 'P'.($this->code+1),
+            'order_date' => date('Y-m-d H:i:s'),
+
+        ]);
+
+        McPaymentHistory::create([
+            'payment_id' => $this->payment_id,
+            'order_id' => $new_order->order_id,
+            'amount' => $this->amount*100/100
+        ]);
+
     }
     public function render()
     {

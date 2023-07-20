@@ -114,7 +114,11 @@
                                                     <td> <span class="badge badge-warning">{{ number_format($user['summa'],0,',',' ') }}</span></td>
                                                     <td style="font-weight:600;font-size:14px">
                                                         <span class="badge badge-primary">
+                                                            @if($user['maosh'] >= 5000000)
+                                                            {{ number_format(5000000,0,',',' ') }}
+                                                            @else
                                                             {{ number_format($user['maosh'],0,',',' ') }}
+                                                            @endif
                                                         </span>
                                                     </td>
                                                     <td>
@@ -149,9 +153,11 @@
                                                     <td> <a href="{{route('user-money-profil',['id' => $user['id'],'month' => $month])}}"> {{ $user['name'] }}</a>  </td>
                                                     <td> <span class="badge badge-warning">{{ number_format($user['summa'],0,',',' ') }}</span></td>
                                                     <td style="font-weight:600;font-size:14px">
-                                                        <span class="badge badge-primary">
+                                                        @if($user['maosh'] >= 5000000)
+                                                            {{ number_format(5000000,0,',',' ') }}
+                                                            @else
                                                             {{ number_format($user['maosh'],0,',',' ') }}
-                                                        </span>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <span class="badge badge-danger">
@@ -178,7 +184,13 @@
                                                     </td>
                                                     <td style="font-weight:600;font-size:14px">
                                                         <span class="badge badge-success">
+                                                            @if($user['maosh'] >= 5000000)
+                                                            {{ number_format((5000000 - $user['jarima'] + $user['premya'] - $user['shtraf'] + $su),0,',',' ') }}
+
+                                                            @else
                                                             {{ number_format(($user['maosh'] - $user['jarima'] + $user['premya'] - $user['shtraf'] + $su),0,',',' ') }}
+
+                                                            @endif
                                                         </span>
                                                     </td>
 

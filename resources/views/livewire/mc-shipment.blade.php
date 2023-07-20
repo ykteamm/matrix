@@ -111,7 +111,7 @@
                           <li class="list-group-item d-flex justify-content-between align-items-center">
                             Kelgan pul
 
-                                <span>{{number_format($payment_sum,0,',','.')}} (qarz {{$order_sum - $order_sum*$discount/100-$payment_sum}})</span>
+                                <span>{{number_format($payment_sum,0,',','.')}} (qarz {{$order_sum  - $order_sum*$discount/100-$payment_sum}})</span>
     
                             </li>
                           {{-- @endif --}}
