@@ -1,7 +1,8 @@
 <div class="content main-wrapper ">
     <div class="row gold-box">
         <div class="card flex-fill mt-5">
-            {{-- <div class="row justify-content-between pr-3">
+            @if($pharmacy_or_user_id)
+            <div class="row justify-content-between pr-3">
                 <div class="col-md-4">
                     <ul class="list-group">
                         <li class="d-flex justify-content-between align-items-center">
@@ -23,7 +24,8 @@
                         </li>
                     </ul>
                 </div>
-            </div> --}}
+            </div>
+            @endif
             <div>
                 <div class="row justify-content-between p-3">
                     <div class="col-md-4">

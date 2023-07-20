@@ -41,6 +41,7 @@ class McOrder extends Component {
     public $medicines;
     public $predoplata = 1;
     public $payments;
+    public $payment_id;
     protected $order_service;
     public $amount;
 
@@ -322,24 +323,25 @@ class McOrder extends Component {
     }
     public function selectPayment($id)
     {
-        // $this->payment_id = $id;
+        $this->payment_id = $id;
     }
     public function saveMoneyComing()
     {
 
         $new_order = ModelsMcOrder::create([
-
+            'pharmacy_id' => $this->pharmacy_or_user_id,
             'employee_id' => Session::get('user')->id,
             'number' => 'P'.($this->code+1),
             'order_date' => date('Y-m-d H:i:s'),
-
+            'outer' => $this->outer,
         ]);
 
         McPaymentHistory::create([
             'payment_id' => $this->payment_id,
-            'order_id' => $new_order->order_id,
+            'order_id' => $new_order->id,
             'amount' => $this->amount*100/100
         ]);
+        $this->dispatchBrowserEvent('refresh-page'); 
 
     }
     public function render()

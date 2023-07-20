@@ -68,6 +68,52 @@
 
                     </ul>
                 </div>
+                @if ($orders->price == null)
+
+                <div class="col-md-4">
+                    
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Skidka
+                        <span>
+                            <input type="text" value="{{$discount}}"  wire:keyup="changeDiscount($event.target.value)">
+                            %</span>  
+
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Buyurtma summasi
+                        <span>{{number_format(array_sum($summa_array),0,',','.')}}</span>
+
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Skidka bilan
+                        <span>{{number_format(array_sum($summa_array)-array_sum($summa_array)*intval($skidka)/100,0,',','.')}}</span>
+
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Yetkazuvchi
+                            @if($orders->delivery == null)
+                                <select class="form-control form-control-sm" wire:change="selectDelivery($event.target.value)">
+                                    <option selected disabled></option>
+                                    @foreach ($delivery as $item)
+                                        <option value="{{$item->id}}">{{$item->full_name}}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <span> {{$orders->delivery->full_name}} </span>
+                            @endif
+
+                          </li>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Kelgan pul
+
+                                <span>{{number_format($payment_sum,0,',','.')}}</span>
+    
+                            </li>
+                    </ul>
+                </div>
+                @else
                 <div class="col-md-4">
                     
                     <ul class="list-group">
@@ -107,17 +153,15 @@
                             @endif
 
                           </li>
-                          {{-- @if(count($payment_history) > 0) --}}
                           <li class="list-group-item d-flex justify-content-between align-items-center">
                             Kelgan pul
 
                                 <span>{{number_format($payment_sum,0,',','.')}} (qarz {{$order_sum  - $order_sum*$discount/100-$payment_sum}})</span>
     
                             </li>
-                          {{-- @endif --}}
                     </ul>
                 </div>
-
+                @endif
                 @if ($money_view == 2)
                     <div class="col-md-4">
                         
@@ -159,8 +203,79 @@
                 
                             
             </div>
+            @if ($orders->price == null)
+
+                <div class="m-3">
+                    <input type="text" class="form-control" placeholder="Dorini qidiring" wire:keyup="findMedicine($event.target.value)">
+                    <ul class="list-group">
+                        @isset($medicines)
+                            @foreach ($medicines as $pu)
+                            <li class="list-group-item" wire:click="addProd({{$pu->id}})">
+                                {{$pu->name}}
+                                </li>
+                            @endforeach
+                        @endisset
+                        
+                    </ul>
+                </div>
+                
+            @endif
+
+            @if (count($order_product) > 0)
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                <th>Dori </th>
+                                <th>Soni</th>
+                                <th>Narxi </th>
+                                <th>Summa </th>
+                                <th>Bekor qilish </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @isset($order_product)
+                                    
+                                @foreach ($order_product as $key => $product)
+                                    <tr>
+                                        <td>{{$product['name']}}</td>
+                                        <td><input type="text" value="{{$prod_count[$product['id']]}}"  wire:keyup="input($event.target.value, {{$product['id']}})"></td>
+                                        <td>{{number_format($product['price'][0]['price'],0,',','.')}}</td>
+                                        <td>
+                                            @if (isset($prod_count[$product['id']]))
+                                                {{number_format($product['price'][0]['price']*$prod_count[$product['id']],0,',','.')}}</td>
+                                            @else   
+                                                {{number_format($product['price'][0]['price'],0,',','.')}}</td>
+                                            @endif
+                                        <td><button wire:click="$emit('delete_prod', {{ $key }},{{$product['id']}})" class="btn btn-danger" style="padding: 0px 5px;"><i class="fas fa-window-close"></i></button></td>
+                                    </tr>
+                                @endforeach
+                                @endisset
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="m-3">
+                        <button wire:click="$emit('saveOrder_Detail')" 
+                        type="button" class="btn btn-block btn-primary mcordersave">Saqlash</button>
+                        <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary mcordersavenonne d-none">Biroz kuting</button>
+                </div>
+                <script>
+                    document.querySelector('.mcordersave').addEventListener('click', () => {
+                        document.querySelector('.mcordersave').classList.add('d-none');
+                        document.querySelector('.mcordersavenonne').classList.remove('d-none');
+                    }); 
+                </script>
+            @endif
+
+            @if ($orders->price != null)
 
             <div class="card-body p-1 mb-2" style="border: 2px solid #6180b9;border-radius: 8px;">
+
                 <div class="table-responsive">
                     <table class="table table-striped mb-0">
                         <thead>
@@ -230,23 +345,16 @@
                                     </tr>
                                 @endforeach
                             @endisset
-                            {{-- <tr class="table-primary">
-                                <td>Jami</td>
-                                <td>{{$sum_order}}</td>
-                                @if($orders->order_detail_status != 3)
-                                    <td>{{$sum_quantity}}</td>
-
-                                    <td>{{$sum_sklad}}</td>
-                                @endif
-                            </tr> --}}
                         </tbody>
                     </table>
-                    {{-- <p>{{$saved}}</p> --}}
                 </div>
+
+
                 @if ($saved != 2 && $error == 1)
                 <div class="m-3">
                     <button class="btn btn-block btn-danger">Malumotlar to'liq emas <i wire:click="$emit('delete_Error')" class="fas fa-window-close"></i> </button>
                 </div>
+                @endif
             @endif
 
             @if($orders->order_detail_status != 3)

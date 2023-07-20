@@ -10,9 +10,11 @@ use App\Models\McPayment;
 use App\Models\McPaymentHistory;
 use App\Models\McWarehouse;
 use App\Models\McWarehousQuantity;
+use App\Models\Medicine;
 use App\Models\RmOrder;
 use App\Models\RmOrderProduct;
 use App\Models\RmWarehouse;
+use App\Models\Shablon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
@@ -55,9 +57,17 @@ class McShipment extends Component
     public $payment_date;
     public $payment_sum;
     public $order_sum;
+    public $medicines;
+
+    public $prod_array = [];
+    public $order_product = [];
+    public $prod_count = [];
+    public $prod_price = [];
+    public $summa_array = [];
+    public $skidka = 0;
 
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
-    ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError'
+    ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError','delete_prod' => 'deleteProd','saveOrder_Detail' => 'saveOrderDetail'
     ];
 
 
@@ -182,6 +192,7 @@ class McShipment extends Component
     {
         $this->saved = 3;
 
+        
         foreach ($this->products as $pro_id => $quantity) {
             if($quantity > $this->ware_products[$pro_id])
             {
@@ -223,11 +234,18 @@ class McShipment extends Component
                 }
 
             }
+
+        
     }
 
     public function saveData()
     {
-        $this->check();
+        if($this->products == null)
+        {
+            $this->error = 1;
+        }else{
+            $this->check();
+        }
 
         if($this->saved == 2)
         {
@@ -375,6 +393,115 @@ class McShipment extends Component
         $this->dispatchBrowserEvent('refresh-page'); 
     }
 
+
+    public function findMedicine($search)
+    {
+        if ($search != null) {
+            $this->medicines = Medicine::where('name', 'iLIKE', '%'.$search.'%')->orderBy('id','ASC')->get();
+        }else{
+            $search = '####';
+            $this->medicines = Medicine::where('name', 'iLIKE', '%'.$search.'%')->orderBy('id','ASC')->get();
+        }
+    }
+
+    public function addProd($id) {
+        if(!in_array($id,$this->prod_array))
+        {
+            $this->prod_array[] = $id;
+
+            $pr = Medicine::with(['price' => function($q){
+                $shablon_id = Shablon::where('id',5)->first();
+                $q->where('shablon_id',$shablon_id->id);
+            }])->select('id','name','category_id')->where('id',$id)->first()->toArray();
+            
+            $this->order_product[] = $pr;
+
+            $this->prod_count[$id] = 1;
+
+            $this->prod_price[$id] = $pr['price'][0]['price'];
+
+            $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
+
+            $this->skidka = $this->with_foiz($this->summa_array);
+       
+            $this->discount = $this->with_foiz($this->summa_array);
+            
+            
+        }
+        
+
+    }
+    public function input($value,$id) {
+        if(strlen($value) == 0)
+        {
+            $v = 1;
+        }else{
+            $v = $value;
+        }
+        
+        $this->prod_count[$id] = $v;
+
+        $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
+
+        $this->skidka = $this->with_foiz($this->summa_array);
+        $this->discount = $this->with_foiz($this->summa_array);
+
+
+    }
+    public function deleteProd($key,$id) {
+        if (($k = array_search($id, $this->prod_array)) !== false) {
+            unset($this->prod_array[$k]);
+        }
+        unset($this->order_product[$key]);
+
+        $this->summa_array[$id] = 0 * $this->prod_price[$id];
+
+        $this->skidka = $this->with_foiz($this->summa_array);
+        $this->discount = $this->with_foiz($this->summa_array);
+
+
+
+    }
+
+    public function saveOrderDetail()
+    {
+        $order = McOrder::find(intval($this->order_id));
+        $order->price = array_sum($this->summa_array);
+        $order->discount = $this->discount;
+        $order->save();
+        
+
+        foreach ($this->order_product as $key => $product) {
+            McOrderDetail::create([
+                'order_id' => $this->order_id,
+                'product_id' => $product['id'],
+                'quantity' => $this->prod_count[$product['id']],
+                'price' => $this->prod_price[$product['id']]
+            ]);
+        }
+
+        $this->dispatchBrowserEvent('refresh-page'); 
+
+    }
+    public function with_foiz($array)
+    {
+       $sum = array_sum($array);
+
+       if($sum < 5000000)
+       {
+        $s = 0;
+       }elseif($sum >= 5000000 && $sum < 10000000)
+       {
+        $s = 5;
+       }
+       elseif($sum >= 10000000 && $sum < 15000000)
+       {
+        $s = 10;
+       }else{
+        $s = 15;
+       }
+       return $s;
+    }
     public function render()
     {
         return view('livewire.mc-shipment');
