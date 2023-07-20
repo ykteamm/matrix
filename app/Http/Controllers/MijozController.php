@@ -43,11 +43,11 @@ class MijozController extends Controller
         
 
         $banner = MijozBanner::find($banner_id);
-        $image_path = app_path("mijoz/banner/{$banner->image}");
-        if (File::exists($image_path)) {
-            unlink($image_path);
-        }
 
+        if (file_exists(public_path('mijoz/banner/'.$banner->image))){
+            unlink(public_path('mijoz/banner/'.$banner->image));
+        }
+    
         $banner->text = $request->text;
         $banner->image = $fileName;
         $banner->save();

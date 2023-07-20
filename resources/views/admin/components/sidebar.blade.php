@@ -201,6 +201,20 @@
                             @endisset
                         @endif
 
+                        @isset(Session::get('per')['market'])
+                        @if (Session::get('per')['market'] == 'true')
+                            <li class="submenu">
+                                <a href="settings.html">
+                                <span> Market </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                                <ul style="display: none;">
+                                    <li><a href="{{ route('market-category') }}">Slider categeory</a></li>
+                                    <li><a href="{{ route('market-slider') }}">Slider</a></li>
+                                </ul>
+                            </li>
+                        @endisset
+                        @endif
                     </ul>
                 </li>
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\MarketController;
 use App\Http\Controllers\MijozController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
@@ -437,7 +438,19 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('mijoz-banner-update/{banner_id}', [MijozController::class, 'bannerUpdate'])->name('mijoz-banner-update');
     //MIJOZ-END
 
-    
+    //MARKET-BEGIN
+    Route::get('market-category', [MarketController::class, 'category'])->name('market-category');
+    Route::post('market-category-save', [MarketController::class, 'categorySave'])->name('market-category-save');
+    Route::post('market-category-update/{id}', [MarketController::class, 'categoryUpdate'])->name('market-category-update');
+    Route::get('market-category-delete/{id}', [MarketController::class, 'categoryDelete'])->name('market-category-delete');
+
+    Route::get('market-slider', [MarketController::class, 'slider'])->name('market-slider');
+    Route::post('market-slider-save', [MarketController::class, 'sliderSave'])->name('market-slider-save');
+    Route::post('market-slider-update/{id}', [MarketController::class, 'sliderUpdate'])->name('market-slider-update');
+    Route::get('market-slider-delete/{id}', [MarketController::class, 'sliderDelete'])->name('market-slider-delete');
+
+
+    //MARKET-END
 
 });
 
