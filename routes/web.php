@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BattleNewsController;
+use App\Http\Controllers\CrystalController;
 use App\Http\Controllers\DublicatController;
 use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
@@ -449,8 +450,16 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('market-slider-update/{id}', [MarketController::class, 'sliderUpdate'])->name('market-slider-update');
     Route::get('market-slider-delete/{id}', [MarketController::class, 'sliderDelete'])->name('market-slider-delete');
 
-
+    Route::get('market-product', [MarketController::class, 'product'])->name('market-product');
+    Route::post('market-product-save', [MarketController::class, 'productSave'])->name('market-product-save');
+    Route::post('market-product-update/{id}', [MarketController::class, 'productUpdate'])->name('market-product-update');
+    Route::get('market-product-delete/{id}', [MarketController::class, 'productDelete'])->name('market-product-delete');
     //MARKET-END
+
+     //CRYSTALL-BEGIN
+     Route::get('crystal-add', [CrystalController::class, 'addCrystal'])->name('crystal-add');
+     Route::post('crystal-save', [CrystalController::class, 'saveCrystal'])->name('crystal-save');
+     //CRYSTALL-END
 
 });
 

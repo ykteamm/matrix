@@ -209,10 +209,17 @@
                                 <span class="menu-arrow"></span>
                             </a>
                                 <ul style="display: none;">
+                                    <li><a href="{{ route('market-product') }}">Mahsulotlar</a></li>
                                     <li><a href="{{ route('market-category') }}">Slider categeory</a></li>
                                     <li><a href="{{ route('market-slider') }}">Slider</a></li>
                                 </ul>
                             </li>
+                        @endisset
+                        @endif
+
+                        @isset(Session::get('per')['crystal'])
+                        @if (Session::get('per')['crystal'] == 'true')
+                            <li><a href="{{ route('crystal-add') }}">Crystal</a></li>
                         @endisset
                         @endif
                     </ul>

@@ -4,11 +4,84 @@ namespace App\Http\Controllers;
 
 use App\Models\MarketSlider;
 use App\Models\MarketSliderCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class MarketController extends Controller
 {
+
+    public function product()
+    {
+        $products = DB::table('outer_markets')->orderBy('id')->get();
+        return view('market.product',compact('products'));
+ 
+    }
+
+    public function productSave(Request $request)
+    {
+        $file = $request->file('image') ;
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path().'/outermarket';
+        $file->move($destinationPath,$fileName);
+        
+        DB::table('outer_markets')->insert([
+            'name' => $request->name,
+            'crystall' => $request->crystall,
+            'image' => $fileName,
+        ]);
+
+
+        return redirect()->back();
+    }
+
+
+    public function productUpdate(Request $request,$id)
+    {
+        if($request->file('image'))
+        {
+            $file = $request->file('image') ;
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path().'/outermarket';
+            $file->move($destinationPath,$fileName);
+            
+
+            $banner = DB::table('outer_markets')->where('id',$id)->first();
+            if (file_exists(public_path('outermarket/'.$banner->image))){
+                unlink(public_path('outermarket/'.$banner->image));
+            }
+
+            $banner = DB::table('outer_markets')->where('id',$id)->update([
+                'name' => $request->name,
+                'crystall' => $request->crystal,
+                'image' => $fileName,
+            ]);
+        }else{
+            $banner = DB::table('outer_markets')->where('id',$id)->update([
+                'name' => $request->name,
+                'crystall' => $request->crystal,
+            ]);
+        }
+        
+
+        return redirect()->back();
+    }
+
+    public function productDelete($id)
+    {
+
+        $banner = DB::table('outer_markets')->where('id',$id)->first();
+
+        if (file_exists(public_path('outermarket/'.$banner->image))){
+            unlink(public_path('outermarket/'.$banner->image));
+        }
+        
+        DB::table('outer_markets')->where('id',$id)->delete();
+
+        return redirect()->back();
+    }
+
     public function category()
     {
         $categories = MarketSliderCategory::all();
