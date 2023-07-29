@@ -242,7 +242,9 @@
                                             <a href="settings.html"><span> Jamoa </span><span
                                                     class="menu-arrow"></span></a>
                                             <ul style="display: none;">
-                                                <li><a href="{{ route('team', ['time' => 'today']) }}"><span>Jamoalar</span></a>
+                                                <li><a href="{{ route('team-slider') }}"><span>Slider</span></a>
+                                                    <li><a href="{{ route('team-plan') }}"><span>Kvartalniy plan</span></a>
+                                                    <li><a href="{{ route('team', ['time' => 'today']) }}"><span>Jamoalar</span></a>
                                                 <li><a href="{{ route('team-battle') }}"><span>Jamoalar Jangi</span></a>
 
                                             </ul>

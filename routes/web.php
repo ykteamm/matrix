@@ -199,6 +199,15 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('team/{time}',[App\Http\Controllers\TeamController::class,'index'])->name('team');
 
     Route::get('team-battle',[App\Http\Controllers\TeamController::class,'teamBattle'])->name('team-battle');
+
+    Route::get('team-slider',[App\Http\Controllers\TeamController::class,'slider'])->name('team-slider');
+    Route::post('team-slider-save',[App\Http\Controllers\TeamController::class,'sliderSave'])->name('team-slider-save');
+    Route::post('team-slider-update/{id}',[App\Http\Controllers\TeamController::class,'sliderUpdate'])->name('team-slider-update');
+    Route::get('team-slider-delete/{id}',[App\Http\Controllers\TeamController::class,'sliderDelete'])->name('team-slider-delete');
+
+    Route::get('team-plan',[App\Http\Controllers\TeamController::class,'plan'])->name('team-plan');
+    Route::post('team-plan-update/{id}',[App\Http\Controllers\TeamController::class,'planUpdate'])->name('team-plan-update');
+
     Route::get('team-battle-view/{id}',[App\Http\Controllers\TeamController::class,'teamBattleView'])->name('battle.view');
     Route::post('team-battle-store',[App\Http\Controllers\TeamController::class,'teamBattleStore'])->name('team-battle.store');
     Route::post('team-battle-date/{id}',[App\Http\Controllers\TeamController::class,'teamBattleDate'])->name('team-battle.date');

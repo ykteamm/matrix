@@ -10,6 +10,7 @@ use App\Models\TeamBattle;
 use App\Models\Region;
 use App\Models\User;
 use App\Models\Member;
+use App\Models\TeamBattleSlider;
 use Illuminate\Support\Facades\Session;
 
 class TeamController extends Controller
@@ -72,6 +73,94 @@ class TeamController extends Controller
 
     }
 
+
+    public function slider()
+    {
+        $sliders = TeamBattleSlider::orderBy('sort','ASC')->get();
+        return view('team.slider',compact('sliders'));
+
+    }
+
+    public function sliderSave(Request $request)
+    {
+        $file = $request->file('image') ;
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+        $destinationPath = public_path().'/market/slider';
+        $file->move($destinationPath,$fileName);
+        
+        TeamBattleSlider::create([
+            'sort' => $request->sort,
+            'image' => $fileName,
+            'active' => 1,
+        ]);
+
+
+        return redirect()->back();
+    }
+
+    public function sliderUpdate(Request $request,$id)
+    {
+        $file = $request->file('image');
+        if($file)
+        {
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path().'/market/slider';
+            $file->move($destinationPath,$fileName);
+        
+
+            $banner = TeamBattleSlider::find($id);
+            if (file_exists(public_path('market/slider/'.$banner->image))){
+                unlink(public_path('market/slider/'.$banner->image));
+            }
+
+            $banner->sort = $request->sort;
+            $banner->image = $fileName;
+            $banner->save();
+        }else{
+            $banner = TeamBattleSlider::find($id);
+            $banner->sort = $request->sort;
+            $banner->save();
+        }
+        
+
+        return redirect()->back();
+    }
+
+    public function sliderDelete($id)
+    {
+
+        $banner = TeamBattleSlider::find($id);
+
+        if (file_exists(public_path('market/slider/'.$banner->image))){
+            unlink(public_path('market/slider/'.$banner->image));
+        }
+        
+        TeamBattleSlider::find($id)->delete();
+
+        return redirect()->back();
+    }
+
+    public function plan()
+    {
+        $teams = Team::orderBy('plan','DESC')->orderBy('win_bonus','DESC')->orderBy('lose_bonus','DESC')->get();
+
+        return view('team.plan',compact('teams'));
+
+    }
+
+    public function planUpdate(Request $request,$id)
+    {
+        
+        $banner = Team::find($id);
+        $banner->name = $request->name;
+        $banner->plan = $request->plan;
+        $banner->win_bonus = $request->win_bonus;
+        $banner->lose_bonus = $request->lose_bonus;
+        $banner->save();
+        
+
+        return redirect()->back();
+    }
     /**
      * Show the form for creating a new resource.
      *

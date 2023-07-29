@@ -177,6 +177,7 @@ class MarketController extends Controller
 
     public function sliderUpdate(Request $request,$id)
     {
+        
         $file = $request->file('image') ;
         $fileName = time() . '.' . $file->getClientOriginalExtension();
         $destinationPath = public_path().'/market/slider';
