@@ -304,6 +304,7 @@ if (!function_exists('h_positions')) {
         $h_positions['order'] = 'Order';
         $h_positions['turnir'] = 'Turnir';
         $h_positions['market'] = 'Market';
+        $h_positions['firewall'] = 'Firewall';
         $h_positions['crystal'] = 'Crystal';
         $h_positions['rekrut'] = 'Rekrut';
         $h_positions['oylik'] = 'Oylik';

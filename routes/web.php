@@ -5,6 +5,7 @@ use App\Http\Controllers\CrystalController;
 use App\Http\Controllers\DublicatController;
 use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
+use App\Http\Controllers\FirewallController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
@@ -469,6 +470,11 @@ Route::middleware([LoginAuth::class])->group(function () {
      Route::get('crystal-add', [CrystalController::class, 'addCrystal'])->name('crystal-add');
      Route::post('crystal-save', [CrystalController::class, 'saveCrystal'])->name('crystal-save');
      //CRYSTALL-END
+
+     //FIREWALL-BEGIN
+     Route::get('firewall', [FirewallController::class, 'index'])->name('firewall');
+     Route::get('firewall-confirm/{id}/{status}', [FirewallController::class, 'firewallConfirm'])->name('firewall-confirm');
+     //FIREWALL-END
 
 });
 

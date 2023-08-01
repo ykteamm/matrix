@@ -217,6 +217,12 @@
                         @endisset
                         @endif
 
+                        @isset(Session::get('per')['firewall'])
+                        @if (Session::get('per')['firewall'] == 'true')
+                            <li><a href="{{ route('firewall') }}">Firewall</a></li>
+                        @endisset
+                        @endif
+
                         @isset(Session::get('per')['crystal'])
                         @if (Session::get('per')['crystal'] == 'true')
                             <li><a href="{{ route('crystal-add') }}">Crystal</a></li>
