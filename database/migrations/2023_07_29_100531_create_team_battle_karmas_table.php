@@ -16,9 +16,10 @@ class CreateTeamBattleKarmasTable extends Migration
         Schema::create('team_battle_karmas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id');
-            $table->foreignId('user_id');
-            $table->integer('karma');
+            $table->foreignId('user_id')->nullable();
+            $table->float('karma');
             $table->longText('comment');
+            $table->integer('active')->default(0);
             $table->timestamps();
         });
     }
