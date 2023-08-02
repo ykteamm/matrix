@@ -24,7 +24,7 @@
                 <div class="dropdown-menu" style="z-index: 100000">
 
                     @foreach ($calendars as $m)
-                        <a onclick="selectMonth(this)" class="dropdown-item"
+                        <a onclick="selectMonth(this)" class="dropdown-item" style="cursor: pointer"
                             id="{{ date('Y', strtotime('01.' . $m)) . '-' . date('m', strtotime('01.' . $m)) }}">
                             {{ date('m.Y', strtotime('01.' . $m)) }} </a>
                     @endforeach
@@ -47,7 +47,7 @@
                         @endif
                     </button>
 
-                    <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
+                    <div class="dropdown-menu" style="left:150px !important; z-index: 100000;cursor: pointer">
                         <a onclick="selectNewOrAll('all')" class="dropdown-item"> Hammasi </a>
                         <a onclick="selectNewOrAll('elchi_all')" class="dropdown-item"> Barcha elchi </a>
                         <a onclick="selectNewOrAll('elchi')" class="dropdown-item"> Elchi </a>
@@ -74,7 +74,7 @@
                             @endswitch
                         </button>
 
-                        <div class="dropdown-menu" style="left:150px !important; z-index: 100000">
+                        <div class="dropdown-menu" style="left:150px !important; z-index: 100000;cursor: pointer">
                             <a onclick="selectSide('all')" class="dropdown-item"> Hammasi </a>
                             <a onclick="selectSide('west')" class="dropdown-item">G`arb </a>
                             <a onclick="selectSide('east')" class="dropdown-item">Sharq </a>
@@ -135,6 +135,7 @@
                             <td yle="width: 17rem;" class="bg-success"><strong>Status</strong> </td>
                             <td style="width: 17rem;" class="bg-success"><strong>Ishga olingan sana</strong></td>
                             <td style="width: 13rem" onclick="yashir()"><strong>Dorixona</strong> </td>
+                            <td class="yashir"><strong>Average </strong></td>
                             <td class="yashir"><strong>Ishlagan kuni </strong></td>
                             <td class="yashir kunlik-shox" onclick="$('.oylik-shox').removeClass('d-none');$('.kunlik-shox').addClass('d-none')"><strong>Kunlik Shox</strong></td>
                             <td class="yashir oylik-shox d-none" onclick="$('.oylik-shox').addClass('d-none');$('.kunlik-shox').removeClass('d-none')"><strong>Oylik Shox</strong></td>
@@ -195,6 +196,14 @@
                             <td style="width: 17rem;" class="bg-success">Status</td>
                             <td style="width: 17rem;" class="bg-success">Ishga olingan sana</td>
                             <td style="width: 13rem">Dorixonalar</td>
+                            <td style="width: 13rem">
+                                <span class="avgkunlik1" onclick="$('.avgkunlik1').toggle();$('.avgkunlik2').toggle();">
+                                    {{number_format($average_array,0,',','.')}}
+                                </span>
+                                <span class="avgkunlik2" style="display: none;" onclick="$('.avgkunlik1').toggle();$('.avgkunlik2').toggle();">
+                                    {{number_format(array_sum($average),0,',','.')}}
+                                </span>
+                            </td>
                             @php
                                 $day_works = 0;
                                 foreach ($day_work as $key => $value) {
@@ -278,9 +287,12 @@
                                         @endif
                                     </td>
                                     <td class="p-0">{{ $item->v_name }} </td>
-                                    <td class='clickable-row fixed p-0'
-                                        data-href='{{ route('elchi', ['id' => $item->id, 'time' => 'today']) }}'>
-                                        <div class="mb-1">
+                                    <td class='
+                                    {{-- clickable-row  --}}
+                                    fixed p-0'
+                                        {{-- data-href='{{ route('elchi', ['id' => $item->id, 'time' => 'today']) }}' --}}
+                                        >
+                                        <div class="testtest mb-1" onclick="livewire.emit('for_kunlikmodal',{{$item->id}});" data-toggle="modal" data-target="#kunlikmodal">
                                             <strong>
                                                 <img class="mr-2 mb-1" src="{{ $item->image_url }}"
                                                     style="border-radius:50%" height="20px"> {{ $item->last_name }}
@@ -341,6 +353,13 @@
                                         @endif
 
                                     </td>
+                                    <td class="yashir p-0 text-center"><span class="text-center">
+                                        @if (isset($average[$item->id]))
+                                            {{ number_format($average[$item->id], '0', ',', '.') }}
+                                        @else
+                                            0
+                                        @endif
+                                    </span> </td>
                                     <td class="yashir p-0 text-center"><span class="text-center">
                                             @if (isset($day_work[$item->id]))
                                                 {{ $day_work[$item->id] }}
@@ -518,6 +537,11 @@
             </div>
         </div>
     </div>
+    </div>
+    <div class="modal fade testtest" id="kunlikmodal">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width:700px !important">
+            <livewire:elchi-kunlik/>
+        </div>
     </div>
     @section('admin_script')
         <script>

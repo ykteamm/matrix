@@ -20,10 +20,18 @@ class ElchilarController extends Controller
 
     public function kunlik(Request $request, $month)
     {
+
+        // $shift = DB::table('tg_shift')
+        // // ->where('tg_shift.open_date','!=',null)
+        // ->where('tg_shift.user_id',163)
+        // ->whereDate('tg_shift.created_at','>=','2023-07-01')
+        // ->whereDate('tg_shift.created_at','<','2023-07-31')
+        // ->get();
+        // dd($shift);
         $all_or_new = $request->input('all_or_new') ?? 'all';
         $side = $request->input('side') ?? 'all';
         $region = $request->input('region');
-        $calendars = DB::table('tg_calendar')->pluck('year_month');
+        $calendars = DB::table('tg_calendar')->orderBy('id','ASC')->pluck('year_month');
         if (isset($region)) {
             if ($region == 'all') {
                 $regions = 1;
@@ -52,6 +60,19 @@ class ElchilarController extends Controller
         $elchi = $data->elchi;
         // return $elchi;
         $elchi_fact = $data->elchi_fact;
+        $average = $data->average;
+
+        $asd = [];
+
+        foreach ($average as $key => $value) {
+            if($value != 0)
+            {
+                $asd[] = $value;
+            }
+        }
+        
+        $average_array = round(array_sum($asd)/count($asd));
+
         $elchi_prognoz = $data->elchi_prognoz;
         $king_sold = $data->king_sold;
         $king_sold_month = $data->king_sold_month;
@@ -75,10 +96,8 @@ class ElchilarController extends Controller
         $total_plan = $this->service->total_plan($plan);
         $total_planday = $this->service->total_planday($plan_day);
         $total_haftalik = $this->service->total_week($haftalik, $days, $month);
-        // $elchi = $elchi->all();
-        // dd($elchi);
+        
         if ($all_or_new == 'all' || $all_or_new == 'pro' || $all_or_new == 'new' || $all_or_new == 'elchi' || $all_or_new == 'elchi_all') {
-            $elchi = $elchi->all();
             uasort($elchi, function ($a, $b) use ($elchi_fact) {
                 if(!isset($elchi_fact[$a['id']]))
                 {
@@ -97,6 +116,6 @@ class ElchilarController extends Controller
 
         // return $sold;
 
-        return view('elchilar.index', compact('all_best_month','all_or_new', 'side', 'region', 'day_work', 'king_sold','king_sold_month','best_month', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
+        return view('elchilar.index', compact('average_array','average','all_best_month','all_or_new', 'side', 'region', 'day_work', 'king_sold','king_sold_month','best_month', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
     }
 }

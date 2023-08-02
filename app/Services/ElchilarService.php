@@ -172,6 +172,25 @@ class ElchilarService
                 }
                 $elchi = $elchi->orderBy('tg_region.side','ASC')->get();
         }
+
+        $dd = [];
+
+        foreach ($elchi as $key => $value) {
+            $s=DB::table('tg_productssold')
+                ->where('user_id',$value->id)
+                ->selectRaw('SUM(tg_productssold.number*tg_productssold.price_product) as all_price,user_id')
+                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
+                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->groupBy('user_id')
+                ->first();
+            if($s)
+            {
+                $dd[] = $value;
+            }
+        }
+
+        $elchi = $dd;
+
         $elchi_work=[];
 
         $elchi_prognoz=[];
@@ -323,17 +342,19 @@ class ElchilarService
                     $all_best_month = $all_best_month + $best_month[$elch->id][0]['bestsumText'];
                 }
 
+               
+
 
                 $proggg = myPrognoz($elch->id);
                 $elchi_prognoz[$elch->id] = $proggg;
 
+
                 $shift = DB::table('tg_shift')
-                ->selectRaw('count(tg_shift.id) as count')
-                ->where('tg_shift.active',2)
+                ->where('tg_shift.open_date','!=',null)
                 ->where('tg_shift.user_id',$elch->id)
                 ->whereDate('tg_shift.created_at','>=',$month.'-01')
                 ->whereDate('tg_shift.created_at','<',$month.'-'.$endofmonth)
-                ->get()[0]->count;
+                ->count();
 
                 $shift2 = DB::table('tg_smena')
                 ->selectRaw('count(tg_smena.id) as count')
@@ -353,6 +374,7 @@ class ElchilarService
 
         $fact=[];
         $i=0;
+        $average=[];
 
         // dd($elchi);
         foreach ($elchi as $item){
@@ -364,12 +386,26 @@ class ElchilarService
                 ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                 ->groupBy('user_id')
                 ->first();
+
+                $shift = $work_d[$item->id];
+
+
+
             if(isset($s->all_price)){
                 $fact[$item->id]=$s->all_price;
+                if($shift == 0)
+                {
+                    $average[$item->id]=0;
+
+                }else{
+                    $average[$item->id]=round($s->all_price/$shift);
+
+                }
 
             }
             else{
-                // $fact[$item->id]=0;
+                $fact[$item->id]=0;
+                $average[$item->id]=0;
             }
             $i++;
         }
@@ -378,6 +414,7 @@ class ElchilarService
         $data->elchi=$elchi;
         $data->all_work_day=$work_d;
         $data->elchi_fact=$fact;
+        $data->average=$average;
         $data->elchi_prognoz=$elchi_prognoz;
         $data->king_sold=$king_sold;
         $data->king_sold_month=$king_sold_month;
