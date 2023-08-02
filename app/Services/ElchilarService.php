@@ -352,6 +352,7 @@ class ElchilarService
                 $shift = DB::table('tg_shift')
                 ->where('tg_shift.open_date','!=',null)
                 ->where('tg_shift.user_id',$elch->id)
+                ->where('tg_shift.pharma_id','!=',42)
                 ->whereDate('tg_shift.open_date','>=',$month.'-01')
                 ->whereDate('tg_shift.open_date','<',$month.'-'.$endofmonth)
                 ->count();
