@@ -352,8 +352,8 @@ class ElchilarService
                 $shift = DB::table('tg_shift')
                 ->where('tg_shift.open_date','!=',null)
                 ->where('tg_shift.user_id',$elch->id)
-                ->whereDate('tg_shift.created_at','>=',$month.'-01')
-                ->whereDate('tg_shift.created_at','<',$month.'-'.$endofmonth)
+                ->whereDate('tg_shift.open_date','>=',$month.'-01')
+                ->whereDate('tg_shift.open_date','<',$month.'-'.$endofmonth)
                 ->count();
 
                 $shift2 = DB::table('tg_smena')
