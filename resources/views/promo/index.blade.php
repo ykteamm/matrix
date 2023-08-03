@@ -138,7 +138,6 @@
                         <thead>
                            <tr>
                               <th onclick="$('.pass').toggle();">FIO</th>
-                              <th>Crystal</th>
                               <th class="pass" style="display: none;">PASS</th>
                               <th onclick="$('.money_com').toggle();">Buyurtma summasi</th>
                               <th class="money_com" style="display: none;">Promo summasi</th>
@@ -154,15 +153,7 @@
                         <tbody>
                            @foreach ($orders as $elchi)
                               <tr>
-                                 <td>{{$elchi['user']['last_name']}} {{$elchi['user']['first_name']}}</td>
-                                 <td>
-                                    @if (isset($ball[$elchi['user']['id']]))
-                                    {{number_format($ball[$elchi['user']['id']]['crystal'],0,',','.')}}/
-                                    {{number_format($ball[$elchi['user']['id']]['minus'],0,',','.')}}
-                                    @else   
-                                        0
-                                    @endif
-                                 </td>
+                                 <td>{{$elchi->user->last_name}} {{$elchi->user->first_name}}</td>
                                  <td class="pass" style="display: none;">{{$elchi['user']['pass']}}</td>
                                  <td>{{number_format($elchi['order_price'],0,',',' ')}}</td>
                                  <td class="money_com" style="display: none;">{{number_format($elchi['promo_price'],0,',',' ')}}</td>

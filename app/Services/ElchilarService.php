@@ -183,7 +183,7 @@ class ElchilarService
                 ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                 ->groupBy('user_id')
                 ->first();
-            if($s)
+            if($s->all_price > 0)
             {
                 $dd[] = $value;
             }

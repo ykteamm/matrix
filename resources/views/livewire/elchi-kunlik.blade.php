@@ -4,16 +4,17 @@
         
 
     <div class="modal-header">
-        <h4 class="modal-title"> <img class="mr-2 mb-1" src="{{ $user->image_url }}"
+        <h4 class="modal-title"> <img class="mr-2 mb-1" width="100px" height="100px" src="{{ $user->image_url }}"
             style="border-radius:50%" height="20px"> {{$user->last_name}} {{$user->first_name}}
         </h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
     </div>
 
         <div class="mt-3 ml-auto mr-5">
-                <button class="btn btn-primary" onclick="$('#chartkunlik4').css('display','block');$('#chartkunlik6').css('display','none');">4oy</button>
                 <button class="btn btn-primary" onclick="$('#chartkunlik4').css('display','none');$('#chartkunlik6').css('display','block');">6oy</button>
-        </div>
+                <button class="btn btn-primary" onclick="$('#chartkunlik4').css('display','block');$('#chartkunlik6').css('display','none');">12oy</button>
+        
+            </div>
 
         <div class="modal-body">
             <div id="chartkunlik4">
@@ -59,7 +60,14 @@
                 curve: 'smooth'
             },
             xaxis: {
+                type: 'category',
                 categories: oy4,
+                labels: {
+                    style: {
+                        fontSize: '18px',
+                        fontWeight: 500,
+                    },
+                }
             },
             tooltip: {
                 x: {},
@@ -82,7 +90,15 @@
                 curve: 'smooth'
             },
             xaxis: {
+                type: 'category',
                 categories: oy6,
+                labels: {
+                    style: {
+                        fontSize: '15px',
+                        fontWeight: 900,
+                    },
+                },
+                
             },
             tooltip: {
                 x: {},

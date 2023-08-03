@@ -13,6 +13,8 @@ class ProvizorController extends Controller
 
         $orders222 = Http::get(getProvizorUrl().'/api/hisobot')->collect();
 
+        $ball = Http::get(getProvizorUrl().'/api/promo-ball')->collect();
+
         $reg = [];
 
         foreach ($orders222 as $key => $value) {
@@ -25,7 +27,8 @@ class ProvizorController extends Controller
         return view('provizor.index',[
             'orders222' => $orders222,
             'orders' => $orders,
-            'regions' => $regions
+            'regions' => $regions,
+            'ball' => $ball,
         ]);
 
     }

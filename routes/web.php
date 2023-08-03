@@ -390,6 +390,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('provizor-hisobot', [ProvizorController::class, 'provizorHisobot'])->name('provizor-hisobot');
 
 
+
     Route::get('pro-money', [ProvizorController::class, 'money'])->name('pro-money');
     Route::post('pro-money', [ProvizorController::class, 'moneyStore'])->name('pro-money.store');
 

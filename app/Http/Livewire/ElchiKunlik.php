@@ -15,7 +15,7 @@ class ElchiKunlik extends Component
     public $oy4 = [];
     public $savdo6 = [];
     public $oy6 = [];
-    public $kavrtal4 = 4;
+    public $kavrtal4 = 12;
     public $kavrtal6 = 6;
     public $ids;
 
@@ -35,7 +35,7 @@ class ElchiKunlik extends Component
                         ->whereDate('p.created_at','<=', $value)
                         ->value('prodaja');
             $this->savdo4[] = $savdo;
-            $this->oy4[] = date('F',strtotime($key)).'-'.$this->numberFormat($savdo);
+            $this->oy4[] = $this->numberFormat($savdo).'-'.date('F',strtotime($key));
         }
         foreach ($this->getMonth($this->kavrtal6) as $key => $value) {
             $savdo = DB::table('tg_productssold as p')
@@ -45,7 +45,8 @@ class ElchiKunlik extends Component
                         ->whereDate('p.created_at','<=', $value)
                         ->value('prodaja');
             $this->savdo6[] = $savdo;
-            $this->oy6[] = date('F',strtotime($key)).'-'.$this->numberFormat($savdo);
+            $this->oy6[] = $this->numberFormat($savdo).'-'.date('F',strtotime($key));
+
         }
         
         
