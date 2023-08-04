@@ -24,6 +24,8 @@ class ProvizorController extends Controller
 
         $orders = Http::get(getProvizorUrl().'/api/orders')->collect();
 
+        // dd($ball);
+
         return view('provizor.index',[
             'orders222' => $orders222,
             'orders' => $orders,

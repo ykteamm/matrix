@@ -57,4 +57,8 @@ class OrderController extends Controller
         return redirect()->back();
     }
     
+    public function report()
+    {
+        return view('order.report');
+    }
 }

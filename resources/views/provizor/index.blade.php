@@ -95,7 +95,7 @@
                                                             style="font-size:20px;color:white;"
                                                             class="mt-1"
 
-                                                            >{{$ord['first_name']}} {{$ord['last_name']}}</span>
+                                                            >{{$ord['first_name']}} {{$ord['last_name']}} </span>
                                                         </div>
                                                         <div class="d-flex justify-content-between ">
                                                             <span
@@ -109,6 +109,18 @@
                                                             class="mt-1"
 
                                                             >{{number_format($pul,0,',','.')}}</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1 badge badge-success"
+                                                            >{{number_format(floor($ball[$ord['id']]['sold_crystal']/1000),0,',','.')}}</span>
+
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1 badge badge-info"
+
+                                                            >{{number_format(floor($ball[$ord['id']]['minus']/1000),0,',','.')}}</span>
                                                         </div>
 
 
@@ -138,7 +150,7 @@
                         <thead>
                            <tr>
                               <th onclick="$('.pass').toggle();">FIO</th>
-                              <th>Crystal</th>
+                              {{-- <th>Crystal</th> --}}
                               <th class="pass" style="display: none;">PASS</th>
                               <th onclick="$('.money_com').toggle();">Buyurtma summasi</th>
                               <th class="money_com" style="display: none;">Promo summasi</th>
@@ -155,14 +167,14 @@
                            @foreach ($orders as $elchi)
                               <tr>
                                  <td>{{$elchi['user']['last_name']}} {{$elchi['user']['first_name']}}</td>
-                                 <td>
+                                 {{-- <td>
                                     @if (isset($ball[$elchi['user']['id']]))
                                     {{number_format($ball[$elchi['user']['id']]['crystal'],0,',','.')}}/
                                     {{number_format($ball[$elchi['user']['id']]['minus'],0,',','.')}}
                                     @else   
                                         0
                                     @endif
-                                 </td>
+                                 </td> --}}
                                  <td class="pass" style="display: none;">{{$elchi['user']['pass']}}</td>
                                  <td>{{number_format($elchi['order_price'],0,',',' ')}}</td>
                                  <td class="money_com" style="display: none;">{{number_format($elchi['promo_price'],0,',',' ')}}</td>

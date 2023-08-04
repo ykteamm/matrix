@@ -440,6 +440,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('warehouse', [OrderController::class, 'warehouse'])->name('warehouse');
     Route::get('shipment', [OrderController::class, 'shipment'])->name('shipment');
     Route::get('money-coming', [OrderController::class, 'money'])->name('money-coming');
+    Route::get('report', [OrderController::class, 'report'])->name('report');
     
     //ORDER-END
 
