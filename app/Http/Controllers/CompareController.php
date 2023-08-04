@@ -164,7 +164,17 @@ class CompareController extends Controller
         $last_month = date('Y-m',strtotime('-1 month',strtotime($month)));
         $endof_last_month=$ser->endmonth($last_month,$months);
 
-        $medicine = Medicine::orderBy('id')->get();
+        $medicine = Medicine::with(['pricem' => function($q) {
+            $q->where('shablon_id', 3);
+
+        }])->orderBy('id')->get();
+
+        // User::with(['roles' => function($q) use($faculty_id){
+        //     $q->where('user_roles.faculty_id', $faculty_id);
+        //     }])
+        // ->get();
+
+        // dd($medicine[0]->priceSh[0]->price);
         $accept = 0;
 
         $month_date=Stock::where('pharmacy_id',$pharmacy_id)

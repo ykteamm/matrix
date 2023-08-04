@@ -54,7 +54,25 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $sum_first = 0;
+                                            $sum_accept = 0;
+                                            $sum_sold = 0;
+                                        @endphp
                                     @foreach($medicine as $m)
+                                    @php
+                                        if(isset($m->pricem[0]))
+                                        {
+                                            $pr = $m->pricem[0]->price;
+                                        }else{
+                                            $pr = 0;
+                                        }
+                                    
+                                        $sum_first += $first_stocks[$key][$m->id]*$pr;
+                                        $sum_accept += $accepts[$key][$m->id]*$pr;
+                                        $sum_sold += $solds[$key][$m->id]*$pr;
+
+                                    @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
                                             <td>{{$loop->index+1}} </td>
                                             <td>{{$m->name}} </td>
@@ -98,6 +116,13 @@
 
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{number_format($sum_first,0,',','.')}}</td>
+                                        <td>{{number_format($sum_accept,0,',','.')}}</td>
+                                        <td>{{number_format($sum_sold,0,',','.')}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -130,7 +155,27 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($medicine as $m)
+                                        @php
+                                        $sum_first = 0;
+                                        $sum_accept = 0;
+                                        $sum_sold = 0;
+                                        $sum_second = 0;
+                                    @endphp
+                                @foreach($medicine as $m)
+                                @php
+                                    if(isset($m->pricem[0]))
+                                    {
+                                        $pr = $m->pricem[0]->price;
+                                    }else{
+                                        $pr = 0;
+                                    }
+                                
+                                    $sum_first += $first_stocks[$key][$m->id]*$pr;
+                                    $sum_accept += $accepts[$key][$m->id]*$pr;
+                                    $sum_sold += $solds[$key][$m->id]*$pr;
+                                    $sum_second += $second_stocks[$key][$m->id]*$pr;
+
+                                @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
                                             <td>{{$loop->index+1}} </td>
                                             <td>{{$m->name}} </td>
@@ -175,6 +220,14 @@
 
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{number_format($sum_first,0,',','.')}}</td>
+                                        <td>{{number_format($sum_accept,0,',','.')}}</td>
+                                        <td>{{number_format($sum_sold,0,',','.')}}</td>
+                                        <td>{{number_format($sum_second,0,',','.')}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -1,5 +1,5 @@
 <div>
-    <div class="content container-fluid main-wrapper">
+    <div class="content container-fluid main-wrapper mt-5">
         <div class="row gold-box">
            @include('admin.components.logo')
            <div class="card flex-fill">
@@ -16,7 +16,7 @@
                             </button>
                              <div class="dropdown-menu" style="left:150px !important">
                              <a href="#" wire:click="$emit('change_Region','all')"  class="dropdown-item"> Hammasi </a>
-                                @foreach($regions as $region)
+                                @foreach($regions_all as $region)
                                 <a href="#" wire:click="$emit('change_Region',{{$region->id}})"  class="dropdown-item"> {{$region->name}} </a>
                                 @endforeach
                              </div>
@@ -100,18 +100,33 @@
                         <thead>
                         <tr>
                             <th>Viloyat</th>
+                            <th>Kelgan pul</th>
                             <th>Otgruzka</th>
                             <th>Eski yopilgan pul</th>
+                            <th>Eski qolgan pul</th>
                             <th>Yangi yopilgan pul</th>
+                            <th>Yangi qolgan pul</th>
+                            <th>Umumiy qarz</th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach ($regions as $item)
                             <tr>
                                 <td>{{$item->name}}</td>
-                                <td>{{$otgruzka[$item->id]}}</td>
+                                <td>{{number_format($all_money[$item->id],0,',','.')}}</td>
+                                <td>{{number_format($otgruzka[$item->id],0,',','.')}}</td>
+                                <td>{{number_format($last_close_money[$item->id],0,',','.')}}</td>
+                                <td>{{number_format($last_accept_money[$item->id],0,',','.')}}</td>
+                                <td>{{number_format($new_close_money[$item->id],0,',','.')}}</td>
+                                <td>{{number_format($new_accept_money[$item->id],0,',','.')}}</td>
+                                <td>{{number_format($new_accept_money[$item->id]+$last_accept_money[$item->id],0,',','.')}}</td>
+                                {{-- <td>{{$otgruzka[$item->id]}}</td>
                                 <td>{{$last_close_money[$item->id]}}</td>
+                                <td>{{$last_accept_money[$item->id]}}</td>
                                 <td>{{$new_close_money[$item->id]}}</td>
+                                <td>{{$new_accept_money[$item->id]}}</td>
+                                <td>{{}}</td> --}}
+
                             </tr>
                             @endforeach
                             
