@@ -127,7 +127,17 @@
                                                             style="font-size:20px;color:white;"
                                                             class="mt-1 badge badge-info"
 
-                                                            >{{number_format(floor($ball[$ord['id']]['minus']/1000),0,',','.')}}</span>
+                                                            >
+                                                            @if($ball[$ord['id']]['sold_crystal'] < $ball[$ord['id']]['minus'])
+                                                            
+                                                                {{number_format(floor($ball[$ord['id']]['sold_crystal']/1000),0,',','.')}}
+
+                                                            @else
+
+                                                                {{number_format(floor($ball[$ord['id']]['minus']/1000),0,',','.')}}
+
+                                                            @endif
+                                                        </span>
                                                         </div>
                                                         <div class="d-flex justify-content-between mb-2">
                                                             <span
