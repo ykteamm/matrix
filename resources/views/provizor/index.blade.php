@@ -110,7 +110,14 @@
 
                                                             >{{number_format($pul,0,',','.')}}</span>
                                                         </div>
-                                                        <div class="d-flex justify-content-between mb-2">
+                                                        <div class="text-center justify-content-between">
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1 badge badge-success"
+                                                            >CRYSTAL</span>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between">
                                                             <span
                                                             style="font-size:20px;color:white;"
                                                             class="mt-1 badge badge-success"
@@ -121,6 +128,18 @@
                                                             class="mt-1 badge badge-info"
 
                                                             >{{number_format(floor($ball[$ord['id']]['minus']/1000),0,',','.')}}</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1 badge badge-success"
+                                                            >Pul kelishidan</span>
+
+                                                            <span
+                                                            style="font-size:20px;color:white;"
+                                                            class="mt-1 badge badge-info"
+
+                                                            >Sotilganidan</span>
                                                         </div>
 
 
