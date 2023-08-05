@@ -61,6 +61,8 @@
                 $sum_new_close_money1 = 0;
                 $sum_new_accept_money1 = 0;
                 $sum_all_accept_money1 = 0;
+                $predoplata_money1 = 0;
+                $product_accept1 = 0;
 
                 $sum_all_money2 = 0;
                 $sum_otgruzka2 = 0;
@@ -69,6 +71,9 @@
                 $sum_new_close_money2 = 0;
                 $sum_new_accept_money2 = 0;
                 $sum_all_accept_money2 = 0;
+                $predoplata_money2 = 0;
+                $product_accept2 = 0;
+
             @endphp
               {{-- @if( count($regions) > 1 && $regions[0]->side == 1) --}}
 
@@ -88,6 +93,9 @@
                             <th>Yangi qarz yopildi</th>
                             <th>Yangi qarz qoldi</th>
                             <th>Umumiy qarz</th>
+                            <th>Tovar qarz</th>
+                            <th>Predoplata</th>
+                            
                         </tr>
                         </thead>
                         <tbody>
@@ -105,6 +113,8 @@
                                     $sum_last_accept_money1 += $last_accept_money[$item->id];
                                     $sum_new_close_money1 += $new_close_money[$item->id];
                                     $sum_new_accept_money1 += $new_accept_money[$item->id];
+                                    $product_accept1 += $product_accept[$item->id];
+                                    $predoplata_money1 += $predoplata[$item->id];
                                     $sum_all_accept_money1 += $new_accept_money[$item->id]+$last_accept_money[$item->id];
                                 @endphp
 
@@ -117,6 +127,10 @@
                                         <td>{{number_format($new_close_money[$item->id],0,',','.')}}</td>
                                         <td>{{number_format($new_accept_money[$item->id],0,',','.')}}</td>
                                         <td>{{number_format($new_accept_money[$item->id]+$last_accept_money[$item->id],0,',','.')}}</td>
+                                        <td>{{number_format($product_accept[$item->id],0,',','.')}}</td>
+                                        <td>{{number_format($predoplata[$item->id],0,',','.')}}</td>
+
+
                                     </tr>
                                     
                                 @endif
@@ -131,7 +145,10 @@
                                         <td>{{number_format($sum_last_accept_money1,0,',','.')}}</td>
                                         <td>{{number_format($sum_new_close_money1,0,',','.')}}</td>
                                         <td>{{number_format($sum_new_accept_money1,0,',','.')}}</td>
-                                        <td class="mc-danger-top">{{number_format($sum_all_accept_money1,0,',','.')}}</td>
+                                        <td>{{number_format($sum_all_accept_money1,0,',','.')}}</td>
+                                        <td>{{number_format($product_accept1,0,',','.')}}</td>
+                                        <td>{{number_format($predoplata_money1,0,',','.')}}</td>
+
                                     </tr>
                             
                         </tbody>
@@ -159,6 +176,9 @@
                             <th>Yangi qarz yopildi</th>
                             <th>Yangi qarz qoldi</th>
                             <th>Umumiy qarz</th>
+                            <th>Tovar qarz</th>
+                            <th>Predoplata</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -173,6 +193,8 @@
                                     $sum_new_close_money2 += $new_close_money[$item->id];
                                     $sum_new_accept_money2 += $new_accept_money[$item->id];
                                     $sum_all_accept_money2 += $new_accept_money[$item->id]+$last_accept_money[$item->id];
+                                    $predoplata_money2 += $predoplata[$item->id];
+                                    $product_accept2 += $product_accept[$item->id];
                                 @endphp
                                 <tr>
                                     <td>{{$item->name}}</td>
@@ -185,6 +207,9 @@
                                     <td>
                                             {{number_format($new_accept_money[$item->id]+$last_accept_money[$item->id],0,',','.')}}
                                     </td>
+                                    <td>{{number_format($product_accept[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($predoplata[$item->id],0,',','.')}}</td>
+
                                 </tr>
 
                                 @endif
@@ -202,6 +227,9 @@
                                         {{number_format($sum_all_accept_money2,0,',','.')}}
                                     {{-- </span> --}}
                                 </td>
+                                <td>{{number_format($product_accept2,0,',','.')}}</td>
+                                <td>{{number_format($predoplata_money2,0,',','.')}}</td>
+
                             </tr>
                         </tbody>
                     </table>
@@ -223,6 +251,9 @@
                             <th>Yangi qarz yopildi</th>
                             <th>Yangi qarz qoldi</th>
                             <th>Umumiy qarz</th>
+                            <th>Tovar qarz</th>
+                            <th>Predoplata</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -235,6 +266,8 @@
                                 <td>{{number_format($sum_new_close_money2 + $sum_new_close_money1,0,',','.')}}</td>
                                 <td>{{number_format($sum_new_accept_money2 + $sum_new_accept_money1,0,',','.')}}</td>
                                 <td>{{number_format($sum_all_accept_money2 + $sum_all_accept_money1,0,',','.')}}</td>
+                                <td>{{number_format($product_accept1 + $product_accept2,0,',','.')}}</td>
+                                <td>{{number_format($predoplata_money2 + $predoplata_money1,0,',','.')}}</td>
                             </tr>
                         </tbody>
                     </table>

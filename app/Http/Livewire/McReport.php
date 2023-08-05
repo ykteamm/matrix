@@ -4,9 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Models\Calendar;
 use App\Models\McOrder;
+use App\Models\McOrderDetail;
 use App\Models\McPaymentHistory;
 use App\Models\Pharmacy;
 use App\Models\Region;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class McReport extends Component
@@ -24,6 +26,8 @@ class McReport extends Component
     public $last_accept_money = [];
     public $new_close_money = [];
     public $new_accept_money = [];
+    public $predoplata = [];
+    public $product_accept = [];
     public $all_money = [];
 
 
@@ -85,6 +89,11 @@ class McReport extends Component
             $all_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
             ->pluck('id')->toArray();
 
+            $pred_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
+            ->whereDate('order_date','>=',$active_month)
+            ->where('price','=',NULL)
+            ->pluck('id')->toArray();
+
             $this->otgruzka[$region->id] = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
             ->whereDate('order_date','>=',$active_month)
             ->sum('price');
@@ -100,6 +109,12 @@ class McReport extends Component
 
             $this->new_accept_money[$region->id] = McOrder::whereIn('id',$new_order_ids)
             ->sum('price')-$this->new_close_money[$region->id];
+
+            $this->predoplata[$region->id] = McPaymentHistory::whereIn('order_id',$pred_order_ids)
+            ->sum('amount');
+
+            $this->product_accept[$region->id] = McOrderDetail::whereIn('order_id',$new_order_ids)
+            ->sum(DB::raw('debt*price'));
 
             $this->all_money[$region->id] = McPaymentHistory::whereIn('order_id',$all_order_ids)
             ->sum('amount');
