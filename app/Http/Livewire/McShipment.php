@@ -112,10 +112,11 @@ class McShipment extends Component
         {
             $this->detail_delivery_date = McOrderDelivery::where('order_id',$order_id)->distinct('created_at')->pluck('created_at')->toArray();
                 foreach ($this->detail_delivery_date as $key => $value) {
-                    $delivery_q = McOrderDelivery::where('order_id',$order_id)->where('created_at',$value)->pluck('quantity','product_id')->toArray();
+                    // $value = date('Y-m-d H:i',strtotime($value));
+                    $delivery_q = McOrderDelivery::where('order_id',$order_id)->whereDate('created_at',$value)->pluck('quantity','product_id')->toArray();
                     $this->detail_delivery[] = $delivery_q;
                 }
-            // dd($this->detail_delivery_date,$this->detail_delivery);
+            // dd(date('Y-m-d H:i',strtotime($this->detail_delivery_date[0])),$this->detail_delivery);
         }
         $this->payments = McPayment::all();
 
@@ -249,6 +250,7 @@ class McShipment extends Component
 
         if($this->saved == 2)
         {
+            $arr_del = [];
 
             foreach($this->order_products as $ord)
             {
@@ -289,18 +291,28 @@ class McShipment extends Component
                         }
                 }
 
-                
-                
-                    McOrderDelivery::create([
+
+                    $mm = McOrderDelivery::create([
                         'order_id' => $this->order_id,
                         'order_detail_id' => $ord->id,
                         'warehouse_id' => $this->ware_id,
                         'product_id' => $ord->product_id,
                         'quantity' => $this->products[$ord->product_id],
-                        'price' => $ord->price,
+                        'price' => $ord->price
                     ]);
-                
+
+                $arr_del[] = $mm;
+
+
+
+            } 
+
+            foreach ($arr_del as $key => $value) {
+                $d = McOrderDelivery::find($value->id);
+                $d->created_at = $arr_del[0]->created_at;
+                $d->save();
             }
+
             
                 $debt_count = McOrderDetail::where('order_id',$this->order_id)->sum('debt');
 

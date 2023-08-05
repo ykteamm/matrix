@@ -144,15 +144,22 @@ class McShipmentDetail extends Component
 
     public function saveData()
     {
+        $arr_del_2 = [];
         foreach($this->order_products as $ord)
         {
-            McOrderDelivery::create([
+
+            $mc_date = date('Y-m-d');
+
+            $mm = McOrderDelivery::create([
                 'order_id' => $this->order_id,
                 'order_detail_id' => $ord->id,
                 'product_id' => $ord->product_id,
                 'quantity' => $this->products[$ord->product_id],
                 'price' => $ord->price,
+                'created_at' => $mc_date,
             ]);
+
+            $arr_del[] = $mm;
 
             if($ord->quantity > $this->products[$ord->product_id])
             {
@@ -160,6 +167,12 @@ class McShipmentDetail extends Component
                 $update->debt = $update->debt + $ord->quantity - $this->products[$ord->product_id];
                 $update->save();
             }
+        }
+
+        foreach ($arr_del_2 as $key => $value) {
+            $d = McOrderDelivery::find($value->id);
+            $d->created_at = $arr_del_2[0]->created_at;
+            $d->save();
         }
 
         $debt_count = McOrderDetail::where('order_id',$this->order_id)->sum('debt');

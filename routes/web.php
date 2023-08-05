@@ -441,6 +441,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('shipment', [OrderController::class, 'shipment'])->name('shipment');
     Route::get('money-coming', [OrderController::class, 'money'])->name('money-coming');
     Route::get('report', [OrderController::class, 'report'])->name('report');
+    Route::get('mc-admin', [OrderController::class, 'mcAdmin']);
+    Route::get('mc-admin-restore/{id}', [OrderController::class, 'mcOrderRestore'])->name('mc-admin-restore');
     
     //ORDER-END
 

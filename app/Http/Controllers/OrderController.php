@@ -61,4 +61,44 @@ class OrderController extends Controller
     {
         return view('order.report');
     }
+
+    public function mcAdmin()
+    {
+        $orders = McOrder::with('pharmacy')->orderBy('id','ASC')->get();
+        return view('order.report-admin',[
+            'orders' => $orders
+        ]);
+    }
+
+    public function mcOrderRestore($id)
+    {
+        $order = McOrder::find($id);
+
+        $order_details = McOrderDetail::where('order_id',$order->id)->get();
+
+        $minus_sum = 0;
+
+
+        foreach ($order_details as $key => $value) {
+            if($value->debt > 0)
+            {
+                $minus_sum += ($value->debt)*$value->price;
+
+                McOrderDetail::where('id',$value->id)->update([
+                    'quantity' => $value->quantity-$value->debt,
+                    'debt' => 0,
+                ]);
+            }
+        }
+
+        $order = McOrder::where('id',$id)->update([
+            'price' => $order->price-$minus_sum,
+            'order_detail_status' => 3,
+        ]);
+        
+
+        
+
+        return redirect()->back();
+    }
 }
