@@ -104,11 +104,21 @@ class McReport extends Component
             $this->last_accept_money[$region->id] = McOrder::whereIn('id',$close_order_ids)
             ->sum('price')-$this->last_close_money[$region->id];
 
+            if($this->last_accept_money[$region->id] < 0)
+            {
+                $this->last_accept_money[$region->id] = 0;
+            }
+
             $this->new_close_money[$region->id] = McPaymentHistory::whereIn('order_id',$new_order_ids)
             ->sum('amount');
 
             $this->new_accept_money[$region->id] = McOrder::whereIn('id',$new_order_ids)
             ->sum('price')-$this->new_close_money[$region->id];
+
+            if($this->new_accept_money[$region->id] < 0)
+            {
+                $this->new_accept_money[$region->id] = 0;
+            }
 
             $this->predoplata[$region->id] = McPaymentHistory::whereIn('order_id',$pred_order_ids)
             ->sum('amount');
