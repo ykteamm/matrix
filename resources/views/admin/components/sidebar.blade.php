@@ -40,11 +40,11 @@
                 @isset(Session::get('per')['elchi-day'])
                     @if (Session::get('per')['elchi-day'] == 'true')
                         <li><a href="{{ route('elchilar', ['month' => date('Y-m')]) }}"><i class="fas fa-users"></i>
-                                <span>Elchi kunlik</span></a>
+                                <span>Hisobotlar</span></a>
                     @endif
                 @endisset
 
-                <li class="submenu">
+                {{-- <li class="submenu">
                     <a href="settings.html"><i class="fas fa-filter"></i> <span> Hisobotlar </span><span
                             class="menu-arrow"></span></a>
                     <ul style="display: none;">
@@ -105,7 +105,7 @@
                             @endif
                         @endisset
                     </ul>
-                </li>
+                </li> --}}
 
                 @if (in_array(Session::get('user')->id,[154,37]))
                     

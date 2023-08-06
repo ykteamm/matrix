@@ -13,7 +13,12 @@
         }
     </style>
 
+
+
     <div id="table-wrapper" class="card-body mt-5">
+
+        @include('admin.components.report')
+
         <div class="row   d-flex justify-content-between">
 
 
