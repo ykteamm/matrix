@@ -445,6 +445,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('mc-admin-restore/{id}', [OrderController::class, 'mcOrderRestore'])->name('mc-admin-restore');
 
     Route::get('mc-pharmacy', [OrderController::class, 'pharmacy'])->name('mc-pharmacy');
+    Route::get('last-order', [OrderController::class, 'lastOrders'])->name('last.order');
+    Route::post('last-order-save', [OrderController::class, 'lastOrdersSave'])->name('last.order.save');
 
     
     //ORDER-END

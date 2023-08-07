@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Livewire\McMoney;
 use App\Models\McOrder;
 use App\Models\McOrderDelivery;
 use App\Models\McOrderDetail;
+use App\Models\McPayment;
 use App\Models\McPaymentHistory;
 use App\Models\Pharmacy;
 use App\Models\PharmacyUser;
@@ -12,6 +14,8 @@ use App\Models\ProductSold;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
+
 
 class OrderController extends Controller
 {
@@ -102,6 +106,60 @@ class OrderController extends Controller
         
 
         return redirect()->back();
+    }
+
+    public function lastOrders()
+    {
+        $pharmacy = Pharmacy::with('region')->get();
+        $money = McPayment::all();
+
+        $code = McOrder::orderBy('id','DESC')->first()->id;
+
+
+        return view('order.last',[
+            'pharmacy' => $pharmacy,
+            'money' => $money,
+            'code' => $code,
+        ]);
+    }
+
+    public function lastOrdersSave(Request $request)
+    {
+
+        if($request->money_action == 1)
+        {
+            $new_order = McOrder::create([
+
+                'pharmacy_id' => $request->pharmacy_id,
+                'employee_id' => Session::get('user')->id,
+                'number' => $request->code,
+                'price' => $request->money,
+                'discount' => 0,
+                'delivery_id' => 2,
+                'order_date' => $request->month,
+                'outer' => 1,
+    
+            ]);
+        }else{
+            $new_order = McOrder::create([
+                'pharmacy_id' => $request->pharmacy_id,
+                'employee_id' => Session::get('user')->id,
+                'number' => $request->code,
+                'discount' => 0,
+                'delivery_id' => 2,
+                'order_date' => $request->month,
+                'outer' => 1,
+            ]);
+    
+            McPaymentHistory::create([
+                'payment_id' => $request->money_status,
+                'order_id' => $new_order->id,
+                'amount' => $request->money*100/100
+            ]);
+        }
+
+        return redirect()->back();
+        
     }
 
     public function pharmacy()
@@ -199,15 +257,6 @@ class OrderController extends Controller
         // }
 
 
-        // $other = Pharmacy::with('region')->whereIn('id',$all_ids)->get();
-
-        // return $other;
-
-        return view('order.pharmacy',[
-            // 'provizor' => $provizor,
-            // 'order' => $order,
-            // 'sold' => $sold,
-            // 'other' => $other,
-        ]);
+        
     }
 }

@@ -108,25 +108,26 @@
                 </li> --}}
 
                 @if (in_array(Session::get('user')->id,[154,37]))
-                    
-                    <li class="submenu">
-                        <a href="settings.html"><i class="fas fa-crown"></i> <span> Order </span><span
-                                class="menu-arrow"></span></a>
-                        <ul style="display: none;">
-                            @isset(Session::get('per')['order'])
-                                @if (Session::get('per')['order'] == 'true')
-                                        <li><a href="{{ route('order.index') }}"><span>Buyurtma berish</span></a>
-                                @endif
-                            @endisset
-                                <li><a href="{{ route('orders') }}"><span>Buyurtmalar</span></a>
-                                <li><a href="{{ route('warehouse') }}"><span>Sklad</span></a>
-                                {{-- <li><a href="{{ route('shipment') }}"><span>Otgruzka</span></a> --}}
-                                <li><a href="{{ route('money-coming') }}"><span>Pul kelishi</span></a>
-                                <li><a href="{{ route('report') }}"><span>Hisobot 1</span></a>
-                                <li><a href="{{ route('mc-pharmacy') }}"><span>Dorixonalar</span></a>
-                        </ul>
-                    </li>
+                    @isset(Session::get('per')['order'])
+                    @if (Session::get('per')['order'] == 'true')
+                        <li class="submenu">
+                            <a href="settings.html"><i class="fas fa-crown"></i> <span> Order </span><span
+                                    class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                
 
+                                    <li><a href="{{ route('order.index') }}"><span>Buyurtma berish</span></a>
+                                    <li><a href="{{ route('orders') }}"><span>Buyurtmalar</span></a>
+                                    <li><a href="{{ route('warehouse') }}"><span>Sklad</span></a>
+                                    {{-- <li><a href="{{ route('shipment') }}"><span>Otgruzka</span></a> --}}
+                                    <li><a href="{{ route('money-coming') }}"><span>Pul kelishi</span></a>
+                                    <li><a href="{{ route('last.order') }}"><span>Eski buyurtmalar</span></a>
+                                    <li><a href="{{ route('report') }}"><span>Hisobot 1</span></a>
+                                    <li><a href="{{ route('mc-pharmacy') }}"><span>Dorixonalar</span></a>
+                            </ul>
+                        </li>
+                    @endif
+                    @endisset
                 @endif
 
                 @isset(Session::get('per')['order'])
