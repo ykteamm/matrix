@@ -175,6 +175,7 @@ class ElchilarService
 
         $dd = [];
 
+
         foreach ($elchi as $key => $value) {
             $s=DB::table('tg_productssold')
                 ->where('user_id',$value->id)
@@ -183,12 +184,16 @@ class ElchilarService
                 ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
                 ->groupBy('user_id')
                 ->first();
-            if($s->all_price > 0)
+
+            if($s != null)
             {
-                $dd[] = $value;
+                if($s->all_price > 0)
+                {
+                    $dd[] = $value;
+                }
             }
         }
-
+        
         $elchi = $dd;
 
         $elchi_work=[];
