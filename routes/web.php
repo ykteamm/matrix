@@ -443,6 +443,9 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('report', [OrderController::class, 'report'])->name('report');
     Route::get('mc-admin', [OrderController::class, 'mcAdmin']);
     Route::get('mc-admin-restore/{id}', [OrderController::class, 'mcOrderRestore'])->name('mc-admin-restore');
+
+    Route::get('mc-pharmacy', [OrderController::class, 'pharmacy'])->name('mc-pharmacy');
+
     
     //ORDER-END
 
