@@ -94,9 +94,17 @@ class McReport extends Component
             ->where('price','=',NULL)
             ->pluck('id')->toArray();
 
-            $this->otgruzka[$region->id] = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
+            $ords = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
             ->whereDate('order_date','>=',$active_month)
-            ->sum('price');
+            ->get();
+            $ords_sum = 0;
+            foreach ($ords as $key => $value) {
+                $ords_sum += $value->price - $value->price*$value->discount/100;
+            }
+
+            $this->otgruzka[$region->id] = $ords_sum;
+
+            // ->sum(DB::raw('price-(price*discount/100)'));
 
             $this->last_close_money[$region->id] = McPaymentHistory::whereIn('order_id',$close_order_ids)
             ->sum('amount');
