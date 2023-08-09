@@ -107,7 +107,7 @@
                     </ul>
                 </li> --}}
 
-                @if (in_array(Session::get('user')->id,[154,37]))
+                @if (in_array(Session::get('user')->id,[154,37,405]))
                     @isset(Session::get('per')['order'])
                     @if (Session::get('per')['order'] == 'true')
                         <li class="submenu">
