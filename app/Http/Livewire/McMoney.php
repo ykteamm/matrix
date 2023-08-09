@@ -16,7 +16,8 @@ class McMoney extends Component
 
     public function mount()
     {
-        $this->orders = McOrder::with('pharmacy','user','employe','delivery','payment')->orderBy('id','ASC')->get();
+        $this->orders = McOrder::with('pharmacy','pharmacy.region','user','employe','delivery','payment')->orderBy('id','ASC')->get();
+
         foreach ($this->orders as $key => $value) {
             $this->order_pay[$value->id] = McPaymentHistory::where('order_id',$value->id)->sum('amount');
             $this->order_sum[$value->id] = McOrderDelivery::where('order_id',$value->id)->sum(DB::raw('quantity * price'));

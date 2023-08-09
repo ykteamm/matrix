@@ -10,6 +10,7 @@
                         <tr>
                             <th>Buyurtma raqami</th>
                             <th>Buyurtma beruvchi</th>
+                            <th>Viloyat</th>
                             <th>Skidka</th>
                             <th>Buyurtma Narxi</th>
                             <th>Skidka narxi </th>
@@ -28,6 +29,8 @@
                                         @else
                                             <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
                                         @endif
+                                        <td>{{$order->pharmacy->region->name}}</td>
+
                                         <td>{{$order->discount}}%</td>
                                     
                                         <td>{{number_format($order->price,0,',','.')}}</td>
