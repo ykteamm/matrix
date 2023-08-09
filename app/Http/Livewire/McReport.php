@@ -155,8 +155,26 @@ class McReport extends Component
             $this->product_accept[$region->id] = McOrderDetail::whereIn('order_id',$new_order_ids)
             ->sum(DB::raw('debt*price'));
 
-            $this->all_money[$region->id] = McPaymentHistory::whereIn('order_id',$all_order_ids)
-            ->sum('amount');
+
+            $sum1 = 0;
+            $sum2 = 0;
+            foreach($all_order_ids as $value)
+            {
+                $ord_det = McOrderDetail::where('order_id',$value)->first();
+                $ord_sum = McPaymentHistory::where('order_id',$value)->first();
+
+                if(strtotime($ord_det) < strtotime($ord_sum))
+                {
+                    $sum1 += $ord_sum->amount;
+                }else{
+                    $sum2 += McPaymentHistory::where('order_id',$value)->sum('amount');
+                }
+            }
+
+            // $this->all_money[$region->id] = McPaymentHistory::whereIn('order_id',$all_order_ids)
+            // ->sum('amount');
+
+            $this->all_money[$region->id] = $sum2-$sum1;
         }
     }
 
