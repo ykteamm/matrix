@@ -4,11 +4,15 @@
         <div class="card flex-fill mt-5">
        
             <div class="card-body">
+              <div id="dtBasicExample1212333"></div>
+
                 <div class="table-responsive">
-                    <table class="table table-striped mb-0">
+                    
+                    <table class="table table-striped mb-0" id="dtBasicExample12333">
                         <thead>
                         <tr>
                             <th>Buyurtma raqami</th>
+                            <th>Buyurtma vaqti</th>
                             <th>Buyurtma beruvchi</th>
                             <th>Viloyat</th>
                             <th>Skidka</th>
@@ -24,6 +28,7 @@
                             @foreach ($orders as $order)
                                 <tr>
                                         <td>{{$order->number}}</td>
+                                        <td>{{date('d.m.Y H:i',strtotime($order->order_date))}}</td>
                                         @if ($order->pharmacy != null)
                                             <td>{{$order->pharmacy->name}}</td>
                                         @else
