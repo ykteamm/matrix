@@ -27,6 +27,11 @@
                                     Pul kelishi <i class="fas fa-hand-holding-usd"></i>
                                 </button>
                             </span>
+                            <span>
+                                <button class="text-center btn-primary mb-1 ml-3" wire:click="returnProduct">
+                                    Tovar qaytishi <i class="fas fa-undo"></i>
+                                </button>
+                            </span>
                             </li>
                         </ul>
                     </div>
@@ -200,6 +205,34 @@
                     </div>
                 @endif
 
+                @if ($return_pro == 2)
+                    <div class="col-md-4">
+                        
+                        <ul class="list-group">
+                            
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Qaytgan tovar summasi
+                            <span>
+                                <input type="text" class="form-control-sm" wire:change="addReturnSum($event.target.value)">
+                            </span>
+
+                            </li>
+
+                            <li class="list-group-item   text-center justify-content-between align-items-center">
+                                <button class="btn btn-success btn-sm mcorderreturnsave" wire:click="$emit('saveMoney_Return')">Saqlash</button>
+                                <button class="btn btn-success btn-sm mcorderreturnsavenone d-none">Biroz kuting..</button>
+
+                            </li>
+                            <script>
+                                document.querySelector('.mcorderreturnsave').addEventListener('click', () => {
+                                    document.querySelector('.mcorderreturnsave').classList.add('d-none');
+                                    document.querySelector('.mcorderreturnsavenone').classList.remove('d-none');
+                                }); 
+                            </script>
+                        </ul>
+                    </div>
+                @endif
+
                 
                             
             </div>
@@ -302,6 +335,13 @@
                                     </select>
                                 </th>
                             @endif
+                            {{-- <th>
+                                Tovar qaytish 
+                                <button  wire:click="$emit('saveReturn')" type="button" class="btn btn-primary pt-0 pb-0 ml-2">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </th> --}}
+
                         </tr>
                         </thead>
                         <tbody>
@@ -341,7 +381,11 @@
                                             @endif
                                         
                                         @endif
-                                        
+                                        {{-- <td>
+                                            <input type="text" value="{{$vozvrat[$pro->product_id]}}"  wire:keyup="changeReturnQuantity($event.target.value,{{$pro->product_id}})">
+                                            (max: {{$vozvrat_max[$pro->product_id]}})
+                                        </td> --}}
+
                                     </tr>
                                 @endforeach
                             @endisset
@@ -405,6 +449,31 @@
                                             @endforeach
                                         </tr>
                                     @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
+
+            @if(count($return_history) > 0)
+                <div class="card-body p-1" style="border: 2px solid #61b994;border-radius: 8px;">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                @foreach ($return_history as $item)
+                                    <th>{{date('d.m.Y H:i',strtotime($item->created_at))}}</th>
+                                @endforeach
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @foreach ($return_history as $key => $item2)
+                                        <td>
+                                            {{number_format($item2->amount,0,',','.')}}
+                                        </td>
+                                    @endforeach
+                                </tr>
                             </tbody>
                         </table>
                     </div>

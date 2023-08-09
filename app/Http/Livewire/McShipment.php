@@ -6,8 +6,10 @@ use App\Models\McDelivery;
 use App\Models\McOrder;
 use App\Models\McOrderDelivery;
 use App\Models\McOrderDetail;
+use App\Models\McOrderReturn;
 use App\Models\McPayment;
 use App\Models\McPaymentHistory;
+use App\Models\McReturnHistory;
 use App\Models\McWarehouse;
 use App\Models\McWarehousQuantity;
 use App\Models\Medicine;
@@ -43,6 +45,7 @@ class McShipment extends Component
     public $payment_id;
 
     public $amount;
+    public $return_sum;
 
     public $restart;
 
@@ -52,6 +55,7 @@ class McShipment extends Component
     public $error;
 
     public $money_view = 1;
+    public $return_pro = 1;
 
     public $payment_history = [];
     public $payment_date;
@@ -64,10 +68,16 @@ class McShipment extends Component
     public $prod_count = [];
     public $prod_price = [];
     public $summa_array = [];
+
+    public $vozvrat = [];
+    public $vozvrat_max = [];
+    public $return_history;
+
     public $skidka = 0;
 
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
     ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError','delete_prod' => 'deleteProd','saveOrder_Detail' => 'saveOrderDetail'
+    ,'saveReturn' => 'saveReturnData','saveMoney_Return' => 'saveMoneyReturn',
     ];
 
 
@@ -82,12 +92,17 @@ class McShipment extends Component
         $this->order_products = McOrderDetail::with('medicine')->where('order_id',$order_id)->orderBy('id','ASC')->get();
 
 
+
         $this->default_orders = McOrderDetail::where('order_id',$order_id)->pluck('quantity','product_id')->toArray();
         
 
+
         foreach ($this->default_orders as $key => $value) {
             $this->products[$key] = 0;
+            // $this->vozvrat[$key] = 0;
+            // $this->vozvrat_max[$key] = McOrderDelivery::where('order_id',$order_id)->where('product_id',$key)->sum('quantity');
         }
+
 
 
         $this->orders = McOrder::with('pharmacy','user','employe','delivery','payment')->find($order_id);
@@ -131,6 +146,8 @@ class McShipment extends Component
             $this->payment_history[] = $paymnet_q;
         }
 
+        $this->return_history = McReturnHistory::where('order_id',$this->order_id)->orderBy('id','ASC')->get();
+
         $this->order_sum = McOrderDelivery::where('order_id',$order_id)->sum(DB::raw('quantity * price'));
     }
 
@@ -168,6 +185,22 @@ class McShipment extends Component
         $this->products[$id] = $quantity;
 
     }   
+
+    public function changeReturnQuantity($quantity,$id)
+    {
+        if($quantity == "")
+        {
+            $quantity = 0;
+        }
+
+        if(gettype($quantity) == 'string')
+        {
+            $quantity = intval($quantity);
+        }
+
+        $this->vozvrat[$id] = $quantity;
+
+    } 
 
     public function selectDelivery($delivery_id)
     {
@@ -237,6 +270,53 @@ class McShipment extends Component
             }
 
         
+    }
+
+
+    public function saveReturnData()
+    {
+        $test = 0;
+        foreach($this->vozvrat as $key => $value)
+        {
+            if($value > $this->vozvrat_max[$key])
+            {
+                $test += 1;
+            }
+        }
+
+
+        if($test > 0)
+        {
+            $this->error = 1;
+        }else{
+            $arr_del=[];
+
+            foreach($this->vozvrat as $key => $value)
+            {
+                
+                    $price = McOrderDelivery::where('order_id',$this->order_id)
+                    ->where('product_id',$key)
+                    ->first();
+
+                    $mm = McOrderReturn::create([
+                        'order_id' => $this->order_id,
+                        'warehouse_id' => $this->ware_id,
+                        'product_id' => $key,
+                        'quantity' => $value,
+                        'price' => $price->price
+                    ]);
+
+                    $arr_del[] = $mm;
+                
+            }
+
+            foreach ($arr_del as $key => $value) {
+                $d = McOrderReturn::find($value->id);
+                $d->created_at = $arr_del[0]->created_at;
+                $d->save();
+            }
+        }
+
     }
 
     public function saveData()
@@ -342,8 +422,20 @@ class McShipment extends Component
         if($this->money_view == 1)
         {
             $this->money_view = 2;
+            $this->return_pro = 1;
         }else{
             $this->money_view = 1;
+        }
+    }
+
+    public function returnProduct()
+    {
+        if($this->return_pro == 1)
+        {
+            $this->return_pro = 2;
+            $this->money_view = 1;
+        }else{
+            $this->return_pro = 1;
         }
     }
 
@@ -356,7 +448,33 @@ class McShipment extends Component
     {
         $this->amount = $amount;
     }
+
+    public function addReturnSum($amount)
+    {
+        $this->return_sum = $amount;
+    }
     
+    public function saveMoneyReturn()
+    {
+
+        $ord = McOrder::find($this->order_id);
+
+        $pay = McPaymentHistory::where('order_id',$this->order_id)->sum('amount');
+
+        if(($ord->price-$pay) < $this->return_sum)
+        {
+            $this->error = 1;
+        }else{
+            McReturnHistory::create([
+                'order_id' => $this->order_id,
+                'amount' => $this->return_sum*100/100
+            ]);
+            $this->dispatchBrowserEvent('refresh-page'); 
+        }
+
+        
+    }
+
     public function saveMoneyComing()
     {
         if($this->payment_id && $this->amount)
