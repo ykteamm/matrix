@@ -79,14 +79,17 @@ class McReport extends Component
             $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             $close_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
+            ->where('price','!=',null)
             ->whereDate('order_date','<',$active_month)
             ->pluck('id')->toArray();
 
             $new_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
             ->whereDate('order_date','>=',$active_month)
+            ->where('price','!=',null)
             ->pluck('id')->toArray();
 
             $all_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
+            ->where('price','!=',null)
             ->pluck('id')->toArray();
 
             $pred_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
@@ -109,8 +112,17 @@ class McReport extends Component
             $this->last_close_money[$region->id] = McPaymentHistory::whereIn('order_id',$close_order_ids)
             ->sum('amount');
 
-            $this->last_accept_money[$region->id] = McOrder::whereIn('id',$close_order_ids)
-            ->sum('price')-$this->last_close_money[$region->id];
+            $ords = McOrder::whereIn('id',$close_order_ids)
+            ->get();
+            $ords_sum = 0;
+            foreach ($ords as $key => $value) {
+                $ords_sum += $value->price - $value->price*$value->discount/100;
+            }
+
+            $this->last_accept_money[$region->id] = $ords_sum-$this->last_close_money[$region->id];
+
+            // $this->last_accept_money[$region->id] = McOrder::whereIn('id',$close_order_ids)
+            // ->sum('price')-$this->last_close_money[$region->id];
 
             if($this->last_accept_money[$region->id] < 0)
             {
@@ -120,8 +132,17 @@ class McReport extends Component
             $this->new_close_money[$region->id] = McPaymentHistory::whereIn('order_id',$new_order_ids)
             ->sum('amount');
 
-            $this->new_accept_money[$region->id] = McOrder::whereIn('id',$new_order_ids)
-            ->sum('price')-$this->new_close_money[$region->id];
+            $ords = McOrder::whereIn('id',$new_order_ids)
+            ->get();
+            $ords_sum = 0;
+            foreach ($ords as $key => $value) {
+                $ords_sum += $value->price - $value->price*$value->discount/100;
+            }
+
+            $this->new_accept_money[$region->id] = $ords_sum-$this->new_close_money[$region->id];
+
+            // $this->new_accept_money[$region->id] = McOrder::whereIn('id',$new_order_ids)
+            // ->sum('price')-$this->new_close_money[$region->id];
 
             if($this->new_accept_money[$region->id] < 0)
             {
