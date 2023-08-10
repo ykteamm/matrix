@@ -97,9 +97,7 @@ class McReport extends Component
             ->get();
             $sum1 = 0;
             $sum2 = 0;
-            $sum3 = 0;
             $pred2 = [];
-            $pred3 = [];
             foreach ($pred_order_ids as $key => $value) {
 
                 if($value->price == NULL)
@@ -117,7 +115,6 @@ class McReport extends Component
                         if(strtotime($ord_det->created_at) > strtotime($ord_sum->created_at))
                         {
                             $sum1 += $ord_sum->amount;
-                            $sum3 += $ord_sum->amount;
                         }
                     }
                 }
@@ -130,6 +127,7 @@ class McReport extends Component
             ->whereDate('order_date','>=',$active_month)
             ->get();
             $sum4 = 0;
+            $pred3 = [];
             foreach ($pred_order_ids as $key => $value) {
 
                 if($value->price == NULL)
@@ -141,8 +139,8 @@ class McReport extends Component
             }
 
             $this->predoplata[$region->id] = $sum1;
-            $pred2[$region->id] = $sum2+$sum4;
-            $pred3[$region->id] = $sum3;
+            $pred2[$region->id] = $sum2;
+            $pred3[$region->id] = $sum4;
 
         //predoplata-end
         
@@ -380,7 +378,7 @@ class McReport extends Component
 
             // $this->new_accept_money[$region->id] = $this->new_close_money[$region->id];
             // $this->new_accept_money[$region->id] = $sum1;
-            $this->new_accept_money[$region->id] = $ords_sum2+$sum1-$this->new_close_money[$region->id]-$this->predoplata[$region->id]+$pred2[$region->id];
+            $this->new_accept_money[$region->id] = $ords_sum2+$sum1-$this->new_close_money[$region->id]-$this->predoplata[$region->id]+$pred2[$region->id]+$pred3[$region->id];
             // $this->new_accept_money[$region->id] = $pred2[$region->id];
 
             if($this->new_accept_money[$region->id] < 0)
