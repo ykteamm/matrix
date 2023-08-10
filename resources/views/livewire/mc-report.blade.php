@@ -607,7 +607,7 @@
                                 <td>{{number_format($sum_last_close_money2 + $sum_last_close_money1 + $sum_last_close_money3 + $sum_last_close_money4 + $sum_last_close_money5 + $sum_last_close_money6,0,',','.')}}</td>
                                 <td>{{number_format($sum_last_accept_money2 + $sum_last_accept_money1 + $sum_last_accept_money3 + $sum_last_accept_money4 + $sum_last_accept_money5 + $sum_last_accept_money6,0,',','.')}}</td>
                                 <td>{{number_format($sum_new_close_money2 + $sum_new_close_money1 + $sum_new_close_money3 + $sum_new_close_money4 + $sum_new_close_money5 + $sum_new_close_money6,0,',','.')}}</td>
-                                <td>{{number_format($sum_new_accept_money2 + $sum_new_accept_money1 + $sum_new_accept_money3 + $sum_new_accept_money3 + $sum_new_accept_money4 + $sum_new_accept_money5,0,',','.')}}</td>
+                                <td>{{number_format($sum_new_accept_money2 + $sum_new_accept_money1 + $sum_new_accept_money3 + $sum_new_accept_money4 + $sum_new_accept_money5 + $sum_new_accept_money6,0,',','.')}}</td>
                                 <td>{{number_format($sum_all_accept_money2 + $sum_all_accept_money1 + $sum_all_accept_money3 + $sum_all_accept_money4 + $sum_all_accept_money5 + $sum_all_accept_money6,0,',','.')}}</td>
                                 <td>{{number_format($product_accept1 + $product_accept2 + $product_accept3 + $product_accept4 + $product_accept5 + $product_accept6,0,',','.')}}</td>
                                 <td>{{number_format($predoplata_money2 + $predoplata_money1 + $predoplata_money3 + $predoplata_money4 + $predoplata_money5 + $predoplata_money6,0,',','.')}}</td>
