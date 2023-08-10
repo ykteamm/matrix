@@ -77,7 +77,7 @@ class McReport extends Component
 
     public function hisobot($regions,$active_month)
     {
-        $active_month = '2023-07-01';
+        // $active_month = '2023-07-01';
         $last_month = $this->getFirstDate(date('Y-m-d',strtotime('-1 month',strtotime($active_month))));
 
         $last_active_month = $this->getLastDate($active_month);
@@ -97,7 +97,9 @@ class McReport extends Component
             ->get();
             $sum1 = 0;
             $sum2 = 0;
+            $sum3 = 0;
             $pred2 = [];
+            $pred3 = [];
             foreach ($pred_order_ids as $key => $value) {
 
                 if($value->price == NULL)
@@ -115,7 +117,7 @@ class McReport extends Component
                         if(strtotime($ord_det->created_at) > strtotime($ord_sum->created_at))
                         {
                             $sum1 += $ord_sum->amount;
-                            // $sum2 += $ord_sum->amount;
+                            $sum3 += $ord_sum->amount;
                         }
                     }
                 }
@@ -123,8 +125,24 @@ class McReport extends Component
 
             }
 
+            $pred_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
+            ->whereDate('order_date','<=',$last_active_month)
+            ->whereDate('order_date','>=',$active_month)
+            ->get();
+            $sum4 = 0;
+            foreach ($pred_order_ids as $key => $value) {
+
+                if($value->price == NULL)
+                {
+
+                    $sum4 += McPaymentHistory::where('order_id',$value->id)->orderBy('id','ASC')
+                    ->sum('amount');
+                }
+            }
+
             $this->predoplata[$region->id] = $sum1;
-            $pred2[$region->id] = $sum2;
+            $pred2[$region->id] = $sum2+$sum4;
+            $pred3[$region->id] = $sum3;
 
         //predoplata-end
         
@@ -363,6 +381,7 @@ class McReport extends Component
             // $this->new_accept_money[$region->id] = $this->new_close_money[$region->id];
             // $this->new_accept_money[$region->id] = $sum1;
             $this->new_accept_money[$region->id] = $ords_sum2+$sum1-$this->new_close_money[$region->id]-$this->predoplata[$region->id]+$pred2[$region->id];
+            // $this->new_accept_money[$region->id] = $pred2[$region->id];
 
             if($this->new_accept_money[$region->id] < 0)
             {
@@ -374,6 +393,7 @@ class McReport extends Component
         //yangi-qarz-qoldi-end
 
         }
+// dd($this->new_accept_money[13]);
 
         // $pharmacy_ids = Pharmacy::where('region_id',13)->pluck('id')->toArray();
 
