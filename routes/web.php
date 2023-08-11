@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BattleNewsController;
 use App\Http\Controllers\CrystalController;
@@ -88,7 +89,8 @@ Route::get('/settings', [App\Http\Controllers\HomeController::class, 'settings']
 
 // });
 
-Route::get('/admin-login', [AdminController::class, 'adminLogin'])->name('admin-login');
+Route::get('/admin-login', [AdminController::class, 'adminLogin']);
+Route::post('/admin-login', [AdminLoginController::class, 'login'])->name('admin-login');
 
 Route::middleware([LoginAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'admin'])->name('admin');
