@@ -41,8 +41,10 @@
                     <div class="tab-pane fade @if($key == 0) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
                     
                         <div class="card-body">
+                            <button onclick="ExportToExcel('xlsx',`{{$key}}`,`{{$pharmacy_id}}`)">Export table to excel</button>
+
                             <div class="table-responsive">
-                                <table class="table mb-0">
+                                <table class="table mb-0" id="forcomparetable{{$key}}{{$pharmacy_id}}">
                                     <thead>
                                     <tr onmouseover="$(this).css('cursor','pointer')">
                                         <th><strong>No</strong> </th>
@@ -141,8 +143,11 @@
                     <div class="tab-pane fade @if($key == 0) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
                     
                         <div class="card-body">
+
+                            <button onclick="ExportToExcel('xlsx',`{{$key}}`,`{{$pharmacy_id}}`)">Export table to excel</button>
+
                             <div class="table-responsive">
-                                <table class="table mb-0">
+                                <table class="table table-striped mb-0" id="forcomparetable{{$key}}{{$pharmacy_id}}">
                                     <thead>
                                     <tr onmouseover="$(this).css('cursor','pointer')">
                                         <th><strong>No</strong> </th>
@@ -244,7 +249,21 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
     <script>
+
+
+
+    function ExportToExcel(type,key,id, fn, dl) {
+       var elt = document.getElementById(`forcomparetable${key}${id}`);
+       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+       return dl ?
+         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+         XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+    }
+
+
         function yashir(id){
             let x='.yashir'+id;
             let a=document.querySelectorAll(x);

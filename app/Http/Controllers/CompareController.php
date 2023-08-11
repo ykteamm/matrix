@@ -49,7 +49,6 @@ class CompareController extends Controller
             $arr_qol=[];
             $st=Stock::where('date_time',$s->date_time)->get();
 
-//            dd($arr_qol);
             if($i==0){
                 foreach ($st as $item){
                     if($item->number==null){

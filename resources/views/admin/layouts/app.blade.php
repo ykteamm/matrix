@@ -244,6 +244,10 @@ $(document).ready(function () {
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
   }).buttons().container().appendTo('#dtBasicExample1212333');
 
+  
+
+  
+
   $('.dtBasicExamplest12').DataTable({
     "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],

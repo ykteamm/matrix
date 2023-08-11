@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BattleNewsController;
 use App\Http\Controllers\CrystalController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\PillController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\LoginAuth;
+use App\Http\Middleware\LoginAdmin;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PremyaTaskController;
 use App\Http\Controllers\ProvizorController;
@@ -85,9 +88,10 @@ Route::get('/settings', [App\Http\Controllers\HomeController::class, 'settings']
 
 // });
 
-Route::post('/admin', [LoginController::class, 'loginAdmin'])->name('login-admin');
-Route::middleware([LoginAdmin::class])->group(function () {
+Route::get('/admin-login', [AdminController::class, 'adminLogin'])->name('admin-login');
 
+Route::middleware([LoginAdmin::class])->group(function () {
+    Route::get('/admin', [AdminController::class, 'admin'])->name('admin');
 });
 
 $user = DB::table('tg_user')->where('admin',false)->pluck('username');
