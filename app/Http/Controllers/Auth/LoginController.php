@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Position;
 use App\Models\Member;
 use App\Models\ElchiLevel;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -80,7 +81,9 @@ class LoginController extends Controller
             $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
             $pcode = json_decode($per->position_json,TRUE);
+            $admin_code = json_decode($userd->position,TRUE);
             Session::put('per', $pcode);
+            Session::put('per_admin', $admin_code);
             Session::put('user', $userd);
             Session::put('time', time());
 
@@ -103,5 +106,32 @@ class LoginController extends Controller
         // return redirect()->route('blackjack');
         
 
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $users = User::all();
+
+        foreach($users as $user)
+        {
+            if (Hash::check($request->password, $user->admin_password)) {
+                $us = $user;
+            }
+            
+        }
+
+        if(!isset($us))
+        {
+            return redirect()->back();
+        }
+
+
+        $pcode = json_decode($us->position,TRUE);
+        Session::put('admin_pos', $pcode);
+        Session::put('admin_user', $us);
+        Session::put('admin_time', time());
+
+        return redirect()->route('admin');
+        
     }
 }

@@ -336,6 +336,18 @@ if (!function_exists('h_positions')) {
     }
 }
 
+if (!function_exists('admin_positions')) {
+    function admin_positions()
+    {
+        $h_positions = [
+            'order_zakaz' => 'Pul kelishi zakaz berish',
+            'order_report' => 'Pul kelishi hisobot'
+        ];
+
+
+        return $h_positions;
+    }
+}
 if (!function_exists('b_positions')) {
     function b_positions()
     {

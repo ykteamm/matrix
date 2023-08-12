@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\AdminLoginController; 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BattleNewsController;
 use App\Http\Controllers\CrystalController;
@@ -89,11 +89,20 @@ Route::get('/settings', [App\Http\Controllers\HomeController::class, 'settings']
 
 // });
 
-Route::get('/admin-login', [AdminController::class, 'adminLogin']);
-Route::post('/admin-login', [AdminLoginController::class, 'login'])->name('admin-login');
+Route::get('/admin-logout', [AdminController::class, 'logoutAdmin'])->name('admin-logout');
+Route::get('/admin-login', [AdminController::class, 'adminLogin'])->name('admin-index');
+Route::post('/admin-login', [LoginController::class, 'adminLogin'])->name('admin-login');
 
 Route::middleware([LoginAdmin::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'admin'])->name('admin');
+
+    Route::get('super-admin-list', [AdminController::class,'adminList'])->name('super-admin-list');
+    Route::get('super-admin-list-edit/{id}', [AdminController::class,'adminListEdit'])->name('super-admin-list-edit');
+    Route::post('super-admin-list-update/{id}', [AdminController::class,'adminListUpdate'])->name('super-admin-list-update');
+
+    Route::get('super-secret-admin-list', [AdminController::class,'adminListSecret'])->name('super-secret-admin-list');
+    Route::get('super-secret-admin-list-edit/{id}', [AdminController::class,'adminListEditSecret'])->name('super-secret-admin-list-edit');
+    Route::post('super-secret-admin-list-update/{id}', [AdminController::class,'adminListUpdateSecret'])->name('super-secret-admin-list-update');
 });
 
 $user = DB::table('tg_user')->where('admin',false)->pluck('username');
@@ -403,6 +412,9 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('pro-battle', [ProvizorController::class, 'battle'])->name('pro-battle');
     Route::post('pro-battle', [ProvizorController::class, 'battleStore'])->name('pro-battle.store');
 
+
+    Route::get('pro-crystal-history', [ProvizorController::class, 'crystalHistory'])->name('pro-crystal-history');
+    Route::post('pro-crystal-history-save', [ProvizorController::class, 'crystalHistoryStore'])->name('pro-crystal-history-save');
     //provizor - end
 
     //TURNIR-BEGIN

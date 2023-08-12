@@ -17,13 +17,18 @@ class LoginAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Session::has('admin')) {
+        if(Session::has('admin_time'))
+        {
+            if((time() - Session::get('admin_time')) > 3600)
+            {
+                Session::remove('admin_user');
+            }
+        }
+        
+        if (Session::has('admin_user')) {
             return $next($request);
         }else{
-            // return route('login');
-            return redirect()->route('admin-login');
-            // return view('admin.index');
-
+            return redirect()->route('admin-index');
         }
     }
 }

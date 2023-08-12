@@ -174,5 +174,30 @@ class ProvizorController extends Controller
 
     }
 
+    public function crystalHistory()
+    {
+        
+        $hsitory = Http::get(getProvizorUrl().'/api/get-crystal-history')->collect();
+        $provizors = Http::get(getProvizorUrl().'/api/provizors')->collect();
+        $crystal = Http::get(getProvizorUrl().'/api/crystal')->collect();
+        
+        return view('provizor.crystal',[
+            'provizors' => $provizors,
+            'crystal' => $crystal,
+            'histories' => $hsitory,
+        ]);
+    }
+
+    public function crystalHistoryStore(Request $request)
+    {
+
+        $response = Http::post(getProvizorUrl().'/api/crystal-history', [
+            'user_id' => $request->provizor_id,
+            'crystal' => $request->crystal,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->back();
+    }
 
 }
