@@ -45,7 +45,9 @@
                                         <td>
                                             <span class="badge badge-success">
                                                 {{-- {{number_format($order->price - $order->price*$order->discount/100,0,',','.')}}</td> --}}
-                                                {{number_format($order_sum[$order->id],0,',','.')}}
+                                                {{-- {{number_format($order_sum[$order->id],0,',','.')}} --}}
+                                                {{number_format($order_sum[$order->id] - $order_sum[$order->id]*$order->discount/100,0,',','.')}}
+
                                             </span>
                                         </td>
                                         <td>
