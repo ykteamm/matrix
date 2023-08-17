@@ -302,6 +302,7 @@ if (!function_exists('h_positions')) {
         $h_positions['farm_pm'] = 'Dorixona - plus - minus';
         $h_positions['team'] = 'Jamoa';
         $h_positions['order'] = 'Order';
+        $h_positions['rek'] = 'Rek';
         $h_positions['turnir'] = 'Turnir';
         $h_positions['market'] = 'Market';
         $h_positions['firewall'] = 'Firewall';

@@ -24,6 +24,7 @@ use App\Http\Middleware\LoginAdmin;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PremyaTaskController;
 use App\Http\Controllers\ProvizorController;
+use App\Http\Controllers\RekController;
 use App\Http\Controllers\RekrutController;
 use App\Http\Controllers\ResidualController;
 use App\Http\Controllers\ToolzController;
@@ -468,6 +469,11 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     
     //ORDER-END
+
+    //REK-BEGIN
+    Route::get('rek', [RekController::class, 'index'])->name('rek.index');
+    Route::get('rek-pharmacy/{id}', [RekController::class, 'pharmacy'])->name('rek.pharmacy');
+    //REk-END
 
 
     //MIJOZ-BEGIN

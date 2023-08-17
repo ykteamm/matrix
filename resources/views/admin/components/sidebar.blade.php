@@ -142,8 +142,20 @@
                         @endisset
                     @endif
 
-                
-           
+                    @isset(Session::get('per')['rek'])
+                        @if (Session::get('per')['rek'] == 'true')
+                            <li class="submenu">
+                                {{-- <a href="settings.html"><i class="fas fa-crown"></i> <span> Order </span><span
+                                        class="menu-arrow"></span></a>
+                                <ul style="display: none;"> --}}
+
+                                    <li><a href="{{ route('rek.index') }}"><span>Rek</span></a>
+
+                                {{-- </ul> --}}
+                            </li>
+                        @endif
+                    @endisset
+                            
                 @isset(Session::get('per')['order'])
                 @if (Session::get('per')['order'] == 'true')
                     <li class="submenu">
