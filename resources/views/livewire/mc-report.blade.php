@@ -114,6 +114,16 @@
                 $predoplata_money6 = 0;
                 $product_accept6 = 0;
 
+                $sum_all_money7 = 0;
+                $sum_otgruzka7 = 0;
+                $sum_last_close_money7 = 0;
+                $sum_last_accept_money7 = 0;
+                $sum_new_close_money7 = 0;
+                $sum_new_accept_money7 = 0;
+                $sum_all_accept_money7 = 0;
+                $predoplata_money7 = 0;
+                $product_accept7 = 0;
+
             @endphp
               {{-- @if( count($regions) > 1 && $regions[0]->side == 1) --}}
 
@@ -142,9 +152,7 @@
                                 
                             @foreach ($regions as $item)
 
-                                
-
-                                @if ($item->side ==1)
+                                @if (in_array($item->id,[5,3,13,1,14,23,9]))
                                 
                                 @php
                                     $sum_all_money1 += $all_money[$item->id];
@@ -224,7 +232,8 @@
                         <tbody>
                             
                             @foreach ($regions as $item)
-                                @if ($item->side == 2)
+                            @if (in_array($item->id,[2,7,12,19]))
+
                                 @php
                                     $sum_all_money2 += $all_money[$item->id];
                                     $sum_otgruzka2 += $otgruzka[$item->id];
@@ -300,7 +309,8 @@
                         <tbody>
                             
                             @foreach ($regions as $item)
-                                @if ($item->side == 3)
+                                @if (in_array($item->id,[18]))
+
                                 @php
                                     $sum_all_money3 += $all_money[$item->id];
                                     $sum_otgruzka3 += $otgruzka[$item->id];
@@ -345,6 +355,83 @@
                                 </td>
                                 <td>{{number_format($product_accept3,0,',','.')}}</td>
                                 <td>{{number_format($predoplata_money3,0,',','.')}}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                    <div class="text-left mb-2">
+                        <h3>3</h3>
+                    </div>
+                    <table class="table table-striped mb-0">
+                        <thead>
+                        <tr class="table-secondary">
+                            <th>Viloyat</th>
+                            <th>Kelgan pul</th>
+                            <th>Otgruzka</th>
+                            <th>Eski qarz yopildi</th>
+                            <th>Eski qarz qoldi</th>
+                            <th>Yangi qarz yopildi</th>
+                            <th>Yangi qarz qoldi</th>
+                            <th>Umumiy qarz</th>
+                            <th>Tovar qarz</th>
+                            <th>Predoplata</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            
+                            @foreach ($regions as $item)
+                                @if (in_array($item->id,[8,17]))
+
+                                @php
+                                    $sum_all_money7 += $all_money[$item->id];
+                                    $sum_otgruzka7 += $otgruzka[$item->id];
+                                    $sum_last_close_money7 += $last_close_money[$item->id];
+                                    $sum_last_accept_money7 += $last_accept_money[$item->id];
+                                    $sum_new_close_money7 += $new_close_money[$item->id];
+                                    $sum_new_accept_money7 += $new_accept_money[$item->id];
+                                    $sum_all_accept_money7 += $new_accept_money[$item->id]+$last_accept_money[$item->id];
+                                    $predoplata_money7 += $predoplata[$item->id];
+                                    $product_accept7 += $product_accept[$item->id];
+                                @endphp
+                                <tr>
+                                    <td>{{$item->name}}</td>
+                                    <td>{{number_format($all_money[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($otgruzka[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($last_close_money[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($last_accept_money[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($new_close_money[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($new_accept_money[$item->id],0,',','.')}}</td>
+                                    <td>
+                                            {{number_format($new_accept_money[$item->id]+$last_accept_money[$item->id],0,',','.')}}
+                                    </td>
+                                    <td>{{number_format($product_accept[$item->id],0,',','.')}}</td>
+                                    <td>{{number_format($predoplata[$item->id],0,',','.')}}</td>
+
+                                </tr>
+
+                                @endif
+                            @endforeach
+                            <tr class="table-primary">
+                                <td>Jami</td>
+                                <td>{{number_format($sum_all_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_otgruzka7,0,',','.')}}</td>
+                                <td>{{number_format($sum_last_close_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_last_accept_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_new_close_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_new_accept_money7,0,',','.')}}</td>
+                                <td>
+                                    {{-- <span class="badge badge-danger"> --}}
+                                        {{number_format($sum_all_accept_money7,0,',','.')}}
+                                    {{-- </span> --}}
+                                </td>
+                                <td>{{number_format($product_accept7,0,',','.')}}</td>
+                                <td>{{number_format($predoplata_money7,0,',','.')}}</td>
 
                             </tr>
                         </tbody>
@@ -602,15 +689,15 @@
                         <tbody>
                             <tr class="table-info">
                                 <td>Umumiy</td>
-                                <td>{{number_format($sum_all_money2 + $sum_all_money1 + $sum_all_money3 + $sum_all_money4 + $sum_all_money5 + $sum_all_money6,0,',','.')}}</td>
-                                <td>{{number_format($sum_otgruzka2 + $sum_otgruzka1 + $sum_otgruzka3 + $sum_otgruzka4 + $sum_otgruzka5 + $sum_otgruzka6,0,',','.')}}</td>
-                                <td>{{number_format($sum_last_close_money2 + $sum_last_close_money1 + $sum_last_close_money3 + $sum_last_close_money4 + $sum_last_close_money5 + $sum_last_close_money6,0,',','.')}}</td>
-                                <td>{{number_format($sum_last_accept_money2 + $sum_last_accept_money1 + $sum_last_accept_money3 + $sum_last_accept_money4 + $sum_last_accept_money5 + $sum_last_accept_money6,0,',','.')}}</td>
-                                <td>{{number_format($sum_new_close_money2 + $sum_new_close_money1 + $sum_new_close_money3 + $sum_new_close_money4 + $sum_new_close_money5 + $sum_new_close_money6,0,',','.')}}</td>
-                                <td>{{number_format($sum_new_accept_money2 + $sum_new_accept_money1 + $sum_new_accept_money3 + $sum_new_accept_money4 + $sum_new_accept_money5 + $sum_new_accept_money6,0,',','.')}}</td>
-                                <td>{{number_format($sum_all_accept_money2 + $sum_all_accept_money1 + $sum_all_accept_money3 + $sum_all_accept_money4 + $sum_all_accept_money5 + $sum_all_accept_money6,0,',','.')}}</td>
-                                <td>{{number_format($product_accept1 + $product_accept2 + $product_accept3 + $product_accept4 + $product_accept5 + $product_accept6,0,',','.')}}</td>
-                                <td>{{number_format($predoplata_money2 + $predoplata_money1 + $predoplata_money3 + $predoplata_money4 + $predoplata_money5 + $predoplata_money6,0,',','.')}}</td>
+                                <td>{{number_format($sum_all_money2 + $sum_all_money1 + $sum_all_money3 + $sum_all_money4 + $sum_all_money5 + $sum_all_money6 + $sum_all_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_otgruzka2 + $sum_otgruzka1 + $sum_otgruzka3 + $sum_otgruzka4 + $sum_otgruzka5 + $sum_otgruzka6 + $sum_otgruzka7,0,',','.')}}</td>
+                                <td>{{number_format($sum_last_close_money2 + $sum_last_close_money1 + $sum_last_close_money3 + $sum_last_close_money4 + $sum_last_close_money5 + $sum_last_close_money6 + $sum_last_close_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_last_accept_money2 + $sum_last_accept_money1 + $sum_last_accept_money3 + $sum_last_accept_money4 + $sum_last_accept_money5 + $sum_last_accept_money6 + $sum_last_accept_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_new_close_money2 + $sum_new_close_money1 + $sum_new_close_money3 + $sum_new_close_money4 + $sum_new_close_money5 + $sum_new_close_money6 + $sum_new_close_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_new_accept_money2 + $sum_new_accept_money1 + $sum_new_accept_money3 + $sum_new_accept_money4 + $sum_new_accept_money5 + $sum_new_accept_money6 + $sum_new_accept_money7,0,',','.')}}</td>
+                                <td>{{number_format($sum_all_accept_money2 + $sum_all_accept_money1 + $sum_all_accept_money3 + $sum_all_accept_money4 + $sum_all_accept_money5 + $sum_all_accept_money6 + $sum_all_accept_money7,0,',','.')}}</td>
+                                <td>{{number_format($product_accept1 + $product_accept2 + $product_accept3 + $product_accept4 + $product_accept5 + $product_accept6 + $product_accept7,0,',','.')}}</td>
+                                <td>{{number_format($predoplata_money2 + $predoplata_money1 + $predoplata_money3 + $predoplata_money4 + $predoplata_money5 + $predoplata_money6 + $predoplata_money7,0,',','.')}}</td>
                             </tr>
                         </tbody>
                     </table>
