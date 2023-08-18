@@ -77,16 +77,17 @@ class RekController extends Controller
 
         $next_day = floor($ostatok/$average);
 
-        if($next_day < 10)
+        if($next_day <= 5)
         {
-            $color = 0;
-        }elseif($next_day > 10 && $next_day < 30){
-            $color = 1;
+            $color = 0; //qizil
+        }elseif($next_day > 5 && $next_day < 30){
+            $color = 1;  //sariq
         }else{
-            $color = 2;
+            $color = 2;  //yashil
         }
         dd($color);
         // dd($rek_service->getAverage());
         // dd($rek_service->getOstatokSum(),$rek_service->getOtgruzkaSum(),$rek_service->getTakeofSum());
     }
 }
+
