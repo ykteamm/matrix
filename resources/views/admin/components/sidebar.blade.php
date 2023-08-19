@@ -149,7 +149,9 @@
                                         class="menu-arrow"></span></a>
                                 <ul style="display: none;"> --}}
 
-                                    <li><a href="{{ route('rek.index') }}"><span>Rek</span></a>
+                                    <li><a href="{{ route('rek.index') }}">
+                                        <i class="fas fa-crown"></i>
+                                        <span>Rek</span></a>
 
                                 {{-- </ul> --}}
                             </li>
