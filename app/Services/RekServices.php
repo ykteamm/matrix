@@ -22,6 +22,20 @@ class RekServices
 
     }   
 
+    public function getOstatokLastDate()
+    {
+        $last_date=Stock::where('pharmacy_id',$this->pharmacy_id)->orderBy('id','DESC')->first();
+
+        if($last_date)
+        {
+            $last_date = date('Y-m-d',strtotime($last_date->date_time));
+        }else{
+            $last_date = NULL; 
+        }
+
+        return $last_date;
+    }
+
     public function getOstatokSum()
     {
         $shablon = Shablon::find(3);
@@ -77,20 +91,6 @@ class RekServices
         return $this->getTakeOf3Month()/90;
     }
 
-    public function getOstatokLastDate()
-    {
-        $last_date=Stock::where('pharmacy_id',$this->pharmacy_id)->orderBy('id','DESC')->first();
-
-        if($last_date)
-        {
-            $last_date = date('Y-m-d',strtotime($last_date->date_time));
-        }else{
-            $last_date = NULL; 
-        }
-
-        return $last_date;
-    }
-
     public function getHaveProductSum()
     {
         $ostatok = $this->getOstatokSum()+$this->getOtgruzkaSum()-$this->getTakeofSum();
@@ -98,8 +98,33 @@ class RekServices
         return $ostatok;
     }
 
+    public function getSatisDay()
+    {
+        return ($this->getAverage() == 0) ? 0 : floor($this->getHaveProductSum()/$this->getAverage());
+
+    }
+
+    public function getConditionPharmacy()
+    {
+        if($this->getOstatokLastDate() == null)
+        {
+            return -1;
+        }
+        if($this->getSatisDay() <= 5)
+        {
+            $color = 0; //qizil
+        }elseif($this->getSatisDay() > 5 && $this->getSatisDay() < 14){
+            $color = 1;  //sariq
+        }else{
+            $color = 2;  //yashil
+        }
+
+        return $color;
+    }
+
     public function getKoef()
     {
+
         if($this->getHaveProductSum() == 0)
         {
             return 0;
@@ -110,6 +135,13 @@ class RekServices
 
     public function getRekProduct()
     {
+        if($this->getSatisDay() < 30)
+        {
+            $day = 30;
+        }else{
+            $day = $this->getSatisDay();
+        }
+
         $rek = ProductSold::selectRaw('SUM(number) as sum,medicine_id')
                  ->where('pharm_id',$this->pharmacy_id)
                  ->whereDate('created_at','<=',$this->getOstatokLastDate())
@@ -122,7 +154,7 @@ class RekServices
 
         foreach ($rek as $key => $value) {
             
-            $number = ($this->getKoef() == 0) ? 3 : round($value/$this->getKoef());
+            $number = ($this->getKoef($day) == 0) ? 3 : round($value/$this->getKoef());
 
             $number = ($number == 0) ? 1 : $number;
             

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\McOrder;
+use App\Models\Medicine;
 use App\Models\Pharmacy;
+use App\Models\Price;
 use App\Models\ProductSold;
+use App\Models\Shablon;
 use App\Services\RekServices;
 use Illuminate\Http\Request;
 
@@ -44,13 +47,43 @@ class RekController extends Controller
             
         }
 
+        $pharmacy_elchi_order = [];
+        
+        foreach ($elchi_otgruzka as $key => $value) {
+            
+            $rek_service = new RekServices($value);
 
-        $pharmacy_elchi_order = Pharmacy::whereIn('id',$elchi_otgruzka)->get();
-        $pharmacy_order = Pharmacy::whereIn('id',$otgruzka)->get();
-        $pharmacy_elchi = Pharmacy::whereIn('id',$elchi)->get();
+            $pharmacy_elchi_order[] = array('ph' => Pharmacy::where('id',$value)->first(),'con' => $rek_service->getConditionPharmacy());
+
+        }
+
+        $pharmacy_order = [];
+        
+        foreach ($otgruzka as $key => $value) {
+            
+            $rek_service = new RekServices($value);
+
+            $pharmacy_order[] = array('ph' => Pharmacy::where('id',$value)->first(),'con' => $rek_service->getConditionPharmacy());
+
+        }
+
+        $pharmacy_elchi = [];
+        
+        foreach ($elchi as $key => $value) {
+            
+            $rek_service = new RekServices($value);
+
+            $pharmacy_elchi[] = array('ph' => Pharmacy::where('id',$value)->first(),'con' => $rek_service->getConditionPharmacy());
+
+        }
+
+        // dd($pharmacy_elchi);
+
+
+        // $pharmacy_order = Pharmacy::whereIn('id',$otgruzka)->get();
+        // $pharmacy_elchi = Pharmacy::whereIn('id',$elchi)->get();
 
         $max = max(count($elchi_otgruzka),count($otgruzka),count($elchi));
-        // dd($max);
 
         return view('rek.index',[
             'max' => $max,
@@ -62,44 +95,23 @@ class RekController extends Controller
 
     public function pharmacy($id)
     {
+        $shablon = Shablon::find(3);
+
         $rek_service = new RekServices($id);
 
-        $ostatka = $rek_service->getOstatokLastDate();
+        $product = $rek_service->getRekProduct();
 
-        if(!$ostatka)
-        {
-            return 123123;
+        $rek_product = [];
+        $all_sum = 0;
+        foreach ($product as $key => $value) {
+            $price = Price::where('shablon_id',$shablon->id)->where('medicine_id',$key)->first();
+            $sum = $price->price*$value;
+            $rek_product[] = array('product' => Medicine::find($key),'price' => $sum, 'number' => $value);
+            $all_sum += $sum;
         }
 
-        $ostatok = $rek_service->getOstatokSum()+$rek_service->getOtgruzkaSum()-$rek_service->getTakeofSum();
+        return view('rek.rek',compact('all_sum','rek_product'));
 
-        $average = $rek_service->getAverage();
-
-        if($average == 0)
-        {
-            $next_day = 0;
-
-        }else{
-            $next_day = floor($ostatok/$average);
-
-        }
-
-
-        if($next_day <= 5)
-        {
-            $color = 0; //qizil
-        }elseif($next_day > 5 && $next_day < 25){
-            $color = 1;  //sariq
-        }else{
-            $color = 2;  //yashil
-        }
-
-        dd($rek_service->getRekProduct());
-
-        return $next_day;
-        // dd($color);
-        // dd($rek_service->getAverage());
-        // dd($rek_service->getOstatokSum(),$rek_service->getOtgruzkaSum(),$rek_service->getTakeofSum());
     }
 }
 
