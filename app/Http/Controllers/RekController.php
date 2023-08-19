@@ -47,13 +47,17 @@ class RekController extends Controller
             
         }
 
+
         $pharmacy_elchi_order = [];
         
-        foreach ($elchi_otgruzka as $key => $value) {
-            
-            $rek_service = new RekServices($value);
+        foreach ($pharmacy_sold as $key => $value) {
+            // foreach ($elchi_otgruzka as $key => $value) {
+            if($value != null)
+            {
+                $rek_service = new RekServices($value);
 
-            $pharmacy_elchi_order[] = array('ph' => Pharmacy::where('id',$value)->first(),'con' => $rek_service->getConditionPharmacy());
+                $pharmacy_elchi_order[] = array('ph' => Pharmacy::where('id',$value)->first(),'con' => $rek_service->getConditionPharmacy());
+            }
 
         }
 
@@ -99,7 +103,9 @@ class RekController extends Controller
 
         $rek_service = new RekServices($id);
 
-        $product = $rek_service->getRekProduct();
+        $product = $rek_service->getTakeOf3Month();
+
+        dd($product);
 
         $rek_product = [];
         $all_sum = 0;

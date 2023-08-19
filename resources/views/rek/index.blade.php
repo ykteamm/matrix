@@ -9,92 +9,136 @@
       <div class="col-sm-12">
          <div class="card mt-5">
             <div class="card-body">
-               <div class="table-responsive">
-                  <table class="table mb-0 example1">
-                     <thead>
-                        <tr>
-                           <th>Elchi bor </th>
-                           <th>Elchi yoq</th>
-                           <th>Faqat Otgruzka</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @for ($i = 0; $i < $max; $i++)
-                           
+               <div class="row">
+                  <div class="col-md-4">
+                     <table class="table mb-0 example1">
+                        <thead>
                            <tr>
-                              <td>
-                                 @if (isset($pharmacy_elchi_order[$i]))
-                                    {{$pharmacy_elchi_order[$i]['ph']->name}}
-
-                                    @if ($pharmacy_elchi_order[$i]['con'] == -1)
-                                       <span class="badge badge-secondary">Ostatka yoq</span>
-                                    @elseif($pharmacy_elchi_order[$i]['con'] == 0)
-                                       <a href="{{route('rek.pharmacy',$pharmacy_elchi_order[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-danger">Qizil</span>
-                                       </a>
-                                    @elseif($pharmacy_elchi_order[$i]['con'] == 1)
-                                       <a href="{{route('rek.pharmacy',$pharmacy_elchi_order[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-warning">Sariq</span>
-                                       </a>
-                                    @else
-                                       <a href="{{route('rek.pharmacy',$pharmacy_elchi_order[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-success">Yashil</span>
-                                       </a>
-                                    @endif
-
-                                 @endif
-                              </td>
-                              <td>
-                                 @if (isset($pharmacy_elchi[$i]))
-                                    {{$pharmacy_elchi[$i]['ph']->name}}
-                                    <a href="{{route('rek.pharmacy',$pharmacy_elchi[$i]['ph']->id)}}"> <i class="fas fa-eye"></i> </a>
-                                    
-                                    @if ($pharmacy_elchi[$i]['con'] == -1)
-                                       <span class="badge badge-secondary">Ostatka yoq</span>
-                                    @elseif($pharmacy_elchi[$i]['con'] == 0)
-                                       <a href="{{route('rek.pharmacy',$pharmacy_elchi[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-danger">Qizil</span>
-                                       </a>
-                                    @elseif($pharmacy_elchi[$i]['con'] == 1)
-                                       <a href="{{route('rek.pharmacy',$pharmacy_elchi[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-warning">Sariq</span>
-                                       </a>
-                                    @else
-                                       <a href="{{route('rek.pharmacy',$pharmacy_elchi[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-success">Yashil</span>
-                                       </a>
-                                    @endif
-
-                                 @endif
-                              </td>
-                              <td>
-                                 @if (isset($pharmacy_order[$i]))
-                                    {{$pharmacy_order[$i]['ph']->name}}
-                                    <a href="{{route('rek.pharmacy',$pharmacy_order[$i]['ph']->id)}}"> <i class="fas fa-eye"></i> </a>
-                                    
-                                    @if ($pharmacy_order[$i]['con'] == -1)
-                                       <span class="badge badge-secondary">Ostatka yoq</span>
-                                    @elseif($pharmacy_order[$i]['con'] == 0)
-                                       <a href="{{route('rek.pharmacy',$pharmacy_order[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-danger">Qizil</span>
-                                       </a>
-                                    @elseif($pharmacy_order[$i]['con'] == 1)
-                                       <a href="{{route('rek.pharmacy',$pharmacy_order[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-warning">Sariq</span>
-                                       </a>
-                                    @else
-                                       <a href="{{route('rek.pharmacy',$pharmacy_order[$i]['ph']->id)}}"> 
-                                          <span class="badge badge-success">Yashil</span>
-                                       </a>
-                                    @endif
-
-                                 @endif
-                              </td>
+                              <th>Elchi bor,Otgruzka bor</th>
+                              <th>Xolat</th>
                            </tr>
-                        
-                        @endfor
-                     </tbody>
-                  </table>
+                        </thead>
+                        <tbody>
+                           @foreach ($pharmacy_elchi_order as $key => $value)
+                              
+                              <tr>
+                                    @if (isset($value))
+                                       <td>
+                                          {{$value['ph']->name}}
+
+                                       </td>
+                                       <td>
+                                          @if ($value['con'] == -1)
+                                             <span class="badge badge-secondary">Ostatka yoq</span>
+                                          @elseif($value['con'] == 0)
+                                                <span class="badge badge-danger">Qizil</span>
+                                             <a href="{{route('rek.pharmacy',$value['ph']->id)}}"> 
+                                                <i class="fas fa-eye"></i>
+                                             </a>
+                                          @elseif($value['con'] == 1)
+                                                <span class="badge badge-warning">Sariq</span>
+                                             <a href="{{route('rek.pharmacy',$value['ph']->id)}}"> 
+                                                <i class="fas fa-eye"></i>
+                                             </a>
+                                          @else
+                                                <span class="badge badge-success">Yashil</span>
+                                          @endif
+                                       </td>
+                                       
+   
+                                    @endif
+                              </tr>
+                           
+                           @endforeach
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="col-md-4">
+                     <table class="table mb-0 example1">
+                        <thead>
+                           <tr>
+                              <th>Elchi bor,Otgruzka yoq</th>
+                              <th>Xolat</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($pharmacy_elchi as $key => $value)
+                              
+                              <tr>
+                                    @if (isset($value))
+                                       <td>
+                                          {{$value['ph']->name}}
+
+                                       </td>
+                                       <td>
+                                          @if ($value['con'] == -1)
+                                             <span class="badge badge-secondary">Ostatka yoq</span>
+                                          @elseif($value['con'] == 0)
+                                                <span class="badge badge-danger">Qizil</span>
+                                             <a href="{{route('rek.pharmacy',$value['ph']->id)}}"> 
+                                                <i class="fas fa-eye"></i>
+                                             </a>
+                                          @elseif($value['con'] == 1)
+                                                <span class="badge badge-warning">Sariq</span>
+                                             <a href="{{route('rek.pharmacy',$value['ph']->id)}}"> 
+                                                <i class="fas fa-eye"></i>
+                                             </a>
+                                          @else
+                                                <span class="badge badge-success">Yashil</span>
+                                          @endif
+                                       </td>
+                                       
+   
+                                    @endif
+                              </tr>
+                           
+                           @endforeach
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="col-md-4">
+                     <table class="table mb-0 example1">
+                        <thead>
+                           <tr>
+                              <th>Elchi yoq,Otgruzka bor</th>
+                              <th>Xolat</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($pharmacy_order as $key => $value)
+                              
+                              <tr>
+                                    @if (isset($value))
+                                       <td>
+                                          {{$value['ph']->name}}
+
+                                       </td>
+                                       <td>
+                                          @if ($value['con'] == -1)
+                                             <span class="badge badge-secondary">Ostatka yoq</span>
+                                          @elseif($value['con'] == 0)
+                                                <span class="badge badge-danger">Qizil</span>
+                                             <a href="{{route('rek.pharmacy',$value['ph']->id)}}"> 
+                                                <i class="fas fa-eye"></i>
+                                             </a>
+                                          @elseif($value['con'] == 1)
+                                                <span class="badge badge-warning">Sariq</span>
+                                             <a href="{{route('rek.pharmacy',$value['ph']->id)}}"> 
+                                                <i class="fas fa-eye"></i>
+                                             </a>
+                                          @else
+                                                <span class="badge badge-success">Yashil</span>
+                                          @endif
+                                       </td>
+                                       
+   
+                                    @endif
+                              </tr>
+                           
+                           @endforeach
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
          </div>

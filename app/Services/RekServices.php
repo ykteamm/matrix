@@ -14,6 +14,7 @@ class RekServices
 {
     public $pharmacy_id;
     public $month_last_3;
+    public $days = 30;
 
     public function __construct($id)
     {
@@ -82,13 +83,27 @@ class RekServices
                  ->whereDate('created_at','<=',$this->getOstatokLastDate())
                  ->whereDate('created_at','>=',$this->month_last_3)
                  ->sum(DB::raw('number*price_product'));
-                 
-        return $takeof;
+                
+        if($takeof == 0)
+        {
+            $takeof = ProductSold::where('pharm_id',$this->pharmacy_id)
+                 ->sum(DB::raw('number*price_product'));
+
+           
+        }
+
+        $dates = ProductSold::where('pharm_id',$this->pharmacy_id)->pluck('created_at')->toArray();
+        $arr = [];
+        foreach ($dates as $key => $value) {
+            // $d = strtotime('Y-m-d',$value);
+            $arr[] = $value;
+        }
+        return $arr;
     }
 
     public function getAverage()
     {
-        return $this->getTakeOf3Month()/90;
+        return $this->getTakeOf3Month()/$this->days;
     }
 
     public function getHaveProductSum()
