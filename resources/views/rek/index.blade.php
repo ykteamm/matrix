@@ -53,7 +53,7 @@
                         </tbody>
                      </table>
                   </div>
-                  <div class="col-md-4">
+                  {{-- <div class="col-md-4">
                      <table class="table mb-0 example1">
                         <thead>
                            <tr>
@@ -138,7 +138,7 @@
                            @endforeach
                         </tbody>
                      </table>
-                  </div>
+                  </div> --}}
                </div>
             </div>
          </div>

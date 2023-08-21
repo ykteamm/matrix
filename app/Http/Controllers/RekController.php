@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class RekController extends Controller
 {
-    public function index() 
+    public function index22() 
     {
         $pharmacy_order = McOrder::distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
 
@@ -97,15 +97,45 @@ class RekController extends Controller
         ]);
     }
 
+    public function index() 
+    {
+        $last_30 = date('Y-m-d',strtotime('-31 day',strtotime(date('Y-m-d'))));
+
+        $pharmacy_sold = ProductSold::whereDate('created_at','<=',date('Y-m-d'))
+        ->whereDate('created_at','>=',$last_30)
+        ->distinct('pharm_id')->pluck('pharm_id')->toArray();
+
+        $pharmacy_sold = array_filter($pharmacy_sold, function($a) {
+            return trim($a) !== "";
+        });
+
+        $pharmacy_elchi_order = [];
+        
+        foreach ($pharmacy_sold as $key => $value) {
+            
+            $rek_service = new RekServices($value);
+
+            $pharmacy_elchi_order[] = array('ph' => Pharmacy::where('id',$value)->first(),'con' => $rek_service->getConditionPharmacy());
+
+        }
+
+
+
+
+        return view('rek.index',[
+            'pharmacy_elchi_order' => $pharmacy_elchi_order
+        ]);
+    }
+
     public function pharmacy($id)
     {
         $shablon = Shablon::find(3);
 
         $rek_service = new RekServices($id);
 
-        $product = $rek_service->getTakeOf3Month();
+        $product = $rek_service->getRekProduct();
 
-        dd($product);
+        // dd($product);
 
         $rek_product = [];
         $all_sum = 0;

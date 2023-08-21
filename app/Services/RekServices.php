@@ -91,6 +91,7 @@ class RekServices
 
            
         }
+        return $takeof;
 
         $dates = ProductSold::where('pharm_id',$this->pharmacy_id)->pluck('created_at')->toArray();
         $arr = [];
@@ -98,7 +99,6 @@ class RekServices
             // $d = strtotime('Y-m-d',$value);
             $arr[] = $value;
         }
-        return $arr;
     }
 
     public function getAverage()
@@ -115,7 +115,9 @@ class RekServices
 
     public function getSatisDay()
     {
-        return ($this->getAverage() == 0) ? 0 : floor($this->getHaveProductSum()/$this->getAverage());
+        $day = $this->getHaveProductSum()/$this->getAverage();
+        // $day = ($day > 0 && $day < 1) ? 1 : floor($day);
+        return ($this->getAverage() == 0) ? 0 : floor($day);
 
     }
 
@@ -159,7 +161,7 @@ class RekServices
 
         $rek = ProductSold::selectRaw('SUM(number) as sum,medicine_id')
                  ->where('pharm_id',$this->pharmacy_id)
-                 ->whereDate('created_at','<=',$this->getOstatokLastDate())
+                 ->whereDate('created_at','<=',date('Y-m-d'))
                  ->whereDate('created_at','>=',$this->month_last_3)
                  ->orderBy('sum','DESC')
                  ->groupBy('medicine_id')
@@ -169,12 +171,14 @@ class RekServices
 
         foreach ($rek as $key => $value) {
             
-            $number = ($this->getKoef($day) == 0) ? 3 : round($value/$this->getKoef());
+            $number = round($value/90*($day-$this->getSatisDay()));
+            // $number = ($this->getKoef($day) == 0) ? 3 : round($value/$this->getKoef());
 
             $number = ($number == 0) ? 1 : $number;
             
             $arr[$key] = $number;
         }
+
         return $arr;
     }
 }
