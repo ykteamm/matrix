@@ -15,6 +15,14 @@ class Admin extends Component
     public $shipment_day;
     public $shipment_week;
     
+    public $qizil = 0;
+    public $sariq = 0;
+    public $yashil = 0;
+
+    public $qizil_sum = 0;
+    public $sariq_sum = 0;
+    public $yashil_sum = 0;
+
     public function mount()
     {
         $money = new AdminService;
@@ -26,6 +34,25 @@ class Admin extends Component
         $this->shipment = $money->shipment();
         $this->shipment_day = $money->shipmentDay();
         $this->shipment_week = $money->shipmentWeek();
+
+        foreach ($money->rek() as $key => $value) {
+            if($value['con'] == 0)
+            {
+                $this->qizil += 1;
+                $this->qizil_sum += $value['sum'];
+            }
+            if($value['con'] == 1)
+            {
+                $this->sariq += 1;
+                $this->sariq_sum += $value['sum'];
+            }
+            if($value['con'] == 2)
+            {
+                $this->yashil += 1;
+                $this->yashil_sum += $value['sum'];
+            }
+        }
+
     }
 
     public function render()

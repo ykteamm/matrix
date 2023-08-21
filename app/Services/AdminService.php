@@ -6,6 +6,7 @@ use App\Models\McOrder;
 use App\Models\McOrderDelivery;
 use App\Models\McOrderDetail;
 use App\Models\McPaymentHistory;
+use App\Models\ProductSold;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -184,14 +185,44 @@ class AdminService
             $s = 0;
             foreach ($ords as $key => $value) {
                 $mc_del = McOrderDelivery::where('order_id',$value->id)
-                ->whereDate('created_at','>=',$this->month_start)
-                ->whereDate('created_at','<=',$this->month_end)
+                ->whereDate('created_at','>=',$this->startOfWeek())
+                ->whereDate('created_at','<=',$this->endOfWeek())
                 ->sum(DB::raw('price*quantity'));
 
                 $s += $mc_del - $mc_del*$value->discount/100;
             }
             
             return $s;
+    }
+
+    public function rek()
+    {
+        $last_30 = date('Y-m-d',strtotime('-31 day',strtotime(date('Y-m-d'))));
+
+        $pharmacy_sold = ProductSold::whereDate('created_at','<=',date('Y-m-d'))
+        ->whereDate('created_at','>=',$last_30)
+        ->distinct('pharm_id')->pluck('pharm_id')->toArray();
+
+        $pharmacy_sold = array_filter($pharmacy_sold, function($a) {
+            return trim($a) !== "";
+        });
+
+        $pharmacy_elchi_order = [];
+        
+        foreach ($pharmacy_sold as $key => $value) {
+            
+            $rek_service = new RekServices($value);
+
+            $con = $rek_service->getConditionPharmacy();
+            $satisday = $rek_service->getSatisDay();
+            $sum = $rek_service->getRekSum($satisday,$con);
+            
+            $pharmacy_elchi_order[] = array('con' => $con,'sum' => $sum);
+
+        }
+
+        return $pharmacy_elchi_order;
+
     }
 
     public function getFirstDate($date)

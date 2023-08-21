@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\McOrder;
 use App\Models\McOrderDelivery;
+use App\Models\Medicine;
 use App\Models\Price;
 use App\Models\ProductSold;
 use App\Models\Shablon;
@@ -31,7 +32,7 @@ class RekServices
         {
             $last_date = date('Y-m-d',strtotime($last_date->date_time));
         }else{
-            $last_date = NULL; 
+            $last_date = '2023-01-01'; 
         }
 
         return $last_date;
@@ -115,7 +116,14 @@ class RekServices
 
     public function getSatisDay()
     {
-        $day = $this->getHaveProductSum()/$this->getAverage();
+        if($this->getAverage() == 0)
+        {
+            $day = 1;
+
+        }else{
+            $day = $this->getHaveProductSum()/$this->getAverage();
+
+        }
         // $day = ($day > 0 && $day < 1) ? 1 : floor($day);
         return ($this->getAverage() == 0) ? 0 : floor($day);
 
@@ -180,5 +188,56 @@ class RekServices
         }
 
         return $arr;
+    }
+
+    public function getRekProductByDay($satisday)
+    {
+        if($satisday < 30)
+        {
+            $day = 30;
+        }else{
+            $day = $satisday;
+        }
+
+        $rek = ProductSold::selectRaw('SUM(number) as sum,medicine_id')
+                 ->where('pharm_id',$this->pharmacy_id)
+                 ->whereDate('created_at','<=',date('Y-m-d'))
+                 ->whereDate('created_at','>=',$this->month_last_3)
+                 ->orderBy('sum','DESC')
+                 ->groupBy('medicine_id')
+                 ->pluck('sum','medicine_id')->toArray();
+
+        $arr = [];
+
+        foreach ($rek as $key => $value) {
+            
+            $number = round($value/90*($day-$satisday));
+            // $number = ($this->getKoef($day) == 0) ? 3 : round($value/$this->getKoef());
+
+            $number = ($number == 0) ? 1 : $number;
+            
+            $arr[$key] = $number;
+        }
+
+        return $arr;
+    }
+
+    public function getRekSum($d,$con)
+    {
+        $all_sum = 0;
+
+        if($con == 0 || $con == 1)
+        {
+            $shablon = Shablon::find(3);
+
+            foreach ($this->getRekProductByDay($d) as $key => $value) {
+                $price = Price::where('shablon_id',$shablon->id)->where('medicine_id',$key)->first();
+                $sum = $price->price*$value;
+                $all_sum += $sum;
+            }
+        }
+        
+
+        return $all_sum;
     }
 }
