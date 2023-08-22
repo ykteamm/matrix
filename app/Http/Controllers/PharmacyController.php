@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FirewallSold;
+use App\Models\McOrder;
+use App\Models\McOrderDelivery;
+use App\Models\McOrderDetail;
+use App\Models\McPaymentHistory;
 use Illuminate\Http\Request;
 use App\Models\PharmacyUser;
 use App\Models\Pharmacy;
@@ -418,5 +423,18 @@ class PharmacyController extends Controller
         // return $pusers;
 
         return view('pharmacy.index',compact('shablons','regions','pharmacy','users','pusers','farm_sold','user_sold','dateText'));
+    }
+
+    public function delete($id)
+    {
+        return $id;
+
+        // FirewallSold::where('pharmacy_id',$id);
+
+        // $mcid = McOrder::where('pharmacy_id',$id)->pluck('id')->toArray();
+        // McOrder::whereIn('id',$mcid);
+        // McOrderDetail::whereIn('order_id',$mcid)->delete();
+        // McOrderDelivery::whereIn('order_id',$mcid)->delete();
+        // McPaymentHistory::whereIn('order_id',$mcid)->delete();
     }
 }

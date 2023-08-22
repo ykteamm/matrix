@@ -108,21 +108,21 @@ class McReport extends Component
         $this->predoplata[1] = 0;
         $this->product_accept[1] = 0;
 
-        $this->all_money[2] = 0;
-        $this->otgruzka[2] = 91464250;
+        $this->all_money[2] = 62072000;
+        $this->otgruzka[2] = 98652250;
         $this->last_close_money[2] = 0;
         $this->last_accept_money[2] = 29837338;
-        $this->new_close_money[2] = 0;
-        $this->new_accept_money[2] = 70292994;
+        $this->new_close_money[2] = 64072000;
+        $this->new_accept_money[2] = 42560990;
         $this->predoplata[2] = 0;
         $this->product_accept[2] = 0;
 
-        $this->all_money[3] = 3237500;
-        $this->otgruzka[3] = 45342600;
+        $this->all_money[3] = 15943500;
+        $this->otgruzka[3] = 48461100;
         $this->last_close_money[3] = 2000000;
         $this->last_accept_money[3] = 10910579;
-        $this->new_close_money[3] = 1237500;
-        $this->new_accept_money[3] = 40183734;
+        $this->new_close_money[3] = 13943500;
+        $this->new_accept_money[3] = 30596234;
         $this->predoplata[3] = 0;
         $this->product_accept[3] = 0;
 
@@ -135,12 +135,12 @@ class McReport extends Component
         $this->predoplata[4] = 0;
         $this->product_accept[4] = 0;
 
-        $this->all_money[5] = 43966000;
-        $this->otgruzka[5] = 52599075;
-        $this->last_close_money[5] = 30408465;
-        $this->last_accept_money[5] = 88173422;
-        $this->new_close_money[5] = 13557535;
-        $this->new_accept_money[5] = 39041540;
+        $this->all_money[5] = 63987000;
+        $this->otgruzka[5] = 67848295;
+        $this->last_close_money[5] = 37606665;
+        $this->last_accept_money[5] = 80975222;
+        $this->new_close_money[5] = 26380335;
+        $this->new_accept_money[5] = 41467960;
         $this->predoplata[5] = 0;
         $this->product_accept[5] = 0;
 
@@ -153,30 +153,30 @@ class McReport extends Component
         $this->predoplata[6] = 0;
         $this->product_accept[6] = 0;
 
-        $this->all_money[7] = 40056275;
-        $this->otgruzka[7] = 59913800;
+        $this->all_money[7] = 41084275;
+        $this->otgruzka[7] = 71870250;
         $this->last_close_money[7] = 28056275;
         $this->last_accept_money[7] = 26061550;
-        $this->new_close_money[7] = 12000000;
-        $this->new_accept_money[7] = 47913800;
+        $this->new_close_money[7] = 13028000;
+        $this->new_accept_money[7] = 58842250;
         $this->predoplata[7] = 0;
         $this->product_accept[7] = 0;
 
-        $this->all_money[8] = 64618125;
+        $this->all_money[8] = 70618125;
         $this->otgruzka[8] = 59059170;
-        $this->last_close_money[8] = 59914525;
-        $this->last_accept_money[8] = 157792676;
+        $this->last_close_money[8] = 65914525;
+        $this->last_accept_money[8] = 151792676;
         $this->new_close_money[8] = 4703600;
         $this->new_accept_money[8] = 54355570;
         $this->predoplata[8] = 0;
         $this->product_accept[8] = 0;
 
         $this->all_money[9] = 6100000;
-        $this->otgruzka[9] = 11593705;
+        $this->otgruzka[9] = 12721705;
         $this->last_close_money[9] = 6100000;
         $this->last_accept_money[9] = 14456800;
         $this->new_close_money[9] = 0;
-        $this->new_accept_money[9] = 11593705;
+        $this->new_accept_money[9] = 12721705;
         $this->predoplata[9] = 0;
         $this->product_accept[9] = 0;
 

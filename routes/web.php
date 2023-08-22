@@ -148,6 +148,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('pharmacy-list/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyList'])->name('pharmacy-list');
     Route::post('farm/chart', [App\Http\Controllers\PharmacyController::class,'chart']);
 
+    Route::get('pharmacy-delete/{id}', [App\Http\Controllers\PharmacyController::class,'delete'])->name('pharmacy-delete');
+
 
     Route::get('image-grade', [App\Http\Controllers\HomeController::class,'imageGrade'])->name('image.grade');
     Route::post('imagegrade-save', [App\Http\Controllers\HomeController::class,'imageGradeSave'])->name('imagegrade.store');

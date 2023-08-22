@@ -15,6 +15,7 @@
                        <th>Pul kelishi</th>
                        <th>Sotuv</th>
                        <th>Elchi</th>
+                       <th>Ostatka</th>
                    </tr>
                    </thead>
                    <tbody>
@@ -73,6 +74,23 @@
                                  @endif
                               </span>
 
+                           </td>
+                           <td>
+                              <span style="color:rgb(176, 13, 241)">
+                                 @if(isset($ostatka[$item]))
+                                 {{$ostatka[$item]->name}}
+                                 @else
+                                    
+                                 @endif
+                              </span>
+
+                           </td>
+                           <td>
+                              <a href="{{route('pharmacy-delete',$item)}}">
+                                 <button class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                 </button>
+                              </a>
                            </td>
                         </tr>
                      @endforeach
