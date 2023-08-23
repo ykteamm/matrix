@@ -34,7 +34,11 @@
                                         @else
                                             <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
                                         @endif
-                                        <td>{{$order->pharmacy->region->name}}</td>
+                                        <td>
+                                            @if ($order->pharmacy->region)
+                                                {{$order->pharmacy->region->name}}
+                                            @endif
+                                        </td>
 
                                         <td>{{$order->discount}}%</td>
                                     

@@ -12,6 +12,7 @@ use App\Models\Pharmacy;
 use App\Models\PharmacyUser;
 use App\Models\ProductSold;
 use App\Models\Region;
+use App\Models\Shift;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -207,7 +208,10 @@ class OrderController extends Controller
         $ostatka = [];
         $ostatka_date = [];
 
+        $date_begin = date('Y-m-d',(strtotime ( '-40 day' , strtotime ( date('Y-m-d')) ) ));
+
         $ostatka_pharm = Stock::distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
+
         foreach ($ostatka_pharm as $key => $value) {
             $ostatka[$value] = Pharmacy::with('region')->where('id',$value)->first();
             $date = Stock::where('pharmacy_id',$value)->orderBy('id','DESC')->first();
@@ -218,6 +222,21 @@ class OrderController extends Controller
         }
 
 
+        $shift = [];
+
+        $shift_pharm = Shift::whereDate('created_at','>=',$date_begin)
+        ->whereDate('created_at','<=',date('Y-m-d'))
+        ->distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
+        foreach ($shift_pharm as $key => $value) {
+
+            $date = Shift::where('pharmacy_id',$value)->orderBy('id','DESC')->first();
+
+            if($date)
+            {
+                $shift[$value] = $date->created_at;
+            }
+        }
+
         return view('order.pharmacy',[
             'all_ids' => $all_ids,
             'use_order' => $use_order,
@@ -226,7 +245,8 @@ class OrderController extends Controller
             'sold' => $sold,
             'elchi' => $elchi,
             'ostatka' => $ostatka,
-            'ostatka_date' => $ostatka_date
+            'ostatka_date' => $ostatka_date,
+            'shift' => $shift,
         ]);
 
         

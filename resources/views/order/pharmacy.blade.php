@@ -73,7 +73,13 @@
                                     
                                  @endif
                               </span>
-
+                              <span style="color:rgb(97, 33, 247)">
+                                 @if(isset($shift[$item]))
+                                 ({{date('d.m.Y',strtotime($shift[$item]))}})
+                                 @else
+                                    
+                                 @endif
+                              </span>
                            </td>
                            <td>
                               <span style="color:rgb(176, 13, 241)">
