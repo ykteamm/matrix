@@ -108,11 +108,11 @@ class McReport extends Component
         $this->predoplata[1] = 0;
         $this->product_accept[1] = 0;
 
-        $this->all_money[2] = 62072000;
+        $this->all_money[2] = 64072000;
         $this->otgruzka[2] = 98652250;
         $this->last_close_money[2] = 0;
         $this->last_accept_money[2] = 29837338;
-        $this->new_close_money[2] = 64072000;
+        $this->new_close_money[2] = 64072000;                                                                                                                                                              
         $this->new_accept_money[2] = 42560990;
         $this->predoplata[2] = 0;
         $this->product_accept[2] = 0;
@@ -208,11 +208,11 @@ class McReport extends Component
         $this->product_accept[12] = 0;
        
         $this->all_money[13] = 19303975;
-        $this->otgruzka[13] = 23733220;
-        $this->last_close_money[13] = 6827900;
-        $this->last_accept_money[13] = 15780051;
-        $this->new_close_money[13] = 9224300;
-        $this->new_accept_money[13] = 19508920;
+        $this->otgruzka[13] = 23172200;
+        $this->last_close_money[13] = 11077613;
+        $this->last_accept_money[13] = 15706606;
+        $this->new_close_money[13] = 8226362;
+        $this->new_accept_money[13] = 12851000;
         $this->predoplata[13] = 0;
         $this->product_accept[13] = 0;
         
@@ -308,7 +308,7 @@ class McReport extends Component
     }
 
     public function hisobot1($regions,$active_month)
-    {
+    { 
         $this->all_money[1] = 0;
         $this->otgruzka[1] = 0;
         $this->last_close_money[1] = 0;
@@ -612,10 +612,10 @@ class McReport extends Component
                         {
                             $sum1 += $sum;
                         }else{
-                            if(strtotime($ord_sum->created_at) < strtotime($active_month))
-                            {
+                            // if(strtotime($ord_sum->created_at) < strtotime($active_month))
+                            // {
                                 $sum1 += $sum;
-                            }
+                            // }
                         }
                     }else{
                         $sum1 += $sum;
@@ -864,8 +864,7 @@ class McReport extends Component
         //yangi-qarz-qoldi-end
 
         }
-        // dd($dddd[7]);
-        // dd($this->last_accept_money[7]);
+        
 
     }
 
