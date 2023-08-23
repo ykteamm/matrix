@@ -35,7 +35,7 @@
                                             <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
                                         @endif
                                         <td>
-                                            @if ($order->pharmacy->region)
+                                            @if (isset($order->pharmacy->region))
                                                 {{$order->pharmacy->region->name}}
                                             @endif
                                         </td>

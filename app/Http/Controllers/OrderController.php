@@ -226,10 +226,10 @@ class OrderController extends Controller
 
         $shift_pharm = Shift::whereDate('created_at','>=',$date_begin)
         ->whereDate('created_at','<=',date('Y-m-d'))
-        ->distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
+        ->distinct('pharma_id')->pluck('pharma_id')->toArray();
         foreach ($shift_pharm as $key => $value) {
 
-            $date = Shift::where('pharmacy_id',$value)->orderBy('id','DESC')->first();
+            $date = Shift::where('pharma_id',$value)->orderBy('id','DESC')->first();
 
             if($date)
             {
