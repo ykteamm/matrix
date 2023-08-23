@@ -205,10 +205,16 @@ class OrderController extends Controller
 
 
         $ostatka = [];
+        $ostatka_date = [];
 
         $ostatka_pharm = Stock::distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
         foreach ($ostatka_pharm as $key => $value) {
             $ostatka[$value] = Pharmacy::with('region')->where('id',$value)->first();
+            $date = Stock::where('pharmacy_id',$value)->orderBy('id','DESC')->first();
+            if($date)
+            {
+                $ostatka_date[$value] = $date->created_at;
+            }
         }
 
 
@@ -220,6 +226,7 @@ class OrderController extends Controller
             'sold' => $sold,
             'elchi' => $elchi,
             'ostatka' => $ostatka,
+            'ostatka_date' => $ostatka_date
         ]);
 
         

@@ -83,7 +83,13 @@
                                     
                                  @endif
                               </span>
-
+                              <span style="color:rgb(176, 13, 241)">
+                                 @if(isset($ostatka_date[$item]))
+                                 ({{date('d.m.Y',strtotime($ostatka_date[$item]))}})
+                                 @else
+                                    
+                                 @endif
+                              </span>
                            </td>
                            <td>
                               <a href="{{route('pharmacy-delete',$item)}}">
