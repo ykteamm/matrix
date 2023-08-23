@@ -162,12 +162,12 @@ class McReport extends Component
         $this->predoplata[7] = 0;
         $this->product_accept[7] = 0;
 
-        $this->all_money[8] = 70618125;
-        $this->otgruzka[8] = 59059170;
-        $this->last_close_money[8] = 65914525;
-        $this->last_accept_money[8] = 151792676;
+        $this->all_money[8] = 90618125;
+        $this->otgruzka[8] = 64261170;
+        $this->last_close_money[8] = 85914525;
+        $this->last_accept_money[8] = 131792676;
         $this->new_close_money[8] = 4703600;
-        $this->new_accept_money[8] = 54355570;
+        $this->new_accept_money[8] = 59557570;
         $this->predoplata[8] = 0;
         $this->product_accept[8] = 0;
 
@@ -199,11 +199,11 @@ class McReport extends Component
         $this->product_accept[11] = 0;
 
         $this->all_money[12] = 12443725;
-        $this->otgruzka[12] = 37111310;
+        $this->otgruzka[12] = 56308810;
         $this->last_close_money[12] = 11686413;
         $this->last_accept_money[12] = 51551842;
         $this->new_close_money[12] = 757312;
-        $this->new_accept_money[12] = 36353998;
+        $this->new_accept_money[12] = 55551498;
         $this->predoplata[12] = 0;
         $this->product_accept[12] = 0;
        
@@ -253,11 +253,11 @@ class McReport extends Component
         $this->product_accept[17] = 0;
 
         $this->all_money[18] = 195642598;
-        $this->otgruzka[18] = 110302800;
-        $this->last_close_money[18] = 68066898;
+        $this->otgruzka[18] = 179253100;
+        $this->last_close_money[18] = 168066898;
         $this->last_accept_money[18] = 14856818;
         $this->new_close_money[18] = 27575700;
-        $this->new_accept_money[18] = 82727100;
+        $this->new_accept_money[18] = 151677400;
         $this->predoplata[18] = 0;
         $this->product_accept[18] = 0;
 

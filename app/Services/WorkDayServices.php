@@ -393,6 +393,7 @@ class WorkDayServices
         //     $compare = ($sum*50)/150;
         // }
         // return $compare;
+
         if($sum < 25000000)
         {
             $koef = 2000000/15000000;
