@@ -244,7 +244,10 @@ $(document).ready(function () {
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
   }).buttons().container().appendTo('#dtBasicExample1212333');
 
-  
+  $('#ostatok-pharmacy').DataTable({
+    "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':true,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+  }).buttons().container().appendTo('#ostatok-pharmacy-div');
 
   
 

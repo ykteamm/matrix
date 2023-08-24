@@ -9,16 +9,10 @@
             <div class="card-header d-flex justify-content-between">
                 <h4 class="card-title row "> <strong>{{$pharm->name}}</strong> &nbsp<span class="text-danger">Qoldiqlar</span>  </h4>
                 <div class="col-md-2 mb-2  justify-content-end">
-                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{$months[date('m',strtotime($month))-1]['name']}}</button>
+                    <button type="button" class="btn btn-block btn-outline-primary dropdown-toggle" id="age_button" name="all" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{date('m.Y',strtotime($month.'-01'))}}</button>
                     <div class="dropdown-menu" style="left:150px !important">
-                        @php $i=1 @endphp
                         @foreach($months as $m)
-                            @if($i<10)
-                                <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-0'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                            @else
-                                <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y').'-'.$i])}}"  class="dropdown-item" > {{$m['name']}} </a>
-                            @endif
-                            @php $i++ @endphp
+                                <a onmouseover="$(this).css('cursor','pointer')" href="{{route('compare.pharm',['id'=>$pharmacy_id,'time'=>date('Y-m',strtotime('01.'.$m))])}}"  class="dropdown-item" > {{$m}} </a>
                         @endforeach
                     </div>
                 </div>
@@ -28,8 +22,8 @@
                 <ul class="nav nav-pills m-3" id="pills-tab" role="tablist">
                     @foreach ($dates as $key => $item)
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link @if($key == 0) active @endif" id="pills{{$key}}-tab" data-toggle="pill" data-target="#pill{{$key}}-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-                                {{date('d.m.Y H:i',strtotime($item[0]))}} - {{date('d.m.Y H:i',strtotime($item[1]))}}
+                            <button class="nav-link @if($key == count($dates)-1) active @endif" id="pills{{$key}}-tab" data-toggle="pill" data-target="#pill{{$key}}-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                {{date('d.m.Y',strtotime($item[0]))}} - {{date('d.m.Y',strtotime($item[1]))}}
                             </button>
                         </li>
                     @endforeach
@@ -38,7 +32,7 @@
                 <div class="tab-content" id="pills-tabContent">
                     @foreach ($dates as $key => $item)
 
-                    <div class="tab-pane fade @if($key == 0) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
+                    <div class="tab-pane fade @if($key == count($dates)-1) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
                     
                         <div class="card-body">
                             <button onclick="ExportToExcel('xlsx',`{{$key}}`,`{{$pharmacy_id}}`)">Export table to excel</button>
@@ -124,6 +118,15 @@
                                         <td>{{number_format($sum_first,0,',','.')}}</td>
                                         <td>{{number_format($sum_accept,0,',','.')}}</td>
                                         <td>{{number_format($sum_sold,0,',','.')}}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>No</strong> </td>
+                                        <td><strong>Dori nomi</strong> </td>
+                                        <td><strong>Birinchi ostatka</strong> </td>
+                                        <td><strong>Kirib kelgan</strong> </td>
+                                        <td><strong>Sotilgan</strong> </td>
+                                        <td></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -232,6 +235,16 @@
                                         <td>{{number_format($sum_accept,0,',','.')}}</td>
                                         <td>{{number_format($sum_sold,0,',','.')}}</td>
                                         <td>{{number_format($sum_second,0,',','.')}}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>No</strong> </td>
+                                        <td><strong>Dori nomi</strong> </td>
+                                        <td><strong>Birinchi ostatka</strong> </td>
+                                        <td><strong>Kirib kelgan</strong> </td>
+                                        <td><strong>Sotilgan</strong> </td>
+                                        <td><strong>Oxirgi ostatka</strong> </td>
+                                        <td></td>
                                     </tr>
                                     </tbody>
                                 </table>

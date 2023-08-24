@@ -10,29 +10,36 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-
-
-                                <div class="card-header no-border">
-                                    <h5 class="card-title">Dorixonalar ro'yhati </h5>
-                                </div>
                                 <div class="card-body">
+                                    <div id="ostatok-pharmacy-div"></div>
                                     <div class="table-responsive">
-                                        <table class="table table-striped mb-0">
+                                        <table class="table table-striped mb-0" id="ostatok-pharmacy">
                                             <thead>
                                             <tr>
                                                 <th>No </th>
                                                 <th>Dorixona nomi </th>
                                                 <th>Region </th>
+                                                <th>Oxirig ostatka </th>
+                                                <th>Taqqoslash </th>
 
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($pharmacies as $pharm)
+                                            @foreach($pharmacy as $pharm)
 
                                                     <tr>
                                                         <td>{{$loop->index+1}} </td>
-                                                        <td> <a href="{{route('compare.pharm',['id'=>$pharm->id,'time'=>date('Y-m')])}}">{{$pharm->name}}</a> </td>
-                                                        <td>{{$pharm->region->name}}</td>
+                                                        <td>{{$pharm['pharmacy']->name}} </td>
+                                                        <td>{{$pharm['pharmacy']->region->name}} </td>
+                                                        <td>
+                                                            @if ($pharm['ostatok'])
+                                                                {{date('d.m.Y',strtotime($pharm['ostatok']->created_at))}} 
+                                                            @endif
+                                                        </td>
+                                                        <td> <a href="{{route('compare.pharm',['id'=>$pharm['pharmacy']->id,'time'=>date('Y-m')])}}">
+                                                            <span class="badge badge-primary">Taqqoslash</span>
+                                                        </a> </td>
+                                                        {{-- <td>{{$pharm->region->name}}</td> --}}
                                                     </tr>
 
                                             @endforeach
