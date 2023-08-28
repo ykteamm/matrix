@@ -23,8 +23,14 @@ class Admin extends Component
     public $sariq_sum = 0;
     public $yashil_sum = 0;
 
+    public $qarz;
+
     public function mount()
     {
+
+        
+
+
         $money = new AdminService;
 
         $this->arrive_monay = $money->arriveMoney();
@@ -34,6 +40,9 @@ class Admin extends Component
         $this->shipment = $money->shipment();
         $this->shipment_day = $money->shipmentDay();
         $this->shipment_week = $money->shipmentWeek();
+
+
+        $this->qarz = $money->qarz();
 
         foreach ($money->rek() as $key => $value) {
             if($value['con'] == 0)

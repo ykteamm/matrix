@@ -225,6 +225,115 @@ class AdminService
 
     }
 
+    public function qarz()
+    {
+        $qizil_soni = 0;
+        $qizil_sumi = 0;
+
+        $sariq_soni = 0;
+        $sariq_sumi = 0;
+
+        $yashil_soni = 0;
+        $yashil_sumi = 0;
+
+        $qizil_id = [];
+        $sariq_id = [];
+        $yashil_id = [];
+
+        $orders = McOrder::all();
+
+        foreach ($orders as $key => $order) {
+
+            $tovar = McOrderDetail::where('order_id',$order->id)->orderBy('id','ASC')->first();
+            $qarz = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
+            
+            if($tovar)
+            {
+                $order_date = $order->order_date;
+
+                $day = strtotime(date('Y-m-d'))-strtotime($order_date);
+
+                $delivery_sum = McOrderDelivery::where('order_id',$order->id)
+                        ->sum(DB::raw('quantity*price'));
+
+                $delivery = $delivery_sum - $delivery_sum*$order->discount/100;
+
+                $pul = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+
+                if($qarz)
+                {
+                    if($pul == $delivery)
+                    {
+                        $yashil_soni += 1;
+                        $yashil_sumi += $delivery;
+                        $yashil_id[] = $order->id;
+                    }else{
+                        $sariq_soni += 1;
+                        $sariq_sumi += $delivery;
+                        $sariq_id[] = $order->id;
+                    }
+                }else{
+                    if($order->discount == 30 && $day > 6)
+                    {
+                        $qizil_soni += 1;
+                        $qizil_sumi += $delivery;
+                        $qizil_id[] = $order->id;
+                    }elseif($order->discount == 30 && $day < 6)
+                    {
+                        $sariq_soni += 1;
+                        $sariq_sumi += $delivery;
+                        $sariq_id[] = $order->id;
+                    }
+                    elseif($order->discount == 15 && $day > 8)
+                    {
+                        $qizil_soni += 1;
+                        $qizil_sumi += $delivery;
+                        $qizil_id[] = $order->id;
+                    }
+                    elseif($order->discount == 15 && $day < 8)
+                    {
+                        $sariq_soni += 1;
+                        $sariq_sumi += $delivery;
+                        $sariq_id[] = $order->id;
+                    }
+                    elseif($order->discount == 10 && $day > 11)
+                    {
+                        $qizil_soni += 1;
+                        $qizil_sumi += $delivery;
+                        $qizil_id[] = $order->id;
+
+                    }elseif($order->discount == 10 && $day < 11)
+                    {
+                        $sariq_soni += 1;
+                        $sariq_sumi += $delivery;
+                        $sariq_id[] = $order->id;
+                    }
+                    else{
+                        $qizil_soni += 1;
+                        $qizil_sumi += $delivery;
+                        $qizil_id[] = $order->id;
+                    }
+                }
+                
+
+                
+            }
+
+        }
+
+        return [
+            'qizil_soni' => $qizil_soni,
+            'qizil_sumi' => $qizil_sumi,
+            'qizil_id' => $qizil_id,
+            'sariq_soni' => $sariq_soni,
+            'sariq_sumi' => $sariq_sumi,
+            'sariq_id' => $sariq_id,
+            'yashil_soni' => $yashil_soni,
+            'yashil_sumi' => $yashil_sumi,
+            'yashil_id' => $yashil_id,
+        ];
+    }
+
     public function getFirstDate($date)
     {
         $d = Carbon::createFromFormat('Y-m-d', $date)
@@ -240,6 +349,7 @@ class AdminService
                         ->format('Y-m-d');
         return $d;
     }
+
 
     public function startOfWeek()
     {
