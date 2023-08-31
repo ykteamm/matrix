@@ -910,17 +910,20 @@ class UserController extends Controller
         return view('repas',compact('users'));
     }
 
-    public function rePasswordPhone()
+    public function rePasswordPass()
     {
 
         $users = User::all();
 
-        $new = random_int(1000, 9999);
-
-        return $new;
+        foreach ($users as $key => $value) {
+            $update = DB::table('tg_user')->where('id',$value->id)->update([
+                'password' => Hash::make($value->pr)
+            ]);
+        }
+        return redirect()->back();
     }
 
-    public function rePasswordPass()
+    public function rePasswordPass423423()
     {
         $users = User::all();
         
