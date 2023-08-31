@@ -940,14 +940,12 @@ class UserController extends Controller
             ]);
             $token = $response['data']['token'];
     
-            foreach ($nomer as $key => $value) {
                 $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
                     'mobile_phone' => substr($nomer,1),
                     'message' => 'Sizning yangi parolingiz' . ' ' . ' ' . 'Login: ' . $value->username . ' ' . ' ' . 'Parol: ' . $new,
                     'from' => '4546',
                     'callback_url' => 'http://0000.uz/test.php'
                 ]);
-            }
 
         }
 
