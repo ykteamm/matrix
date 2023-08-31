@@ -511,6 +511,12 @@ Route::middleware([LoginAuth::class])->group(function () {
      Route::get('firewall-confirm/{id}/{status}', [FirewallController::class, 'firewallConfirm'])->name('firewall-confirm');
      //FIREWALL-END
 
+     //NEW-PAROL-BEGIN
+     Route::get('regenerate-password', [UserController::class, 'rePassword']);
+     Route::get('regenerate-password-change-pass-phone', [UserController::class, 'rePasswordPhone'])->name('change-pass-phone');
+     Route::get('regenerate-password-change-pass', [UserController::class, 'rePasswordPass'])->name('change-pass');
+     //NEW-PAROL-BEGIN
+
 });
 
 // PREMYA

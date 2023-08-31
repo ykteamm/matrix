@@ -902,4 +902,57 @@ class UserController extends Controller
 
         return redirect()->back();
     }
+
+    public function rePassword()
+    {
+        $users = User::all();
+
+        return view('repas',compact('users'));
+    }
+
+    public function rePasswordPhone()
+    {
+
+        $users = User::all();
+
+        $new = random_int(1000, 9999);
+
+        return $new;
+    }
+
+    public function rePasswordPass()
+    {
+        $users = User::all();
+        
+        $nomer = [];
+
+        foreach ($users as $key => $value) {
+            $new = random_int(1000, 9999);
+
+            $update = DB::table('tg_user')->where('id',$value->id)->update([
+                'pr' => $new
+            ]);
+            $nomer = $value->phone_number;
+
+            $response = Http::post('notify.eskiz.uz/api/auth/login', [
+                'email' => 'mubashirov2002@gmail.com',
+                'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
+            ]);
+            $token = $response['data']['token'];
+    
+            foreach ($nomer as $key => $value) {
+                $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
+                    'mobile_phone' => substr($nomer,1),
+                    'message' => 'Sizning yangi parolingiz' . ' ' . ' ' . 'Login: ' . $value->username . ' ' . ' ' . 'Parol: ' . $new,
+                    'from' => '4546',
+                    'callback_url' => 'http://0000.uz/test.php'
+                ]);
+            }
+
+        }
+
+
+        return redirect()->back();
+
+    }
 }
