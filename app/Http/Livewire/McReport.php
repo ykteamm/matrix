@@ -139,8 +139,8 @@ class McReport extends Component
         $this->otgruzka[5] = 146056710;
         $this->last_close_money[5] = 49936315;
         $this->last_accept_money[5] = 68645572;
-        $this->new_close_money[5] = 73703935;
-        $this->new_accept_money[5] = 73744985;
+        $this->new_close_money[5] = 73744985;
+        $this->new_accept_money[5] = 73703935;
         $this->predoplata[5] = 0;
         $this->product_accept[5] = 0;
 
