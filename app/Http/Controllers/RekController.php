@@ -131,11 +131,12 @@ class RekController extends Controller
     {
         $shablon = Shablon::find(3);
 
+        
         $rek_service = new RekServices($id);
 
-        $product = $rek_service->getRekProduct();
 
-        // dd($product);
+
+        $product = $rek_service->getRekProduct();
 
         $rek_product = [];
         $all_sum = 0;
