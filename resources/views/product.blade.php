@@ -152,7 +152,7 @@
                                             <td>{{$item['number']}}</td>
                                             {{-- <td>{{date('Y',(strtotime ( today()) )) - date('Y',(strtotime ( $item->birthday) ))}} </td> --}}
                                             <td class="sorting_4">
-                              {{number_format($item['price'],0,",",".")}}
+                              {{$item['price']}}
                            </td>
                                             @if($item['price'] > $item2['price'])
                              <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item['price'],1)}}%</td>
@@ -182,7 +182,7 @@
 
                                             <td>{{$item['number']}}</td>
                                             <td>
-                                             {{number_format($item['price'],0,",",".")}}
+                                             {{$item['price']}}
                                             </td>
                                             @if($item['price'] > $item2['price'])
                              <td><i class="fas fa-arrow-up mr-1" style="color:#39f33c;"></i>{{number_format((($item['price'] - $item2['price'])*100)/$item['price'],1)}}%</td>
@@ -253,7 +253,7 @@
                              {{-- <td>{{$item['narx']}}</td> --}}
                              <td>{{$item['number']}}</td>
                              <td class="sorting_1">
-                              {{number_format($item['price'],0,",",".")}}
+                              {{$item['price']}}
 
                            </td>
                              @if($item['price'] > $item2['price'])

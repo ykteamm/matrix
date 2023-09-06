@@ -53,7 +53,18 @@
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Buyurtma vaqti
-                        <span>{{date('d.m.Y H:i',strtotime($orders->order_date))}}</span>
+                        <span>
+                        @php
+                            $d = date('Y-m-d',strtotime($orders->order_date)).'T'.date('H:i',strtotime($orders->order_date));
+                        @endphp
+                        <input type="datetime-local" wire:="change_order_date" value="{{$d}}">
+                        {{-- <span>{{date('d.m.Y H:i',strtotime($orders->order_date))}}
+                        </span> --}}
+
+                            <button wire:click="$emit('changeOrder_Date',)" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </span>
 
                         </li>
 

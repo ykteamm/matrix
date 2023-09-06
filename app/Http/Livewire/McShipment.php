@@ -75,9 +75,12 @@ class McShipment extends Component
 
     public $skidka = 0;
 
+    public $change_order_date;
+
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
     ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError','delete_prod' => 'deleteProd','saveOrder_Detail' => 'saveOrderDetail'
     ,'saveReturn' => 'saveReturnData','saveMoney_Return' => 'saveMoneyReturn',
+    'changeOrder_Date' => 'changeOrderDate'
     ];
 
 
@@ -642,6 +645,12 @@ class McShipment extends Component
        }
        return $s;
     }
+
+    public function changeOrderDate()
+    {
+        dd($this->change_order_date);    
+    }
+
     public function render()
     {
         return view('livewire.mc-shipment');
