@@ -128,11 +128,21 @@ class McShipment extends Component
             $this->detail_delivery_date = McOrderDelivery::where('order_id',$order_id)->distinct('created_at')->pluck('created_at')->toArray();
                 foreach ($this->detail_delivery_date as $key => $value) {
                     // $value = date('Y-m-d H:i',strtotime($value));
-                    $delivery_q = McOrderDelivery::where('order_id',$order_id)->whereDate('created_at',$value)->pluck('quantity','product_id')->toArray();
+
+                    $d = date('Y-m-d H:i:s',strtotime($value));
+                    $h = date('H:i:s',strtotime($value));
+
+                    $delivery_q = McOrderDelivery::where('order_id',$order_id)
+                    ->whereDate('created_at',$d)
+                    ->whereTime('created_at', '=', $h)
+                    ->pluck('quantity','product_id')->toArray();
+
                     $this->detail_delivery[] = $delivery_q;
                 }
-            // dd(date('Y-m-d H:i',strtotime($this->detail_delivery_date[0])),$this->detail_delivery);
+            // dd(date('Y-m-d H:i:s',strtotime($this->detail_delivery_date[0])),$this->detail_delivery);
         }
+
+
         $this->payments = McPayment::all();
 
         $this->ware_products = McWarehousQuantity::where('warehouse_id',$this->ware_id)->pluck('quantity','product_id')->toArray();
