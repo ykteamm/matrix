@@ -247,6 +247,10 @@ class AdminService
             $tovar = McOrderDetail::where('order_id',$order->id)->orderBy('id','ASC')->first();
             $qarz = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
             
+            $pul = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+
+            $yashil_sumi += $pul;
+                      
             if($tovar)
             {
                 $order_date = $order->order_date;
@@ -320,6 +324,8 @@ class AdminService
             }
 
         }
+
+        dd($yashil_sumi);
 
         return [
             'qizil_soni' => $qizil_soni,

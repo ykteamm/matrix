@@ -41,7 +41,8 @@
                                                             <p class="p-0 m-0 @if (!$tim) p-2 @endif">
                                                                 <span class="badge badge-secondary" style="font-size:15px;">{{date('d.m.Y H:i', strtotime($p->date))}}</span> 
                                                             </p>
-                                                        @if ($tim)
+                                                        {{-- @if ($tim) --}}
+                                                        @if (Session::get('user')->id == 36)
 
                                                             <p class="p-0 m-0 pt-1"> 
                                                                 <a href="{{route('stock.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->date])}}" class="mx-1"><i class="fas fa-edit" style="font-size: 18px;"></i></a>
