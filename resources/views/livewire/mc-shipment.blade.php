@@ -57,13 +57,21 @@
                         @php
                             $d = date('Y-m-d',strtotime($orders->order_date)).'T'.date('H:i',strtotime($orders->order_date));
                         @endphp
-                        <input type="datetime-local" wire:="change_order_date" value="{{$d}}">
+
+                        <form action="{{route('mc-order-change-date',$orders->id)}}" method="POST" >
+                            
+
+                            @csrf
+                            <input type="datetime-local" name="change_order_date" value="{{$d}}">
                         {{-- <span>{{date('d.m.Y H:i',strtotime($orders->order_date))}}
                         </span> --}}
 
-                            <button wire:click="$emit('changeOrder_Date',)" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                            <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
                                 <i class="fas fa-save"></i>
                             </button>
+
+                        </form>
+
                         </span>
 
                         </li>
@@ -329,7 +337,23 @@
                                 @if($order_datail_status != 1)
 
                                     @foreach ($detail_delivery_date as $item)
-                                        <th>{{date('d.m.Y H:i',strtotime($item))}}</th>
+                                        <th>
+                                                @php
+                                                    $d = date('Y-m-d',strtotime($item)).'T'.date('H:i',strtotime($item));
+                                                @endphp
+                                                <form action="{{route('mc-order-delivery-change-date',['id'=>$orders->id,'date'=>$d])}}" method="POST" >
+                                                @csrf
+                                                <input type="datetime-local" name="change_order_date" value="{{$d}}">
+
+                                            {{-- {{date('d.m.Y H:i',strtotime($item))}} --}}
+                                        
+                                            <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                                <i class="fas fa-save"></i>
+                                            </button>
+
+                                            </form>
+                                        </th>
+                                        
                                     @endforeach
 
                                 @endif
@@ -433,14 +457,49 @@
             
             
             @if(count($payment_history) > 0)
+
+            {{-- <span>
+                @php
+                    $d = date('Y-m-d',strtotime($orders->order_date)).'T'.date('H:i',strtotime($orders->order_date));
+                @endphp
+
+                <form action="{{route('mc-order-change-date',$orders->id)}}" method="POST" >
+                    
+
+                    @csrf
+                    <input type="datetime-local" name="change_order_date" value="{{$d}}">
+
+                    <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                        <i class="fas fa-save"></i>
+                    </button>
+
+                </form>
+
+                </span> --}}
+
                 <div class="card-body p-1" style="border: 2px solid #6180b9;border-radius: 8px;">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
                             <tr>
                                 <th>Tolov turi</th>
-                                @foreach ($payment_date as $item)
-                                    <th>{{date('d.m.Y H:i',strtotime($item))}}</th>
+                                @foreach ($payment_date as $p => $item)
+                                    <th>
+                                        @php
+                                            $d = date('Y-m-d',strtotime($item)).'T'.date('H:i',strtotime($item));
+                                        @endphp
+                                        <form action="{{route('mc-payment-change-date',$p)}}" method="POST" >
+                                            @csrf
+                                            {{-- {{date('d.m.Y H:i',strtotime($item))}} --}}
+
+                                            <input type="datetime-local" name="change_order_date" value="{{$d}}">
+
+                                            <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                                <i class="fas fa-save"></i>
+                                            </button>
+
+                                        </form>
+                                    </th>
                                 @endforeach
                             </tr>
                             </thead>
@@ -452,7 +511,19 @@
                                             @foreach ($payment_history as $key => $item2)
                                                     @if (isset($payment_history[$key][$item->id]))
                                                         <td>
-                                                            {{number_format($payment_history[$key][$item->id],0,',','.')}}
+                                                            <form action="{{route('mc-payment-change-amount',$payment_history_id[$key])}}" method="POST" >
+                                                                @csrf
+                                                                @php
+                                                                    $amount = $payment_history[$key][$item->id];
+                                                                @endphp
+                                                                {{-- {{number_format($payment_history[$key][$item->id],0,',','.')}} --}}
+
+                                                                <input type="number" name="change_payment_amount" value="{{$amount}}">
+
+                                                                <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                                                    <i class="fas fa-save"></i>
+                                                                </button>
+                                                            </form>
                                                         </td>
                                                     @else
                                                         <td>-</td>

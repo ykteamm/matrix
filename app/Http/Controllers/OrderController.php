@@ -251,4 +251,67 @@ class OrderController extends Controller
 
         
     }
+
+    public function mcChangeOrderDate(Request $request,$id)
+    {
+        $date = $request->change_order_date;
+
+        $date = date('Y-m-d H:i:s',strtotime($date));
+
+
+        $order = McOrder::find($id);
+        $order->order_date = $date;
+        $order->save();
+
+        return redirect()->back();
+
+    }
+
+    public function mcChangePaymentDate(Request $request,$id)
+    {
+        $date = $request->change_order_date;
+
+        $date = date('Y-m-d H:i:s',strtotime($date));
+
+
+        $order = McPaymentHistory::find($id);
+        $order->created_at = $date;
+        $order->save();
+
+        return redirect()->back();
+
+    }
+
+    public function mcChangePaymentAmount(Request $request,$id)
+    {
+
+        $date = $request->change_payment_amount;
+
+        $order = McPaymentHistory::find($id);
+        $order->amount = $date;
+        $order->save();
+
+        return redirect()->back();
+
+    }
+
+    public function mcChangeOrderDeliveryDate(Request $request,$id,$date)
+    {
+
+        $value = date('Y-m-d H:i:s',strtotime($date));
+
+        $d = date('Y-m-d H:i:s',strtotime($value));
+
+
+        $h = date('H:i',strtotime($value));
+
+                    $delivery_q = McOrderDelivery::where('order_id',$id)
+                    ->whereDate('created_at',$d)
+                    ->whereTime('created_at', $h)
+                    ->pluck('id')->toArray();
+
+        return $delivery_q;
+    }
+
+    
 }

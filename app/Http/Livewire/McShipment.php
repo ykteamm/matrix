@@ -58,6 +58,7 @@ class McShipment extends Component
     public $return_pro = 1;
 
     public $payment_history = [];
+    public $payment_history_id = [];
     public $payment_date;
     public $payment_sum;
     public $order_sum;
@@ -145,19 +146,26 @@ class McShipment extends Component
             // dd(date('Y-m-d H:i:s',strtotime($this->detail_delivery_date[0])),$this->detail_delivery);
         }
 
-
         $this->payments = McPayment::all();
 
         $this->ware_products = McWarehousQuantity::where('warehouse_id',$this->ware_id)->pluck('quantity','product_id')->toArray();
 
-        $this->payment_date = McPaymentHistory::where('order_id',$order_id)->distinct('created_at')->pluck('created_at')->toArray();
+        $this->payment_date = McPaymentHistory::where('order_id',$order_id)->distinct('created_at')->pluck('created_at','id')->toArray();
+
 
         $this->payment_sum = McPaymentHistory::where('order_id',$order_id)->sum('amount');
 
         foreach ($this->payment_date as $key => $value) {
             $paymnet_q = McPaymentHistory::where('order_id',$order_id)->where('created_at',$value)->pluck('amount','payment_id')->toArray();
-            $this->payment_history[] = $paymnet_q;
+
+            $pid = McPaymentHistory::where('order_id',$order_id)->where('created_at',$value)->first();
+
+            $this->payment_history[$pid->id] = $paymnet_q;
+
+            $this->payment_history_id[$pid->id] = $pid;
         }
+
+        // dd($this->payments);
 
         $this->return_history = McReturnHistory::where('order_id',$this->order_id)->orderBy('id','ASC')->get();
 
