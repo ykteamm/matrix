@@ -466,7 +466,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('mc-admin-restore/{id}', [OrderController::class, 'mcOrderRestore'])->name('mc-admin-restore');
 
     Route::post('mc-order-change-date/{id}', [OrderController::class, 'mcChangeOrderDate'])->name('mc-order-change-date');
-    Route::post('mc-order-delivery-change-date/{id}/{date}', [OrderController::class, 'mcChangeOrderDeliveryDate'])->name('mc-order-delivery-change-date');
+    Route::post('mc-order-delivery-change-date/{id}/{array}', [OrderController::class, 'mcChangeOrderDeliveryDate'])->name('mc-order-delivery-change-date');
 
     Route::post('mc-payment-change-date/{id}', [OrderController::class, 'mcChangePaymentDate'])->name('mc-payment-change-date');
     Route::post('mc-payment-change-amount/{id}', [OrderController::class, 'mcChangePaymentAmount'])->name('mc-payment-change-amount');

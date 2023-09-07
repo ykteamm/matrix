@@ -51,6 +51,7 @@ class McShipment extends Component
 
     public $detail_delivery;
     public $detail_delivery_date;
+    public $detail_delivery_ids = [];
 
     public $error;
 
@@ -130,6 +131,7 @@ class McShipment extends Component
         if($this->order_datail_status != 1)
         {
             $this->detail_delivery_date = McOrderDelivery::where('order_id',$order_id)->distinct('created_at')->pluck('created_at')->toArray();
+
                 foreach ($this->detail_delivery_date as $key => $value) {
                     // $value = date('Y-m-d H:i',strtotime($value));
 
@@ -140,6 +142,13 @@ class McShipment extends Component
                     ->whereDate('created_at',$d)
                     ->whereTime('created_at', '=', $h)
                     ->pluck('quantity','product_id')->toArray();
+
+                    $delivery_q_ids = McOrderDelivery::where('order_id',$order_id)
+                    ->whereDate('created_at',$d)
+                    ->whereTime('created_at', '=', $h)
+                    ->pluck('id')->toArray();
+
+                    $this->detail_delivery_ids[$d] = $delivery_q_ids;
 
                     $this->detail_delivery[] = $delivery_q;
                 }

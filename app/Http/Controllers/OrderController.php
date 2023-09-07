@@ -295,22 +295,31 @@ class OrderController extends Controller
 
     }
 
-    public function mcChangeOrderDeliveryDate(Request $request,$id,$date)
+    public function mcChangeOrderDeliveryDate(Request $request,$id,$array)
     {
 
-        $value = date('Y-m-d H:i:s',strtotime($date));
+        // $value = date('Y-m-d H:i:s',strtotime($date));
 
-        $d = date('Y-m-d H:i:s',strtotime($value));
+        // $d = date('Y-m-d H:i:s',strtotime($value));
+
+        // $delivery_q = McOrderDelivery::where('order_id',$id)->distinct('created_at')->pluck('created_at')->toArray();
 
 
-        $h = date('H:i',strtotime($value));
+        $random = rand(10,40);
 
-                    $delivery_q = McOrderDelivery::where('order_id',$id)
-                    ->whereDate('created_at',$d)
-                    ->whereTime('created_at', $h)
-                    ->pluck('id')->toArray();
+        $date = $request->change_order_date.':'.$random;
 
-        return $delivery_q;
+        $date = date('Y-m-d H:i:s',strtotime($date));
+
+        $arr = json_decode($array);
+
+
+        $delivery_q = McOrderDelivery::where('order_id',$id)->whereIn('id',$arr)->update([
+            'created_at' => $date
+        ]);
+        
+        return redirect()->back();
+
     }
 
     

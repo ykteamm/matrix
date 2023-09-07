@@ -340,8 +340,12 @@
                                         <th>
                                                 @php
                                                     $d = date('Y-m-d',strtotime($item)).'T'.date('H:i',strtotime($item));
+
+                                                    $dr = date('Y-m-d H:i:s',strtotime($item));
+
+                                                    $arr = json_encode($detail_delivery_ids[$dr]);
                                                 @endphp
-                                                <form action="{{route('mc-order-delivery-change-date',['id'=>$orders->id,'date'=>$d])}}" method="POST" >
+                                                <form action="{{route('mc-order-delivery-change-date',['id'=>$orders->id,'array'=>$arr])}}" method="POST" >
                                                 @csrf
                                                 <input type="datetime-local" name="change_order_date" value="{{$d}}">
 
