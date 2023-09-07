@@ -322,5 +322,22 @@ class OrderController extends Controller
 
     }
 
+    public function mcChangePaymentLast($id)
+    {
+        $order = McPaymentHistory::find($id);
+
+        if($order->last == 0)
+        {
+            $order->last = 1;
+        }else{
+            $order->last = 0;
+        }
+
+        $order->save();
+        
+        return redirect()->back();
+
+    }
+
     
 }

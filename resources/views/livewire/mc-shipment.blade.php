@@ -502,6 +502,8 @@
                                                 <i class="fas fa-save"></i>
                                             </button>
 
+                                            
+
                                         </form>
                                     </th>
                                 @endforeach
@@ -527,6 +529,21 @@
                                                                 <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
                                                                     <i class="fas fa-save"></i>
                                                                 </button>
+
+                                                                @if ($payment_history_id[$key]->last == 0)
+                                                                    <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
+                                                                        <button type="button" class="btn btn-success pt-0 pb-0 pl-1 pr-1">
+                                                                            <i class="fas fa-share"></i>
+                                                                        </button>
+                                                                    </a>
+                                                                @else
+                                                                    <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
+                                                                        <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
+                                                                            <i class="fas fa-reply"></i>
+                                                                        </button>
+                                                                    </a>
+                                                                @endif
+                                                                
                                                             </form>
                                                         </td>
                                                     @else
