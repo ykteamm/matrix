@@ -53,10 +53,10 @@ class AdminService
                         {
                             $sum1 += $sum;
                         }else{
-                            if(strtotime($ord_sum->created_at) < strtotime($this->month_start))
-                            {
+                            // if(strtotime($ord_sum->created_at) < strtotime($this->month_start))
+                            // {
                                 $sum1 += $sum;
-                            }
+                            // }
                         }
                     }else{
                         $sum1 += $sum;

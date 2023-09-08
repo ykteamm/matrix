@@ -825,10 +825,7 @@ class McReport extends Component
                         {
                             $sum1 += $sum;
                         }else{
-                            // if(strtotime($ord_sum->created_at) < strtotime($active_month))
-                            // {
                                 $sum1 += $sum;
-                            // }
                         }
                     }else{
                         $sum1 += $sum;
