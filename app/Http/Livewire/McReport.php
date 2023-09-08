@@ -509,9 +509,9 @@ class McReport extends Component
         $this->predoplata[21] = 0;
         $this->product_accept[21] = 0;
 
-        $this->all_money[22] = 0;
+        $this->all_money[22] = 1457750;
         $this->otgruzka[22] = 0;
-        $this->last_close_money[22] = 0;
+        $this->last_close_money[22] = 1457750;
         $this->last_accept_money[22] = 0;
         $this->new_close_money[22] = 0;
         $this->new_accept_money[22] = 0;
