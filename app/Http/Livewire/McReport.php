@@ -319,7 +319,7 @@ class McReport extends Component
     }
 
     public function hisobotMonth222222($regions,$active_month)
-    {
+    { 
         $this->all_money[1] = 0;
         $this->otgruzka[1] = 0;
         $this->last_close_money[1] = 0;
