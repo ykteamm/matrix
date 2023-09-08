@@ -35,7 +35,7 @@ class Admin extends Component
 
         $dd = $money->orderMoneyArrive();
 
-        dd($dd);
+        // dd($dd);
 
         $this->arrive_monay = $money->arriveMoney();
         $this->arrive_monay_day = $money->arriveMoneyToday();
@@ -45,6 +45,7 @@ class Admin extends Component
         $this->shipment_day = $money->shipmentDay();
         $this->shipment_week = $money->shipmentWeek();
 
+        
 
         $this->qarz = $money->qarz();
 

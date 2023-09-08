@@ -446,6 +446,24 @@ if (!function_exists('numb')) {
     }
 }
 
+if (!function_exists('bmk')) {
+    function bmk($number)
+    {
+        if ($number < 1000000) {
+            // Anything less than a million
+            $format = number_format($number / 1000) . 'K';
+        } else if ($number < 1000000000) {
+            // Anything less than a billion
+            $format = number_format($number / 1000000,0) . 'M';
+        } else {
+            // At least a billion
+            $format = number_format($number / 1000000000, 3) . 'B';
+        }
+        return $format;
+    }
+}
+
+
 if(!function_exists('getHostNameUrl')){
     function getHostNameUrl() {
 

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\McOrder;
+use App\Models\Pharmacy;
+use App\Models\Region;
+use App\Services\AdminService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +15,202 @@ class AdminController extends Controller
 {
     public function admin()
     {
-        return view('admin.index');
+        $regions = Region::pluck('name','id')->toArray();
+        $pharmacy = Pharmacy::pluck('name','id')->toArray();
+        $orders = McOrder::pluck('number','id')->toArray();
+
+
+        $money = new AdminService;
+
+        $sitafor = $money->orderMoneyArrive();
+
+        $arrive_monay = $money->arriveMoney();
+        $arrive_monay_day = $money->arriveMoneyToday();
+        $arrive_monay_week = $money->arriveMoneyWeek();
+
+        $shipment = $money->shipment();
+        $shipment_day = $money->shipmentDay();
+        $shipment_week = $money->shipmentWeek();
+
+        $rekom = $money->rek();
+
+        $qizil_rek = 0;
+        $qizil_rek_sum = 0;
+
+        $sariq_rek = 0;
+        $sariq_rek_sum = 0;
+
+        $yashil_rek = 0;
+        $yashil_rek_sum = 0;
+
+        $yashil_region = [];
+        $sariq_region = [];
+        $qizil_region = [];
+
+        $dd = [];
+
+        foreach ($rekom as $key => $value) {
+            if($value['con'] == 2)
+            {
+                $yashil_rek += 1;
+                $yashil_rek_sum += $value['sum'];
+            }
+            if($value['con'] == 1)
+            {
+                $sariq_rek += 1;
+                $sariq_rek_sum += $value['sum'];
+            }
+            if($value['con'] == 0)
+            {
+                $qizil_rek += 1;
+                $qizil_rek_sum += $value['sum'];
+            }
+
+            $pharm = Pharmacy::find($key);
+            foreach ($regions as $r => $reg) {
+                if($r == $pharm->region_id)
+                {
+                    if($value['con'] == 2)
+                    {
+                        $yashil_region[$r][] = $value['sum'];
+                        $dd[] = $key;
+
+                    }
+
+                    if($value['con'] == 1)
+                    {
+                        $sariq_region[$r][] = $value['sum'];
+                    }
+
+                    if($value['con'] == 0)
+                    {
+                        $qizil_region[$r][] = $value['sum'];
+                    }
+
+                }
+            }
+        }
+
+        $yashil = [];
+        $sariq = [];
+        $qizil = [];
+
+        $yashil_all = 0;
+        $sariq_all = 0;
+        $qizil_all = 0;
+
+        $yashil_p = [];
+        $sariq_p = [];
+        $qizil_p = [];
+
+        $yashil_mc = [];
+        $sariq_mc = [];
+        $qizil_mc = [];
+
+        $sariq_soni = [];
+        $qizil_soni = [];
+
+
+        foreach ($sitafor as $a => $sitaf) {
+            foreach ($sitaf as $f => $sita) {
+
+                $yashil_all_p = 0;
+                $sariq_all_p = 0;
+                $qizil_all_p = 0;
+
+                foreach ($sita as $k => $sitf) {
+
+                    $yashil[$a][] = $sitf[0];
+                    $yashil_all += $sitf[0];
+                    $yashil_all_p += $sitf[0];
+
+                    if(isset($sitf[3]))
+                    {
+                        foreach ($sitf[3] as $t => $v) {
+                            if($v['xolat'] == 2)
+                            {
+                                $qizil[$a][] = $v['qarz'];
+                                $qizil_all += $v['qarz'];
+                                $qizil_all_p += $v['qarz'];
+
+                                $qizil_mc[$k][$t] = $v['qarz'];
+                                $qizil_soni[$t] = $v['kun'];
+
+                            }else{
+                                $sariq[$a][] = $v['qarz'];
+                                $sariq_all += $v['qarz'];
+                                $sariq_all_p += $v['qarz'];
+
+                                $sariq_mc[$t] = $v['qarz'];
+                                $sariq_soni[$t] = $v['kun'];
+
+                            }
+                        }
+                        // $qarz[$a][] = $sitf[1];
+                    }
+
+
+
+                }
+
+                
+                $yashil_p[$f] = $yashil_all_p;
+                $qizil_p[$f] = $qizil_all_p;
+                $sariq_p[$f] = $sariq_all_p;
+
+                $yashil_all_p = 0;
+                $qizil_all_p = 0;
+                $sariq_all_p = 0;
+
+
+            }
+        }
+
+        // dd($sitafor);
+
+        
+
+        return view('admin.index',[
+            'yashil' => $yashil,
+            'sariq' => $sariq,
+            'qizil' => $qizil,
+
+            'yashil_all' => $yashil_all,
+            'sariq_all' => $sariq_all,
+            'qizil_all' => $qizil_all,
+
+            'yashil_p' => $yashil_p,
+            'sariq_p' => $sariq_p,
+            'qizil_p' => $qizil_p,
+            
+            'sariq_mc' => $sariq_mc,
+            'qizil_mc' => $qizil_mc,
+
+            'sariq_soni' => $sariq_soni,
+            'qizil_soni' => $qizil_soni,
+
+            'regions' => $regions,
+            'pharmacy' => $pharmacy,
+            'orders' => $orders,
+
+            'sitafor' => $sitafor,
+
+            'arrive_monay' => $arrive_monay,
+            'arrive_monay_day' => $arrive_monay_day,
+            'arrive_monay_week' => $arrive_monay_week,
+
+            'shipment' => $shipment,
+            'shipment_day' => $shipment_day,
+            'shipment_week' => $shipment_week,
+
+            'yashil_rek_sum' => $yashil_rek_sum,
+            'sariq_rek_sum' => $sariq_rek_sum,
+            'qizil_rek_sum' => $qizil_rek_sum,
+
+            'yashil_region' => $yashil_region,
+            'sariq_region' => $sariq_region,
+            'qizil_region' => $qizil_region,
+        ]);
     }
 
     public function adminLogin()

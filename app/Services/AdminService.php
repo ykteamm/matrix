@@ -174,7 +174,7 @@ class AdminService
             $s = 0;
             foreach ($ords as $key => $value) {
                 $mc_del = McOrderDelivery::where('order_id',$value->id)
-                ->whereDate('created_at','=',$this->month_start)
+                ->whereDate('created_at',$this->month_start)
                 ->sum(DB::raw('price*quantity'));
 
                 $s += $mc_del - $mc_del*$value->discount/100;
@@ -214,15 +214,35 @@ class AdminService
 
         $pharmacy_elchi_order = [];
         
+
         foreach ($pharmacy_sold as $key => $value) {
             
             $rek_service = new RekServices($value);
 
+            // $con = $rek_service->getOstatokLastDate();
+            // $con = $rek_service->getOstatokSum();
+            // $con = $rek_service->getOtgruzkaSum();
+            // $con = $rek_service->getTakeofSum();
+            // $con = $rek_service->getTakeOf3Month();
+            // $con = $rek_service->getAverage();
+            $con_sum = $rek_service->getHaveProductSum();
+            // $con = $rek_service->getSatisDay();
+            // $con = $rek_service->getConditionPharmacy();
+            // $con = $rek_service->getRekProduct();
+
             $con = $rek_service->getConditionPharmacy();
             $satisday = $rek_service->getSatisDay();
             $sum = $rek_service->getRekSum($satisday,$con);
+
+            if($con == 2)
+            {
+                $pharmacy_elchi_order[$value] = array('con' => $con,'sum' => $con_sum);
+
+            }else{
+                $pharmacy_elchi_order[$value] = array('con' => $con,'sum' => $sum);
+
+            }
             
-            $pharmacy_elchi_order[] = array('con' => $con,'sum' => $sum);
 
         }
 
@@ -385,8 +405,8 @@ class AdminService
 
         foreach ($regions as $reg => $region) {
             
-            $rid = 18;
-            // $rid = $region->id;
+            // $rid = 18;
+            $rid = $region->id;
 
             $pharmacy_id = Pharmacy::where('region_id',$rid)->pluck('id')->toArray();
 
@@ -464,9 +484,20 @@ class AdminService
 
                                     if($xolat != 3)
                                     {
+                                        $d = date('Y-m-d H:i:s',strtotime($fe));
+                                        $h = date('H:i:s',strtotime($fe));
+
+                                        $delivery_q = McOrderDelivery::where('order_id',$order->id)
+                                        ->whereDate('created_at',$d)
+                                        ->whereTime('created_at', '=', $h)
+                                        ->sum(DB::raw('quantity*price'));
+
+                                        $pr = $delivery_q - $delivery_q*$order->discount/100;
+
                                         $asosiy[$rid][$pharmacy][$order->id][3][$fe] = [
                                             'xolat' => $xolat,
                                             'kun' => $day,
+                                            'qarz' => $pr,
                                         ];
                                     }
 
@@ -502,9 +533,13 @@ class AdminService
                                 if($xolat != 3)
                                 {
 
+                                   
+
                                     $asosiy[$rid][$pharmacy][$order->id][3][$order->order_date] = [
                                         'xolat' => $xolat,
                                         'kun' => $day,
+                                        'qarz' => $qarz,
+
                                     ];
                                 }
 
@@ -521,7 +556,8 @@ class AdminService
 
         }
 
-        dd($asosiy);
+        return $asosiy;
+        // dd($asosiy);
     }
 
 

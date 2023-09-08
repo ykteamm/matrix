@@ -15,7 +15,7 @@ class RekServices
 {
     public $pharmacy_id;
     public $month_last_3;
-    public $days = 30;
+    public $days = 90;
 
     public function __construct($id)
     {
@@ -110,6 +110,11 @@ class RekServices
     public function getHaveProductSum()
     {
         $ostatok = $this->getOstatokSum()+$this->getOtgruzkaSum()-$this->getTakeofSum();
+
+        if($ostatok < 0)
+        {
+            $ostatok = 0;
+        }
 
         return $ostatok;
     }
