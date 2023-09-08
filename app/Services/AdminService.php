@@ -199,7 +199,7 @@ class AdminService
             
             return $s;
     }
-
+    
     public function rek()
     {
         $last_30 = date('Y-m-d',strtotime('-31 day',strtotime(date('Y-m-d'))));

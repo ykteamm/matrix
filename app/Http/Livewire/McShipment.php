@@ -174,6 +174,7 @@ class McShipment extends Component
             $this->payment_history_id[$pid->id] = $pid;
         }
 
+        // dd($this->payment_history_id[260]->last);
 
         $this->return_history = McReturnHistory::where('order_id',$this->order_id)->orderBy('id','ASC')->get();
 

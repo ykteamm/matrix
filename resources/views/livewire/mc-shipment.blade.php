@@ -530,18 +530,20 @@
                                                                     <i class="fas fa-save"></i>
                                                                 </button>
 
-                                                                @if ($payment_history_id[$key]->last == 0)
-                                                                    <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
-                                                                        <button type="button" class="btn btn-success pt-0 pb-0 pl-1 pr-1">
-                                                                            <i class="fas fa-share"></i>
-                                                                        </button>
-                                                                    </a>
-                                                                @else
-                                                                    <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
-                                                                        <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
-                                                                            <i class="fas fa-reply"></i>
-                                                                        </button>
-                                                                    </a>
+                                                                @if(isset($payment_history_id[$key]->last))
+                                                                    @if ($payment_history_id[$key]->last == 0)
+                                                                        <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
+                                                                            <button type="button" class="btn btn-success pt-0 pb-0 pl-1 pr-1">
+                                                                                <i class="fas fa-share"></i>
+                                                                            </button>
+                                                                        </a>
+                                                                    @else
+                                                                        <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
+                                                                            <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
+                                                                                <i class="fas fa-reply"></i>
+                                                                            </button>
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
                                                                 
                                                             </form>
