@@ -470,6 +470,10 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::post('mc-payment-change-date/{id}', [OrderController::class, 'mcChangePaymentDate'])->name('mc-payment-change-date');
     Route::post('mc-payment-change-amount/{id}', [OrderController::class, 'mcChangePaymentAmount'])->name('mc-payment-change-amount');
+    
+    Route::get('mc-pharmacy-return-money', [OrderController::class, 'mcPharmacyReturn'])->name('mc-pharmacy-return-money');
+    Route::post('mc-return-day-region/{id}', [OrderController::class, 'mcRegionReturnDay'])->name('mc-return-day-region');
+    Route::post('mc-return-day-pharmacy', [OrderController::class, 'mcPharmacyReturnDay'])->name('mc-return-day-pharmacy');
 
     Route::get('mc-payment-last/{id}', [OrderController::class, 'mcChangePaymentLast'])->name('mc-payment-last');
 

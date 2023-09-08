@@ -133,6 +133,7 @@
                                         {{-- <li><a href="{{ route('last.order') }}"><span>Eski buyurtmalar</span></a> --}}
                                         <li><a href="{{ route('report') }}"><span>Hisobot 1</span></a>
                                         <li><a href="{{ route('mc-pharmacy') }}"><span>Dorixonalar</span></a>
+                                        <li><a href="{{ route('mc-pharmacy-return-money') }}"><span>Pul qaytaish vaqtlari</span></a>
 
                                         @endif
                                     @endisset

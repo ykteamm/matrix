@@ -33,6 +33,10 @@ class Admin extends Component
 
         $money = new AdminService;
 
+        $dd = $money->orderMoneyArrive();
+
+        dd($dd);
+
         $this->arrive_monay = $money->arriveMoney();
         $this->arrive_monay_day = $money->arriveMoneyToday();
         $this->arrive_monay_week = $money->arriveMoneyWeek();

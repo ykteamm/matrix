@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Livewire\McMoney;
+use App\Models\McDeadlinePharmacy;
 use App\Models\McOrder;
 use App\Models\McOrderDelivery;
 use App\Models\McOrderDetail;
@@ -252,6 +253,46 @@ class OrderController extends Controller
         
     }
 
+    public function mcPharmacyReturn()
+    {
+        $regions = Region::with('pharmacy')->get();
+
+        $ids = McOrder::distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
+
+
+        $pharmacy = Pharmacy::with('region')->whereIn('id',$ids)->get();
+
+        return view('order.return-day',[
+            'regions' => $regions,
+            'pharmacy' => $pharmacy,
+        ]);
+    }
+
+    public function mcRegionReturnDay(Request $request,$id)
+    {
+        $region = Region::with('pharmacy')->find($id);
+
+        $new = new McDeadlinePharmacy;
+        $new->region_id = $id;
+        $new->day = $request->day;
+        $new->save();
+       
+        return redirect()->back();
+    }
+
+    public function mcPharmacyReturnDay(Request $request)
+    {
+
+        $new = new McDeadlinePharmacy;
+        $new->pharmacy_id = $request->pharmacy_id;
+        $new->day = $request->day;
+        $new->save();
+
+        return redirect()->back();
+
+    }
+
+    
     public function mcChangeOrderDate(Request $request,$id)
     {
         $date = $request->change_order_date;
