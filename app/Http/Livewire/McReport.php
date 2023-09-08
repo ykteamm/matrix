@@ -47,14 +47,18 @@ class McReport extends Component
         $this->regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
-        $this->active_month = date('2023-08-01');
+        $this->active_month = date('2023-09-01');
         $this->active_region = 'Hammasi';
         
-        if($this->active_month != '2023-07-01')
+        if($this->active_month == '2023-07-01')
         {
-            $this->hisobotMonth($this->regions_all,$this->active_month);
-        }else{
             $this->hisobot($this->regions_all,$this->active_month);
+        }elseif($this->active_month == '2023-08-01')
+        {
+            $this->hisobotMonth222222($this->regions_all,$this->active_month);
+        }
+        else{
+            $this->hisobotMonth($this->regions_all,$this->active_month);
         }
 
     }
@@ -71,11 +75,15 @@ class McReport extends Component
             $this->regions = Region::where('id',$idOrAll)->get();
         }
 
-        if($this->active_month != '2023-07-01')
+        if($this->active_month == '2023-07-01')
         {
+            $this->hisobot($this->regions,$this->active_month);
+        }elseif($this->active_month == '2023-08-01')
+        {
+            $this->hisobotMonth222222($this->regions,$this->active_month);
+        }
+        else{
             $this->hisobotMonth($this->regions,$this->active_month);
-        }else{
-            $this->hisobot  ($this->regions,$this->active_month);
         }
 
         // $this->hisobot($this->regions,$this->active_month);
@@ -86,11 +94,15 @@ class McReport extends Component
     {
         $this->active_month = date('Y-m'.'-01',strtotime('01.'.$month));
 
-        if($this->active_month != '2023-07-01')
+        if($this->active_month == '2023-07-01')
         {
-            $this->hisobotMonth($this->regions,$this->active_month);
-        }else{
             $this->hisobot($this->regions,$this->active_month);
+        }elseif($this->active_month == '2023-08-01')
+        {
+            $this->hisobotMonth222222($this->regions,$this->active_month);
+        }
+        else{
+            $this->hisobotMonth($this->regions,$this->active_month);
         }
 
         // $this->hisobot($this->regions,$this->active_month);
