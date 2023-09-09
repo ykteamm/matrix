@@ -71,10 +71,11 @@
                     <tr>
                         <th>FIO </th>
                         <th>Telefon</th>
-                        <th>RM </th>
+                        <th>RM-USTOZ</th>
                         <th>Viloyat </th>
                         <th>Tuman </th>
                         <th>Izoh </th>
+                        <th>Vaqti </th>
                         <th>Status </th>
                         <th>Harakat </th>
                     </tr>
@@ -90,6 +91,9 @@
                             <td >
                                 <div style="width: 200px;overflow: auto;">{{$rekrut->comment}}
                                 </div>
+                            </td>
+                            <td>
+                                {{date('d.m.Y H:s',strtotime($rekrut->dat))}}
                             </td>
                             <td>
                                 @if ($rekrut->status == 0)
