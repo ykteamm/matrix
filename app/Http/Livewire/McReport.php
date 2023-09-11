@@ -10,6 +10,7 @@ use App\Models\McPaymentHistory;
 use App\Models\McReturnHistory;
 use App\Models\Pharmacy;
 use App\Models\Region;
+use App\Services\McReportService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -42,20 +43,23 @@ class McReport extends Component
 
     public function mount()
     {
+        // $this->active_month = date('2023-08-01');
 
+        // $report = new McReportService($this->active_month);
+
+        // $last_money = $report->lastMoney();
+
+        // dd($last_money);
         $this->regions_all = Region::all();
         $this->regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
-        $this->active_month = date('2023-09-01');
+        $this->active_month = date('2023-08-01');
         $this->active_region = 'Hammasi';
         
         if($this->active_month == '2023-07-01')
         {
             $this->hisobot($this->regions_all,$this->active_month);
-        }elseif($this->active_month == '2023-08-01')
-        {
-            $this->hisobotMonth222222($this->regions_all,$this->active_month);
         }
         else{
             $this->hisobotMonth($this->regions_all,$this->active_month);
@@ -63,32 +67,31 @@ class McReport extends Component
 
     }
 
-    public function changeRegion($idOrAll)
-    {
-        if($idOrAll == 'all')
-        {
-            $this->active_region = 'Hammasi';
-            $this->regions = Region::all();
+    // public function changeRegion($idOrAll)
+    // {
+    //     if($idOrAll == 'all')
+    //     {
+    //         $this->active_region = 'Hammasi';
+    //         $this->regions = Region::all();
 
-        }else{
-            $this->active_region = Region::find($idOrAll)->name;
-            $this->regions = Region::where('id',$idOrAll)->get();
-        }
+    //     }else{
+    //         $this->active_region = Region::find($idOrAll)->name;
+    //         $this->regions = Region::where('id',$idOrAll)->get();
+    //     }
 
-        if($this->active_month == '2023-07-01')
-        {
-            $this->hisobot($this->regions,$this->active_month);
-        }elseif($this->active_month == '2023-08-01')
-        {
-            $this->hisobotMonth222222($this->regions,$this->active_month);
-        }
-        else{
-            $this->hisobotMonth($this->regions,$this->active_month);
-        }
+    //     if($this->active_month == '2023-07-01')
+    //     {
+    //         $this->hisobot($this->regions,$this->active_month);
+    //     }elseif($this->active_month == '2023-08-01')
+    //     {
+    //         $this->hisobotMonth222222($this->regions,$this->active_month);
+    //     }
+    //     else{
+    //         $this->hisobotMonth($this->regions,$this->active_month);
+    //     }
 
-        // $this->hisobot($this->regions,$this->active_month);
 
-    }
+    // }
 
     public function changeMonth($month)
     {
@@ -97,17 +100,14 @@ class McReport extends Component
         if($this->active_month == '2023-07-01')
         {
             $this->hisobot($this->regions,$this->active_month);
-        }elseif($this->active_month == '2023-08-01')
-        {
-            $this->hisobotMonth222222($this->regions,$this->active_month);
         }
         else{
             $this->hisobotMonth($this->regions,$this->active_month);
         }
 
-        // $this->hisobot($this->regions,$this->active_month);
 
     }
+
     public function hisobotMonth1($regions,$active_month)
     {
         $this->all_money[1] = 0;
@@ -740,14 +740,9 @@ class McReport extends Component
 
     public function hisobotMonth($regions,$active_month)
     {
-        $last_month = $this->getFirstDate(date('Y-m-d',strtotime('-1 month',strtotime($active_month))));
-
-        $last_active_month = $this->getLastDate($active_month);
         
-
-    
-
-    
+        
+        $report = new McReportService($active_month);
 
         foreach ($regions as $key => $region) {
 
@@ -755,7 +750,35 @@ class McReport extends Component
             $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             
+            $this->last_close_money = $report->lastMoney($region->id,$pharmacy_ids);
 
+            $this->all_money[$region->id] = 0;
+            $this->otgruzka[$region->id] = 0;
+            $this->last_accept_money[$region->id] = 0;
+            $this->new_close_money[$region->id] = 0;
+            $this->new_accept_money[$region->id] = 0;
+            $this->product_accept[$region->id] = 0;
+            $this->predoplata[$region->id] = 0;
+
+        }
+        
+    }
+
+    public function hisobotMonth321($regions,$active_month)
+    {
+        $last_month = $this->getFirstDate(date('Y-m-d',strtotime('-1 month',strtotime($active_month))));
+
+        $last_active_month = $this->getLastDate($active_month);
+        
+        $report = new McReportService;
+
+        foreach ($regions as $key => $region) {
+
+            // $pharmacy_ids = Pharmacy::where('region_id',12)->pluck('id')->toArray();
+            $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
+
+            
+            $last_money = $report->lastMoney($region->id);
             
 
         //predoplata-begin
@@ -1043,6 +1066,7 @@ class McReport extends Component
 
         }
         
+        dd($last_money);
 
     }
 
