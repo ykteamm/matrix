@@ -746,8 +746,8 @@ class McReport extends Component
 
         foreach ($regions as $key => $region) {
 
-            // $pharmacy_ids = Pharmacy::where('region_id',12)->pluck('id')->toArray();
-            $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
+            $pharmacy_ids = Pharmacy::where('region_id',3)->pluck('id')->toArray();
+            // $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             
             $this->last_close_money = $report->lastMoney($region->id,$pharmacy_ids);

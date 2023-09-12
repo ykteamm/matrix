@@ -29,9 +29,12 @@ class McReportService
 
     public function lastMoney($region_id,$pharmacy_ids)
     {
+        
         $order_ids = $this->lastMonthOrderIds($pharmacy_ids);
 
         $sum = 0;
+
+        $f = [];
 
         foreach ($order_ids as $key => $order) {
 
@@ -39,24 +42,36 @@ class McReportService
 
             if($ord_sum)
             {
-                if(strtotime($order->order_date) < strtotime($ord_sum->created_at))
+                if(strtotime($order->order_date) > strtotime($ord_sum->created_at))
                     {
                         $sum += McPaymentHistory::where('order_id',$order->id)
                         // ->where('last',0)
                         ->whereDate('created_at','>=',$this->active_month)
                         ->whereDate('created_at','<=',$this->last_active_month)
                         ->sum('amount');
-                    }
-            }else{
-                        $sum += McPaymentHistory::where('order_id',$order->id)
-                        // ->where('last',0)
+                        
+                        
+
+                    }else{
+
+                        
+                        $ff = McPaymentHistory::where('order_id',$order->id)
                         ->whereDate('created_at','>=',$this->active_month)
                         ->whereDate('created_at','<=',$this->last_active_month)
                         ->sum('amount');
+            
+                        $f[$order->id] = $ff;
+                    }
+
+                    
             }
-            
-            
+
+           
         }
+
+        dd($f);
+
+
         $this->last_money[$region_id] = $sum;
 
         return $this->last_money;
