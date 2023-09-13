@@ -78,13 +78,22 @@ class McReportService
                 if($ords)
                 {
 
-                    $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                    $first_deliver = McOrderDelivery::where('order_id',$order->id)
+                        ->whereDate('created_at','<',$this->active_month)
+                        ->count();
+                    
+                    if($first_deliver > 0)
+                    {
+                        $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
 
-                    $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
+                        $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
+    
+                        $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
+    
+                        $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                    }
 
-                    $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
-
-                    $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                    
 
                 }else{
 
@@ -155,7 +164,11 @@ class McReportService
         
         $order_ids = $this->activeMonthOrderIds($pharmacy_ids);
 
+        $order_ids_last = $this->lastMonthOrderIds($pharmacy_ids);
+
         $sum = 0;
+
+        $sum_last = 0;
 
         foreach ($order_ids as $key => $order) {
 
@@ -173,19 +186,66 @@ class McReportService
                 $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
 
             }else{
+                if($order->price > 0)
+                {
+                    $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
 
-                $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                    $otgruzka = $order->price - $order->price*$order->discount/100;
+    
+                    $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                }else{
+                    $vozvrat = 0;
 
-                $otgruzka = $order->price - $order->price*$order->discount/100;
+                    $otgruzka = 0;
 
-                $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                    $money = 0;
+                }
+                
             }
 
             $sum += $otgruzka - $money - $vozvrat;
 
         }
 
-        $this->new_accept_money[$region_id] = $sum;
+        foreach ($order_ids_last as $key => $order)
+        {
+            $ords = McOrderDelivery::where('order_id',$order->id)->first();
+
+            $vozvrat2 = 0;
+
+                $otgruzka2 = 0;
+
+                $money2 = 0;
+
+            if($ords)
+            {
+
+                $first_deliver = McOrderDelivery::where('order_id',$order->id)
+                    ->whereDate('created_at','>=',$this->active_month)
+                    ->whereDate('created_at','<=',$this->last_active_month)
+                    ->count();
+                
+                if($first_deliver > 0)
+                {
+                    $money2 = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+
+                    $otgruzka2 = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
+
+                    $otgruzka2 = $otgruzka2 - $otgruzka2*$order->discount/100;
+
+                    $vozvrat2 = McReturnHistory::where('order_id',$order->id)->sum('amount');
+
+                    // $this->new_accept_money[$order->id] = [$otgruzka2,$money2];
+
+                }
+            } 
+
+            $sum_last += $otgruzka2 - $money2 - $vozvrat2;
+
+
+
+        }
+        $this->new_accept_money[$region_id] = $sum + $sum_last;
 
         return $this->new_accept_money;
 
