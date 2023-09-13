@@ -2,8 +2,19 @@
     <div class="row gold-box">
        
         <div class="card flex-fill mt-5">
-       
+            
             <div class="card-body">
+                <div class="text-right">
+                    <a href="{{route('mc-money-month',['begin' => '2023-08-01','end' => '2023-08-31'])}}">
+                        <button class="btn btn-primary">Avgust</button>
+                    </a>
+                    <a href="{{route('mc-money-month',['begin' => '2023-09-01','end' => '2023-09-30'])}}">
+                        <button class="btn btn-primary">Sentabr</button>
+                    </a>
+                    <a href="{{route('money-coming')}}">
+                        <button class="btn btn-primary">Jami</button>
+                    </a>
+                </div>
               <div id="dtBasicExample1212333"></div>
 
                 <div class="table-responsive">
@@ -70,7 +81,7 @@
                                         </td>
                                         <td>
                                                 
-                                            <a href="order/{{$order->id}}">
+                                            <a href="{{route('mc-ord-id',['order_id' => $order->id])}}">
                                                 <button  class="btn btn-primary" style="padding: 0px 5px;">
                                                     <i class="fas fa-shipping-fast"></i>
                                                 </button>

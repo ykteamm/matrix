@@ -746,21 +746,29 @@ class McReport extends Component
 
         foreach ($regions as $key => $region) {
 
-            $pharmacy_ids = Pharmacy::where('region_id',3)->pluck('id')->toArray();
-            // $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
+            // $pharmacy_ids = Pharmacy::where('region_id',12)->pluck('id')->toArray();
+            $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             
-            $this->last_close_money = $report->lastMoney($region->id,$pharmacy_ids);
+            $this->last_close_money = $report->lastCloseMoney($region->id,$pharmacy_ids);
+            $this->last_accept_money = $report->lastAcceptMoney($region->id,$pharmacy_ids);
 
-            $this->all_money[$region->id] = 0;
-            $this->otgruzka[$region->id] = 0;
-            $this->last_accept_money[$region->id] = 0;
-            $this->new_close_money[$region->id] = 0;
-            $this->new_accept_money[$region->id] = 0;
+            $this->new_close_money = $report->newCloseMoney($region->id,$pharmacy_ids);
+            $this->new_accept_money = $report->newAcceptMoney($region->id,$pharmacy_ids);
+
+            $this->predoplata = $report->predoplata($region->id,$pharmacy_ids);
+
+            
+            $this->all_money[$region->id] = $this->last_close_money[$region->id] + $this->new_close_money[$region->id];
+
+            $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id];
+            
             $this->product_accept[$region->id] = 0;
-            $this->predoplata[$region->id] = 0;
 
         }
+
+        // dd($this->last_accept_money);
+
         
     }
 

@@ -452,7 +452,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     //ORDER-BEGIN
     Route::get('order', [OrderController::class, 'index'])->name('order.index');
 
-    Route::get('order/{order_id}', [OrderController::class, 'orderPage']);
+    Route::get('order/{order_id}', [OrderController::class, 'orderPage'])->name('mc-ord-id');
     Route::get('order-delete/{order_id}', [OrderController::class, 'orderDelete']);
 
     // Route::get('order/{order_id}', [\App\Http\Livewire\McShipmentDetail::class, 'mount']);
@@ -464,6 +464,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('report', [OrderController::class, 'report'])->name('report');
     Route::get('mc-admin', [OrderController::class, 'mcAdmin']);
     Route::get('mc-admin-restore/{id}', [OrderController::class, 'mcOrderRestore'])->name('mc-admin-restore');
+
+    Route::get('mc-admin-restore/{begin}/{end}', [OrderController::class, 'mcMoneymonth'])->name('mc-money-month');
 
     Route::post('mc-order-change-date/{id}', [OrderController::class, 'mcChangeOrderDate'])->name('mc-order-change-date');
     Route::post('mc-order-delivery-change-date/{id}/{array}', [OrderController::class, 'mcChangeOrderDeliveryDate'])->name('mc-order-delivery-change-date');

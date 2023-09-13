@@ -55,6 +55,15 @@ class OrderController extends Controller
             'order_id' => $order_id
         ]);
     }
+
+    public function mcMoneymonth($begin,$end)
+    {
+        return view('order.money-month',[
+            'begin' => $begin,
+            'end' => $end,
+        ]);
+    }
+
     public function orderDelete($order_id)
     {
 
