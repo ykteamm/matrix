@@ -170,20 +170,22 @@ class McReportService
 
                 if($first_deliver)  
                 {
-                    if(strtotime($first_deliver->created_at) >= strtotime($this->active_month))
+                    if(strtotime($first_deliver->created_at) > strtotime($this->active_month))
                     {
                         $sum12 += McPaymentHistory::where('order_id',$order->id)
                         // ->where('last',0)
                         ->whereDate('created_at','>=',$this->active_month)
                         ->whereDate('created_at','<=',$this->last_active_month)
                         ->sum('amount');
-                    }else{
-                        $sum12 += McPaymentHistory::where('order_id',$order->id)
-                        // ->where('last',0)
-                        ->whereDate('created_at','>=',$this->active_month)
-                        ->whereDate('created_at','<=',$this->last_active_month)
-                        ->sum('amount');
+                    
                     }
+                    // else{
+                    //     $sum12 = McPaymentHistory::where('order_id',$order->id)
+                    //     // ->where('last',0)
+                    //     ->whereDate('created_at','>=',$this->active_month)
+                    //     ->whereDate('created_at','<=',$this->last_active_month)
+                    //     ->sum('amount');
+                    // }
                 }else{
                     $sum12 += McPaymentHistory::where('order_id',$order->id)
                     ->where('last',1)
@@ -250,7 +252,15 @@ class McReportService
                 
             }
 
-            $sum += $otgruzka - $money - $vozvrat;
+            $minus = $otgruzka - $money - $vozvrat;
+            if($minus < 0)
+            {
+                $minus = 0;
+            }
+
+            $sum += $minus;
+
+            // $this->new_accept_money[$order->id] = $sum;
 
 
         }
@@ -288,7 +298,15 @@ class McReportService
                 }
             } 
 
-            $sum_last += $otgruzka2 - $money2 - $vozvrat2;
+            $minus_last = $otgruzka2 - $money2 - $vozvrat2;
+            if($minus_last < 0)
+            {
+                $minus_last = 0;
+            }
+
+            $sum_last += $minus_last;
+
+            // $this->new_accept_money[$order->id] = $sum_last;
 
 
 
@@ -366,6 +384,7 @@ class McReportService
         $new_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
             ->whereDate('order_date','>=',$this->active_month)
             ->whereDate('order_date','<=',$this->last_active_month)
+            ->orderBy('id','ASC')
             ->get();
 
         return $new_order_ids;

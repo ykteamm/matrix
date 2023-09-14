@@ -24,6 +24,11 @@ class AdminController extends Controller
 
         $sitafor = $money->orderMoneyArrive();
 
+        // $qarzdorlik = $money->qarzdorlik();
+
+        // dd($sitafor);
+        // dd(array_sum($sitafor));
+
         $arrive_monay = $money->arriveMoney();
         $arrive_monay_day = $money->arriveMoneyToday();
         $arrive_monay_week = $money->arriveMoneyWeek();
@@ -48,6 +53,125 @@ class AdminController extends Controller
         $qizil_region = [];
 
         $dd = [];
+
+        
+
+        $yashil = [];
+        $sariq = [];
+        $qizil = [];
+
+        $yashil_all = 0;
+        $sariq_all = 0;
+        $qizil_all = 0;
+
+        $yashil_p = [];
+        $sariq_p = [];
+        $qizil_p = [];
+
+        $yashil_mc = [];
+        $sariq_mc = [];
+        $qizil_mc = [];
+
+        $sariq_soni = [];
+        $qizil_soni = [];
+
+
+        // dd($sitafor);
+
+        $qizil_yangi = [];
+        $qizil_eski = [];
+
+        $qizil_yangi_sum = 0;
+        $qizil_eski_sum = 0;
+
+        $sariq_yangi_sum = 0;
+        $sariq_eski_sum = 0;
+
+        $yashil_yangi_sum = 0;
+        $yashil_eski_sum = 0;
+
+        foreach ($sitafor as $a => $sitaf) {
+            foreach ($sitaf as $f => $sita) {
+
+                $yashil_all_p = 0;
+                $sariq_all_p = 0;
+                $qizil_all_p = 0;
+
+                foreach ($sita as $k => $sitf) {
+
+                    $yashil[$a][] = $sitf[0];
+                    $yashil_all += $sitf[0];
+                    $yashil_all_p += $sitf[0];
+
+                    if(isset($sitf[3]))
+                    {
+                        foreach ($sitf[3] as $t => $v) {
+                            if($v['xolat'] == 2)
+                            {
+                                $qizil[$a][] = $v['qarz'];
+                                $qizil_all += $v['qarz'];
+                                $qizil_all_p += $v['qarz'];
+
+                                $qizil_mc[$k][$t] = $v['qarz'];
+                                $qizil_soni[$t] = $v['kun'];
+
+                                if($v['pul_xolat'] == 1)
+                                {
+                                    $qizil_yangi[$k][] = $v['qarz'];
+                                    $qizil_yangi_sum += $v['qarz'];
+                                }else{
+                                    $qizil_eski[$k][] = $v['qarz'];
+                                    $qizil_eski_sum += $v['qarz'];
+
+                                }
+
+                            }elseif($v['xolat'] == 1){
+                                $sariq[$a][] = $v['qarz'];
+                                $sariq_all += $v['qarz'];
+                                $sariq_all_p += $v['qarz'];
+
+                                $sariq_mc[$t] = $v['qarz'];
+                                $sariq_soni[$t] = $v['kun'];
+
+                                if($v['pul_xolat'] == 1)
+                                {
+                                    $sariq_yangi_sum += $v['qarz'];
+                                }else{
+                                    $sariq_eski_sum += $v['qarz'];
+                                }
+
+                            }else{
+                                if($v['pul_xolat'] == 1)
+                                {
+                                    $yashil_yangi_sum += $v['qarz'];
+                                }else{
+                                    $yashil_eski_sum += $v['qarz'];
+                                }
+                            }
+                        
+                            
+                        }
+                        // $qarz[$a][] = $sitf[1];
+                    }
+
+
+
+                }
+
+                
+                $yashil_p[$f] = $yashil_all_p;
+                $qizil_p[$f] = $qizil_all_p;
+                $sariq_p[$f] = $sariq_all_p;
+
+                $yashil_all_p = 0;
+                $qizil_all_p = 0;
+                $sariq_all_p = 0;
+
+
+            }
+        }
+
+        // dd(($qizil_eski_sum));
 
         foreach ($rekom as $key => $value) {
             if($value['con'] == 2)
@@ -91,86 +215,20 @@ class AdminController extends Controller
             }
         }
 
-        $yashil = [];
-        $sariq = [];
-        $qizil = [];
-
-        $yashil_all = 0;
-        $sariq_all = 0;
-        $qizil_all = 0;
-
-        $yashil_p = [];
-        $sariq_p = [];
-        $qizil_p = [];
-
-        $yashil_mc = [];
-        $sariq_mc = [];
-        $qizil_mc = [];
-
-        $sariq_soni = [];
-        $qizil_soni = [];
-
-
-        foreach ($sitafor as $a => $sitaf) {
-            foreach ($sitaf as $f => $sita) {
-
-                $yashil_all_p = 0;
-                $sariq_all_p = 0;
-                $qizil_all_p = 0;
-
-                foreach ($sita as $k => $sitf) {
-
-                    $yashil[$a][] = $sitf[0];
-                    $yashil_all += $sitf[0];
-                    $yashil_all_p += $sitf[0];
-
-                    if(isset($sitf[3]))
-                    {
-                        foreach ($sitf[3] as $t => $v) {
-                            if($v['xolat'] == 2)
-                            {
-                                $qizil[$a][] = $v['qarz'];
-                                $qizil_all += $v['qarz'];
-                                $qizil_all_p += $v['qarz'];
-
-                                $qizil_mc[$k][$t] = $v['qarz'];
-                                $qizil_soni[$t] = $v['kun'];
-
-                            }else{
-                                $sariq[$a][] = $v['qarz'];
-                                $sariq_all += $v['qarz'];
-                                $sariq_all_p += $v['qarz'];
-
-                                $sariq_mc[$t] = $v['qarz'];
-                                $sariq_soni[$t] = $v['kun'];
-
-                            }
-                        }
-                        // $qarz[$a][] = $sitf[1];
-                    }
-
-
-
-                }
-
-                
-                $yashil_p[$f] = $yashil_all_p;
-                $qizil_p[$f] = $qizil_all_p;
-                $sariq_p[$f] = $sariq_all_p;
-
-                $yashil_all_p = 0;
-                $qizil_all_p = 0;
-                $sariq_all_p = 0;
-
-
-            }
-        }
-
         // dd($sitafor);
 
         
 
         return view('admin.index',[
+            'qizil_yangi_sum' => $qizil_yangi_sum,
+            'qizil_eski_sum' => $qizil_eski_sum,
+
+            'sariq_yangi_sum' => $sariq_yangi_sum,
+            'sariq_eski_sum' => $sariq_eski_sum,
+
+            'yashil_yangi_sum' => $yashil_yangi_sum,
+            'yashil_eski_sum' => $yashil_eski_sum,
+
             'yashil' => $yashil,
             'sariq' => $sariq,
             'qizil' => $qizil,

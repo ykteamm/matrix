@@ -20,15 +20,18 @@ class AdminService
     public $month_start;
     public $month_end;
     public $last_month_start;
+    public $regions;
 
     public function __construct()
     {
-        $this->month_start = date('Y-m-'.'01');
+        // $this->month_start = date('Y-m-'.'01');
+        $this->month_start = date('2023-08-01');
         $this->month_end = $this->getLastDate($this->month_start);
         $this->last_month_start = $this->getFirstDate(date('Y-m-d',strtotime('-10 day',strtotime($this->month_start))));
+        $this->regions = Region::all();
     }
 
-    public function arriveMoney()
+    public function arriveMoney33()
     {
 
         $all_order_ids = McOrder::whereDate('order_date','<=',$this->month_end)
@@ -66,7 +69,31 @@ class AdminService
                 
             }
 
-            return $sum1;
+            dd($sum1);
+    }
+
+    public function arriveMoney()
+    {
+        $last_close_money = [];
+        $new_close_money = [];
+        $all_money = [];
+
+        $report = new McReportService($this->month_start);
+
+        foreach ($this->regions as $key => $region) {
+            $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
+
+            $last_close_money = $report->lastCloseMoney($region->id,$pharmacy_ids);
+
+            $new_close_money = $report->newCloseMoney($region->id,$pharmacy_ids);
+
+            $all_money[$region->id] = $last_close_money[$region->id] + $new_close_money[$region->id];
+
+        }
+
+        return array_sum($all_money);
+
+       
     }
 
     public function arriveMoneyToday()
@@ -394,10 +421,23 @@ class AdminService
 
     //sfitafor
 
+    public function qarzdorlik()
+    {
+        $regions = Region::all();
+
+        foreach ($regions as $reg => $region) {
+
+
+
+        }
+        return 123;
+    }
+
     public function orderMoneyArrive()
     {
 
         $regions = Region::all();
+        // $regions = Region::where('id',2)->get();
 
         $arr = [];
 
@@ -405,21 +445,25 @@ class AdminService
 
         foreach ($regions as $reg => $region) {
             
-            // $rid = 18;
+            // $rid = 2;
             $rid = $region->id;
 
             $pharmacy_id = Pharmacy::where('region_id',$rid)->pluck('id')->toArray();
 
-            $order_pharmacy = McOrder::whereIn('pharmacy_id',$pharmacy_id)->distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
+            $order_pharmacy = McOrder::whereIn('pharmacy_id',$pharmacy_id)
+            ->distinct('pharmacy_id')->pluck('pharmacy_id')->toArray();
 
             foreach ($order_pharmacy as $key => $pharmacy) {
                 
                 // $orders = McOrder::where('id',168)->get();
-                $orders = McOrder::where('pharmacy_id',$pharmacy)->get();
+                $orders = McOrder::where('pharmacy_id',$pharmacy)
+                ->whereDate('order_date','<=',$this->month_end)
+                ->get();
 
                     $yashil_sum = 0;
                     $sariq_sum = 0;
                     $qizil_sum = 0;
+                    $fff= 0;
 
                     foreach ($orders as $ord => $order) {
 
@@ -433,12 +477,24 @@ class AdminService
                         $deliverys = McOrderDelivery::where('order_id',$order->id)
                         ->sum(DB::raw('quantity*price'));
 
+                        $return = McReturnHistory::where('order_id',$order->id)->sum('amount');
+
                         
+
+                        $first_payment = McPaymentHistory::where('order_id',$order->id)->first();
+
 
                         $delivery_order = McOrderDelivery::where('order_id',$order->id)->first();
 
                         if($delivery_order)
                         {
+                            if(strtotime($delivery_order->created_at) < strtotime($this->month_start))
+                            {
+                                $pul_xolat = 0;
+                            }else{
+                                $pul_xolat = 1;
+                            }
+
                             $with_discount_price = $deliverys - $deliverys*$discount/100;
                             $qarz = $with_discount_price - $all_payment;
 
@@ -465,14 +521,21 @@ class AdminService
                                 $test_sum = $all_payment;
                                 $date_del_arr = [];
                                 foreach ($del_arr as $s => $sel) {
-                                    if($test_sum > $sel)
+                                    if($test_sum > 0)
                                     {
+                                        $asd = $test_sum;
                                         $test_sum = $test_sum - $sel;
+
+                                        if($test_sum <=0 )
+                                        {
+                                            $date_del_arr[$sel-$asd] = $s;
+                                        }
                                     }else{
-                                        $date_del_arr[] = $s;
+                                            $date_del_arr[$sel] = $s;
                                     }
                                 }
                                 // dd($date_del_arr);
+                                        // $arr[$order->id] = $date_del_arr;
 
                                 $asosiy[$rid][$pharmacy][$order->id][1] = $qarz;
 
@@ -482,28 +545,41 @@ class AdminService
 
                                     $xolat = $this->analiz($pharmacy,$order->discount,$day);
 
-                                    if($xolat != 3)
-                                    {
-                                        $d = date('Y-m-d H:i:s',strtotime($fe));
-                                        $h = date('H:i:s',strtotime($fe));
+                                    // if($xolat != 3)
+                                    // {
+                                        // $d = date('Y-m-d H:i:s',strtotime($fe));
+                                        // $h = date('H:i:s',strtotime($fe));
 
-                                        $delivery_q = McOrderDelivery::where('order_id',$order->id)
-                                        ->whereDate('created_at',$d)
-                                        ->whereTime('created_at', '=', $h)
-                                        ->sum(DB::raw('quantity*price'));
+                                        // $delivery_q = McOrderDelivery::where('order_id',$order->id)
+                                        // ->whereDate('created_at',$d)
+                                        // ->whereTime('created_at', '=', $h)
+                                        // ->sum(DB::raw('quantity*price'));
 
-                                        $pr = $delivery_q - $delivery_q*$order->discount/100;
+                                        // $pr = $delivery_q - $delivery_q*$order->discount/100;
 
                                         $asosiy[$rid][$pharmacy][$order->id][3][$fe] = [
                                             'xolat' => $xolat,
                                             'kun' => $day,
-                                            'qarz' => $pr,
+                                            'qarz' => $f,
+                                            'pul_xolat' => $pul_xolat
                                         ];
-                                    }
+
+                                        // $arr[$order->id] = $date_del_arr;
+
+                                        if($pul_xolat == 1)
+                                        {
+                                            $fff += $f;
+                                            $arr[$order->id] = $asosiy[$rid][$pharmacy][$order->id][3];
+
+                                        }
+                                    // }
+
 
                                     
 
                                 }
+
+
 
                                 
 
@@ -512,35 +588,54 @@ class AdminService
 
                         }else{
 
-                            $with_discount_price = $order->price - $order->price*$discount/100;
-                            $ret = McReturnHistory::where('order_id',$order->id)->sum('amount');
-                            $qarz = $with_discount_price - $all_payment-$ret;
-
-                            // $last_payment = McPaymentHistory::where('order_id',$order->id)->orderBy('id','DESC')->first();
-
-                            $day = $this->day_minus(date('Y-m-d'),$order->order_date);
-
-                            $day = floor((strtotime(date('Y-m-d'))-strtotime($order->order_date))/60/60/24);
-
-
-
-                            if( $qarz > 0 )
+                            if($order->price > 0)
                             {
-                                $xolat = $this->analiz($pharmacy,$order->discount,$day);
 
-                                $asosiy[$rid][$pharmacy][$order->id][1] = $qarz;
-
-                                if($xolat != 3)
+                                if($order->order_date < $this->month_start)
                                 {
+                                    $pul_xolat = 0;
+                                }else{
+                                    $pul_xolat = 1;
+                                }
 
-                                   
+                                $with_discount_price = $order->price - $order->price*$discount/100;
 
-                                    $asosiy[$rid][$pharmacy][$order->id][3][$order->order_date] = [
-                                        'xolat' => $xolat,
-                                        'kun' => $day,
-                                        'qarz' => $qarz,
+                                // $ret = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                                
+                                $qarz = $with_discount_price - $all_payment-$return;
 
-                                    ];
+                                $day = $this->day_minus(date('Y-m-d'),$order->order_date);
+
+                                $day = floor((strtotime(date('Y-m-d'))-strtotime($order->order_date))/60/60/24);
+
+
+
+                                if( $qarz > 0 )
+                                {
+                                    $xolat = $this->analiz($pharmacy,$order->discount,$day);
+
+                                    $asosiy[$rid][$pharmacy][$order->id][1] = $qarz;
+
+                                    // if($xolat != 3)
+                                    // {
+
+                                    
+
+                                        $asosiy[$rid][$pharmacy][$order->id][3][$order->order_date] = [
+                                            'xolat' => $xolat,
+                                            'kun' => $day,
+                                            'qarz' => $qarz,
+                                            'pul_xolat' => $pul_xolat,
+
+                                        ];
+
+                                        if($pul_xolat == 1)
+                                        {
+                                            $fff += $qarz;
+                                        }
+                                        // $arr[$order->id] = $asosiy[$rid][$pharmacy][$order->id][3];
+                                    // }
+
                                 }
 
                             }
@@ -549,7 +644,7 @@ class AdminService
 
                     }
 
-
+                // $arr[$pharmacy] = $orders;
 
             }
 
@@ -598,11 +693,11 @@ class AdminService
 
         if($an > 0 && $an <=3 )
         {
-            $xolat = 1;
+            $xolat = 1; //sariq
         }elseif($an < 0){
-            $xolat = 2;
+            $xolat = 2; //qizil
         }else{
-            $xolat = 3;
+            $xolat = 3; //yashil
         }
 
         return $xolat;

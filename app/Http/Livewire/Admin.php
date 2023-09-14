@@ -38,6 +38,8 @@ class Admin extends Component
         // dd($dd);
 
         $this->arrive_monay = $money->arriveMoney();
+
+
         $this->arrive_monay_day = $money->arriveMoneyToday();
         $this->arrive_monay_week = $money->arriveMoneyWeek();
 

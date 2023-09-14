@@ -26,7 +26,7 @@
         <div class="page-header mt-5">
             <div class="row">
 
-                <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap delcat">
+                <div class="col-12 col-md-12 col-lg-8 d-flex flex-wrap delcat">
                     <div style="border-radius:26px;" class="card copa">
                         <div class="d-flex">
 
@@ -51,7 +51,144 @@
                             </div>
                         </div>
                         <div class="card-body text-right">
-                            <div class="dash-contetnt text-right">
+                            <div class="dash-content">
+                                <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Qarzdorlik</h2>
+                                <h3 style="color:#ffffff;margin-left:0px;">
+                                    <span title="110.000">
+                                    <span class="numberpr">{{bmk($arrive_monay)}} <span style="font-size:15px">oy</span></span>
+                                    </span>
+                                </h3>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Yangi</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Eski</h5>    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h3 style="color:#f17979;margin-left:0px;">
+                                        <span title="{{number_format($qizil_yangi_sum+$qizil_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($qizil_yangi_sum+$qizil_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#f17979;margin-left:0px;">
+                                        <span title="{{number_format($qizil_yangi_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($qizil_yangi_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#f17979;margin-left:0px;">
+                                        <span title="{{number_format($qizil_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($qizil_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h3 style="color:#fbf728;margin-left:0px;">
+                                        <span title="{{number_format($sariq_yangi_sum+$sariq_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($sariq_yangi_sum+$sariq_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#fbf728;margin-left:0px;">
+                                        <span title="{{number_format($sariq_yangi_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($sariq_yangi_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#fbf728;margin-left:0px;">
+                                        <span title="{{number_format($sariq_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($sariq_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h3 style="color:#16fd2a;margin-left:0px;">
+                                        <span title="{{number_format($yashil_yangi_sum+$yashil_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($yashil_yangi_sum+$yashil_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#16fd2a;margin-left:0px;">
+                                        <span title="{{number_format($yashil_yangi_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($yashil_yangi_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#16fd2a;margin-left:0px;">
+                                        <span title="{{number_format($yashil_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($yashil_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>    
+                                </div>
+                            </div>
+                            <div class="row" style="border-top: 2px solid white;">
+                                <div class="col-md-4">
+                                    <h3 style="color:#ffffff;margin-left:0px;">
+                                        <span title="{{number_format($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#ffffff;margin-left:0px;">
+                                        <span title="{{number_format($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h3 style="color:#ffffff;margin-left:0px;">
+                                        <span title="{{number_format($qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum,0,',','.')}}">
+                                        <span class="numberpr">{{bmk($qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum)}}</span>
+                                        </span>
+                                        
+                                        
+                                    </h3>    
+                                </div>
+                            </div>
+                            
+                            {{-- <div class="dash-contetnt text-right">
                             <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Qarzdorlik</h2>
                             <h3 style="color:#ffffff;margin-left:0px;">
                                 <span title="{{number_format($yashil_all,0,',','.')}}">
@@ -72,7 +209,7 @@
                             </h3>
                             <i style="cursor: pointer" class="fas fa-eye" data-toggle="modal"
                                 data-target="#mcregion"></i>
-                            </div>
+                            </div> --}}
                         </div>
 
                         </div>
@@ -81,13 +218,13 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-6 d-flex flex-wrap delcat">
+                <div class="col-12 col-md-12 col-lg-4 d-flex flex-wrap delcat">
                     <div style="border-radius:26px;" class="card copa">
                         <div class="d-flex">
 
                         <div class="card-body">
                             <div class="dash-contetnt">
-                            <h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">Zagruzka</h2>
+                            <h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">Otgruzka</h2>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
                                 <span title="110.000">
                                 <span class="numberpr">{{bmk($shipment)}} <span style="font-size:15px">oy</span> </span>
@@ -107,7 +244,7 @@
                         </div>
                         <div class="card-body text-right">
                             <div class="dash-contetnt text-right">
-                            <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Taklif</h2>
+                            <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Zagruzka minimum</h2>
                             <h3 style="color:#ffffff;margin-left:0px;">
                                 <span title="{{number_format($yashil_rek_sum,0,',','.')}}">
                                 <span class="numberpr">{{bmk($yashil_rek_sum)}}</span>
