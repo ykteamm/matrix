@@ -39,7 +39,7 @@ class McReportService
         
         $order_ids = $this->lastMonthOrderIds($pharmacy_ids);
 
-        $sum = 0;
+        $sum123 = 0;
 
         foreach ($order_ids as $key => $order) {
 
@@ -47,19 +47,34 @@ class McReportService
 
             if($ord_sum)
             {
-     
-                $sum += McPaymentHistory::where('order_id',$order->id)
+
+                $first_deliver = McOrderDelivery::where('order_id',$order->id)->first();
+                if($first_deliver)  
+                {
+                    if(strtotime($first_deliver) > strtotime($this->active_month))
+                    {
+                        $sum123 += McPaymentHistory::where('order_id',$order->id)
+                        ->where('last',0)
+                        ->whereDate('created_at','>=',$this->active_month)
+                        ->whereDate('created_at','<=',$this->last_active_month)
+                        ->sum('amount');
+                    }
+                }else{
+                    $sum123 += McPaymentHistory::where('order_id',$order->id)
                     ->where('last',0)
                     ->whereDate('created_at','>=',$this->active_month)
                     ->whereDate('created_at','<=',$this->last_active_month)
                     ->sum('amount');
+                }
+                    
+
+                
    
             }
-
            
         }
 
-        $this->last_money[$region_id] = $sum;
+        $this->last_money[$region_id] = $sum123;
 
         return $this->last_money;
     }
@@ -120,7 +135,7 @@ class McReportService
 
         $order_ids_last = $this->lastMonthOrderIds($pharmacy_ids);
 
-        $sum = 0;
+        $sum12 = 0;
 
         $sum1 = 0;
 
@@ -129,13 +144,17 @@ class McReportService
             $ord_sum = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
 
             if($ord_sum)
-            {
-                $sum += McPaymentHistory::where('order_id',$order->id)
+            {   
+
+                $sum1 += McPaymentHistory::where('order_id',$order->id)
                     ->whereDate('created_at','>=',$this->active_month)
                     ->whereDate('created_at','<=',$this->last_active_month)
                     ->sum('amount');
+            }else{
+                $sum1 += 0;
             }
 
+            // $this->new_close_money[$order->id] = $sum1;
             
         }
 
@@ -145,15 +164,41 @@ class McReportService
 
             if($ord_sum)
             {
-                $sum1 += McPaymentHistory::where('order_id',$order->id)
+                $first_deliver = McOrderDelivery::where('order_id',$order->id)->first();
+
+                if($first_deliver)  
+                {
+                    if(strtotime($first_deliver) > strtotime($this->active_month))
+                    {
+                        $sum12 += McPaymentHistory::where('order_id',$order->id)
+                        ->where('last',0)
+                        ->whereDate('created_at','>=',$this->active_month)
+                        ->whereDate('created_at','<=',$this->last_active_month)
+                        ->sum('amount');
+                    }else{
+                        $sum12 += McPaymentHistory::where('order_id',$order->id)
+                        ->where('last',0)
+                        ->whereDate('created_at','>=',$this->active_month)
+                        ->whereDate('created_at','<=',$this->last_active_month)
+                        ->sum('amount');
+                    }
+                }else{
+                    $sum12 += McPaymentHistory::where('order_id',$order->id)
                     ->where('last',1)
                     ->whereDate('created_at','>=',$this->active_month)
                     ->whereDate('created_at','<=',$this->last_active_month)
                     ->sum('amount');
+                } 
+
+                
+            }else{
+                $sum12 += 0;
             }
+
+            // $this->new_close_money[$order->id] = $sum12;
         }
 
-        $this->new_close_money[$region_id] = $sum + $sum1;
+        $this->new_close_money[$region_id] = $sum12 + $sum1;
 
         return $this->new_close_money;
 
@@ -204,6 +249,7 @@ class McReportService
             }
 
             $sum += $otgruzka - $money - $vozvrat;
+
 
         }
 

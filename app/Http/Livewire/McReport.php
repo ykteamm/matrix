@@ -746,7 +746,7 @@ class McReport extends Component
 
         foreach ($regions as $key => $region) {
 
-            // $pharmacy_ids = Pharmacy::where('region_id',2)->pluck('id')->toArray();
+            // $pharmacy_ids = Pharmacy::where('region_id',3)->pluck('id')->toArray();
             $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             
@@ -767,7 +767,7 @@ class McReport extends Component
 
         }
 
-        // dd($this->new_accept_money);
+        // dd($this->new_close_money);
 
         
     }
