@@ -31,6 +31,7 @@ class McReport extends Component
     public $new_close_money = [];
     public $new_accept_money = [];
     public $predoplata = [];
+    public $predoplata_new = [];
     public $product_accept = [];
     public $all_money = [];
 
@@ -758,10 +759,12 @@ class McReport extends Component
 
             $this->predoplata = $report->predoplata($region->id,$pharmacy_ids);
 
+            $this->predoplata_new = $report->predoplataNew($region->id,$pharmacy_ids);
+
             
             $this->all_money[$region->id] = $this->last_close_money[$region->id] + $this->new_close_money[$region->id];
 
-            $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id];
+            $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id]-$this->predoplata_new[$region->id];
             
             $this->product_accept[$region->id] = 0;
 

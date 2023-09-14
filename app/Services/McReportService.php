@@ -17,6 +17,7 @@ class McReportService
     public $last_accept_money = [];
     public $new_accept_money = [];
     public $predoplata = [];
+    public $predoplata_new = [];
     
     public $active_month;
 
@@ -51,7 +52,7 @@ class McReportService
                 $first_deliver = McOrderDelivery::where('order_id',$order->id)->first();
                 if($first_deliver)  
                 {
-                    if(strtotime($first_deliver) > strtotime($this->active_month))
+                    if(strtotime($first_deliver->created_at) < strtotime($this->active_month))
                     {
                         $sum123 += McPaymentHistory::where('order_id',$order->id)
                         ->where('last',0)
@@ -59,6 +60,7 @@ class McReportService
                         ->whereDate('created_at','<=',$this->last_active_month)
                         ->sum('amount');
                     }
+
                 }else{
                     $sum123 += McPaymentHistory::where('order_id',$order->id)
                     ->where('last',0)
@@ -168,16 +170,16 @@ class McReportService
 
                 if($first_deliver)  
                 {
-                    if(strtotime($first_deliver) > strtotime($this->active_month))
+                    if(strtotime($first_deliver->created_at) >= strtotime($this->active_month))
                     {
                         $sum12 += McPaymentHistory::where('order_id',$order->id)
-                        ->where('last',0)
+                        // ->where('last',0)
                         ->whereDate('created_at','>=',$this->active_month)
                         ->whereDate('created_at','<=',$this->last_active_month)
                         ->sum('amount');
                     }else{
                         $sum12 += McPaymentHistory::where('order_id',$order->id)
-                        ->where('last',0)
+                        // ->where('last',0)
                         ->whereDate('created_at','>=',$this->active_month)
                         ->whereDate('created_at','<=',$this->last_active_month)
                         ->sum('amount');
@@ -321,6 +323,32 @@ class McReportService
         $this->predoplata[$region_id] = $sum;
 
         return $this->predoplata;
+    }
+
+    public function predoplataNew($region_id,$pharmacy_ids)
+    {
+        $order_ids = $this->activeMonthOrderIds($pharmacy_ids);
+
+        $sum = 0;
+
+        foreach ($order_ids as $key => $order) {
+
+            $ord_sum = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
+
+            if($ord_sum)
+            {
+                if(strtotime($ord_sum->created_at) < strtotime($order->order_date))
+                {
+                    $sum += $ord_sum->amount;
+                }
+            }
+
+           
+        }
+
+        $this->predoplata_new[$region_id] = $sum;
+
+        return $this->predoplata_new;
     }
 
     public function lastMonthOrderIds($pharmacy_ids)
