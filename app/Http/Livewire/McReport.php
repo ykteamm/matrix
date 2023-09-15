@@ -55,7 +55,7 @@ class McReport extends Component
         $this->regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
-        $this->active_month = date('2023-08-01');
+        $this->active_month = date('2023-09-01');
         $this->active_region = 'Hammasi';
         
         if($this->active_month == '2023-07-01')

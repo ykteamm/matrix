@@ -24,8 +24,8 @@ class AdminService
 
     public function __construct()
     {
-        // $this->month_start = date('Y-m-'.'01');
-        $this->month_start = date('2023-08-01');
+        $this->month_start = date('Y-m-'.'01');
+        // $this->month_start = date('2023-08-01');
         $this->month_end = $this->getLastDate($this->month_start);
         $this->last_month_start = $this->getFirstDate(date('Y-m-d',strtotime('-10 day',strtotime($this->month_start))));
         $this->regions = Region::all();

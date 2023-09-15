@@ -182,13 +182,13 @@ class AdminController extends Controller
 
             }
         }
-        $hh = [];
-        foreach ($viloyat as $key => $value) {
-            $hh[Region::find($key)->name] = array_sum($value);
-        }
-        dd($hh);
-        dd(array_sum($viloyat[12]));
-        dd(array_sum($viloyat[2]));
+        // $hh = [];
+        // foreach ($viloyat as $key => $value) {
+        //     $hh[Region::find($key)->name] = array_sum($value);
+        // }
+        // dd($hh);
+        // dd(array_sum($viloyat[12]));
+        // dd(array_sum($viloyat[2]));
 
         foreach ($rekom as $key => $value) {
             if($value['con'] == 2)
