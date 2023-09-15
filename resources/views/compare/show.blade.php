@@ -76,13 +76,13 @@
                                             <td>{{$first_stocks[$key][$m->id]}} </td>
                                             <td>{{$accepts[$key][$m->id]}} </td>
                                             <td>{{$solds[$key][$m->id]}} </td>
-
+                                            @php
+                                                $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
+                                            @endphp
                                             <td>{{ abs($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} </td>
 
                                             <td>
-                                                @php
-                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
-                                                @endphp
+                                                
 
                                                 @if ( $count - $solds[$key][$m->id] == $second_stocks[$key][$m->id])
 
@@ -196,6 +196,9 @@
                                             <td>{{$first_stocks[$key][$m->id]}} </td>
                                             <td>{{$accepts[$key][$m->id]}} </td>
                                             <td>{{$solds[$key][$m->id]}} </td>
+                                            @php
+                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
+                                                @endphp
                                             <td>{{abs($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id])}} </td>
                                             <td>{{$second_stocks[$key][$m->id]}} </td>
 
