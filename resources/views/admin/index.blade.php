@@ -34,17 +34,17 @@
                             <div class="dash-contetnt">
                             <h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">Pul kelishi</h2>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
-                                <span title="110.000">
+                                <span title="{{number_format($arrive_monay,0,',','.')}}">
                                 <span class="numberpr">{{bmk($arrive_monay)}} <span style="font-size:15px">sentabr</span></span>
                                 </span>
                             </h3>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
-                                <span title="110.000">
+                                <span title="{{number_format($arrive_monay_day,0,',','.')}}">
                                 <span class="numberpr">{{bmk($arrive_monay_day)}} <span style="font-size:15px">bugun</span></span>
                                 </span>
                             </h3>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
-                                <span title="110.000">
+                                <span title="{{number_format($arrive_monay_week,0,',','.')}}">
                                 <span class="numberpr">{{bmk($arrive_monay_week)}} <span style="font-size:15px">hafta</span></span>
                                 </span>
                             </h3>

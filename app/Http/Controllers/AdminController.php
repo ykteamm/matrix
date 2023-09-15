@@ -30,10 +30,16 @@ class AdminController extends Controller
         // dd(array_sum($sitafor));
 
         $arrive_monay = $money->arriveMoney();
+
+        $arrive_monay = 455314047;
+
         $arrive_monay_day = $money->arriveMoneyToday();
         $arrive_monay_week = $money->arriveMoneyWeek();
 
         $shipment = $money->shipment();
+
+        $shipment = 414660083;
+
         $shipment_day = $money->shipmentDay();
         $shipment_week = $money->shipmentWeek();
 
