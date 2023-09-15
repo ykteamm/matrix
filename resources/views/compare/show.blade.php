@@ -55,6 +55,8 @@
                                             $sum_first = 0;
                                             $sum_accept = 0;
                                             $sum_sold = 0;
+                                            $samaxod = 0;
+                                        $qizil = 0;
                                         @endphp
                                     @foreach($medicine as $m)
                                     @php
@@ -69,8 +71,7 @@
                                         $sum_accept += $accepts[$key][$m->id]*$pr;
                                         $sum_sold += $solds[$key][$m->id]*$pr;
 
-                                        $samaxod = 0;
-                                        $qizil = 0;
+                                        
 
                                     @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
@@ -202,6 +203,9 @@
                                         $sum_accept = 0;
                                         $sum_sold = 0;
                                         $sum_second = 0;
+                                        $samaxod = 0;
+                                    $qizil = 0;
+
                                     @endphp
                                 @foreach($medicine as $m)
                                 @php
@@ -217,9 +221,7 @@
                                     $sum_sold += $solds[$key][$m->id]*$pr;
                                     $sum_second += $second_stocks[$key][$m->id]*$pr;
 
-                                    $samaxod = 0;
-                                    $qizil = 0;
-
+                                    
                                 @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
                                             <td>{{$loop->index+1}} </td>
