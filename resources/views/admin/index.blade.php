@@ -245,11 +245,11 @@
                         <div class="card-body text-right">
                             <div class="dash-contetnt text-right">
                             <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Zagruzka minimum</h2>
-                            <h3 style="color:#ffffff;margin-left:0px;">
+                            {{-- <h3 style="color:#ffffff;margin-left:0px;">
                                 <span title="{{number_format($yashil_rek_sum,0,',','.')}}">
                                 <span class="numberpr">{{bmk($yashil_rek_sum)}}</span>
                                 </span>
-                            </h3>
+                            </h3> --}}
                             <h3 style="color:#f17979;margin-left:0px;">
                                 <span title="{{number_format($qizil_rek_sum,0,',','.')}}">
                                 <span class="numberpr">{{bmk($qizil_rek_sum)}}</span>
