@@ -119,10 +119,17 @@
                                                             {{-- <span class="badge badge-warning" >samaxod</span> --}}
                                                         @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
                                                             {{-- <span class="badge badge-primary" >samaxod</span> --}}
+                                                            @if($solds[$key][$m->id] == 0)
+                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta ostatkada xatolik</span>
+
+                                                            @else
                                                             <span class="badge badge-danger" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta yoq joydan sotilgan</span>
+
                                                             @php
                                                                 $qizil += (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*$pr;
                                                             @endphp
+                                                            @endif
+                                                            
                                                         @endif
                                                 @endif
 
@@ -263,10 +270,17 @@
                                                             @endphp
                                                         @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
                                                             {{-- <span class="badge badge-primary" >samaxod</span> --}}
+                                                            
+                                                            @if($solds[$key][$m->id] == 0)
+                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta ostatkada xatolik</span>
+
+                                                            @else
                                                             <span class="badge badge-danger" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta yo'q joydan sotilgan</span>
-                                                            @php
-                                                                $qizil +=  (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*$pr;
-                                                            @endphp
+                                                                    @php
+                                                                    $qizil +=  (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*$pr;
+                                                                @endphp
+                                                            @endif
+                                                            
                                                         @endif
                                                 @endif
 
