@@ -347,7 +347,10 @@ class McReportService
 
         foreach ($order_ids as $key => $order) {
 
-            $ord_sum = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
+            $ord_sum = McPaymentHistory::where('order_id',$order->id)
+            ->whereDate('created_at','<=',$this->active_month)
+            ->whereDate('created_at','>=',$this->last_month)
+            ->orderBy('id','ASC')->first();
 
             if($ord_sum)
             {
