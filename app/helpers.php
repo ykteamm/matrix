@@ -463,6 +463,14 @@ if (!function_exists('bmk')) {
     }
 }
 
+if (!function_exists('mprice')) {
+    function mprice($id)
+    {
+        $price = DB::table('tg_prices')->where('medicine_id',$id)->where('shablon_id',3)->first();
+       
+        return $price->price;
+    }
+}
 
 if(!function_exists('getHostNameUrl')){
     function getHostNameUrl() {
