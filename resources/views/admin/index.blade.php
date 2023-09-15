@@ -54,9 +54,8 @@
                             <div class="dash-content">
                                 <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Qarzdorlik</h2>
                                 <h3 style="color:#ffffff;margin-left:0px;">
-                                    <span title="{{number_format(958693728,0,',','.')}}">
-                                    {{-- <span class="numberpr">{{bmk($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum)}} <span style="font-size:15px"></span></span> --}}
-                                    <span class="numberpr">{{bmk(958693728)}} <span style="font-size:15px"></span></span>
+                                    <span title="{{number_format($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum,0,',','.')}}">
+                                    <span class="numberpr">{{bmk($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum)}} <span style="font-size:15px"></span></span>
                                     </span>
                                 </h3>
                             </div>

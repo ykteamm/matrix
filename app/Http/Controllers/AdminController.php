@@ -38,8 +38,6 @@ class AdminController extends Controller
 
         $shipment = $money->shipment();
 
-        $shipment = 414660083;
-
         $shipment_day = $money->shipmentDay();
         $shipment_week = $money->shipmentWeek();
 
