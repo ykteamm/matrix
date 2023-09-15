@@ -101,24 +101,34 @@ class McReportService
                     
                     if($first_deliver > 0)
                     {
-                        $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                        $money = McPaymentHistory::where('order_id',$order->id)
+                        ->whereDate('created_at','<=',$this->last_active_month)
+                        ->sum('amount');
 
                         $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
     
                         $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
     
-                        $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                        $vozvrat = McReturnHistory::where('order_id',$order->id)
+                        // ->whereDate('created_at','<=',$this->last_active_month)
+                        
+                        ->sum('amount');
                     }
 
                     
 
                 }else{
 
-                    $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                    $money = McPaymentHistory::where('order_id',$order->id)
+                    ->whereDate('created_at','<=',$this->last_active_month)
+                    ->sum('amount');
 
                     $otgruzka = $order->price - $order->price*$order->discount/100;
 
-                    $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                    $vozvrat = McReturnHistory::where('order_id',$order->id)
+                    // ->whereDate('created_at','<=',$this->last_active_month)
+                    
+                    ->sum('amount');
                 }
 
                 $sum += $otgruzka - $money - $vozvrat;
@@ -226,22 +236,32 @@ class McReportService
             if($ords)
             {
 
-                $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                $money = McPaymentHistory::where('order_id',$order->id)
+                ->whereDate('created_at','<=',$this->last_active_month)
+                ->sum('amount');
 
                 $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
 
                 $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
 
-                $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                $vozvrat = McReturnHistory::where('order_id',$order->id)
+                // ->whereDate('created_at','<=',$this->last_active_month)
+                
+                ->sum('amount');
 
             }else{
                 if($order->price > 0)
                 {
-                    $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                    $money = McPaymentHistory::where('order_id',$order->id)
+                    ->whereDate('created_at','<=',$this->last_active_month)
+                    ->sum('amount');
 
                     $otgruzka = $order->price - $order->price*$order->discount/100;
     
-                    $vozvrat = McReturnHistory::where('order_id',$order->id)->sum('amount');
+                    $vozvrat = McReturnHistory::where('order_id',$order->id)
+                    // ->whereDate('created_at','<=',$this->last_active_month)
+                    
+                    ->sum('amount');
                 }else{
                     $vozvrat = 0;
 
@@ -285,7 +305,9 @@ class McReportService
                 
                 if($first_deliver > 0)
                 {
-                    $money2 = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                    $money2 = McPaymentHistory::where('order_id',$order->id)
+                    ->whereDate('created_at','<=',$this->last_active_month)
+                    ->sum('amount');
 
                     $otgruzka2 = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
 

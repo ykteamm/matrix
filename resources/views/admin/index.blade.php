@@ -35,7 +35,7 @@
                             <h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">Pul kelishi</h2>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
                                 <span title="110.000">
-                                <span class="numberpr">{{bmk($arrive_monay)}} <span style="font-size:15px">oy</span></span>
+                                <span class="numberpr">{{bmk($arrive_monay)}} <span style="font-size:15px">sentabr</span></span>
                                 </span>
                             </h3>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
@@ -54,8 +54,8 @@
                             <div class="dash-content">
                                 <h2 style="color:#ffffff;font-size:30px;font-family:Gilroy;">Qarzdorlik</h2>
                                 <h3 style="color:#ffffff;margin-left:0px;">
-                                    <span title="110.000">
-                                    <span class="numberpr">{{bmk($arrive_monay)}} <span style="font-size:15px">oy</span></span>
+                                    <span title="{{number_format($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum,0,',','.')}}">
+                                    <span class="numberpr">{{bmk($qizil_yangi_sum + $sariq_yangi_sum + $yashil_yangi_sum + $qizil_eski_sum + $sariq_eski_sum + $yashil_eski_sum)}} <span style="font-size:15px"></span></span>
                                     </span>
                                 </h3>
                             </div>
@@ -226,7 +226,7 @@
                             <div class="dash-contetnt">
                             <h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">Otgruzka</h2>
                             <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
-                                <span title="110.000">
+                                <span title="{{number_format($shipment,0,',','.')}}">
                                 <span class="numberpr">{{bmk($shipment)}} <span style="font-size:15px">oy</span> </span>
                                 </span>
                             </h3>

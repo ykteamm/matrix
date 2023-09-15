@@ -46,6 +46,7 @@
                                         <th><strong>Birinchi ostatka</strong> </th>
                                         <th><strong>Kirib kelgan</strong> </th>
                                         <th><strong>Sotilgan</strong> </th>
+                                        <th><strong>Avto sotuv</strong> </th>
                                         <th><strong>Xulosa</strong> </th>
                                     </tr>
                                     </thead>
@@ -76,6 +77,8 @@
                                             <td>{{$accepts[$key][$m->id]}} </td>
                                             <td>{{$solds[$key][$m->id]}} </td>
 
+                                            <td>{{ abs($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} </td>
+
                                             <td>
                                                 @php
                                                     $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
@@ -100,9 +103,11 @@
 
                                                 @else
                                                         @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
-                                                            <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta(kam)</span>
+                                                            {{-- <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta(kam)</span> --}}
+                                                            <span class="badge badge-warning" >samaxod</span>
                                                         @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
-                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta(ko'p)</span>
+                                                            <span class="badge badge-primary" >samaxod</span>
+                                                            {{-- <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta(ko'p)</span> --}}
                                                         @endif
                                                 @endif
 

@@ -76,7 +76,6 @@ class AdminController extends Controller
         $qizil_soni = [];
 
 
-        // dd($sitafor);
 
         $qizil_yangi = [];
         $qizil_eski = [];
@@ -89,6 +88,8 @@ class AdminController extends Controller
 
         $yashil_yangi_sum = 0;
         $yashil_eski_sum = 0;
+
+        $viloyat = [];
 
         foreach ($sitafor as $a => $sitaf) {
             foreach ($sitaf as $f => $sita) {
@@ -119,9 +120,13 @@ class AdminController extends Controller
                                 {
                                     $qizil_yangi[$k][] = $v['qarz'];
                                     $qizil_yangi_sum += $v['qarz'];
+
+
                                 }else{
                                     $qizil_eski[$k][] = $v['qarz'];
                                     $qizil_eski_sum += $v['qarz'];
+                                    $viloyat[$a][] = $v['qarz'];
+
 
                                 }
 
@@ -136,22 +141,29 @@ class AdminController extends Controller
                                 if($v['pul_xolat'] == 1)
                                 {
                                     $sariq_yangi_sum += $v['qarz'];
+
                                 }else{
                                     $sariq_eski_sum += $v['qarz'];
+                                    $viloyat[$a][] = $v['qarz'];
+
                                 }
 
                             }else{
                                 if($v['pul_xolat'] == 1)
                                 {
                                     $yashil_yangi_sum += $v['qarz'];
+
                                 }else{
                                     $yashil_eski_sum += $v['qarz'];
+                                    $viloyat[$a][] = $v['qarz'];
+
                                 }
                             }
                         
                             
                         }
                         // $qarz[$a][] = $sitf[1];
+
                     }
 
 
@@ -170,8 +182,13 @@ class AdminController extends Controller
 
             }
         }
-
-        // dd(($qizil_eski_sum));
+        $hh = [];
+        foreach ($viloyat as $key => $value) {
+            $hh[Region::find($key)->name] = array_sum($value);
+        }
+        dd($hh);
+        dd(array_sum($viloyat[12]));
+        dd(array_sum($viloyat[2]));
 
         foreach ($rekom as $key => $value) {
             if($value['con'] == 2)

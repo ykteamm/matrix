@@ -179,19 +179,43 @@ class AdminService
 
     public function shipment()
     {
-        $ords = McOrder::whereDate('order_date','<=',$this->month_end)
-            ->get();
-            $s = 0;
-            foreach ($ords as $key => $value) {
-                $mc_del = McOrderDelivery::where('order_id',$value->id)
-                ->whereDate('created_at','>=',$this->month_start)
-                ->whereDate('created_at','<=',$this->month_end)
-                ->sum(DB::raw('price*quantity'));
 
-                $s += $mc_del - $mc_del*$value->discount/100;
-            }
+        $new_close_money = [];
+        $new_accept_money = [];
+        $predoplata = [];
+        $predoplata_new = [];
+
+        $report = new McReportService($this->month_start);
+
+        foreach ($this->regions as $key => $region) {
+            $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
+
+            $new_close_money = $report->newCloseMoney($region->id,$pharmacy_ids);
+            $new_accept_money = $report->newAcceptMoney($region->id,$pharmacy_ids);
+
+            $predoplata = $report->predoplata($region->id,$pharmacy_ids);
+
+            $predoplata_new = $report->predoplataNew($region->id,$pharmacy_ids);
+
+            $otgruzka[$region->id] = $new_close_money[$region->id] + $new_accept_money[$region->id] + $predoplata[$region->id]-$predoplata_new[$region->id];
+
+        }
+
+        return array_sum($otgruzka);
+
+        // $ords = McOrder::whereDate('order_date','<=',$this->month_end)
+        //     ->get();
+        //     $s = 0;
+        //     foreach ($ords as $key => $value) {
+        //         $mc_del = McOrderDelivery::where('order_id',$value->id)
+        //         ->whereDate('created_at','>=',$this->month_start)
+        //         ->whereDate('created_at','<=',$this->month_end)
+        //         ->sum(DB::raw('price*quantity'));
+
+        //         $s += $mc_del - $mc_del*$value->discount/100;
+        //     }
             
-            return $s;
+        //     return $s;
     }
 
     public function shipmentDay()
@@ -463,6 +487,9 @@ class AdminService
                     $yashil_sum = 0;
                     $sariq_sum = 0;
                     $qizil_sum = 0;
+
+                    $ord_arr = [];
+                    
                     $fff= 0;
 
                     foreach ($orders as $ord => $order) {
@@ -470,6 +497,7 @@ class AdminService
                         $discount = $order->discount;
 
                         $all_payment = McPaymentHistory::where('order_id',$order->id)
+                        ->whereDate('created_at','<=',$this->month_end)
                         ->sum('amount');
 
                         $asosiy[$rid][$pharmacy][$order->id][0] = $all_payment;
@@ -539,6 +567,7 @@ class AdminService
 
                                 $asosiy[$rid][$pharmacy][$order->id][1] = $qarz;
 
+                                $fg = 0;
                                 foreach ($date_del_arr as $f => $fe) {
                                     
                                     $day = $this->day_minus(date('Y-m-d'),$fe);
@@ -571,6 +600,9 @@ class AdminService
                                             $fff += $f;
                                             $arr[$order->id] = $asosiy[$rid][$pharmacy][$order->id][3];
 
+                                            $fg += $f;
+
+
                                         }
                                     // }
 
@@ -579,9 +611,6 @@ class AdminService
 
                                 }
 
-
-
-                                
 
                             }
 
@@ -643,6 +672,7 @@ class AdminService
                         }
 
                     }
+
 
                 // $arr[$pharmacy] = $orders;
 
