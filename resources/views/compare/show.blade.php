@@ -69,6 +69,9 @@
                                         $sum_accept += $accepts[$key][$m->id]*$pr;
                                         $sum_sold += $solds[$key][$m->id]*$pr;
 
+                                        $samaxod = 0;
+                                        $qizil = 0;
+
                                     @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
                                             <td>{{$loop->index+1}} </td>
@@ -94,20 +97,32 @@
                                                     <span class="badge badge-danger" > 
                                                         @if ($solds[$key][$m->id]-$count > 0)
                                                             {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
+                                                            @php
+                                                                $qizil += ($solds[$key][$m->id]-$count)*$pr;
+                                                            @endphp
                                                         @else
                                                             {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
+                                                            @php
+                                                                $qizil += (-1*($solds[$key][$m->id]-$count))*$pr;
+                                                            @endphp
                                                         @endif
                                                     </span>
-                                                    <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span>
+                                                    {{-- <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span> --}}
 
 
                                                 @else
                                                         @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
                                                             <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta samaxod</span>
+                                                            @php
+                                                                $samaxod += ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id])*$pr;
+                                                            @endphp
                                                             {{-- <span class="badge badge-warning" >samaxod</span> --}}
                                                         @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
                                                             {{-- <span class="badge badge-primary" >samaxod</span> --}}
-                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta samaxod</span>
+                                                            <span class="badge badge-danger" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta yoq joydan sotilgan</span>
+                                                            @php
+                                                                $qizil += (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*$pr;
+                                                            @endphp
                                                         @endif
                                                 @endif
 
@@ -123,7 +138,13 @@
                                         <td>{{number_format($sum_first,0,',','.')}}</td>
                                         <td>{{number_format($sum_accept,0,',','.')}}</td>
                                         <td>{{number_format($sum_sold,0,',','.')}}</td>
-                                        <td></td>
+                                        <td>{{number_format($sum_sold,0,',','.')}}</td>
+
+                                        <td>
+                                           <span class="badge badge-warning">{{number_format($samaxod,0,',','.')}}</span> 
+                                           <span class="badge badge-danger">{{number_format($qizil,0,',','.')}}</span> 
+                                        </td>
+                                        {{-- <td></td> --}}
                                     </tr>
                                     <tr>
                                         <td><strong>No</strong> </td>
@@ -189,6 +210,9 @@
                                     $sum_sold += $solds[$key][$m->id]*$pr;
                                     $sum_second += $second_stocks[$key][$m->id]*$pr;
 
+                                    $samaxod = 0;
+                                    $qizil = 0;
+
                                 @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
                                             <td>{{$loop->index+1}} </td>
@@ -217,20 +241,32 @@
                                                     <span class="badge badge-danger" > 
                                                         @if ($solds[$key][$m->id]-$count > 0)
                                                             {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
+                                                            @php
+                                                                $qizil +=  ($solds[$key][$m->id]-$count)*$pr;
+                                                            @endphp
                                                         @else
                                                             {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
+                                                            @php
+                                                                $qizil +=  (-1*($solds[$key][$m->id]-$count))*$pr;
+                                                            @endphp
                                                         @endif
                                                     </span>
-                                                    <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span>
+                                                    {{-- <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span> --}}
 
 
                                                 @else
                                                         @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
                                                             {{-- <span class="badge badge-warning" >samaxod</span> --}}
                                                             <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta samaxod</span>
+                                                            @php
+                                                                $samaxod +=  ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id])*$pr;
+                                                            @endphp
                                                         @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
                                                             {{-- <span class="badge badge-primary" >samaxod</span> --}}
-                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta samaxod</span>
+                                                            <span class="badge badge-danger" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta yo'q joydan sotilgan</span>
+                                                            @php
+                                                                $qizil +=  (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*$pr;
+                                                            @endphp
                                                         @endif
                                                 @endif
 
@@ -247,7 +283,10 @@
                                         <td>{{number_format($sum_accept,0,',','.')}}</td>
                                         <td>{{number_format($sum_sold,0,',','.')}}</td>
                                         <td>{{number_format($sum_second,0,',','.')}}</td>
-                                        <td></td>
+                                        <td>
+                                            <span class="badge badge-warning">{{number_format($samaxod,0,',','.')}}</span> 
+                                            <span class="badge badge-danger">{{number_format($qizil,0,',','.')}}</span> 
+                                         </td>
                                     </tr>
                                     <tr>
                                         <td><strong>No</strong> </td>
