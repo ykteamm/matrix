@@ -350,6 +350,12 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('store-teacher', [TeacherController::class,'store'])->name('teacher.store');
 
     Route::get('add-shogird', [TeacherController::class,'shogird'])->name('add-shogird');
+
+    Route::get('ustoz-game/{id}', [TeacherController::class,'ustozGame'])->name('ustoz-game');
+    Route::get('ustoz-add/{id}', [TeacherController::class,'ustozAdd'])->name('ustoz-add');
+    Route::get('stajer-add/{id}', [TeacherController::class,'stajerAdd'])->name('stajer-add');
+    Route::get('ustoz-stajer-minus/{id}', [TeacherController::class,'ustozStajerMinus'])->name('ustoz-stajer-minus');
+
     Route::post('shogird-teacher', [TeacherController::class,'shogirdStore'])->name('shogird.store');
     Route::post('shogird-teacher-update', [TeacherController::class,'shogirdUpdateTime'])->name('shogird.date');
 

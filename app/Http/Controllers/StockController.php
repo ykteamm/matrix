@@ -6,6 +6,7 @@ use App\Models\Accept;
 use App\Models\Calendar;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
+use App\Models\Region;
 use App\Models\Stock;
 use App\Models\User;
 use App\Services\AcceptService;
@@ -28,7 +29,22 @@ class StockController extends Controller
 
         $user = User::find($id);
 
-        $pharmacy = Pharmacy::all();
+
+        if(isset(Session::get('per')['region']) && Session::get('per')['region'] == 'true')
+            {
+                $userarrayreg = Region::pluck('id')->toArray();
+            }
+            else{
+                $userarrayreg = [];
+                    foreach (Session::get('per') as $key => $value) {
+                        if (is_numeric($key)){
+                            $userarrayreg[] = $key;
+                        }
+                    }
+            }
+
+
+        $pharmacy = Pharmacy::whereIn('region_id',$userarrayreg)->get();
 
         return view('stockProduct.index',compact('user','pharmacy'));
     }

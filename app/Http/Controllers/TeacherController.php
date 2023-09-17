@@ -43,7 +43,7 @@ class TeacherController extends Controller
 
         $teachers = Teacher::with('user')->where('active',1)->get();
 
-        $teachers_user = TeacherUser::with('user','teacher')->get();
+        $teachers_user = TeacherUser::with('user','teacher')->orderBy('id','DESC')->get();
 
         // return $teachers_user;
 
@@ -53,6 +53,53 @@ class TeacherController extends Controller
             'teachers_user' => $teachers_user,
         ]);
 
+    }
+
+    public function ustozAdd($id)
+    {
+        $teach = TeacherUser::find($id);
+
+        $teach->ustoz = 1;
+        $teach->save();
+
+        return redirect()->back();
+    }
+
+    public function ustozStajerMinus($id)
+    {
+        $teach = TeacherUser::find($id);
+
+        $teach->ustoz = 0;
+        $teach->save();
+
+        return redirect()->back();
+    }
+
+    public function stajerAdd($id)
+    {
+        $teach = TeacherUser::find($id);
+
+        $teach->ustoz = 2;
+        $teach->save();
+
+        return redirect()->back();
+    }
+
+    public function ustozGame($id)
+    {
+        $teach = TeacherUser::find($id);
+
+        if($teach->game == 1)
+        {
+            $ust = 0;
+        }else{
+            $ust = 1;
+        }
+
+        $teach->game = $ust;
+        $teach->save();
+
+        return redirect()->back();
     }
 
     public function shogirdUpdateTime(Request $request)

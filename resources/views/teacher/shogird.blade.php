@@ -49,6 +49,7 @@
                            <tr>
                               <th>Ustoz </th>
                               <th>Shogird </th>
+                              <th>Status </th>
                               <th>Sinov vaqti (Hafta) </th>
                            </tr>
                         </thead>
@@ -58,8 +59,44 @@
                                  <td>{{$elchi->teacher->last_name}} {{$elchi->teacher->first_name}}</td>
                                  <td>{{$elchi->user->last_name}} {{$elchi->user->first_name}}</td>
                                  <td>
+                                    @if ($elchi->ustoz == 1)
+                                       USTOZ
+                                    @elseif($elchi->ustoz == 2)
+                                        STAJER
+                                    @else
+                                    @endif
+                                 </td>
+                                 <td>
                                     <input name="{{ $elchi->id }}" type="date" value="{{$elchi->week_date}}">
                                  </td>
+                                 @if ($elchi->game == 0)
+                                    <td><a href="{{route('ustoz-game',$elchi->id)}}" style="color:blue">Oyinga qoshish</a></td>
+                                 @else
+                                    <td><a href="{{route('ustoz-game',$elchi->id)}}" style="color:rgb(216, 22, 22)">Oyindan chiqarish</a></td>
+                                 @endif
+
+                                 @if ($elchi->ustoz == 0)
+                                    <td>
+                                       <a href="{{route('ustoz-add',$elchi->id)}}" style="color:blue">Ustoz</a>
+                                       <a href="{{route('stajer-add',$elchi->id)}}" style="color:blue">Stajer</a>
+                                    </td>
+                                 @elseif($elchi->ustoz == 1)
+                                 <td>
+
+                                       <a href="{{route('stajer-add',$elchi->id)}}" style="color:blue">Stajer</a>
+                                       <a href="{{route('ustoz-stajer-minus',$elchi->id)}}" style="color:blue">Oddiy</a>
+                                    </td>
+
+                                 @else
+                                 <td>
+
+                                       <a href="{{route('ustoz-add',$elchi->id)}}" style="color:blue">Ustoz</a>
+
+                                       <a href="{{route('ustoz-stajer-minus',$elchi->id)}}" style="color:blue">Oddiy</a>
+                                    </td>
+
+
+                                 @endif
                               </tr>
                            @endforeach
                         </tbody>
