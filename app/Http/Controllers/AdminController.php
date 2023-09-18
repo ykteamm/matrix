@@ -95,6 +95,11 @@ class AdminController extends Controller
 
         $viloyat = [];
 
+        $yashil = [];
+        $yashil_all = 0;
+        $yashil_all_p = 0;
+
+        
         foreach ($sitafor as $a => $sitaf) {
             foreach ($sitaf as $f => $sita) {
 
@@ -104,10 +109,7 @@ class AdminController extends Controller
 
                 foreach ($sita as $k => $sitf) {
 
-                    $yashil[$a][] = $sitf[0];
-                    $yashil_all += $sitf[0];
-                    $yashil_all_p += $sitf[0];
-
+                    
                     if(isset($sitf[3]))
                     {
                         foreach ($sitf[3] as $t => $v) {
@@ -124,17 +126,18 @@ class AdminController extends Controller
                                 {
                                     $qizil_yangi[$k][] = $v['qarz'];
                                     $qizil_yangi_sum += $v['qarz'];
+                                    $viloyat[$a][] = $v['qarz'];
 
 
                                 }else{
                                     $qizil_eski[$k][] = $v['qarz'];
                                     $qizil_eski_sum += $v['qarz'];
-                                    $viloyat[$a][] = $v['qarz'];
 
 
                                 }
 
                             }elseif($v['xolat'] == 1){
+
                                 $sariq[$a][] = $v['qarz'];
                                 $sariq_all += $v['qarz'];
                                 $sariq_all_p += $v['qarz'];
@@ -145,23 +148,29 @@ class AdminController extends Controller
                                 if($v['pul_xolat'] == 1)
                                 {
                                     $sariq_yangi_sum += $v['qarz'];
+                                    $viloyat[$a][] = $v['qarz'];
 
                                 }else{
                                     $sariq_eski_sum += $v['qarz'];
-                                    $viloyat[$a][] = $v['qarz'];
 
                                 }
 
                             }else{
                                 if($v['pul_xolat'] == 1)
                                 {
+                                    $yashil[$a][] = $v['qarz']  ;
+                                    $yashil_all += $v['qarz']   ;
+                                    $yashil_all_p += $v['qarz'] ;
+
+
                                     $yashil_yangi_sum += $v['qarz'];
+                                    $viloyat[$a][] = $v['qarz'];
 
                                 }else{
                                     $yashil_eski_sum += $v['qarz'];
-                                    $viloyat[$a][] = $v['qarz'];
 
                                 }
+
                             }
                         
                             
@@ -191,7 +200,7 @@ class AdminController extends Controller
         //     $hh[Region::find($key)->name] = array_sum($value);
         // }
         // dd($hh);
-        // dd(array_sum($viloyat[12]));
+        // dd(array_sum($viloyat[8]));
         // dd(array_sum($viloyat[2]));
 
         foreach ($rekom as $key => $value) {

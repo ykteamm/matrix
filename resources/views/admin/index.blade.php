@@ -661,7 +661,7 @@
                                         <div class="dash-contetnt">
                                         <h2 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">{{$item}}</h2>
                                             @if (isset($yashil_region[$key]))
-                                                <h3 style="color:#ffffff;text-align:left;margin-left:0px;">
+                                                <h3 style="color:#58e217;text-align:left;margin-left:0px;">
                                                     <span title="110.000">
                                                     <span class="numberpr">
                                                         
