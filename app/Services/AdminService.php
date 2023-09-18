@@ -225,7 +225,8 @@ class AdminService
             $s = 0;
             foreach ($ords as $key => $value) {
                 $mc_del = McOrderDelivery::where('order_id',$value->id)
-                ->whereDate('created_at','=',$this->month_start)
+                // ->whereDate('created_at','=',$this->month_start)
+                ->where('id','>',3485)
                 ->sum(DB::raw('price*quantity'));
 
                 $s += $mc_del - $mc_del*$value->discount/100;
