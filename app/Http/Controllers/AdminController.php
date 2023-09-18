@@ -167,7 +167,7 @@ class AdminController extends Controller
                                     $yashil_yangi_sum += $v['qarz'];
                                     $viloyat[$a][] = $v['qarz'];
 
-                                    $ffgghh[$a][$sitf][] = $v['qarz'];
+                                    $ffgghh[$a][$k][] = $v['qarz'];
 
                                 }else{
                                     $yashil_eski_sum += $v['qarz'];
