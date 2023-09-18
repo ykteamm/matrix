@@ -99,6 +99,7 @@ class AdminController extends Controller
         $yashil_all = 0;
         $yashil_all_p = 0;
 
+        $ffgghh = [];
         
         foreach ($sitafor as $a => $sitaf) {
             foreach ($sitaf as $f => $sita) {
@@ -166,6 +167,8 @@ class AdminController extends Controller
                                     $yashil_yangi_sum += $v['qarz'];
                                     $viloyat[$a][] = $v['qarz'];
 
+                                    $ffgghh[$a][$sitf][] = $v['qarz'];
+
                                 }else{
                                     $yashil_eski_sum += $v['qarz'];
 
@@ -195,6 +198,7 @@ class AdminController extends Controller
 
             }
         }
+        dd($ffgghh[2]);
         // $hh = [];
         // foreach ($viloyat as $key => $value) {
         //     $hh[Region::find($key)->name] = array_sum($value);
