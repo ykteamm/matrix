@@ -210,6 +210,8 @@
                             <i style="cursor: pointer" class="fas fa-eye" data-toggle="modal"
                                 data-target="#mcregion"></i>
                             </div> --}}
+                            <i style="cursor: pointer" class="fas fa-eye" data-toggle="modal"
+                                data-target="#mcregion"></i>
                         </div>
 
                         </div>

@@ -65,8 +65,10 @@
             </div>
          </div>
          <div class="card-body">
+            <div id="dtBasicExample1212"></div>
+
             <div class="table-responsive">
-                <table class="table table-striped mb-0">
+                <table class="table table-striped mb-0" id="dtBasicExample12">
                     <thead>
                     <tr>
                         <th>FIO </th>

@@ -239,6 +239,12 @@ $(document).ready(function () {
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
   }).buttons().container().appendTo('#dtBasicExample1212');
   
+
+  $('#forrekrutrek').DataTable({
+    "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
+    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+  }).buttons().container().appendTo('#forrekrutrek1212');
+
   $('#dtBasicExample12333').DataTable({
     "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
