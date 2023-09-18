@@ -198,7 +198,7 @@ class AdminController extends Controller
 
             }
         }
-        dd($ffgghh[2]);
+        // dd($ffgghh[2]);
         // $hh = [];
         // foreach ($viloyat as $key => $value) {
         //     $hh[Region::find($key)->name] = array_sum($value);
