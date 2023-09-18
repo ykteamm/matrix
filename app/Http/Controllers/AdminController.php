@@ -31,7 +31,7 @@ class AdminController extends Controller
 
         $arrive_monay = $money->arriveMoney();
 
-        $arrive_monay = 455314047;
+        $arrive_monay = 486614417;
 
         $arrive_monay_day = $money->arriveMoneyToday();
         $arrive_monay_week = $money->arriveMoneyWeek();
