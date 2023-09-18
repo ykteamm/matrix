@@ -369,7 +369,7 @@
                                             <div class="dash-contetnt">
                                             <h4 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">{{$pharmacy[$i]}}</h4>
                                                     <h5 style="color:#f17979;text-align:left;margin-left:0px;">
-                                                        <span title="110.000">
+                                                        <span title="{{$qizil_p[$i]}}">
                                                         <span class="numberpr">
                                                             
                                                             {{bmk($qizil_p[$i])}}
@@ -413,7 +413,7 @@
                                             <div class="dash-contetnt">
                                             <h4 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">{{$pharmacy[$i]}}</h4>
                                                     <h5 style="color:#b7ca4b;text-align:left;margin-left:0px;">
-                                                        <span title="110.000">
+                                                        <span title="{{$sariq_p[$i]}}">
                                                         <span class="numberpr">
                                                             
                                                             {{bmk($sariq_p[$i])}}
@@ -460,7 +460,7 @@
                                                             <div class="dash-contetnt">
                                                             <h5 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">{{$orders[$l]}}</h5>
                                                                     <h6 style="color:#f17979;text-align:left;margin-left:0px;">
-                                                                        <span title="110.000">
+                                                                        <span title="{{$n['qarz']}}">
                                                                         <span class="numberpr">
                                                                             
                                                                             {{bmk($n['qarz'])}}
@@ -550,7 +550,7 @@
                                                             <div class="dash-contetnt">
                                                             <h5 style="color:#ffffff;text-align:left;font-size:30px;font-family:Gilroy;">{{$orders[$l]}}</h5>
                                                                     <h6 style="color:#b7ca4b;text-align:left;margin-left:0px;">
-                                                                        <span title="110.000">
+                                                                        <span title="{{$n['qarz']}}">
                                                                         <span class="numberpr">
                                                                             
                                                                             {{bmk($n['qarz'])}}
