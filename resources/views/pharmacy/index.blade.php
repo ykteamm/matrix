@@ -15,11 +15,11 @@
                                 name="a_all" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ $dateText }} </button>
                             <div class="dropdown-menu timeclass">
-                                <a href="{{ route('pharmacy-user', ['time' => 'today']) }}" class="dropdown-item">Bugun</a>
-                                <a href="{{ route('pharmacy-user', ['time' => 'week']) }}" class="dropdown-item">Hafta</a>
-                                <a href="{{ route('pharmacy-user', ['time' => 'month']) }}" class="dropdown-item">Oy</a>
-                                <a href="{{ route('pharmacy-user', ['time' => 'year']) }}" class="dropdown-item">Yil</a>
-                                <a href="{{ route('pharmacy-user', ['time' => 'all']) }}" class="dropdown-item"
+                                <a href="{{ route('pharmacy-users', ['time' => 'today']) }}" class="dropdown-item">Bugun</a>
+                                <a href="{{ route('pharmacy-users', ['time' => 'week']) }}" class="dropdown-item">Hafta</a>
+                                <a href="{{ route('pharmacy-users', ['time' => 'month']) }}" class="dropdown-item">Oy</a>
+                                <a href="{{ route('pharmacy-users', ['time' => 'year']) }}" class="dropdown-item">Yil</a>
+                                <a href="{{ route('pharmacy-users', ['time' => 'all']) }}" class="dropdown-item"
                                     id="aftertime">Hammasi</a>
                                 <input type="text" name="datetimes" class="form-control" />
                             </div>
@@ -309,7 +309,7 @@
          window.location = $(this).data("href");
          var tim = picker.startDate.format('YYYY-MM-DD')+'_'+picker.endDate.format('YYYY-MM-DD');
          var id = <?php echo json_encode($pharma->id); ?>;
-            var url = "{{ route('pharmacy-user',['time' => ':tim']) }}";
+            var url = "{{ route('pharmacy-users',['time' => ':tim']) }}";
             url = url.replace(':tim', tim);
             url = url.replace(':id', id);
             location.href = url;

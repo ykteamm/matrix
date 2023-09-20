@@ -41,7 +41,7 @@
             @isset(Session::get('per')['user_pharmacy'])
                 @if (Session::get('per')['user_pharmacy'] == 'true')
                     <div class="col-auto">
-                        <a href="{{ route('pharmacy-user', 'today') }}">
+                        <a href="{{ route('pharmacy-users', 'today') }}">
                             <button class="btn btn-none-color">
                                 Dorixona
                             </button>

@@ -399,7 +399,7 @@
                         @isset(Session::get('per')['grade'])
                             @if (Session::get('per')['grade'] == 'true')
                             
-                                <li><a href="{{ route('stock.med') }}">Kiritish</a></li>
+                                <li><a href="{{ route('stock.med') }}">Ostatka</a></li>
 
                                 <li><a href="{{ route('compare') }}"><span>Taqqoslash </span></a>
                                 </li>

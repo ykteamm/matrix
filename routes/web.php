@@ -145,6 +145,9 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('add-new-pharm', [App\Http\Controllers\PharmacyController::class,'addPharm'])->name('add-new-pharm.store');
 
     Route::get('pharmacy-user/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyUser'])->name('pharmacy-user');
+
+    Route::get('pharmacy-users/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyUsers'])->name('pharmacy-users');
+
     Route::get('pharmacy-list/{time}', [App\Http\Controllers\PharmacyController::class,'pharmacyList'])->name('pharmacy-list');
     Route::post('farm/chart', [App\Http\Controllers\PharmacyController::class,'chart']);
 

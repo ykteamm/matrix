@@ -425,6 +425,94 @@ class PharmacyController extends Controller
         return view('pharmacy.index',compact('shablons','regions','pharmacy','users','pusers','farm_sold','user_sold','dateText'));
     }
 
+    public function pharmacyUsers($time)
+    {
+        if ($time == 'today') {
+            $date_begin = date_now();
+            $date_end = date_now();
+            $dateText = 'Bugun';
+        }
+        elseif ($time == 'week') {
+            $date_begin = date('Y-m-d',(strtotime ( '-7 day' , strtotime ( date_now()) ) ));
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hafta';
+        }
+        elseif ($time == 'month') {
+            $date_begin = date_now()->format('Y-m-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Oy';
+        }
+        elseif ($time == 'year') {
+            $date_begin = date_now()->format('Y-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Yil';
+        }
+        elseif ($time == 'all') {
+            $date_begin = date_now()->format('1790-01-01');
+            $date_end = date_now()->format('Y-m-d');
+            $dateText = 'Hammasi';
+        }
+        else{
+            $date_begin = substr($time,0,10);
+            $date_end = substr($time,11);
+            $dateText = date('d.m.Y',(strtotime ( $date_begin ) )).'-'.date('d.m.Y',(strtotime ( $date_end ) ));
+        }
+        $pharmacy = Region::with('pharmacy')->get();
+        $pusers = PharmacyUser::select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_pharmacy_users.*')
+        ->join('tg_user','tg_user.id','tg_pharmacy_users.user_id')
+        ->get();
+        $users = DB::table('tg_user')->where('rm',0)->whereIn('status',[0,1])->get();
+
+        $farm_sold = DB::table('tg_productssold')
+        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.pharm_id')
+        ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        ->whereDate('tg_productssold.created_at','<=',$date_end)
+        ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+        ->groupBy('tg_productssold.pharm_id')->pluck('allprice','tg_productssold.pharm_id');
+
+        $pharmacy_id = Pharmacy::pluck('id')->toArray();
+
+        $arr = [];
+        // $user_solds = DB::table('tg_productssold')
+        //     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id')
+        //     ->whereDate('tg_productssold.created_at','>=',$date_begin)
+        //     ->whereDate('tg_productssold.created_at','<=',$date_end)
+        //     ->join('tg_user','tg_user.id','tg_productssold.user_id')
+        //     ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+        //     ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id')->toArray();
+        //     return $user_solds;
+        foreach ($pharmacy_id as $key => $value) {
+            $user_solds = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_productssold.user_id')
+            ->whereDate('tg_productssold.created_at','>=',$date_begin)
+            ->whereDate('tg_productssold.created_at','<=',$date_end)
+            ->where('tg_productssold.pharm_id','=',$value)
+            ->join('tg_user','tg_user.id','tg_productssold.user_id')
+            ->join('tg_pharmacy','tg_pharmacy.id','tg_productssold.pharm_id')
+            ->groupBy('tg_productssold.user_id')->pluck('allprice','tg_productssold.user_id')->toArray();
+            if(count($user_solds) != 0)
+            {
+
+                // foreach ($user_solds as $key => $value) {
+                //     $arr[$key] = $value;
+                // }
+                $arr[$value] = $user_solds;
+
+                // $arr[array_keys($user_solds)[0]] = $user_solds[array_keys($user_solds)[0]];
+            }
+
+        }
+        $user_sold = $arr;
+        
+
+        // return $arr;
+        $regions = DB::table('tg_region')->get();
+        $shablons = DB::table('tg_shablons')->get();
+        // return $pusers;
+
+        return view('pharmacy.index',compact('shablons','regions','pharmacy','users','pusers','farm_sold','user_sold','dateText'));
+    }
+
     public function delete($id)
     {
         return $id;
