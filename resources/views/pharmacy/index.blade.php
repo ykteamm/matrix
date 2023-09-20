@@ -1,5 +1,10 @@
 @extends('admin.layouts.app')
 @section('admin_content')
+
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
     <div class="content main-wrapper ">
         <div class="row gold-box">
             @include('admin.components.logo')
