@@ -509,6 +509,7 @@ class PharmacyController extends Controller
         $regions = DB::table('tg_region')->get();
         $shablons = DB::table('tg_shablons')->get();
         // return $pusers;
+        dd($shablons,$regions,$pharmacy,$users,$pusers,$farm_sold,$user_sold,$dateText);
 
         return view('pharmacy.index',compact('shablons','regions','pharmacy','users','pusers','farm_sold','user_sold','dateText'));
     }
