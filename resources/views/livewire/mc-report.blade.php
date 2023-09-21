@@ -152,7 +152,7 @@
                                 
                             @foreach ($regions as $item)
 
-                                @if (in_array($item->id,[5,3,13,1,14,23,9]))
+                                @if (in_array($item->id,[5,3,13,1,14,23,9,11,10]))
                                 
                                 @php
                                     $sum_all_money1 += $all_money[$item->id];
