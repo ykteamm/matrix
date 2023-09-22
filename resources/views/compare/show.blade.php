@@ -248,17 +248,23 @@
                                                 @if ( $count < $solds[$key][$m->id])
 
                                                     <span class="badge badge-danger" > 
-                                                        @if ($solds[$key][$m->id]-$count > 0)
-                                                            {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
-                                                            @php
-                                                                $qizil +=  ($solds[$key][$m->id]-$count)*mprice($m->id);
-                                                            @endphp
+                                                        @if($second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
+                                                            {{$second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id])}} rm prixod
                                                         @else
-                                                            {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
-                                                            @php
-                                                                $qizil +=  (-1*($solds[$key][$m->id]-$count))*mprice($m->id);
-                                                            @endphp
+                                                                @if ($solds[$key][$m->id]-$count > 0)
+                                                                {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
+                                                                @php
+                                                                    $qizil +=  ($solds[$key][$m->id]-$count)*mprice($m->id);
+                                                                @endphp
+                                                                @else
+                                                                {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
+                                                                @php
+                                                                    $qizil +=  (-1*($solds[$key][$m->id]-$count))*mprice($m->id);
+                                                                @endphp
+                                                                @endif
                                                         @endif
+
+                                                        
                                                     </span>
                                                     {{-- <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span> --}}
 
