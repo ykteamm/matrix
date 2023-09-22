@@ -250,7 +250,7 @@
                                                 <span class="badge badge-secondary" > {{$second_stocks[$key][$m->id] - ($count - $solds[$key][$m->id])}} ta rm prixod</span> --}}
 
                                                             
-                                                        @else
+                                                        {{-- @else --}}
 
                                                         @if ( $count < $solds[$key][$m->id])
 
