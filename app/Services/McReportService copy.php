@@ -18,8 +18,6 @@ class McReportService
     public $new_accept_money = [];
     public $predoplata = [];
     public $predoplata_new = [];
-
-    public $ofis_tovar_qarz = [];
     
     public $active_month;
 
@@ -131,18 +129,9 @@ class McReportService
                     // ->whereDate('created_at','<=',$this->last_active_month)
                     
                     ->sum('amount');
-
-
-                    if($otgruzka == 0)
-                    {
-                        $money = 0*$money;
-                    }
                 }
 
                 $sum += $otgruzka - $money - $vozvrat;
-
-                // $this->last_accept_money[$order->id] = $sum;
-
 
         }
 
@@ -387,34 +376,20 @@ class McReportService
 
         foreach ($order_ids as $key => $order) {
 
-
             $ord_sum = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
 
-                if($ord_sum)
+            if($ord_sum)
+            {
+                if(strtotime($ord_sum->created_at) < strtotime($order->order_date))
                 {
-                    if(strtotime($ord_sum->created_at) < strtotime($order->order_date))
-                    {
-                        $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
-                        $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
+                    
+                    $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
 
-                        $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
+                    $sum += $otgruzka;
 
-                        if($money > $otgruzka)
-                        {
-                            $sum += $money - $otgruzka;
-
-                        }else{
-                            $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
-
-                            $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
-
-                            $sum += $otgruzka;
-                        }
-                    }
+                    // $sum += $ord_sum->amount;
                 }
-
-            
-            
+            }
 
            
         }
@@ -422,38 +397,6 @@ class McReportService
         $this->predoplata_new[$region_id] = $sum;
 
         return $this->predoplata_new;
-    }
-
-    public function ofisTovarQarz($region_id,$pharmacy_ids)
-    {
-        $order_ids = $this->activeMonthOrderIds($pharmacy_ids);
-
-        $sum = 0;
-
-        foreach ($order_ids as $key => $order) {
-
-            $ord_sum = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
-            $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
-
-            $otgruzka = McOrderDelivery::where('order_id',$order->id)->sum(DB::raw('quantity*price'));
-            $money = McPaymentHistory::where('order_id',$order->id)->sum('amount');
-
-            $otgruzka = $otgruzka - $otgruzka*$order->discount/100;
-
-            if($money > $otgruzka)
-            {
-                $sum += $money - $otgruzka;
-
-            }else{
-                $sum += 0;
-            }
-
-           
-        }
-
-        $this->ofis_tovar_qarz[$region_id] = $sum;
-
-        return $this->ofis_tovar_qarz;
     }
 
     public function lastMonthOrderIds($pharmacy_ids)

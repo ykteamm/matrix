@@ -177,7 +177,7 @@
                   <div class="tab-content" id="pills-tabContent">
                     @foreach ($dates as $key => $item)
 
-                    <div class="tab-pane fade @if($key == 0) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
+                    <div class="tab-pane fade @if($key == count($dates)-1) show active @endif" id="pill{{$key}}-home" role="tabpanel" aria-labelledby="pills{{$key}}-home-tab">
                     
                         <div class="card-body">
 
@@ -191,8 +191,8 @@
                                         <th><strong>Dori nomi</strong> </th>
                                         <th><strong>Birinchi ostatka</strong> </th>
                                         <th><strong>Kirib kelgan</strong> </th>
+                                        <th><strong>RM prixod</strong> </th>
                                         <th><strong>Sotilgan</strong> </th>
-                                        {{-- <th><strong>Avto sotuv</strong> </th> --}}
                                         <th><strong>Oxirgi ostatka</strong> </th>
                                         <th><strong>Xulosa</strong> </th>
                                     </tr>
@@ -204,7 +204,8 @@
                                         $sum_sold = 0;
                                         $sum_second = 0;
                                         $samaxod = 0;
-                                    $qizil = 0;
+                                        $rm = 0;
+                                        $qizil = 0;
 
                                     @endphp
                                 @foreach($medicine as $m)
@@ -221,6 +222,8 @@
                                     $sum_sold += $solds[$key][$m->id]*$pr;
                                     $sum_second += $second_stocks[$key][$m->id]*$pr;
 
+                                    $rm += $rm_prixod[$key][$m->id]*$pr;
+
                                     
                                 @endphp
                                         <tr onmouseover="$(this).css('cursor','pointer')">
@@ -228,16 +231,13 @@
                                             <td>{{$m->name}} </td>
                                             <td>{{$first_stocks[$key][$m->id]}} </td>
                                             <td>{{$accepts[$key][$m->id]}} </td>
+                                            <td>{{$rm_prixod[$key][$m->id]}} </td>
                                             <td>{{$solds[$key][$m->id]}} </td>
-                                            @php
-                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
-                                                @endphp
-                                            {{-- <td>{{abs($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id])}} </td> --}}
                                             <td>{{$second_stocks[$key][$m->id]}} </td>
 
                                             <td>
                                                 @php
-                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id];
+                                                    $count = $first_stocks[$key][$m->id]+$accepts[$key][$m->id]+$rm_prixod[$key][$m->id];
                                                 @endphp
 
                                                 @if ( $count - $solds[$key][$m->id] == $second_stocks[$key][$m->id])

@@ -10,6 +10,7 @@ use App\Models\McPaymentHistory;
 use App\Models\McReturnHistory;
 use App\Models\Pharmacy;
 use App\Models\Region;
+use App\Services\McReportService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -30,6 +31,7 @@ class McReport extends Component
     public $new_close_money = [];
     public $new_accept_money = [];
     public $predoplata = [];
+    public $predoplata_new = [];
     public $product_accept = [];
     public $all_money = [];
 
@@ -42,60 +44,71 @@ class McReport extends Component
 
     public function mount()
     {
+        // $this->active_month = date('2023-08-01');
 
+        // $report = new McReportService($this->active_month);
+
+        // $last_money = $report->lastMoney();
+
+        // dd($last_money);
         $this->regions_all = Region::all();
         $this->regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
-        $this->active_month = date('2023-08-01');
+        $this->active_month = date('2023-09-01');
         $this->active_region = 'Hammasi';
         
-        if($this->active_month != '2023-07-01')
+        if($this->active_month == '2023-07-01')
         {
-            $this->hisobotMonth($this->regions_all,$this->active_month);
-        }else{
             $this->hisobot($this->regions_all,$this->active_month);
         }
+        else{
+            $this->hisobotMonth($this->regions_all,$this->active_month);
+        }
 
     }
 
-    public function changeRegion($idOrAll)
-    {
-        if($idOrAll == 'all')
-        {
-            $this->active_region = 'Hammasi';
-            $this->regions = Region::all();
+    // public function changeRegion($idOrAll)
+    // {
+    //     if($idOrAll == 'all')
+    //     {
+    //         $this->active_region = 'Hammasi';
+    //         $this->regions = Region::all();
 
-        }else{
-            $this->active_region = Region::find($idOrAll)->name;
-            $this->regions = Region::where('id',$idOrAll)->get();
-        }
+    //     }else{
+    //         $this->active_region = Region::find($idOrAll)->name;
+    //         $this->regions = Region::where('id',$idOrAll)->get();
+    //     }
 
-        if($this->active_month != '2023-07-01')
-        {
-            $this->hisobotMonth($this->regions,$this->active_month);
-        }else{
-            $this->hisobot  ($this->regions,$this->active_month);
-        }
+    //     if($this->active_month == '2023-07-01')
+    //     {
+    //         $this->hisobot($this->regions,$this->active_month);
+    //     }elseif($this->active_month == '2023-08-01')
+    //     {
+    //         $this->hisobotMonth222222($this->regions,$this->active_month);
+    //     }
+    //     else{
+    //         $this->hisobotMonth($this->regions,$this->active_month);
+    //     }
 
-        // $this->hisobot($this->regions,$this->active_month);
 
-    }
+    // }
 
     public function changeMonth($month)
     {
         $this->active_month = date('Y-m'.'-01',strtotime('01.'.$month));
 
-        if($this->active_month != '2023-07-01')
+        if($this->active_month == '2023-07-01')
         {
-            $this->hisobotMonth($this->regions,$this->active_month);
-        }else{
             $this->hisobot($this->regions,$this->active_month);
         }
+        else{
+            $this->hisobotMonth($this->regions,$this->active_month);
+        }
 
-        // $this->hisobot($this->regions,$this->active_month);
 
     }
+
     public function hisobotMonth1($regions,$active_month)
     {
         $this->all_money[1] = 0;
@@ -307,7 +320,7 @@ class McReport extends Component
     }
 
     public function hisobotMonth222222($regions,$active_month)
-    {
+    { 
         $this->all_money[1] = 0;
         $this->otgruzka[1] = 0;
         $this->last_close_money[1] = 0;
@@ -497,9 +510,9 @@ class McReport extends Component
         $this->predoplata[21] = 0;
         $this->product_accept[21] = 0;
 
-        $this->all_money[22] = 0;
+        $this->all_money[22] = 1457750;
         $this->otgruzka[22] = 0;
-        $this->last_close_money[22] = 0;
+        $this->last_close_money[22] = 1457750;
         $this->last_accept_money[22] = 0;
         $this->new_close_money[22] = 0;
         $this->new_accept_money[22] = 0;
@@ -728,70 +741,55 @@ class McReport extends Component
 
     public function hisobotMonth($regions,$active_month)
     {
+        
+        
+        $report = new McReportService($active_month);
+
+        foreach ($regions as $key => $region) {
+
+            // $pharmacy_ids = Pharmacy::where('region_id',13)->pluck('id')->toArray();
+            $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
+
+            
+            $this->last_close_money = $report->lastCloseMoney($region->id,$pharmacy_ids);
+            $this->last_accept_money = $report->lastAcceptMoney($region->id,$pharmacy_ids);
+
+            $this->new_close_money = $report->newCloseMoney($region->id,$pharmacy_ids);
+            $this->new_accept_money = $report->newAcceptMoney($region->id,$pharmacy_ids);
+
+            $this->predoplata = $report->predoplata($region->id,$pharmacy_ids);
+
+            $this->predoplata_new = $report->predoplataNew($region->id,$pharmacy_ids);
+
+            
+            $this->all_money[$region->id] = $this->last_close_money[$region->id] + $this->new_close_money[$region->id];
+
+            $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id]-$this->predoplata_new[$region->id];
+            
+            $this->product_accept[$region->id] = 0;
+
+        }
+
+        // dd($this->predoplata_new[10]);
+
+        
+    }
+
+    public function hisobotMonth321($regions,$active_month)
+    {
         $last_month = $this->getFirstDate(date('Y-m-d',strtotime('-1 month',strtotime($active_month))));
 
         $last_active_month = $this->getLastDate($active_month);
         
-
-        $region_ids = 12;
-        $pharmacy_ids = Pharmacy::where('region_id',$region_ids)->pluck('id')->toArray();
-
-        
-        $close_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
-        ->whereDate('order_date','<',$active_month)
-        ->orderBy('id','ASC')
-        ->pluck('id')->toArray();
-
-
-        $sum1 = 0;
-        $sum1e = [];
-        $sum13 = 0;
-        foreach ($close_order_ids as $key => $value) {
-            $ord_det = McOrderDetail::where('order_id',$value)->orderBy('id','ASC')->first();
-            $ord_sum = McPaymentHistory::where('order_id',$value)->orderBy('id','ASC')->first();
-            if($ord_sum)
-            {
-                $sum1 += McPaymentHistory::where('order_id',$value)
-                    ->whereDate('created_at','>=',$active_month)
-                    ->whereDate('created_at','<=',$last_active_month)
-                    ->sum('amount');
-
-                // if($ord_det)
-                // {
-                //     if(strtotime($ord_det->created_at) > strtotime($ord_sum->created_at))
-                //     {
-                       
-                //         $sum14 = McPaymentHistory::where('order_id',$value)
-                //         ->whereDate('created_at','>=',$active_month)
-                //         ->whereDate('created_at','<=',$last_active_month)
-                //         ->sum('amount');
-
-                //     $sum1e[$value] = $sum14;
-
-                //     }
-                // }
-                // else{
-                //     $sum13 += McPaymentHistory::where('order_id',$value)
-                //     ->whereDate('created_at','>=',$active_month)
-                //     ->whereDate('created_at','<=',$last_active_month)
-                //     ->sum('amount');
-                // }
-                
-            }
-
-        }
-
-        dd($sum1);
-
-        
-
-    
+        $report = new McReportService;
 
         foreach ($regions as $key => $region) {
+
+            // $pharmacy_ids = Pharmacy::where('region_id',12)->pluck('id')->toArray();
             $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             
-
+            $last_money = $report->lastMoney($region->id);
             
 
         //predoplata-begin
@@ -873,10 +871,7 @@ class McReport extends Component
                         {
                             $sum1 += $sum;
                         }else{
-                            // if(strtotime($ord_sum->created_at) < strtotime($active_month))
-                            // {
                                 $sum1 += $sum;
-                            // }
                         }
                     }else{
                         $sum1 += $sum;
@@ -907,106 +902,64 @@ class McReport extends Component
         //otgruzga-end
 
         //eski-qarz-yopildi-begin
-
-        $region_ids = $region->id;
-        $pharmacy_ids = Pharmacy::where('region_id',$region_ids)->pluck('id')->toArray();
-
-        
-        $close_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
-        ->whereDate('order_date','<',$active_month)
-        ->orderBy('id','ASC')
-        ->pluck('id')->toArray();
+            $close_order_ids = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
+            ->whereDate('order_date','<',$active_month)
+            ->orderBy('id','ASC')
+            ->pluck('id')->toArray();
 
 
-        $sum1 = 0;
-        $sum1e = [];
-        $sum13 = 0;
-        foreach ($close_order_ids as $key => $value) {
-            $ord_det = McOrderDetail::where('order_id',$value)->orderBy('id','ASC')->first();
-            $ord_sum = McPaymentHistory::where('order_id',$value)->orderBy('id','ASC')->first();
-            if($ord_sum)
-            {
-                $sum1 += McPaymentHistory::where('order_id',$value)
-                    ->whereDate('created_at','>=',$active_month)
-                    ->whereDate('created_at','<=',$last_active_month)
-                    ->sum('amount');
-                
-            }
-
-        }
-
-
-
-        // $this->last_close_money[$region_ids] = McPaymentHistory::whereIn('order_id',$close_order_ids)
-        // ->sum('amount')-$sum1-$this->predoplata[$region_ids];
-
-        $this->last_close_money[$region_ids] = $sum1;
-
-        $ords_sum = 0;
-        $ords_sum2 = 0;
-        foreach ($close_order_ids as $key => $value) {
-            // $ord_det = McOrderDetail::where('order_id',$value)->orderBy('id','ASC')->first();
-            // $ord_sum = McPaymentHistory::where('order_id',$value)->orderBy('id','ASC')->first();
-
-            $ords = McOrder::find($value);
-
-                        $ords_all_sum = $ords->price - $ords->price*$ords->discount/100;
-
-                        $ords_last_sum = McPaymentHistory::where('order_id',$value)
-                        ->whereDate('created_at','<',$last_active_month)
+            $sum1 = 0;
+            $sum133 = [];
+            $ords_all_sum = 0;
+            foreach ($close_order_ids as $key => $value) {
+                $ord_det = McOrderDetail::where('order_id',$value)->orderBy('id','ASC')->first();
+                $ord_sum = McPaymentHistory::where('order_id',$value)->orderBy('id','ASC')->first();
+                if($ord_sum)
+                {
+                    $sum1 += McPaymentHistory::where('order_id',$value)
+                        ->where('last',0)
+                        ->whereDate('created_at','>=',$active_month)
+                        ->whereDate('created_at','<=',$last_active_month)
                         ->sum('amount');
 
-                        $ords_sum2 += $ords_all_sum-$ords_last_sum;
+                }
 
-            // if($ord_sum)
-            // {
-            //     if($ord_det)
-            //     {
-            //         // if(strtotime($ord_det->created_at) < strtotime($ord_sum->created_at))
-            //         // {
-            //             $ords = McOrder::find($value);
+                $ords_ord = McOrder::find($value);
 
-            //             $ords_all_sum = $ords->price - $ords->price*$ords->discount/100;
+                $ords = McOrderDelivery::where('order_id',$value)->first();
 
-            //             $ords_last_sum = McPaymentHistory::where('order_id',$value)
-            //             ->whereDate('created_at','<',$active_month)
-            //             ->sum('amount');
+                if($ords)
+                {
+                    if(strtotime($ords->created_at) < strtotime($active_month))
+                    {
+                        $last_qoldi = McPaymentHistory::where('order_id',$value)->sum('amount');
+                        $ords_all_sumff = $ords_ord->price - $ords_ord->price*$ords_ord->discount/100 - $last_qoldi;
+                    }
+                    
+                }else{
 
-            //             $ords_sum += $ords_all_sum-$ords_last_sum;
-            //         // }
-            //     }else{
-            //         $ords = McOrder::find($value);
+                    $last_qoldi = McPaymentHistory::where('order_id',$value)->sum('amount');
 
-            //         $ords_all_sum = $ords->price - $ords->price*$ords->discount/100;
+                    $vozvrat = McReturnHistory::where('order_id',$value)->sum('amount');
 
-            //         $ords_last_sum = McPaymentHistory::where('order_id',$value)
-            //         ->whereDate('created_at','<',$active_month)
-            //         ->sum('amount');
+                    $ords_all_sumff = $ords_ord->price - $ords_ord->price*$ords_ord->discount/100 - $last_qoldi-$vozvrat;
+                }
 
-            //         $ords_sum += $ords_all_sum-$ords_last_sum;
-            //     }
-            // }else{
-            //     $ords = McOrder::find($value);
-            //     $ords_sum += $ords->price - $ords->price*$ords->discount/100;
-            // }
-        }
+                
+                
+
+                $sum133[$value] = $ords_all_sumff;
+
+            }
 
 
-        $return = McReturnHistory::whereIn('order_id',$close_order_ids)
-        ->sum('amount');
 
-        // dd($ords_sum2);
-        // dd($ords_sum-$sum1);
+            $this->last_close_money[$region->id] = $sum1;
 
-        // $this->last_accept_money[$region_ids] =  $ords_sum - $return - $this->last_close_money[$region_ids];
-        $this->last_accept_money[$region_ids] =  $ords_sum2 - $return;
+            $this->last_accept_money[$region->id] =  array_sum($sum133);
 
-        // if($this->last_accept_money[$region_ids] < 0)
-        // {
-        //     $this->last_accept_money[$region_ids] = 0;
-        // }
-    
-    //eski-qarz-yopildi-end
+
+        //eski-qarz-yopildi-end
 
 
 
@@ -1017,9 +970,29 @@ class McReport extends Component
             ->whereDate('order_date','<=',$last_active_month)
             ->pluck('id')->toArray();
 
+           $sum1 = 0;
+            
+            foreach ($new_order_ids as $key => $value) {
+                $ord_det = McOrderDetail::where('order_id',$value)->orderBy('id','ASC')->first();
+                $ord_sum = McPaymentHistory::where('order_id',$value)->orderBy('id','ASC')->first();
+
+                if($ord_sum && $ord_det)
+                {
+                    if(strtotime($ord_det->created_at) > strtotime($ord_sum->created_at))
+                    {
+                        $sum1 += McPaymentHistory::where('order_id',$value)
+                        ->sum('amount');
+                    }
+                }
+
+                
+            }
+
+            $this->new_close_money[$region->id] = $sum1;
+
+            // dd($sum1);
 
             $new_order_ids2 = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
-            // ->whereDate('order_date','>=',$last_month)
             ->whereDate('order_date','<',$active_month)
             ->pluck('id')->toArray();
 
@@ -1046,28 +1019,8 @@ class McReport extends Component
 
             }
 
-            // $ords = McOrder::whereIn('pharmacy_id',$pharmacy_ids)
-            // ->whereDate('order_date','<=',$last_active_month)
-            // ->get();
-            // $s = 0;
-            // foreach ($ords as $key => $value) {
-            //     $s += McPaymentHistory::where('order_id',$value->id)
-            //     ->whereDate('created_at','>=',$active_month)
-            //     ->whereDate('created_at','<=',$last_active_month)
-            //     ->sum('amount');
-            // }
-            
-            // $this->new_close_money[$region->id] = $s;
-
-            $this->new_close_money[$region->id] = McPaymentHistory::whereIn('order_id',$new_order_ids)
-            ->sum('amount')+$sum1;
-
-            // $ords = McOrder::whereIn('id',$new_order_ids)
-            // ->get();
-            // $ords_sum = 0;
-            // foreach ($ords as $key => $value) {
-            //     $ords_sum += $value->price - $value->price*$value->discount/100;
-            // }
+            // $this->new_close_money[$region->id] = McPaymentHistory::whereIn('order_id',$new_order_ids)
+            // ->sum('amount')+$sum1;
 
             $ords_sum = 0;
             $sum1 = 0;
@@ -1124,6 +1077,7 @@ class McReport extends Component
 
         }
         
+        dd($last_money);
 
     }
 

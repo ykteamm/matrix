@@ -82,6 +82,7 @@ class CompareController extends Controller
         $dates = [];
         $solds = [];
         $accepts = [];
+        $rm_prixod = [];
         $first_stocks = [];
         $second_stocks = [];
         $stocks = [];
@@ -110,19 +111,26 @@ class CompareController extends Controller
                     ->sum('number');
                     $solds[$key][$m->id] = $sold;
 
-                    // if($month == '2023-07')
-                    // {
-                        $pharmacy_ids = McOrder::where('pharmacy_id',$pharmacy_id)->pluck('id')->toArray();
-                        $accept = McOrderDelivery::whereIn('order_id',$pharmacy_ids)
-                        ->whereDate('created_at','>=',$value[0])
-                        ->whereDate('created_at','<=',$value[1])
-                        ->where('product_id',$m->id)
-                        ->sum('quantity');
-                    // }else{
+                    
+                    $pharmacy_ids = McOrder::where('pharmacy_id',$pharmacy_id)->pluck('id')->toArray();
 
-                    // }
+                    $accept = McOrderDelivery::whereIn('order_id',$pharmacy_ids)
+                    ->whereDate('created_at','>=',$value[0])
+                    ->whereDate('created_at','<=',$value[1])
+                    ->where('product_id',$m->id)
+                    ->sum('quantity');
                     
                     $accepts[$key][$m->id] = $accept;
+
+
+                    $rm = Accept::where('pharmacy_id',$pharmacy_id)
+                    ->whereDate('created_at','>=',$value[0])
+                    ->whereDate('created_at','<=',$value[1])
+                    ->where('medicine_id',$m->id)
+                    ->sum('number');
+                    
+                    $rm_prixod[$key][$m->id] = $rm;
+
 
                     $stock1 = Stock::where('pharmacy_id',$pharmacy_id)
                     ->whereDate('date','=',date('Y-m-d',strtotime($value[0])))
@@ -144,7 +152,7 @@ class CompareController extends Controller
         $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
 
 
-        return view('compare.show',compact('count_date','dates','accepts','first_stocks','second_stocks','solds','medicine','pharm','months','month','pharmacy_id'));
+        return view('compare.show',compact('rm_prixod','count_date','dates','accepts','first_stocks','second_stocks','solds','medicine','pharm','months','month','pharmacy_id'));
 
     }
 

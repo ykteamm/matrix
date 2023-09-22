@@ -35,6 +35,8 @@ class McReport extends Component
     public $product_accept = [];
     public $all_money = [];
 
+    public $ofis_tovar_qarz = [];
+
 
 
     protected $listeners = [
@@ -747,7 +749,7 @@ class McReport extends Component
 
         foreach ($regions as $key => $region) {
 
-            // $pharmacy_ids = Pharmacy::where('region_id',13)->pluck('id')->toArray();
+            // $pharmacy_ids = Pharmacy::where('region_id',9)->pluck('id')->toArray();
             $pharmacy_ids = Pharmacy::where('region_id',$region->id)->pluck('id')->toArray();
 
             
@@ -761,16 +763,29 @@ class McReport extends Component
 
             $this->predoplata_new = $report->predoplataNew($region->id,$pharmacy_ids);
 
+            // $this->ofis_tovar_qarz = $report->ofisTovarQarz($region->id,$pharmacy_ids);
+
             
             $this->all_money[$region->id] = $this->last_close_money[$region->id] + $this->new_close_money[$region->id];
 
-            $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id]-$this->predoplata_new[$region->id];
+            $otr = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id];
+
+            if($otr < $this->predoplata_new[$region->id])
+            {
+                $this->otgruzka[$region->id] = $this->predoplata_new[$region->id];
+
+            }else{
+                $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id]-$this->predoplata_new[$region->id];
+
+            }
+
+            // $this->otgruzka[$region->id] = $this->new_close_money[$region->id] + $this->new_accept_money[$region->id] + $this->predoplata[$region->id]-$this->predoplata_new[$region->id];
             
             $this->product_accept[$region->id] = 0;
 
         }
 
-        // dd($this->new_accept_money);
+        // dd($this->predoplata_new[3]);
 
         
     }

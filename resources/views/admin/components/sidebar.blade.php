@@ -399,6 +399,12 @@
                         @isset(Session::get('per')['grade'])
                             @if (Session::get('per')['grade'] == 'true')
                             
+                                @isset(Session::get('per')['accept'])
+                                    @if (Session::get('per')['accept'] == 'true')
+                                        <li><a href="{{ route('accept.med') }}">RM prixod</a></li>
+                                    @endif
+                                @endisset
+
                                 <li><a href="{{ route('stock.med') }}">Ostatka</a></li>
 
                                 <li><a href="{{ route('compare') }}"><span>Taqqoslash </span></a>

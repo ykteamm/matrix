@@ -48,13 +48,13 @@
 
                                                         </p>
 
-                                                        @if ($tim)
+                                                        {{-- @if ($tim) --}}
 
                                                             <p class="p-0 m-0 pt-1">
                                                                 <a href="{{route('accept.med.edit',['pharmacy_id'=>$pharmacy_id,'date'=>$p->created_at])}}" class="mx-1"><i class="fas fa-edit" style="font-size: 18px;"></i></a>
                                                                 <a href="{{route('accept.med.delete',['pharmacy_id'=>$pharmacy_id,'date'=>$p->created_at])}}" class="mx-1"><i class="fas fa-trash" style="font-size: 18px;color:red;"></i></a>
                                                             </p>
-                                                        @endif
+                                                        {{-- @endif --}}
                                                     </div>
                                                     <div>[{{number_format($p->all_price, 0, ',', ' ')}}]</div>
 
