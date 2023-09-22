@@ -242,56 +242,58 @@
 
                                                 @if ( $count - $solds[$key][$m->id] == $second_stocks[$key][$m->id])
 
-                                                    <span class="badge badge-success" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
+                                                    <span class="badge badge-secondary" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
                                                 @endif
 
-                                                @if ( $count < $solds[$key][$m->id])
-
-                                                    <span class="badge badge-danger" > 
-                                                        @if($second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
+                                                @if($second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
                                                             {{$second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id])}} rm prixod
                                                         @else
-                                                                @if ($solds[$key][$m->id]-$count > 0)
-                                                                {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
-                                                                @php
-                                                                    $qizil +=  ($solds[$key][$m->id]-$count)*mprice($m->id);
-                                                                @endphp
-                                                                @else
-                                                                {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
-                                                                @php
-                                                                    $qizil +=  (-1*($solds[$key][$m->id]-$count))*mprice($m->id);
-                                                                @endphp
+
+                                                        @if ( $count < $solds[$key][$m->id])
+
+                                                            <span class="badge badge-danger" > 
+                                                                
+                                                                        @if ($solds[$key][$m->id]-$count > 0)
+                                                                        {{ $solds[$key][$m->id]-$count }} ta (yo'q joydan sotilgan)
+                                                                        @php
+                                                                            $qizil +=  ($solds[$key][$m->id]-$count)*mprice($m->id);
+                                                                        @endphp
+                                                                        @else
+                                                                        {{ -1*($solds[$key][$m->id]-$count) }} ta (yo'q joydan sotilgan)
+                                                                        @php
+                                                                            $qizil +=  (-1*($solds[$key][$m->id]-$count))*mprice($m->id);
+                                                                        @endphp
+                                                                        @endif
+
+                                                                
+                                                            </span>
+                                                            {{-- <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span> --}}
+
+
+                                                        @else
+                                                                @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
+                                                                    {{-- <span class="badge badge-warning" >samaxod</span> --}}
+                                                                    <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta samaxod</span>
+                                                                    @php
+                                                                        $samaxod +=  ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id])*mprice($m->id);
+                                                                    @endphp
+                                                                @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
+                                                                    {{-- <span class="badge badge-primary" >samaxod</span> --}}
+                                                                    
+                                                                    @if($solds[$key][$m->id] == 0)
+                                                                    <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta ostatkada xatolik</span>
+
+                                                                    @else
+                                                                    <span class="badge badge-danger" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta yo'q joydan sotilgan</span>
+                                                                            @php
+                                                                            $qizil +=  (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*mprice($m->id);
+                                                                        @endphp
+                                                                    @endif
+                                                                    
                                                                 @endif
                                                         @endif
-
-                                                        
-                                                    </span>
-                                                    {{-- <span class="badge badge-primary" >{{ $second_stocks[$key][$m->id] }} ta(ko'p)</span> --}}
-
-
-                                                @else
-                                                        @if ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] > 0)
-                                                            {{-- <span class="badge badge-warning" >samaxod</span> --}}
-                                                            <span class="badge badge-warning" >{{ $count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] }} ta samaxod</span>
-                                                            @php
-                                                                $samaxod +=  ($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id])*mprice($m->id);
-                                                            @endphp
-                                                        @elseif($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id] < 0)
-                                                            {{-- <span class="badge badge-primary" >samaxod</span> --}}
-                                                            
-                                                            @if($solds[$key][$m->id] == 0)
-                                                            <span class="badge badge-primary" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta ostatkada xatolik</span>
-
-                                                            @else
-                                                            <span class="badge badge-danger" >{{ -1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]) }} ta yo'q joydan sotilgan</span>
-                                                                    @php
-                                                                    $qizil +=  (-1*($count - $solds[$key][$m->id] - $second_stocks[$key][$m->id]))*mprice($m->id);
-                                                                @endphp
-                                                            @endif
-                                                            
-                                                        @endif
                                                 @endif
-
+                                                
                                                 
                                             </td>
 
