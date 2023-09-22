@@ -246,7 +246,7 @@
                                                 @endif
 
                                                 @if((($count - $solds[$key][$m->id]) > 0) && $second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
-                                                            {{$second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id])}} rm prixod
+                                                            {{$second_stocks[$key][$m->id] - ($count - $solds[$key][$m->id])}} rm prixod
                                                         @else
 
                                                         @if ( $count < $solds[$key][$m->id])
