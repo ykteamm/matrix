@@ -242,11 +242,14 @@
 
                                                 @if ( $count - $solds[$key][$m->id] == $second_stocks[$key][$m->id])
 
-                                                    <span class="badge badge-secondary" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
+                                                    <span class="badge badge-success" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
                                                 @endif
 
                                                 @if((($count - $solds[$key][$m->id]) > 0) && $second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
-                                                            {{$second_stocks[$key][$m->id] - ($count - $solds[$key][$m->id])}} rm prixod
+
+                                                <span class="badge badge-secondary" > {{$second_stocks[$key][$m->id] - ($count - $solds[$key][$m->id])}} ta rm prixod</span>
+
+                                                            
                                                         @else
 
                                                         @if ( $count < $solds[$key][$m->id])
