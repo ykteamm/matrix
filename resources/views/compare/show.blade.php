@@ -245,7 +245,7 @@
                                                     <span class="badge badge-secondary" > {{ $second_stocks[$key][$m->id] }} ta (to'g'ri)</span>
                                                 @endif
 
-                                                @if($second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
+                                                @if((($count - $solds[$key][$m->id]) > 0) && $second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id]))
                                                             {{$second_stocks[$key][$m->id] > ($count - $solds[$key][$m->id])}} rm prixod
                                                         @else
 
