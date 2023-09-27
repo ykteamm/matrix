@@ -363,6 +363,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('shogird-teacher-update', [TeacherController::class,'shogirdUpdateTime'])->name('shogird.date');
 
     Route::get('st-grade', [TeacherController::class,'grade'])->name('st-grade');
+    Route::get('yetakchi', [TeacherController::class,'yetakchi'])->name('yetakchi');
 
 
     Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index');

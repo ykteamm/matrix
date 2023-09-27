@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductSold;
 use App\Models\Teacher;
 use App\Models\TeacherUser;
 use App\Models\TeachGradeStar;
@@ -145,5 +146,25 @@ class TeacherController extends Controller
             'grades' => $baho,
             'questions' => $savol_baho,
         ]);
+    }
+
+
+    public function yetakchi()
+    {
+        $users = User::whereDate('date_joined','>=','2023-08-25')->get();
+
+        $array = [];
+
+        foreach ($users as $key => $value) {
+            $sum = ProductSold::where('user_id',$value->id)->sum(DB::raw('price_product*number'));
+
+
+            $array[] = array('user' => $value,'sum' => $sum);
+
+        }
+
+        array_multisort(array_column($array, 'sum'), SORT_DESC, $array);
+
+        return $array;
     }
 }
