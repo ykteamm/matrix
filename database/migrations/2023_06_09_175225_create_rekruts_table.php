@@ -21,6 +21,7 @@ class CreateRekrutsTable extends Migration
             $table->foreignId('district_id');
             $table->foreignId('rm_id');
             $table->integer('status')->default(0);
+            $table->integer('xolat')->default(0);
             $table->longText('comment')->nullable();
             $table->timestamps();
         });

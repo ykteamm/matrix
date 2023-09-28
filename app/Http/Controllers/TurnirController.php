@@ -20,17 +20,21 @@ class TurnirController extends Controller
     public function team()
     {
         $month = Carbon::now()->startOfMonth()->format('Y-m-d');
+
         $teams = TurnirTeam::with(['turnir_member' => function ($q) use ($month) {
             $q->whereDate('month', $month);
             $q->orderBy('tour');
         }, 'turnir_member.user' => function ($u) {
             $u->select('id', 'first_name', 'last_name');
         }])->get();
+
         $memIds = TurnirMember::whereDate('month', $month)->pluck('user_id')->toArray();
+
         $users = User::whereIn('status', [0, 1])
             ->whereNotIn('id', $memIds)
             ->orderBy('first_name', 'ASC')
             ->get();
+
         return view('turnir.team', [
             'teams' => $teams,
             'users' => $users
@@ -57,9 +61,10 @@ class TurnirController extends Controller
         $member = TurnirMember::where('user_id', $request->user_id)
             ->whereDate('month', $request->month)
             ->first();
+
         $count = TurnirTeam::with(['turnir_member' => function ($q) use ($request) {
             $q->whereDate('month', $request->month)->where('tour', 1);
-        }])->where('id', $request->team_id)
+        }])->where('id', $request->team_id )
             ->first();
 
         if ($count->turnir_member->count() < 2 && !$member) {

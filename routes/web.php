@@ -457,6 +457,11 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('rekrut-change/{id}', [RekrutController::class, 'change'])->name('rekrut.change');
     Route::get('rekrut-delete/{id}', [RekrutController::class, 'delete'])->name('rekrut.delete');
     Route::post('rekrut-save-user', [RekrutController::class, 'saveUser'])->name('rekrut-save-user');
+
+
+    Route::resource('rekrut-group',RekrutGroupController::class);
+
+    
     //REKRUT-END
 
     //ORDER-BEGIN

@@ -15,5 +15,9 @@ class Rekrut extends Model
         'region_id',
         'district_id',
         'rm_id',
+        'xolat',
+        'age',
+        'link',
+        'grafik',
     ];
 }

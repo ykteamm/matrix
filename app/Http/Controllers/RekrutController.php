@@ -45,13 +45,36 @@ class RekrutController extends Controller
     }
     public function saveUser(Request $request)
     {
-        $new = Rekrut::create([
-            'full_name' => $request->full_name,
-            'phone' => $request->phone,
-            'region_id' => $request->region_id,
-            'district_id' => $request->district_id,
-            'rm_id' => $request->rm_id,
-        ]);
+        // return $request->all();
+
+        if($request->xolat == 4)
+        {
+            $new = Rekrut::create([
+                'full_name' => $request->full_name,
+                'phone' => $request->phone,
+                'region_id' => $request->region_id,
+                'district_id' => $request->district_id,
+                'rm_id' => $request->rm_id,
+                'xolat' => $request->xolat,
+                'age' => $request->age,
+                'grafik' => $request->grafik,
+                'link' => $request->link,
+            ]);
+        }else{
+            $new = Rekrut::create([
+                'full_name' => $request->full_name,
+                'phone' => $request->phone,
+                'region_id' => $request->region_id,
+                'district_id' => $request->district_id,
+                'xolat' => $request->xolat,
+                'age' => $request->age,
+                'grafik' => $request->grafik,
+                'link' => $request->link,
+                'rm_id' => 178
+
+            ]);
+        }
+        
 
         return redirect()->back();
     }

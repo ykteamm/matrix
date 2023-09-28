@@ -12,6 +12,11 @@
                 <form action="{{ route('rekrut-save-user') }}" method="POST">
                     @csrf
                     <div class="row">
+
+                        <div class="form-group col-md-4">
+                            <input type="text"  name="full_name" class="form-control form-control-sm" required placeholder="FIO"/>
+                        </div>
+
                         <div class="form-group col-md-4">
                             <select class="form-control form-control-sm" name='region_id' id="aioConceptName" required onchange="districts()">
                                 <option value="" disabled selected hidden>Viloyat</option>
@@ -21,6 +26,7 @@
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="form-group col-md-4">
                             <select class="form-control form-control-sm" name='district_id' required>
                                 <option value="" disabled selected hidden>Tuman</option>
@@ -30,8 +36,50 @@
                                 @endforeach
                             </select>
                         </div>
+
+
                         <div class="form-group col-md-4">
-                            <select class="form-control form-control-sm" name='rm_id' required>
+                            <select class="form-control form-control-sm" name='xolat' required>
+                                <option value="" disabled selected hidden>Xolat</option>
+
+                                <option value="1">O'ylab koradi</option>
+                                <option value="2">Telefon ko'tarmadi </option>
+                                <option value="3">O'qishga keladi</option>
+                                <option value="4">Ustoz bilan gaplashadi</option>
+                                <option value="5">Uyi uzoq </option>
+                                <option value="6">O'qishga kelolmaydi lekin ishlaydi</option>
+                                <option value="7">Ishlamaydi </option>
+
+                            </select>
+                        </div>
+
+                        
+
+                        <div class="form-group col-md-4">
+                            <input type="text"  name="phone" value="+998" class="form-control form-control-sm" required placeholder="Telefon"/>
+                        </div>
+
+                        
+                        
+                        <div class="form-group col-md-4">
+                            <input type="number"  name="age" class="form-control form-control-sm" required placeholder="Yosh"/>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <select class="form-control form-control-sm" name='grafik' required>
+                                <option value="" disabled selected hidden>Grafik</option>
+
+                                <option value="1">Yarim smena</option>
+                                <option value="2">To'liq smena</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <input type="text"  name="link" class="form-control form-control-sm" required placeholder="Link"/>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                            <select class="form-control form-control-sm" name='rm_id'>
                                 <option value="" disabled selected hidden>RM-USTOZ</option>
 
                                 @foreach ($rms as $rm)
@@ -43,13 +91,9 @@
 
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <input type="text"  name="full_name" class="form-control form-control-sm" required placeholder="FIO"/>
-                        </div>
+                        
 
-                        <div class="form-group col-md-4">
-                            <input type="text"  name="phone" value="+998" class="form-control form-control-sm" required placeholder="Telefon"/>
-                        </div>
+                        
 
                         <div class="form-group col-md-2 reksave">
                                 <button type="submit" class="btn btn-primary" onclick="$('#reksave').addClass('d-none');$('#reksave2').removeClass('d-none')"> Saqlash </button>

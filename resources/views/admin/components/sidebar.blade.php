@@ -337,11 +337,20 @@
                 @isset(Session::get('per')['rekrut'])
                     @if (Session::get('per')['rekrut'] == 'true')
 
-                        @if (in_array(Session::get('user')->rm,[1,2]))
-                            <li><a href="{{ route('rekrut') }}"><i class="fas fa-filter"></i> <span>Rekruting</span></a>
-                        @else
-                        <li><a href="{{ route('rekrut-add-user') }}"><i class="fas fa-filter"></i> <span>Rekruting</span></a>
-                        @endif
+                        <li class="submenu">
+                            <a href="settings.html"><i class="fas fa-gamepad"></i> <span> Rekruting </span><span
+                                    class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                @if (in_array(Session::get('user')->rm,[1,2]))
+                                    <li><a href="{{ route('rekrut') }}"><span>Nomzod</span></a>
+                                @else
+                                    <li><a href="{{ route('rekrut-add-user') }}"><span>Nomzod</span></a>
+                                @endif
+                                <li><a href="{{ route('rekrut-group.create') }}">Potok</a></li>
+                            </ul>
+                        </li>
+
+                        
                     @endif
                 @endisset
 
