@@ -458,6 +458,9 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('rekrut-delete/{id}', [RekrutController::class, 'delete'])->name('rekrut.delete');
     Route::post('rekrut-save-user', [RekrutController::class, 'saveUser'])->name('rekrut-save-user');
 
+    Route::get('rekrut-change-xolat/{id}/{xolat}', [RekrutController::class, 'changeXolat'])->name('rekrut-change-xolat');
+    Route::get('rekrut-change-potok/{id}/{potok}', [RekrutController::class, 'changePotok'])->name('rekrut-change-potok');
+
 
     Route::resource('rekrut-group',RekrutGroupController::class);
 

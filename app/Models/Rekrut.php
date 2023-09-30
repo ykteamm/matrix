@@ -19,5 +19,22 @@ class Rekrut extends Model
         'age',
         'link',
         'grafik',
+        'group_id',
     ];
+
+
+    public function group()
+    {
+        return $this->belongsTo(RekrutGroup::class,'group_id','id');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class,'region_id','id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'rm_id','id');
+    }
 }

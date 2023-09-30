@@ -15,6 +15,9 @@ class CreateRekrutGroupsTable extends Migration
     {
         Schema::create('rekrut_groups', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->date('begin');
+            $table->date('end');
             $table->timestamps();
         });
     }

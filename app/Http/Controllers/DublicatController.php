@@ -90,7 +90,7 @@ class DublicatController extends Controller
         return view('dublicat.index', compact('duplicateUsers'));
     }
 
-    private function duplicates()
+    private function               duplicates()
     {
         $duplicates = [];
         $checked = [];

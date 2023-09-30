@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RekrutGroup;
 use Illuminate\Http\Request;
 
 class RekrutGroupController extends Controller
@@ -23,7 +24,9 @@ class RekrutGroupController extends Controller
      */
     public function create()
     {
-        return view('rekrut.group-create');
+        $groups = RekrutGroup::orderBy('id','ASC')->get();
+
+        return view('rekrut.group-create',compact('groups'));
     }
 
     /**
@@ -34,7 +37,13 @@ class RekrutGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = RekrutGroup::create([
+            'title' => $request->title,
+            'begin' => $request->begin,
+            'end' => $request->end,
+        ]);
+
+        return redirect()->back();
     }
 
     /**

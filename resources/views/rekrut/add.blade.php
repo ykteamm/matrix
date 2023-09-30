@@ -93,7 +93,16 @@
                         </div>
                         
 
-                        
+                        <div class="form-group col-md-4">
+                            <select class="form-control form-control-sm" name='group_id'>
+                                <option value="" disabled selected hidden>Potok tanlang</option>
+
+                                @foreach ($groups as $group)
+                                    <option value='{{$group->id}}' >{{$group->title}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
 
                         <div class="form-group col-md-2 reksave">
                                 <button type="submit" class="btn btn-primary" onclick="$('#reksave').addClass('d-none');$('#reksave2').removeClass('d-none')"> Saqlash </button>
@@ -116,24 +125,83 @@
                     <thead>
                     <tr>
                         <th>FIO </th>
+                        <th>Yosh </th>
                         <th>Telefon</th>
                         <th>RM-USTOZ</th>
                         <th>Viloyat </th>
                         <th>Tuman </th>
+                        <th>Xolat </th>
+                        <th>Group </th>
                         <th>Izoh </th>
                         <th>Vaqti </th>
                         <th>Status </th>
-                        <th>Harakat </th>
+                        {{-- <th>Harakat </th> --}}
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($rekruts as $rekrut)
                         <tr>
                             <td>{{$rekrut->fname}} </td>
+                            <td>{{$rekrut->age}} </td>
                             <td>{{$rekrut->phone}} </td>
                             <td>{{$rekrut->f}} {{$rekrut->l}}</td>
                             <td>{{$rekrut->r}} </td>
                             <td>{{$rekrut->d}} </td>
+                            <td>
+                                
+
+                                    
+
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            @if ($rekrut->xolat == 1)
+                                                O'ylab koradi
+                                            @elseif($rekrut->xolat == 2)
+                                                Telefon ko'tarmadi
+                                            @elseif($rekrut->xolat == 3)
+                                                O'qishga keladi
+                                            @elseif($rekrut->xolat == 4)
+                                                Ustoz bilan gaplashadi
+                                            @elseif($rekrut->xolat == 5)
+                                                Uyi uzoq
+                                            @elseif($rekrut->xolat == 6)
+                                                O'qishga kelolmaydi lekin ishlaydi
+                                            @else
+                                                Ishlamaydi
+                                            @endif
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 1])}}">O'ylab koradi</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 2])}}">Telefon ko'tarmadi</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 3])}}">O'qishga keladi</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 4])}}">Ustoz bilan gaplashadi</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 5])}}">Uyi uzoq</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 6])}}">O'qishga kelolmaydi lekin ishlaydi</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 7])}}">Ishlamaydi</a>
+                                            
+                                            <a class="dropdown-item" href="#">
+                                            </a>
+                                        <div class="dropdown-divider"></div>
+                                        </div>
+                                    </div>
+                                
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{$rekrut->title}}
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @foreach ($groups as $p)
+                                        <a class="dropdown-item" href="{{route('rekrut-change-potok',['id' => $rekrut->rid,'potok' => $p->id])}}">{{$p->title}}</a>
+                                            
+                                        @endforeach
+                                        <a class="dropdown-item" href="#">
+                                        </a>
+                                    <div class="dropdown-divider"></div>
+                                    </div>
+                                </div>
+                            </td>
                             <td >
                                 <div style="width: 200px;overflow: auto;">{{$rekrut->comment}}
                                 </div>
@@ -150,14 +218,14 @@
                                     <span class="badge badge-danger">Tasdiqlanmagan</span>
                                 @endif
                             </td>
-                            <td>
+                            {{-- <td>
                                 <a href="{{route('rekrut.delete',$rekrut->rid)}}">
                                     <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
                                 <a href="{{route('rekrut.change',$rekrut->rid)}}">
                                     <button class="btn btn-primary"><i class="fas fa-exchange-alt"></i></button>
                                 </a>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                     </tbody>

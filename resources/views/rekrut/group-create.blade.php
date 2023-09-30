@@ -14,15 +14,15 @@
                     <div class="row">
 
                         <div class="form-group col-md-4">
-                            <input type="text"  name="full_name" class="form-control form-control-sm" required placeholder="FIO"/>
+                            <input type="text"  name="title" class="form-control form-control-sm" required placeholder="Nomi"/>
                         </div>
 
                         <div class="form-group col-md-3">
-                            <input type="date"  name="full_name" class="form-control form-control-sm" required/>
+                            <input type="date"  name="begin" class="form-control form-control-sm" required/>
                         </div>
 
                         <div class="form-group col-md-3">
-                            <input type="date"  name="full_name" class="form-control form-control-sm" required/>
+                            <input type="date"  name="end" class="form-control form-control-sm" required/>
                         </div>
 
                        
@@ -41,7 +41,29 @@
             </div>
          </div>
          <div class="card-body">
-           
+            <div class="table-responsive">
+                <table class="table table-striped mb-0" id="dtBasicExample12">
+                    <thead>
+                        <tr>
+                            <th> Nomi </th>
+                            <th> Boshlanishi </th>
+                            <th> Tugashi </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($groups as $item)
+                            
+                            <tr>
+                                <td>{{$item->title}}</td>
+                                <td>{{$item->begin}}</td>
+                                <td>{{$item->end}}</td>
+                            </tr>
+
+                        @endforeach
+
+                    </tbody>
+                </table>
+           </div>
         </div>
       </div>
    </div>

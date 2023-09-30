@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Region;
 use App\Models\Rekrut;
+use App\Models\RekrutGroup;
 use App\Models\Teacher;
 use App\Models\TeacherUser;
 use App\Models\User;
@@ -25,14 +26,18 @@ class RekrutController extends Controller
         $rekruts= DB::table('rekruts')
         ->select('tg_user.first_name as f','tg_user.last_name as l','tg_region.name as r',
                  'tg_region.name as r','tg_district.name as d',
-                 'rekruts.full_name as fname','rekruts.phone','rekruts.status','rekruts.id as rid','rekruts.comment','rekruts.created_at as dat'
+                 'rekruts.full_name as fname','rekruts.phone','rekruts.status','rekruts.id as rid','rekruts.comment','rekruts.created_at as dat',
+                 'rekruts.age','rekruts.xolat','rekrut_groups.title'
                  )
         ->join('tg_user','tg_user.id','rekruts.rm_id')
         ->join('tg_region','tg_region.id','rekruts.region_id')
         ->join('tg_district','tg_district.id','rekruts.district_id')
+        ->join('rekrut_groups','rekrut_groups.id','rekruts.group_id')
         ->whereDate('rekruts.created_at','>=','2023-09-01')
         ->orderBy('rid','DESC')
         ->get();
+
+        $groups = RekrutGroup::all();
 
         return view('rekrut.add',[
             'regions' => $regions,
@@ -40,9 +45,33 @@ class RekrutController extends Controller
             'rms' => $rms,
             'rekruts' => $rekruts,
             'teachers' => $teachers,
+            'groups' => $groups,
         ]);
 
     }
+
+    public function changeXolat($id,$xolat)
+    {
+        $rekrut = Rekrut::find($id);
+
+        $rekrut->xolat = $xolat;
+
+        $rekrut->save();
+
+        return redirect()->back();
+    }
+
+    public function changePotok($id,$potok)
+    {
+        $rekrut = Rekrut::find($id);
+
+        $rekrut->group_id = $potok;
+
+        $rekrut->save();
+
+        return redirect()->back();
+    }
+
     public function saveUser(Request $request)
     {
         // return $request->all();
@@ -59,6 +88,7 @@ class RekrutController extends Controller
                 'age' => $request->age,
                 'grafik' => $request->grafik,
                 'link' => $request->link,
+                'group_id' => $request->group_id,
             ]);
         }else{
             $new = Rekrut::create([
@@ -70,6 +100,7 @@ class RekrutController extends Controller
                 'age' => $request->age,
                 'grafik' => $request->grafik,
                 'link' => $request->link,
+                'group_id' => $request->group_id,
                 'rm_id' => 178
 
             ]);
