@@ -11,6 +11,7 @@ class Rekrut extends Model
 
     protected $fillable = [
         'full_name',
+        'last_name',
         'phone',
         'region_id',
         'district_id',

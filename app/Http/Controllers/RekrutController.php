@@ -26,7 +26,7 @@ class RekrutController extends Controller
         $rekruts= DB::table('rekruts')
         ->select('tg_user.first_name as f','tg_user.last_name as l','tg_region.name as r',
                  'tg_region.name as r','tg_district.name as d',
-                 'rekruts.full_name as fname','rekruts.phone','rekruts.status','rekruts.id as rid','rekruts.comment','rekruts.created_at as dat',
+                 'rekruts.full_name as fname','rekruts.last_name as lname','rekruts.phone','rekruts.status','rekruts.id as rid','rekruts.comment','rekruts.created_at as dat',
                  'rekruts.age','rekruts.xolat','rekrut_groups.title'
                  )
         ->join('tg_user','tg_user.id','rekruts.rm_id')
@@ -80,6 +80,7 @@ class RekrutController extends Controller
         {
             $new = Rekrut::create([
                 'full_name' => $request->full_name,
+                'last_name' => $request->last_name,
                 'phone' => $request->phone,
                 'region_id' => $request->region_id,
                 'district_id' => $request->district_id,
@@ -93,6 +94,7 @@ class RekrutController extends Controller
         }else{
             $new = Rekrut::create([
                 'full_name' => $request->full_name,
+                'last_name' => $request->last_name,
                 'phone' => $request->phone,
                 'region_id' => $request->region_id,
                 'district_id' => $request->district_id,
@@ -137,6 +139,25 @@ class RekrutController extends Controller
        $rekrut->save();
 
        return redirect()->back();
+    }
+
+    public function rekrutEdit($id)
+    {
+
+       $rekrut = Rekrut::with('user','region')->find($id);
+
+       $regions = Region::all();
+
+       $districts = DB::table('tg_district')->get();
+
+
+       $rms = User::whereIn('rm',[1,2])->get();
+
+       $teachers = Teacher::with('user')->get();
+
+       $groups = RekrutGroup::all();
+
+       return view('rekrut.edit',compact('rekrut','regions','districts','rms','teachers','groups'));
     }
 
     public function rekrutHisobot()

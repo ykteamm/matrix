@@ -61,7 +61,7 @@
                                                 </th>
                                             @endforeach
 
-                                            @if ($tim)
+                                            {{-- @if ($tim) --}}
                                                 <th class="  text-center text-white ">
                                                     <input style="display: none" name="created_by" value="{{$id}}">
                                                     <a  style="font-size: 1.5rem;border-radius:10px;padding: 4px 8px;cursor-pointer;" onclick="yashir()" class= "w-100 px-5 yashir  bg-success">+</a>
@@ -70,7 +70,7 @@
                                                         min="2018-06-07T00:00" >
 
                                                 </th>
-                                            @endif
+                                            {{-- @endif --}}
                                         </tr>
                                         </thead>
                                         <tbody>

@@ -14,7 +14,11 @@
                     <div class="row">
 
                         <div class="form-group col-md-4">
-                            <input type="text"  name="full_name" class="form-control form-control-sm" required placeholder="FIO"/>
+                            <input type="text"  name="full_name" class="form-control form-control-sm" required placeholder="Ism"/>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <input type="text"  name="last_name" class="form-control form-control-sm" required placeholder="Familiya"/>
                         </div>
 
                         <div class="form-group col-md-4">
@@ -124,7 +128,9 @@
                 <table class="table table-striped mb-0" id="dtBasicExample12">
                     <thead>
                     <tr>
-                        <th>FIO </th>
+                        <th>Edit </th>
+                        <th>Ism </th>
+                        <th>Familiya </th>
                         <th>Yosh </th>
                         <th>Telefon</th>
                         <th>RM-USTOZ</th>
@@ -132,22 +138,24 @@
                         <th>Tuman </th>
                         <th>Xolat </th>
                         <th>Group </th>
-                        <th>Izoh </th>
+                        {{-- <th>Izoh </th> --}}
                         <th>Vaqti </th>
-                        <th>Status </th>
+                        {{-- <th>Status </th> --}}
                         {{-- <th>Harakat </th> --}}
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($rekruts as $rekrut)
                         <tr>
-                            <td>{{$rekrut->fname}} </td>
+                            <td> <a href="{{route('rekrut-edit',$rekrut->rid)}}"> <i class="fas fa-edit"></i> </a> </td>
+                            <td>{{$rekrut->fname}}</td>
+                            <td>{{$rekrut->lname}} </td>
                             <td>{{$rekrut->age}} </td>
                             <td>{{$rekrut->phone}} </td>
                             <td>{{$rekrut->f}} {{$rekrut->l}}</td>
                             <td>{{$rekrut->r}} </td>
                             <td>{{$rekrut->d}} </td>
-                            <td>
+                            <td style="width: 10px">
                                 
 
                                     
@@ -165,7 +173,7 @@
                                             @elseif($rekrut->xolat == 5)
                                                 Uyi uzoq
                                             @elseif($rekrut->xolat == 6)
-                                                O'qishga kelolmaydi lekin ishlaydi
+                                                Kelolmaydi,ishlaydi
                                             @else
                                                 Ishlamaydi
                                             @endif
@@ -176,7 +184,7 @@
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 3])}}">O'qishga keladi</a>
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 4])}}">Ustoz bilan gaplashadi</a>
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 5])}}">Uyi uzoq</a>
-                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 6])}}">O'qishga kelolmaydi lekin ishlaydi</a>
+                                            <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 6])}}">Kelolmaydi,ishlaydi</a>
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 7])}}">Ishlamaydi</a>
                                             
                                             <a class="dropdown-item" href="#">
@@ -202,14 +210,14 @@
                                     </div>
                                 </div>
                             </td>
-                            <td >
+                            {{-- <td >
                                 <div style="width: 200px;overflow: auto;">{{$rekrut->comment}}
                                 </div>
-                            </td>
+                            </td> --}}
                             <td>
-                                {{date('d.m.Y H:s',strtotime($rekrut->dat))}}
+                                {{date('d.m.Y',strtotime($rekrut->dat))}}
                             </td>
-                            <td>
+                            {{-- <td>
                                 @if ($rekrut->status == 0)
                                     <span class="badge badge-primary">Ko'rilmagan</span>
                                 @elseif ($rekrut->status == 1)
@@ -217,7 +225,7 @@
                                 @else
                                     <span class="badge badge-danger">Tasdiqlanmagan</span>
                                 @endif
-                            </td>
+                            </td> --}}
                             {{-- <td>
                                 <a href="{{route('rekrut.delete',$rekrut->rid)}}">
                                     <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
