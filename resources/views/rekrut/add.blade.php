@@ -174,8 +174,10 @@
                                                 Uyi uzoq
                                             @elseif($rekrut->xolat == 6)
                                                 Kelolmaydi,ishlaydi
+                                            @elseif($rekrut->xolat == 6)
+                                            Ishlamaydi
+
                                             @else
-                                                Ishlamaydi
                                             @endif
                                         </button>
                                         <div class="dropdown-menu">

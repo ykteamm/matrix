@@ -157,7 +157,36 @@ class RekrutController extends Controller
 
        $groups = RekrutGroup::all();
 
-       return view('rekrut.edit',compact('rekrut','regions','districts','rms','teachers','groups'));
+       $xolat[1] = 'O\'ylab koradi';
+        $xolat[2] = 'Telefon ko\'tarmadi';
+        $xolat[3] = 'O\'qishga keladi';
+        $xolat[4] = 'Ustoz bilan gaplashadi';
+        $xolat[5] = 'Uyi uzoq';
+        $xolat[6] = 'O\'qishga kelolmaydi lekin ishlaydi';
+        $xolat[7] = 'Ishlamaydi';
+
+       return view('rekrut.edit',compact('rekrut','regions','districts','rms','teachers','groups','xolat'));
+    }
+
+    public function rekrutUpdate(Request $request,$id)
+    {
+
+        $rekrut = Rekrut::find($id);
+        $rekrut->full_name = $request->full_name;
+        $rekrut->last_name = $request->last_name;
+        $rekrut->region_id = $request->region_id;
+        $rekrut->district_id = $request->district_id;
+        $rekrut->xolat = $request->xolat;
+        $rekrut->phone = $request->phone;
+        $rekrut->age = $request->age;
+        $rekrut->grafik = $request->grafik;
+        $rekrut->link = $request->link;
+        $rekrut->rm_id = $request->rm_id;
+        $rekrut->group_id = $request->group_id;
+
+        $rekrut->save();
+
+        return redirect()->back();
     }
 
     public function rekrutHisobot()
