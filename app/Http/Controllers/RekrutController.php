@@ -160,7 +160,14 @@ class RekrutController extends Controller
         // ->whereDate('rekruts.created_at','>=','2023-09-01')
         // ->get();
 
-        $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',2)->whereIn('xolat',[1,2,3])->get();
+        $date=date_create(date('Y-m-d'));
+        date_modify($date,"-1 days");
+        $ddd = date_format($date,"Y-m-d");
+
+        $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',2)
+        ->whereIn('xolat',[1,2,3])
+        ->whereDate('created_at',$ddd)
+        ->get();
 
         return view('rekrut.ustoz',[
             'rekruts' => $rekrut,
