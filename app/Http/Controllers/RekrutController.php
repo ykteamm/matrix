@@ -10,6 +10,7 @@ use App\Models\TeacherUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 
 class RekrutController extends Controller
@@ -28,7 +29,7 @@ class RekrutController extends Controller
         ->select('tg_user.first_name as f','tg_user.last_name as l','tg_region.name as r',
                  'tg_region.name as r','tg_district.name as d',
                  'rekruts.full_name as fname','rekruts.last_name as lname','rekruts.phone','rekruts.status','rekruts.id as rid','rekruts.comment','rekruts.created_at as dat',
-                 'rekruts.age','rekruts.xolat','rekrut_groups.title'
+                 'rekruts.age','rekruts.xolat','rekrut_groups.title','rekruts.sms'
                  )
         ->join('tg_user','tg_user.id','rekruts.rm_id')
         ->join('tg_region','tg_region.id','rekruts.region_id')
@@ -172,6 +173,32 @@ class RekrutController extends Controller
         return view('rekrut.ustoz',[
             'rekruts' => $rekrut,
         ]);
+    }
+
+
+    public function rekrutSMS($id)
+    {   
+        $rekrut = Rekrut::find($id);
+
+
+        $response = Http::post('notify.eskiz.uz/api/auth/login', [
+            'email' => 'mubashirov2002@gmail.com',
+            'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
+        ]);
+        $token = $response['data']['token'];
+
+        $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
+            'mobile_phone' => substr($rekrut->phone,1),
+            'message' => 'Saytga kiring kompaniya haqidagi videoni ko\'ring va testlarga javob bering. 5 millonlik ishni qo\'lga kiriting.' . ' Videoni ko\'rish uchun ustiga bosing ' . ' academy.novatio.uz/'.substr($rekrut->phone,1),
+            'from' => '4546',
+            'callback_url' => 'http://0000.uz/test.php'
+        ]);
+
+        $rekrut = Rekrut::find($id);
+        $rekrut->sms = $rekrut->sms + 1;
+        $rekrut->save();
+
+        return redirect()->back();
     }
 
     public function rekrutEdit($id)

@@ -168,7 +168,16 @@
                     <tbody>
                     @foreach($rekruts as $rekrut)
                         <tr>
-                            <td> <a href="{{route('rekrut-edit',$rekrut->rid)}}"> <i class="fas fa-edit"></i> </a> </td>
+                            <td> <a href="{{route('rekrut-edit',$rekrut->rid)}}"> <i class="fas fa-edit"></i> </a> 
+                                
+                                <a href="{{route('rekrut-sms',$rekrut->rid)}}">  
+                                
+                                    <button class="btn btn-primary">
+                                    SMS
+                                    </button>
+                                    {{$rekrut->sms}}
+                                </a>
+                            </td>
                             <td>{{$rekrut->fname}}</td>
                             <td>{{$rekrut->lname}} </td>
                             <td>{{$rekrut->age}} </td>
@@ -215,7 +224,8 @@
                                         <div class="dropdown-divider"></div>
                                         </div>
                                     </div>
-                                
+                                    
+
                             </td>
                             <td>
                                 <div class="btn-group">
