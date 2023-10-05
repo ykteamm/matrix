@@ -8,6 +8,24 @@
    <div class="row headbot">
       <div class="col-sm-12">
          <div class="card mt-5">
+            <div class="card-body text-right">
+                <div class="btn-group">
+    
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ustozga Hisobot
+                    </button>
+                    <div class="dropdown-menu">
+                        @foreach ($regions as $reg)
+                            
+                            <a class="dropdown-item" href="{{route('rekrut-ustoz-hisobot',['id' => $reg->id])}}" target="_blank">{{$reg->name}}</a>
+                        @endforeach
+                        
+                            <a class="dropdown-item" href="#">
+                            </a>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </div>
+             </div>
             <div class="card-body">
                 <form action="{{ route('rekrut-save-user') }}" method="POST">
                     @csrf
@@ -120,8 +138,11 @@
                 </form>
 
             </div>
+            
          </div>
+         
          <div class="card-body">
+            
             <div id="dtBasicExample1212"></div>
 
             <div class="table-responsive">

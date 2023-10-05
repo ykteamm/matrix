@@ -16,6 +16,7 @@ class RekrutController extends Controller
 {
     public function addUser()
     {
+
         $regions = Region::all();
         $districts = DB::table('tg_district')->get();
 
@@ -36,6 +37,7 @@ class RekrutController extends Controller
         ->whereDate('rekruts.created_at','>=','2023-09-01')
         ->orderBy('rid','DESC')
         ->get();
+
 
         $groups = RekrutGroup::all();
 
@@ -103,7 +105,9 @@ class RekrutController extends Controller
                 'grafik' => $request->grafik,
                 'link' => $request->link,
                 'group_id' => $request->group_id,
-                'rm_id' => 178
+                // 'rm_id' => 178
+                'rm_id' => $request->rm_id,
+
 
             ]);
         }
@@ -139,6 +143,28 @@ class RekrutController extends Controller
        $rekrut->save();
 
        return redirect()->back();
+    }
+
+    public function rekrutUstozHisobot($id)
+    {
+
+        // $rekruts= DB::table('rekruts')
+        // ->select('tg_user.first_name as f','tg_user.last_name as l','tg_region.name as r',
+        //          'tg_region.name as r','tg_district.name as d',
+        //          'rekruts.full_name as fname','rekruts.phone','rekruts.status','rekruts.comment','rekruts.id'
+        //          )
+        // ->join('tg_user','tg_user.id','rekruts.rm_id')
+        // ->join('tg_region','tg_region.id','rekruts.region_id')
+        // ->join('tg_district','tg_district.id','rekruts.district_id')
+        // ->where('rekruts.rm_id',Session::get('user')->id)
+        // ->whereDate('rekruts.created_at','>=','2023-09-01')
+        // ->get();
+
+        $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',2)->whereIn('xolat',[1,2,3])->get();
+
+        return view('rekrut.ustoz',[
+            'rekruts' => $rekrut,
+        ]);
     }
 
     public function rekrutEdit($id)

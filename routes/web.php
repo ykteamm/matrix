@@ -461,6 +461,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('rekrut-change-xolat/{id}/{xolat}', [RekrutController::class, 'changeXolat'])->name('rekrut-change-xolat');
     Route::get('rekrut-change-potok/{id}/{potok}', [RekrutController::class, 'changePotok'])->name('rekrut-change-potok');
 
+    Route::get('rekrut-ustoz-hisobot/{id}', [RekrutController::class, 'rekrutUstozHisobot'])->name('rekrut-ustoz-hisobot');
     Route::get('rekrut-edit/{id}', [RekrutController::class, 'rekrutEdit'])->name('rekrut-edit');
     Route::post('rekrut-update/{id}', [RekrutController::class, 'rekrutUpdate'])->name('rekrut-update');
 
