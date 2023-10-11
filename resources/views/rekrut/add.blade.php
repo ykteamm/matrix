@@ -177,6 +177,21 @@
                                     </button>
                                     {{$rekrut->sms}}
                                 </a>
+                                @if (isset($smar[$rekrut->rid]))
+                                <button class="btn 
+                                    @if (floor($smar[$rekrut->rid]) >= 50)
+                                        btn-success
+                                    @else
+                                        btn-danger
+                                        
+                                    @endif
+                                ">
+                                    {{floor($smar[$rekrut->rid])}}%
+                                </button>
+                                @else
+                                    
+                                @endif
+                                
                             </td>
                             <td>{{$rekrut->fname}}</td>
                             <td>{{$rekrut->lname}} </td>

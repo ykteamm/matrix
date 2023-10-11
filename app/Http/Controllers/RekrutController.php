@@ -40,6 +40,30 @@ class RekrutController extends Controller
         ->get();
 
 
+        $sms = DB::table('rekruts')->where('sms','>',0)->pluck('id')->toArray();
+
+        $smar = [];
+
+        foreach ($sms as $key => $value) {
+
+            $bir = DB::table('academy_answer')->where('user_id',$value)->where('check',1)->count();
+            $nol = DB::table('academy_answer')->where('user_id',$value)->where('check',0)->count();
+           
+            if(($bir+$nol) > 0)
+            {
+                $pr = ($bir*100)/($bir+$nol);
+
+                $smar[$value] = $pr;
+            }else{
+
+                $smar[$value] = 0;
+            }
+           
+
+        }
+
+        // return $sms;
+
         $groups = RekrutGroup::all();
 
         return view('rekrut.add',[
@@ -49,6 +73,7 @@ class RekrutController extends Controller
             'rekruts' => $rekruts,
             'teachers' => $teachers,
             'groups' => $groups,
+            'smar' => $smar,
         ]);
 
     }
