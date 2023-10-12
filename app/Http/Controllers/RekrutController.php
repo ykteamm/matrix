@@ -186,11 +186,14 @@ class RekrutController extends Controller
         // ->whereDate('rekruts.created_at','>=','2023-09-01')
         // ->get();
 
+        $igs = RekrutGroup::orderBy('id','DESC')->first();
+
+
         $date=date_create(date('Y-m-d'));
         date_modify($date,"-1 days");
         $ddd = date_format($date,"Y-m-d");
 
-        $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',2)
+        $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
         ->whereIn('xolat',[1,2,3,4])
         ->whereDate('created_at','>=','2023-10-10')
         ->whereDate('created_at','<=','2023-10-11')
