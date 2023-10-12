@@ -319,7 +319,7 @@
 
                 @isset(Session::get('per')['turnir'])
                     @if (Session::get('per')['turnir'] == 'true')
-                        <li class="submenu">
+                        {{-- <li class="submenu">
                             <a href="settings.html"><i class="fas fa-gamepad"></i> <span> Turnir </span><span
                                     class="menu-arrow"></span></a>
                             <ul style="display: none;">
@@ -329,6 +329,17 @@
                                 <li><a href="{{ route('turnir-tour') }}">Turnir tur</a></li>
                                 <li><a href="{{ route('turnir-playoff') }}">Turnir play-off</a></li>
                                 <li><a href="{{ route('turnir-games') }}">Turnir games</a></li>
+                            </ul>
+                        </li> --}}
+
+                        <li class="submenu">
+                            <a href="settings.html"><i class="fas fa-gamepad"></i> <span> Mega Turnir </span><span
+                                    class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{{ route('mega-turnir-teacher') }}">Ustoz</a></li>
+                                <li><a href="{{ route('mega-turnir-team') }}">Ustoz Jamoa</a></li>
+                                <li><a href="{{ route('mega-turnir-team-battle') }}">Ustoz Jamoa Jangi</a></li>
+                                <li><a href="{{ route('mega-turnir-user-battle') }}">Individuallar Jangi</a></li>
                             </ul>
                         </li>
                     @endif

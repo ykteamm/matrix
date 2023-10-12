@@ -32,6 +32,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TrendController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TurnirController;
+use App\Http\Controllers\MegaTurnirController;
 use App\Http\Controllers\VideoController;
 use App\Http\Livewire\McShipmentDetail;
 use Illuminate\Support\Facades\Auth;
@@ -448,6 +449,19 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('group-state', [TurnirController::class, 'groupState'])->name('group-state');
     Route::post('group-state-store', [TurnirController::class, 'groupStateStore'])->name('group-state.store');
     //TURNIR-END
+
+    //MEGA-TURNIR-BEGIN
+        Route::get('mega-turnir-teacher', [MegaTurnirController::class, 'teacher'])->name('mega-turnir-teacher');
+        Route::post('mega-turnir-teacher-save', [MegaTurnirController::class, 'teacherSave'])->name('mega-turnir-teacher-save');
+        Route::get('mega-turnir-team', [MegaTurnirController::class, 'team'])->name('mega-turnir-team');
+        Route::post('mega-turnir-team-save', [MegaTurnirController::class, 'teamSave'])->name('mega-turnir-team-save');
+
+        Route::get('mega-turnir-team-battle', [MegaTurnirController::class, 'teamBattle'])->name('mega-turnir-team-battle');
+        Route::post('mega-turnir-team-battle-save', [MegaTurnirController::class, 'teamBattleSave'])->name('mega-turnir-team-battle-save');
+
+        Route::get('mega-turnir-user-battle', [MegaTurnirController::class, 'userBattle'])->name('mega-turnir-user-battle');
+        Route::post('mega-turnir-user-battle-save', [MegaTurnirController::class, 'userBattleSave'])->name('mega-turnir-user-battle-save');
+    //MEGA-TURNIR-END
 
     //REKRUT-BEGIN
     Route::get('rekrut', [RekrutController::class, 'rekrut'])->name('rekrut');
