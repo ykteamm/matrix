@@ -185,7 +185,7 @@ class RekrutController extends Controller
         // ->where('rekruts.rm_id',Session::get('user')->id)
         // ->whereDate('rekruts.created_at','>=','2023-09-01')
         // ->get();
-
+// fsdfsdf
         $igs = RekrutGroup::orderBy('id','DESC')->first();
 
 
