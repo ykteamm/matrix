@@ -65,8 +65,8 @@ class MegaTurnirController extends Controller
     public function teamBattle()
     {
 
-        $id1 = MegaTurnirTeamBattle::pluck('user1id')->toArray();
-        $id2 = MegaTurnirTeamBattle::pluck('user2id')->toArray();
+        $id1 = MegaTurnirTeamBattle::where('tour',2)->pluck('user1id')->toArray();
+        $id2 = MegaTurnirTeamBattle::where('tour',2)->pluck('user2id')->toArray();
 
         $ids = array_merge($id1,$id2);
 
@@ -87,9 +87,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirTeamBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-10-12';
-        $teach->end = '2023-10-14';
-        $teach->tour = 1;
+        $teach->begin = '2023-10-16';
+        $teach->end = '2023-10-18';
+        $teach->tour = 2;
         $teach->save();
 
         return redirect()->back();
@@ -98,8 +98,8 @@ class MegaTurnirController extends Controller
     public function userBattle()
     {
 
-        $id11 = MegaTurnirTeamBattle::pluck('user1id')->toArray();
-        $id22 = MegaTurnirTeamBattle::pluck('user2id')->toArray();
+        $id11 = MegaTurnirTeamBattle::where('tour',2)->pluck('user1id')->toArray();
+        $id22 = MegaTurnirTeamBattle::where('tour',2)->pluck('user2id')->toArray();
 
         $ids111 = array_merge($id11,$id22);
 
@@ -151,9 +151,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirUserBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-10-12';
-        $teach->end = '2023-10-14';
-        $teach->tour = 1;
+        $teach->begin = '2023-10-16';
+        $teach->end = '2023-10-18';
+        $teach->tour = 2;
         $teach->save();
 
         return redirect()->back();
