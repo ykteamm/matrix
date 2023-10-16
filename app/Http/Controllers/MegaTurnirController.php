@@ -98,13 +98,14 @@ class MegaTurnirController extends Controller
     public function userBattle()
     {
 
-        $id11 = MegaTurnirUserBattle::where('tour',2)->pluck('user1id')->toArray();
-        $id22 = MegaTurnirUserBattle::where('tour',2)->pluck('user2id')->toArray();
+        
+        $id11 = MegaTurnirTeamBattle::where('tour',2)->pluck('user1id')->toArray();
+        $id22 = MegaTurnirTeamBattle::where('tour',2)->pluck('user2id')->toArray();
 
         $ids111 = array_merge($id11,$id22);
 
-        $id1 = MegaTurnirUserBattle::pluck('user1id')->toArray();
-        $id2 = MegaTurnirUserBattle::pluck('user2id')->toArray();
+        $id1 = MegaTurnirUserBattle::where('tour',2)->pluck('user1id')->toArray();
+        $id2 = MegaTurnirUserBattle::where('tour',2)->pluck('user2id')->toArray();
 
         $ids11 = array_merge($id1,$id2);
 
