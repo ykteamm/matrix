@@ -716,14 +716,24 @@ class ElchilarService
 
                 $user = User::find($item->id);
 
-                if($user->work_start > $day)
+                if($user->date_joined > '2023-08-01')
                 {
-                    $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'close' => $close,'day' => $day];
-
+                    if($user->work_start > $day)
+                    {
+                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'close' => $close,'day' => $day];
+    
+                    }elseif($user->work_start == null)
+                    {
+                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'close' => $close,'day' => $day];
+                    }
+                    else{
+                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
+    
+                    }
                 }else{
                     $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
-
                 }
+                
 
             }
             $sold[$item->id]=$sold2;
