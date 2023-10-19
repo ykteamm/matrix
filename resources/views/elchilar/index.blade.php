@@ -463,8 +463,13 @@
                                                 <div>
                                                     @if ($sold[$item->id][$i]['open'] == null)
                                                         <span class="badge bg-danger-light">
+
                                                             Ishda emas
+
+                                                            
                                                         </span>
+                                                    @elseif($sold[$item->id][$i]['open'] == 1111)
+                                                        ---
                                                     @else
                                                         {{date('H:i',strtotime($sold[$item->id][$i]['open']))}}
                                                         @if ($sold[$item->id][$i]['close'] == null)

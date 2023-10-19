@@ -713,7 +713,18 @@ class ElchilarService
                 }
                 $MonthSold=ProductSold::where('user_id',$item->id)
                     ->whereDate('created_at','=', $day)->sum(DB::raw('price_product*number'));
-                $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
+
+                $user = User::find($item->id);
+
+                if($user->work_start > $day)
+                {
+                    $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'close' => $close,'day' => $day];
+
+                }else{
+                    $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
+
+                }
+
             }
             $sold[$item->id]=$sold2;
         }

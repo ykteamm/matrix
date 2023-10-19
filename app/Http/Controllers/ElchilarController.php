@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PlanWeek;
 use App\Models\ProductSold;
+use App\Models\User;
 use App\Services\ElchilarService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -21,13 +22,45 @@ class ElchilarController extends Controller
     public function kunlik(Request $request, $month)
     {
 
-        // $shift = DB::table('tg_shift')
-        // // ->where('tg_shift.open_date','!=',null)
-        // ->where('tg_shift.user_id',163)
-        // ->whereDate('tg_shift.created_at','>=','2023-07-01')
-        // ->whereDate('tg_shift.created_at','<','2023-07-31')
-        // ->get();
-        // dd($shift);
+        $users = User::whereDate('date_joined','>','2023-08-01')->get();
+
+        $arr = [];
+        $arr2 = [];
+        
+        foreach ($users as $key => $value) {
+            
+            $pro = ProductSold::where('user_id',$value->id)->first();
+
+            if($pro)
+            {
+                $sum = 0;
+                for ($i=1; $i < 100; $i++) { 
+
+                    $d = date('Y-m-d',strtotime('+'.$i.' day',strtotime($pro->created_at)));
+
+                    $sold = ProductSold::where('user_id',$value->id)
+                    ->whereDate('created_at','>=',$pro->created_at)
+                    ->whereDate('created_at','<=',$d)
+                    ->sum(DB::raw('number*price_product'));
+
+                    if($sold >= 1750000)
+                    {
+                        $arr2[$value->id] = $d;
+
+                        $update = DB::table('tg_user')->where('id',$value->id)->update([
+                            'status' => 1,
+                            'work_start' => $d
+                        ]);
+
+                        break;
+                    }
+
+                }
+            }
+
+        }
+
+
         $all_or_new = $request->input('all_or_new') ?? 'all';
         $side = $request->input('side') ?? 'all';
         $region = $request->input('region');
@@ -88,6 +121,9 @@ class ElchilarController extends Controller
         $encane = $this->service->encane($elchi, $month);
         $days = $this->service->checkCalendar($month, $endofmonth);
         $sold = $this->service->sold($elchi, $days);
+
+        // dd($sold);
+
         $haftalik = $this->service->haftalik($days, $sold, $elchi);
         $viloyatlar = $this->service->viloyatlar();
         $tot_sold_day = $this->service->day_sold($elchi, $days, $sold);
