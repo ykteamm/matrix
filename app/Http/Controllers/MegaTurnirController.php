@@ -99,8 +99,12 @@ class MegaTurnirController extends Controller
     {
 
         
-        $id11 = MegaTurnirTeamBattle::where('tour',4)->pluck('user1id')->toArray();
-        $id22 = MegaTurnirTeamBattle::where('tour',4)->pluck('user2id')->toArray();
+        // $id11 = MegaTurnirTeamBattle::where('tour',4)->pluck('user1id')->toArray();
+        // $id22 = MegaTurnirTeamBattle::where('tour',4)->pluck('user2id')->toArray();
+
+        $id11 = [];
+        $id22 = [];
+
 
         $ids111 = array_merge($id11,$id22);
 
