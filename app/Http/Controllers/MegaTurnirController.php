@@ -65,8 +65,8 @@ class MegaTurnirController extends Controller
     public function teamBattle()
     {
 
-        $id1 = MegaTurnirTeamBattle::where('tour',3)->pluck('user1id')->toArray();
-        $id2 = MegaTurnirTeamBattle::where('tour',3)->pluck('user2id')->toArray();
+        $id1 = MegaTurnirTeamBattle::where('tour',4)->pluck('user1id')->toArray();
+        $id2 = MegaTurnirTeamBattle::where('tour',4)->pluck('user2id')->toArray();
 
         $ids = array_merge($id1,$id2);
 
@@ -87,9 +87,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirTeamBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-10-19';
-        $teach->end = '2023-10-21';
-        $teach->tour = 3;
+        $teach->begin = '2023-10-24';
+        $teach->end = '2023-10-26';
+        $teach->tour = 4;
         $teach->save();
 
         return redirect()->back();
@@ -99,13 +99,13 @@ class MegaTurnirController extends Controller
     {
 
         
-        $id11 = MegaTurnirTeamBattle::where('tour',3)->pluck('user1id')->toArray();
-        $id22 = MegaTurnirTeamBattle::where('tour',3)->pluck('user2id')->toArray();
+        $id11 = MegaTurnirTeamBattle::where('tour',4)->pluck('user1id')->toArray();
+        $id22 = MegaTurnirTeamBattle::where('tour',4)->pluck('user2id')->toArray();
 
         $ids111 = array_merge($id11,$id22);
 
-        $id1 = MegaTurnirUserBattle::where('tour',3)->pluck('user1id')->toArray();
-        $id2 = MegaTurnirUserBattle::where('tour',3)->pluck('user2id')->toArray();
+        $id1 = MegaTurnirUserBattle::where('tour',4)->pluck('user1id')->toArray();
+        $id2 = MegaTurnirUserBattle::where('tour',4)->pluck('user2id')->toArray();
 
         $ids11 = array_merge($id1,$id2);
 
@@ -152,9 +152,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirUserBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-10-19';
-        $teach->end = '2023-10-21';
-        $teach->tour = 3;
+        $teach->begin = '2023-10-24';
+        $teach->end = '2023-10-26';
+        $teach->tour = 4;
         $teach->save();
 
         return redirect()->back();

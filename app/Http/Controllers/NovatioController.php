@@ -174,8 +174,7 @@ class NovatioController extends Controller
                 ->join('tg_medicine','tg_medicine.id','tg_productssold.medicine_id')
                 ->join('tg_order','tg_order.id','tg_productssold.order_id')
                 ->join('tg_category','tg_category.id','tg_medicine.category_id')
-        ->orderBy('tg_order.id', 'DESC')
-
+                ->orderBy('tg_order.id', 'DESC')
                 ->get();
         }else{
             $reid = DB::table('tg_user')
