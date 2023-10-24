@@ -89,10 +89,10 @@
 
                         <tr style="border: 1px solid red">
                             <td>
-                                {{$item->user1->first_name}}
+                                {{$item->user1->first_name}}  {{$item->user1->last_name}}
                             </td>
                             <td>
-                                {{$item->user2->first_name}}
+                                {{$item->user2->first_name}}  {{$item->user2->last_name}}
                             </td>
                             <td>
                                 {{$item->begin}}
