@@ -193,10 +193,11 @@ class RekrutController extends Controller
         date_modify($date,"-1 days");
         $ddd = date_format($date,"Y-m-d");
 
-        $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
+        // $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
+        $rekrut = Rekrut::with('region')->where('region_id',$id)
         ->whereIn('xolat',[1,2,3,4])
-        ->whereDate('created_at','>=','2023-10-14')
-        ->whereDate('created_at','<=','2023-10-15')
+        ->whereDate('created_at','>=','2023-10-16')
+        ->whereDate('created_at','<=','2023-10-24')
         ->get();
 
         return view('rekrut.ustoz',[
