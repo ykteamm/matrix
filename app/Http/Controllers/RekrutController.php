@@ -214,7 +214,7 @@ class RekrutController extends Controller
         $sold[33] = [33,483,447,443,396];
         $shogird[33] = 2;
 
-        $sold[177] = [177,441,476,453];
+        $sold[177] = [177,441,467,453];
         $shogird[177] = 2;
 
         $sold[232] = [232,486,476,469,466,459];
