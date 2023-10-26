@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductSold;
 use App\Models\Region;
 use App\Models\Rekrut;
 use App\Models\RekrutGroup;
@@ -205,6 +206,47 @@ class RekrutController extends Controller
         ]);
     }
 
+    public function ustoz50()
+    {
+        $sold[5] = [5,437,488,477,490];
+        $shogird[5] = 3;
+
+        $sold[33] = [33,483,447,443,396];
+        $shogird[33] = 2;
+
+        $sold[177] = [177,441,476,453];
+        $shogird[177] = 2;
+
+        $sold[232] = [232,486,476,469,466,459];
+        $shogird[232] = 4;
+
+        $sold[79] = [79,473,439,479,480];
+        $shogird[79] = 1;
+
+        $sold[160] = [160,470,472,491];
+        $shogird[160] = 3;
+
+        $art = [];
+
+        foreach ($sold as $key => $value) {
+            $rekrut = ProductSold::whereIn('user_id',$value)
+                    ->whereDate('created_at','>=','2023-10-01')
+                    ->whereDate('created_at','<=','2023-10-31')
+                    ->sum(DB::raw('price_product*number'));
+
+            $ustoz = User::find($key);
+
+            $art[] = ['fakt' => $rekrut,'ustoz'=> $ustoz->first_name.'-'.$ustoz->last_name,'shogird' => $shogird[$key]];
+
+
+        }
+
+        $price = array_column($art, 'fakt');
+        array_multisort($price, SORT_DESC, $art);
+
+        return $art;
+
+    }
 
     public function rekrutSMS($id)
     {   

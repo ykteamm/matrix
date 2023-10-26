@@ -480,6 +480,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('rekrut-sms/{id}', [RekrutController::class, 'rekrutSMS'])->name('rekrut-sms');
     Route::post('rekrut-update/{id}', [RekrutController::class, 'rekrutUpdate'])->name('rekrut-update');
 
+    Route::get('ustoz50', [RekrutController::class, 'ustoz50'])->name('ustoz50');
+
 
     Route::resource('rekrut-group',RekrutGroupController::class);
 
