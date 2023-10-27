@@ -87,9 +87,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirTeamBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-10-24';
-        $teach->end = '2023-10-26';
-        $teach->tour = 4;
+        $teach->begin = '2023-10-27';
+        $teach->end = '2023-10-31';
+        $teach->tour = 5;
         $teach->save();
 
         return redirect()->back();
@@ -156,9 +156,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirUserBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-10-24';
-        $teach->end = '2023-10-26';
-        $teach->tour = 4;
+        $teach->begin = '2023-10-27';
+        $teach->end = '2023-10-31';
+        $teach->tour = 5;
         $teach->save();
 
         return redirect()->back();
