@@ -199,7 +199,7 @@ class RekrutController extends Controller
         // ->whereIn('xolat',[1,2,3,4])
         ->whereDate('created_at','>=','2023-11-04')
         ->whereDate('created_at','<=','2023-11-06')
-        ->groupBy('district_id','ASC')
+        ->groupBy('district_id')
         ->get();
 
         $district = DB::table('tg_district')->pluck('name','id')->toArray();
