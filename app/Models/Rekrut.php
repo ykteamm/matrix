@@ -34,6 +34,7 @@ class Rekrut extends Model
         return $this->belongsTo(Region::class,'region_id','id');
     }
 
+
     public function user()
     {
         return $this->belongsTo(User::class,'rm_id','id');

@@ -201,8 +201,11 @@ class RekrutController extends Controller
         ->whereDate('created_at','<=','2023-11-06')
         ->get();
 
+        $district = DB::table('tg_district')->pluck('name','id')->toArray();
+
         return view('rekrut.ustoz',[
             'rekruts' => $rekrut,
+            'district' => $district,
         ]);
     }
 

@@ -21,6 +21,7 @@
                         <th>Yosh </th>
                         <th>Telefon</th>
                         <th>Viloyat </th>
+                        <th>Tuman </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,6 +32,12 @@
                             <td>{{$rekrut->age}} </td>
                             <td>{{$rekrut->phone}} </td>
                             <td>{{$rekrut->region->name}} </td>
+                             <td>
+                              @if(isset($district[$rekrut->district_id]))
+                              {{$district[$rekrut->district_id]}}
+                              @else
+                              @endif
+                             </td>
                         </tr>
                     @endforeach
                     </tbody>
