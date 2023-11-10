@@ -276,8 +276,8 @@ class RekrutController extends Controller
 
         foreach ($sold as $key => $value) {
             $rekrut = ProductSold::whereIn('user_id',$value)
-                    ->whereDate('created_at','>=','2023-10-01')
-                    ->whereDate('created_at','<=','2023-10-31')
+                    ->whereDate('created_at','>=','2023-11-01')
+                    ->whereDate('created_at','<=','2023-11-30')
                     ->sum(DB::raw('price_product*number'));
 
             $ustoz = User::find($key);
