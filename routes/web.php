@@ -481,6 +481,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('rekrut-update/{id}', [RekrutController::class, 'rekrutUpdate'])->name('rekrut-update');
 
     Route::get('ustoz50', [RekrutController::class, 'ustoz50'])->name('ustoz50');
+    Route::get('ustoz70', [RekrutController::class, 'ustoz70'])->name('ustoz70');
 
 
     Route::resource('rekrut-group',RekrutGroupController::class);

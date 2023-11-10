@@ -252,6 +252,48 @@ class RekrutController extends Controller
 
     }
 
+    public function ustoz70()
+    {
+        $sold[5] = [5,437,498,488,490,504,511];
+        $shogird[5] = 3;
+
+        $sold[33] = [33,483,447,443,495];
+        $shogird[33] = 4;
+
+        $sold[177] = [177,467,512];
+        $shogird[177] = 2;
+
+        $sold[232] = [232,486,469,466,459,503];
+        $shogird[232] = 5;
+
+        $sold[79] = [79,500,501,502];
+        $shogird[79] = 3;
+
+        $sold[160] = [160,470,472,491];
+        $shogird[160] = 3;
+
+        $art = [];
+
+        foreach ($sold as $key => $value) {
+            $rekrut = ProductSold::whereIn('user_id',$value)
+                    ->whereDate('created_at','>=','2023-10-01')
+                    ->whereDate('created_at','<=','2023-10-31')
+                    ->sum(DB::raw('price_product*number'));
+
+            $ustoz = User::find($key);
+
+            $art[] = ['fakt' => $rekrut,'ustoz'=> $ustoz->first_name.'-'.$ustoz->last_name,'shogird' => $shogird[$key]];
+
+
+        }
+
+        $price = array_column($art, 'fakt');
+        array_multisort($price, SORT_DESC, $art);
+
+        return $art;
+
+    }
+
     public function rekrutSMS($id)
     {   
         $rekrut = Rekrut::find($id);
