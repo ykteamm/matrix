@@ -45,6 +45,7 @@ class MegaTurnirController extends Controller
 
         // dd($teachers[0]->teacher_shogird[0]->shogird);
 
+        // rerer
         return view('mega-turnir.team',[
             'users' => $users,
             'teachers' => $teachers,
