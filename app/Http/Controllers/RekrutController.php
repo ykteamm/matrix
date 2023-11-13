@@ -197,8 +197,8 @@ class RekrutController extends Controller
         // $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
         $rekrut = Rekrut::with('region')->where('region_id',$id)
         // ->whereIn('xolat',[1,2,3,4])
-        ->whereDate('created_at','>=','2023-11-07')
-        ->whereDate('created_at','<=','2023-11-09')
+        ->whereDate('created_at','>=','2023-11-10')
+        ->whereDate('created_at','<=','2023-11-12')
         ->orderBy('district_id','ASC')
         ->get();
 
@@ -255,7 +255,7 @@ class RekrutController extends Controller
     public function ustoz70()
     {
         $sold[5] = [5,437,498,488,490,504,511];
-        $shogird[5] = 3;
+        $shogird[5] = 6;
 
         $sold[33] = [33,483,447,443,495];
         $shogird[33] = 4;
