@@ -193,7 +193,7 @@ class RekrutController extends Controller
         $date=date_create(date('Y-m-d'));
         date_modify($date,"-1 days");
         $ddd = date_format($date,"Y-m-d");
-
+// gfgf
         // $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
         $rekrut = Rekrut::with('region')->where('region_id',$id)
         // ->whereIn('xolat',[1,2,3,4])
