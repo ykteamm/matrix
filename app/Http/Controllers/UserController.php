@@ -811,11 +811,16 @@ class UserController extends Controller
 
     public function UpdateOrder(Request $request, $id)
     {
+        $order = DB::table('tg_order')->where('id',$id)->update([
+            'pharm_id'=>$request->pharm_id,
+           'created_at'=>$request->created_at
+        ]);
+
         $user_data = DB::table('tg_productssold')->where('order_id',$id)->update([
             'pharm_id'=>$request->pharm_id,
             'created_at'=>$request->created_at
         ]);
-        if (!$user_data){
+        if (!($user_data && $order)){
             return redirect(route('users-view'))->with('error', 'Order does not updated!');
         }
         return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'Order successfull updated!');

@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\DB;
 ?>
 @extends('admin.layouts.app')
 @section('admin_content')
+    @if (in_array(Session::get('user')->id,[37]))
     <div class="content mt-1 main-wrapper">
         <div class="row">
             <div class="col-sm-12 p-5">
@@ -380,5 +381,5 @@ use Illuminate\Support\Facades\DB;
             </div>
         </div>
     </div>
-
+    @endif
 @endsection
