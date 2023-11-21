@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DailyWork extends Model
 {
     use HasFactory;
+    protected $table = 'daily_works';
     protected $fillable = [
         'user_id',
         'start_work',

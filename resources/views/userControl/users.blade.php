@@ -16,6 +16,8 @@
                                             <th>ID</th>
                                             <th>Username</th>
                                             <th>Parol</th>
+                                            <th>Phone number</th>
+                                            <th>Status</th>
                                             <th>FIO </th>
                                             <th>Viloyat</th>
                                             <th>Ish boshlash</th>
@@ -33,7 +35,9 @@
                                                 <td>{{ $user->id }}</td>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->pr }}</td>
-                                                <td>{{ $user->last_name }} {{ $user->first_name }}</td>
+                                                <td>{{$user->phone_number}}</td>
+                                                <td>{{$user->status}}</td>
+                                                <td class="hover"><a href="{{url('users-view/'.$user->id)}}">{{ $user->last_name }} {{ $user->first_name }}</a></td>
                                                 <td>{{ $user->region_name }}</td>
                                                 <td>
                                                     @if ($user->start_work)
@@ -72,6 +76,8 @@
                                                         </div>
                                                     @endif
                                                 </td>
+{{--                                    Ishdan ketish            --}}
+
                                                 <td>
                                                     @if ($user->work_end)
                                                         <div id="endWork{{ $user->id }}">
@@ -99,6 +105,8 @@
                                                         <label for="change.{{ $user->id }}">Change</label>
                                                     </div>
                                                 </td>
+
+{{--                                    End   Yangilash         --}}
                                             </tr>
                                         @endforeach
                                     </tbody>

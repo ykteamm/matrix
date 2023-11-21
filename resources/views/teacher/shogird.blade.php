@@ -17,7 +17,7 @@
                                 <option value="" disabled selected hidden>Ustoz</option>
                                 @foreach ($teachers as $teach)
                                     <option value='{{$teach->user->id}}'>{{$teach->user->last_name}} {{$teach->user->first_name}}</option>
-                                @endforeach 
+                                @endforeach
                             </select>
                     </div>
 
@@ -26,7 +26,7 @@
                              <option value="" disabled selected hidden>Shogird</option>
                              @foreach ($users as $user)
                                  <option value='{{$user->id}}'>{{$user->last_name}} {{$user->first_name}}</option>
-                             @endforeach 
+                             @endforeach
                          </select>
                      </div>
 
@@ -37,7 +37,7 @@
                     <div class="form-group col-md-2">
                             <button type="submit" class="btn btn-primary"> Saqlash </button>
                     </div>
-                    
+
                 </div>
             </form>
             <div class="card-body">
@@ -93,8 +93,7 @@
                                        <a href="{{route('ustoz-add',$elchi->id)}}" style="color:blue">Ustoz</a>
 
                                        <a href="{{route('ustoz-stajer-minus',$elchi->id)}}" style="color:blue">Oddiy</a>
-                                    </td>
-
+                                 </td>
 
                                  @endif
                               </tr>

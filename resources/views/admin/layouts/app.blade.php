@@ -31,6 +31,12 @@
         }
     </style> --}}
     <style>
+        .hover:hover{
+            background: green;
+        }
+        .hover:hover a{
+            color: white;
+        }
         .for-table-border {
             border: 1px solid rgb(126, 182, 220);
         }
@@ -105,11 +111,11 @@
 input:checked ~ label, /* color current and previous stars on checked */
 label:hover, label:hover ~ label { color: #73B100;  } /* color previous stars on hover */
 
- 
+
 /* Hover highlights */
 input:checked + label:hover, input:checked ~ label:hover, /* highlight current and previous stars */
 input:checked ~ label:hover ~ label, /* highlight previous selected stars for new rating */
-label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #A6E72D;  } 
+label:hover ~ input:checked ~ label /* highlight previous selected stars */ { color: #A6E72D;  }
 .colorrate{
     color:#A6E72D
 }
@@ -157,12 +163,12 @@ label:hover ~ input:checked ~ label /* highlight previous selected stars */ { co
         @yield('admin_content')
         </div>
     </div>
-    
+
 </body>
 
     @include('admin.partials.js')
     @yield('admin_script')
-    
+
     <livewire:scripts>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 
@@ -238,7 +244,7 @@ $(document).ready(function () {
     "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
   }).buttons().container().appendTo('#dtBasicExample1212');
-  
+
 
   $('#forrekrutrek').DataTable({
     "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
@@ -255,7 +261,7 @@ $(document).ready(function () {
     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
   }).buttons().container().appendTo('#ostatok-pharmacy-div');
 
-  
+
 
   $('.dtBasicExamplest12').DataTable({
     "responsive": true, "lengthChange": false, "autoWidth": false,'paginate':false,'sort':false,
@@ -280,7 +286,7 @@ $(document).ready(function () {
                     $('#del_branch').remove();
                     $('#for_branch').after("<div class='form-group col-md-3' id='del_branch' style='display:none;'><label>{{ __('app.filial') }}</label><input  type='text' name='filial_schema' id='change_branch' value='default' class='form-control form-control-sm' /></div>");
                     $('#change_branch').val(branch_schema);
-                    
+
                 }
                 },
                 error: function(error) {
@@ -288,7 +294,7 @@ $(document).ready(function () {
                 }
                 });
         });
-        
+
 
         function userFunction() {
             var hospital = $("#h_name_f_user").val();
@@ -310,7 +316,7 @@ $(document).ready(function () {
                         $.each(user_schema, function( index, value ) {
                         $('#r_name_user').after("<option value='"+value['id']+"'>"+value['role_name']+"</option>");
                     });
-                    }  
+                    }
                 }
                 },
                 error: function(error) {
@@ -326,7 +332,7 @@ $(document).ready(function () {
                 x.type = "password";
             }
         }
-        
+
         $(document).ready(function(){
             $("input[type=email]").change(function(){
                 var email = $('.for_email').val();
@@ -343,7 +349,7 @@ $(document).ready(function () {
                         $('#error_email').css('display','');
                         $('.for_email_button').css('display','none');
 
-                        
+
                     }else{
                         $('.for_email_button').css('display','');
                         $('#error_email').css('display','none');
@@ -358,6 +364,6 @@ $(document).ready(function () {
     $('input:checkbox').not(this).prop('checked', this.checked);
 });
         });
-        
-</script>   
+
+</script>
 </html>

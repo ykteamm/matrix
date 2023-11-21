@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminLoginController; 
+use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BattleNewsController;
 use App\Http\Controllers\CrystalController;
@@ -9,6 +9,7 @@ use App\Http\Controllers\DublicatController;
 use App\Http\Controllers\ElchilarController;
 use App\Http\Controllers\ElchiTaskController;
 use App\Http\Controllers\FirewallController;
+use App\Http\Controllers\JamoalarController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
@@ -275,6 +276,21 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('users-without-pharmacy', [UserController::class,'userWithoutPharmacy'])->name('users-without-pharmacy');
     Route::post('user-bind-pharmacy', [UserController::class,'userBindPharmacy'])->name('user-bind-pharmacy.store');
     Route::get('users-all', [UserController::class,'allUsers'])->name('users-all');
+
+//    new route
+
+    Route::get('users-view/{id}', [UserController::class,'ViewUsers'])->name('users-view');
+    Route::post('create_users_pharm',[UserController::class,'CreatePharm'])->name('create_users_pharm');
+    Route::post('create_users_start_work',[UserController::class,'CreateStartWork'])->name('create_users_start_work');
+    Route::put('update_users_start_work/{id}',[UserController::class,'UpdateStartWork'])->name('update_users_start_work');
+    Route::delete('delete_users_pharm/{id}',[UserController::class,'DeletePharm'])->name('delete_users_pharm');
+    Route::delete('users-order-delete/{id}',[UserController::class,'DeleteOrder'])->name('users-order-delete');
+    Route::put('users-update/{id}', [UserController::class,'UpdateUsers'])->name('users-update');
+    Route::put('users-order-update/{id}', [UserController::class,'UpdateOrder'])->name('users-order-update');
+    Route::get('/users-region', [UserController::class,'changeRegion'])->name('users-region');
+
+//    end route
+
     Route::get('users-crystall', [UserController::class,'usersCrystall'])->name('users-crystall');
     Route::post('change-crystall', [UserController::class,'changeCrystall'])->name('change-users-crystall');
     Route::post('assign-daily-work-time', [UserController::class, 'assignDailyWork'])->name('assign-daily-work-time');
@@ -298,7 +314,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('medicine/accept/{id}/store',[\App\Http\Controllers\AcceptProductController::class,'store'])->name('accept.med.store');
     Route::get('medicine/accept/{pharmacy_id}/edit/{date}',[\App\Http\Controllers\AcceptProductController::class,'edit'])->name('accept.med.edit');
     Route::post('medicine/accept/{id}/update',[\App\Http\Controllers\AcceptProductController::class,'update'])->name('accept.med.update');
-        Route::get('medicine/accept/{pharmacy_id}/delete/{date}',[\App\Http\Controllers\AcceptProductController::class,'delete'])->name('accept.med.delete');
+    Route::get('medicine/accept/{pharmacy_id}/delete/{date}',[\App\Http\Controllers\AcceptProductController::class,'delete'])->name('accept.med.delete');
 
 
     Route::get('medicine/stock/{id}/create',[\App\Http\Controllers\StockController::class,'create'])->name('stock.med.create');
@@ -366,7 +382,13 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('st-grade', [TeacherController::class,'grade'])->name('st-grade');
     Route::get('yetakchi', [TeacherController::class,'yetakchi'])->name('yetakchi');
 
+//   Start Jamolar
 
+    Route::get('jamoalar',[JamoalarController::class,'index'])->name('jamoalar');
+    Route::post('create_jamoa',[JamoalarController::class,'CreateJamoa'])->name('create_jamoa');
+    Route::delete('delete_jamoa/{id}',[JamoalarController::class,'DeleteJamoa'])->name('delete_jamoa');
+
+//   End Jamolar
     Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index');
     Route::post('dublicat-store', [DublicatController::class,'store'])->name('dublicat.store');
 
@@ -486,7 +508,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::resource('rekrut-group',RekrutGroupController::class);
 
-    
+
     //REKRUT-END
 
     //ORDER-BEGIN
@@ -512,7 +534,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::post('mc-payment-change-date/{id}', [OrderController::class, 'mcChangePaymentDate'])->name('mc-payment-change-date');
     Route::post('mc-payment-change-amount/{id}', [OrderController::class, 'mcChangePaymentAmount'])->name('mc-payment-change-amount');
-    
+
     Route::get('mc-pharmacy-return-money', [OrderController::class, 'mcPharmacyReturn'])->name('mc-pharmacy-return-money');
     Route::post('mc-return-day-region/{id}', [OrderController::class, 'mcRegionReturnDay'])->name('mc-return-day-region');
     Route::post('mc-return-day-pharmacy', [OrderController::class, 'mcPharmacyReturnDay'])->name('mc-return-day-pharmacy');
@@ -523,7 +545,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('last-order', [OrderController::class, 'lastOrders'])->name('last.order');
     Route::post('last-order-save', [OrderController::class, 'lastOrdersSave'])->name('last.order.save');
 
-    
+
     //ORDER-END
 
     //REK-BEGIN

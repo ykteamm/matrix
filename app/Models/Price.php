@@ -25,4 +25,6 @@ class Price extends Model
     {
         return $this->belongsTo(Shablon::class,'shablon_id','id');
     }
+
+
 }

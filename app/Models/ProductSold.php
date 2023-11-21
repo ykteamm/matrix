@@ -19,6 +19,7 @@ class ProductSold extends Model
         'is_active'
     ];
 
+
     public function order()
     {
         return $this->belongsTo(Order::class,'order_id','id');
@@ -33,4 +34,7 @@ class ProductSold extends Model
     {
         return $this->belongsTo(Medicine::class,'medicine_id','id');
     }
+
+
+
 }

@@ -158,7 +158,7 @@
                             </li>
                         @endif
                     @endisset
-                            
+
                 @isset(Session::get('per')['order'])
                 @if (Session::get('per')['order'] == 'true')
                     <li class="submenu">
@@ -172,7 +172,7 @@
                 @endisset
 
                 <li class="submenu">
-                    <a href="settings.html"><i class="fas fa-crown"></i> <span> Toolz bot </span><span
+                    <a href=""><i class="fas fa-crown"></i> <span> Toolz bot </span><span
                             class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         @isset(Session::get('per')['king_sold'])
@@ -200,6 +200,7 @@
                                     <ul style="display: none;">
                                         <li><a href="{{ route('add-teacher') }}">Ustoz tayinlash</a></li>
                                         <li><a href="{{ route('add-shogird') }}">Shogird tayinlash</a></li>
+                                        <li><a href="{{ route('jamoalar') }}">Jamoalar</a></li>
                                         <li><a href="{{ route('st-grade') }}">Baholashlar</a></li>
                                         <li><a href="{{ route('yetakchi') }}">Yetakchi</a></li>
                                     </ul>
@@ -362,7 +363,7 @@
                             </ul>
                         </li>
 
-                        
+
                     @endif
                 @endisset
 
@@ -420,7 +421,7 @@
                         @endisset --}}
                         @isset(Session::get('per')['grade'])
                             @if (Session::get('per')['grade'] == 'true')
-                            
+
                                 @isset(Session::get('per')['accept'])
                                     @if (Session::get('per')['accept'] == 'true')
                                         <li><a href="{{ route('accept.med') }}">RM prixod</a></li>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AllProduct;
+use App\Models\District;
 use App\Models\NewUsers;
 use App\Models\User;
 use App\Models\Member;
@@ -691,13 +692,215 @@ class UserController extends Controller
     {
         $users = User::select('tg_user.*', 'tg_region.name as region_name', 'daily_works.start_work', 'daily_works.finish_work')
             ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
-            ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
+//            ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
+//                new active 1 all
+            ->leftJoin('daily_works', function ($join) {
+                $join->on('daily_works.user_id', 'tg_user.id')
+                    ->where('daily_works.active', 1); // Add a condition to filter only active records
+            })
+//            end
             ->groupBy('tg_user.id', 'daily_works.id', 'region_name')
             // ->where('daily_works.active', 1)
             ->orderBy('tg_user.id', 'DESC')
             ->get();
         // dd($users[0]);
         return view('userControl.users', compact('users'));
+    }
+
+    public function ViewUsers($id)
+    {
+        $user = User::find($id);
+        if (!$user){
+            abort(404);
+        }
+
+        $users = User::select('tg_user.*', 'tg_region.name as region_name', 'daily_works.start_work', 'daily_works.finish_work')
+            ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
+            ->leftJoin('daily_works', 'daily_works.user_id', 'tg_user.id')
+            ->groupBy('tg_user.id', 'daily_works.id', 'region_name')
+            ->where('tg_user.id',$id)
+            // ->where('daily_works.active', 1)
+            ->orderBy('tg_user.id', 'DESC')
+            ->first();
+        // dd($users[0]);
+
+        $region = Region::get(['name','id']);
+
+        $district = District::get(['name','id','region_id']);
+
+        $pharmacyId = DB::table('tg_pharmacy_users')->where('user_id', $users->id)->pluck('pharma_id');
+
+        $pharmacy_name = DB::table('tg_pharmacy')->get();
+
+        $product_sold = ProductSold::
+        select(
+            'order_id',
+            'user_id',
+            DB::raw('SUM(number * price_product) as total'),
+            DB::raw('SUM(number) as number'),
+            DB::raw('tg_pharmacy.name as pharmacy_name'),
+            DB::raw('MAX(tg_productssold.created_at) as created_at'),
+        )
+
+            ->leftJoin('tg_pharmacy', 'tg_pharmacy.id', 'tg_productssold.pharm_id')
+            ->where('user_id',$users->id)
+            ->groupBy('order_id','user_id','tg_pharmacy.name')
+            ->orderByDesc('order_id')
+            ->get();
+
+        $daily_works = DailyWork::where('user_id',$users->id)->get();
+
+
+        return view('userControl.users-view', compact('users','id','region','district','pharmacyId','pharmacy_name','product_sold','daily_works'));
+    }
+
+    public function CreatePharm(Request $request)
+    {
+        $request->validate([
+            'user_id'=>'required',
+            'pharma_id'=>'required',
+        ]);
+
+        $pharm_create = new PharmacyUser();
+        $pharm_create->user_id = $request->user_id;
+        $pharm_create->pharma_id = $request->pharma_id;
+
+        if (!$pharm_create->save())
+        {
+            return redirect(route('users-view',['id'=>$request->user_id]))->with('error', 'Does not create pharm!');
+        }
+        return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'Pharm successfull created!');
+    }
+
+    public function DeletePharm(Request $request,$id)
+    {
+
+        $pharmacyUser = PharmacyUser::where('pharma_id', $id)->first();
+
+        if ($pharmacyUser) {
+            $pharmacyUser->delete();
+            return redirect(route('users-view', ['id' => $request->user_id]))->with('success', 'Pharm successfull deleted!');
+        } else {
+            // Handle the case where the record is not found
+            return redirect()->back()->with('error', 'Record not found.');
+        }
+    }
+
+    public function DeleteOrder(Request $request,$id)
+    {
+        $pharmacyUsers = ProductSold::where('order_id', $id)->get();
+
+        if ($pharmacyUsers->isNotEmpty()) {
+            foreach ($pharmacyUsers as $pharmacyUser) {
+                $pharmacyUser->delete();
+            }
+
+            return redirect(route('users-view', ['id' => $request->user_id]))->with('success', 'Successfully deleted!');
+        } else {
+            // Handle the case where no records were found
+            return redirect()->back()->with('error', 'No records found for the given order ID.');
+        }
+
+    }
+
+    public function changeRegion(Request $request)
+    {
+        $data = District::select('id','name')->where('region_id',$request->region_id)->get();
+        return response()->json($data);
+    }
+
+    public function UpdateOrder(Request $request, $id)
+    {
+        $user_data = DB::table('tg_productssold')->where('order_id',$id)->update([
+            'pharm_id'=>$request->pharm_id,
+            'created_at'=>$request->created_at
+        ]);
+        if (!$user_data){
+            return redirect(route('users-view'))->with('error', 'Order does not updated!');
+        }
+        return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'Order successfull updated!');
+    }
+
+    public function UpdateUsers(Request $request, $id)
+    {
+        $user_data = DB::table('tg_user')->where('id',$id)->update([
+            'id'=>$request->id,
+            'status'=>$request->status,
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->last_name,
+            'region_id'=>$request->region_id,
+            'district_id'=>$request->district_id,
+        ]);
+
+        if (!$user_data){
+            return redirect(route('users-view'))->with('Error', 'User does not updated!');
+        }
+        return redirect(route('users-view',['id'=>$id]))->with('success', 'User successfull updated!');
+    }
+
+    public function UpdateStartWork(Request $request, $id)
+    {
+        if ($request->finish_date == null){
+            $user_data = DailyWork::where(['id'=>$id,'user_id'=>$request->user_id])->update([
+                'user_id'=>$request->user_id,
+                'start_work'=>$request->start_work,
+                'finish_work'=>$request->finish_work,
+               // 'finish'=>date('Y-m-d', strtotime($request->finish_date)),
+                'start'=>date('Y-m-d', strtotime($request->start_date)),
+            ]);
+            if (!$user_data){
+                return redirect(route('users-view'))->with('Error', 'Work Time does not updated!');
+            }
+            return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'Work time successfull updated!');
+        }else{
+            $user_data = DailyWork::where(['id'=>$id,'user_id'=>$request->user_id])->update([
+                'user_id'=>$request->user_id,
+                'start_work'=>$request->start_work,
+                'finish_work'=>$request->finish_work,
+                'finish'=>date('Y-m-d', strtotime($request->finish_date)),
+                'start'=>date('Y-m-d', strtotime($request->start_date)),
+            ]);
+            if (!$user_data){
+                return redirect(route('users-view'))->with('Error', 'Work Time does not updated!');
+            }
+            return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'Work time successfull updated!');
+        }
+
+
+    }
+
+
+    public function CreateStartWork(Request $request)
+    {
+//        $req = $request->all();
+
+        if ($request->user_id && $request->start_date && $request->start_work && $request->finish_work) {
+            $Daily = DailyWork::where('user_id', $request->user_id)->orderBy('id', 'DESC')->first();
+            if ($Daily){
+                $ends = date('Y-m-d', (strtotime('-1 day', strtotime($request->start_date))));
+                DailyWork::where('id', $Daily->id)->update([
+                    'finish' => $ends,
+                    'active' => 0
+                ]);
+                DailyWork::create([
+                    'user_id' => $request->user_id,
+                    'start_work' => $request->start_work,
+                    'finish_work' => $request->finish_work,
+                    'start' =>  date('Y-m-d', strtotime($request->start_date))  // $request->start_date  //date("Y-m-d")
+                ]);
+                return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'User successfull Start Work!');
+            } else {
+                DailyWork::create([
+                    'user_id' => $request->user_id,
+                    'start_work' => $request->start_work,
+                    'finish_work' => $request->finish_work,
+                    'start' => date('Y-m-d', strtotime($request->start_date)) // $request->start_date // date("Y-m-d")
+                ]);
+                return redirect(route('users-view',['id'=>$request->user_id]))->with('success', 'User successfull Work!');
+            }
+        }
+        return redirect(route('users-view',['id'=>$request->user_id]))->with('Error', 'User does not created start work!');
+
     }
 
     public function assignDailyWork(Request $request)
@@ -708,8 +911,6 @@ class UserController extends Controller
         foreach ($r as $key => $value) {
             if ($value == 'change') {
                 $user_id = substr($key, 7);
-
-
 
 
                 if($r['endwork_' . $user_id] != null)
@@ -723,7 +924,6 @@ class UserController extends Controller
                     $ends = date('Y-m-d', (strtotime('-1 day', strtotime(date("Y-m-d")))));
 
                     DailyWork::where('id', $userDaily->id)->update([
-
                         'finish' => $ends,
                         'active' => 0
                     ]);
@@ -926,7 +1126,7 @@ class UserController extends Controller
     public function rePasswordPass423423()
     {
         $users = User::all();
-        
+
         $nomer = [];
 
         foreach ($users as $key => $value) {
@@ -942,7 +1142,7 @@ class UserController extends Controller
                 'password' => 'PM4g0AWXQxRg0cQ2h4Rmn7Ysoi7IuzyMyJ76GuJa'
             ]);
             $token = $response['data']['token'];
-    
+
                 $sms = Http::withToken($token)->post('notify.eskiz.uz/api/message/sms/send', [
                     'mobile_phone' => substr($nomer,1),
                     'message' => 'Sizning yangi parolingiz' . ' ' . ' ' . 'Login: ' . $value->username . ' ' . ' ' . 'Parol: ' . $new,
