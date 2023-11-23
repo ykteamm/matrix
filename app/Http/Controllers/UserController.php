@@ -746,6 +746,7 @@ class UserController extends Controller
             ->where('user_id',$users->id)
             ->groupBy('order_id','user_id','tg_pharmacy.name')
             ->orderByDesc('order_id')
+            ->limit(10)
             ->get();
 
         $daily_works = DailyWork::where('user_id',$users->id)->get();
