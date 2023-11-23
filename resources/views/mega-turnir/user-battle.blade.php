@@ -50,7 +50,7 @@
                                 </div>
 
                                 <div class="form-group col-md-2">
-                                    <label for="mon">Tour</label>
+                                    <label for="mon">limit</label>
                                     <input type="integer" name="tour">
                                 </div>
 
@@ -80,7 +80,7 @@
                                 Tugashi
                             </td>
                             <td>
-                                Tour
+                                Limit
                             </td>
                         </th>
                     </thead>

@@ -142,7 +142,7 @@ class MegaTurnirController extends Controller
 
         // return $users;
 
-        $battles = MegaTurnirUserBattle::with('user1','user2')->orderBy('id','ASC')->get();
+        $battles = MegaTurnirUserBattle::with('user1','user2')->orderBy('id','DESC')->get();
 
 
         return view('mega-turnir.user-battle',[
@@ -157,9 +157,9 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirUserBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-11-20';
-        $teach->end = '2023-11-22';
-        $teach->tour = 11;
+        $teach->begin = '2023-11-24';
+        $teach->end = '2023-11-27';
+        $teach->tour = $request->tour;
         $teach->save();
 
         return redirect()->back();
