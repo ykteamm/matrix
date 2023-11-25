@@ -201,7 +201,7 @@ class RekrutController extends Controller
         ->whereDate('created_at','<=','2023-11-25')
         ->orderBy('district_id','ASC')
         ->get();
-
+// gf
         $district = DB::table('tg_district')->pluck('name','id')->toArray();
 
         return view('rekrut.ustoz',[
