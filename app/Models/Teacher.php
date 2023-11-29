@@ -16,6 +16,20 @@ class Teacher extends Model
         'active'
     ];
 
+    public function members()
+    {
+        return $this->hasMany(Jamoa::class, 'teacher_id', 'user_id');
+    }
+
+    public function plan_id()
+    {
+        return $this->hasMany(JamoaPlan::class,'user_id','user_id');
+    }
+    public function sold_id()
+    {
+        return $this->hasMany(ProductSold::class,'user_id','user_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class,'user_id','id');

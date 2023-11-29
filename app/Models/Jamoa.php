@@ -25,6 +25,11 @@ class Jamoa extends Model
         return $this->hasMany(ProductSold::class,'user_id','user_id');
     }
 
+    public function plan_id()
+    {
+        return $this->hasMany(JamoaPlan::class,'user_id','user_id');
+    }
+
     // user_id ni ishlatish
     public function user()
     {

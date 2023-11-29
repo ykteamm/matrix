@@ -51,6 +51,12 @@ $(document).ready(function () {
     });
 
     // Select2 Multiple
+    $('#select2-multipleUser').select2({
+        placeholder: "Select User",
+        allowClear: true
+    });
+
+    // Select2 Multiple
     $('#select2-multipleMember').select2({
         placeholder: "Select Members",
         allowClear: true

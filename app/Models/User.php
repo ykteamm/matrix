@@ -12,6 +12,15 @@ class User extends Model
 
     protected $table = 'tg_user';
 
+    public function plan_id()
+    {
+        return $this->hasMany(JamoaPlan::class,'user_id','user_id');
+    }
+    public function sold_id()
+    {
+        return $this->hasMany(ProductSold::class,'user_id','user_id');
+    }
+
 
     public function journal()
     {

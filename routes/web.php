@@ -387,6 +387,10 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('jamoalar',[JamoalarController::class,'index'])->name('jamoalar');
     Route::post('create_jamoa',[JamoalarController::class,'CreateJamoa'])->name('create_jamoa');
     Route::delete('delete_jamoa/{id}',[JamoalarController::class,'DeleteJamoa'])->name('delete_jamoa');
+    Route::post('select_date',[JamoalarController::class,'SelectDate'])->name('select_date');
+    Route::post('create_plan',[JamoalarController::class,'CreatePlan'])->name('create_plan');
+    Route::put('update_plan/{id}',[JamoalarController::class,'UpdatePlan'])->name('update_plan');
+    Route::get('user_or_teacher/{id}',[JamoalarController::class,'IsTeacherOrUser'])->name('user_or_teacher');
 
 //   End Jamolar
     Route::get('dublicat', [DublicatController::class,'index'])->name('dublicat.index');
