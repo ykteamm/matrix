@@ -24,7 +24,7 @@ class MegaTurnirController extends Controller
             'users' => $users,
             'teachers' => $teachers,
         ]);
-        
+
     }
 
     public function teacherSave(Request $request)
@@ -50,7 +50,7 @@ class MegaTurnirController extends Controller
             'users' => $users,
             'teachers' => $teachers,
         ]);
-        
+
     }
 
     public function teamSave(Request $request)
@@ -99,7 +99,7 @@ class MegaTurnirController extends Controller
     public function userBattle()
     {
 
-        
+
         // $id11 = MegaTurnirTeamBattle::where('tour',4)->pluck('user1id')->toArray();
         // $id22 = MegaTurnirTeamBattle::where('tour',4)->pluck('user2id')->toArray();
 
@@ -128,7 +128,7 @@ class MegaTurnirController extends Controller
                 ->where('user_id',$value)
                 ->sum(DB::raw('number*price_product'));
             }
-            
+
 
             if($sold > 0)
             {
@@ -136,7 +136,7 @@ class MegaTurnirController extends Controller
             }
         }
 
-        
+
 
         $users = User::whereIn('id',$ids)->get();
 
@@ -157,8 +157,8 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirUserBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-12-01';
-        $teach->end = '2023-12-04';
+        $teach->begin = '2023-12-05';
+        $teach->end = '2023-12-07';
         $teach->tour = $request->tour;
         $teach->save();
 
