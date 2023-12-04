@@ -49,7 +49,7 @@ class RekrutController extends Controller
 
             $bir = DB::table('academy_answer')->where('user_id',$value)->where('check',1)->count();
             $nol = DB::table('academy_answer')->where('user_id',$value)->where('check',0)->count();
-           
+
             if(($bir+$nol) > 0)
             {
                 $pr = ($bir*100)/($bir+$nol);
@@ -59,7 +59,7 @@ class RekrutController extends Controller
 
                 $smar[$value] = 0;
             }
-           
+
 
         }
 
@@ -138,7 +138,7 @@ class RekrutController extends Controller
 
             ]);
         }
-        
+
 
         return redirect()->back();
     }
@@ -197,8 +197,8 @@ class RekrutController extends Controller
         // $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
         $rekrut = Rekrut::with('region')->where('region_id',$id)
         // ->whereIn('xolat',[1,2,3,4])
-        ->whereDate('created_at','>=','2023-11-24')
-        ->whereDate('created_at','<=','2023-11-25')
+        ->whereDate('created_at','>=','2023-12-04')
+        ->whereDate('created_at','<=','2023-12-04')
         ->orderBy('district_id','ASC')
         ->get();
 // gf
@@ -295,7 +295,7 @@ class RekrutController extends Controller
     }
 
     public function rekrutSMS($id)
-    {   
+    {
         $rekrut = Rekrut::find($id);
 
 
