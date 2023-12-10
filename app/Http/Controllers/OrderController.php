@@ -443,6 +443,51 @@ class OrderController extends Controller
 
     }
 
+    public function mcChangeprice()
+    {
+        return view('order.change-price');
+    }
+
+    public function mcUpdatePrice(Request $request)
+    {
+        $data = $request->all();
+        $price = $data['price'];
+        $prd = $data['prd'];
+        $ids = $data['orders_id'];
+
+        foreach ($ids as $key => $value) {
+
+            $detail = McOrderDetail::where('order_id',$key)
+            ->where('product_id',$prd)->first();
+
+            $detail_sum = ($price - $detail->price)*$detail->quantity;
+
+            $detail = McOrderDetail::where('order_id',$key)
+            ->where('product_id',$prd)
+            ->update([
+                'price' => $price,
+            ]);
+
+            $delivery = McOrderDelivery::where('order_id',$key)
+            ->where('product_id',$prd)
+            ->update([
+                'price' => $price,
+            ]);
+
+            $order = McOrder::where('id',$key)->first();
+
+            $new_price = $order->price + $detail_sum;
+
+            $order = McOrder::where('id',$key)
+            ->update([
+                'price' => $new_price,
+            ]);
+
+        }
+        return redirect()->back();
+
+    }
+
     
     
 }

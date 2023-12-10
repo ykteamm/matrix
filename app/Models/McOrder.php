@@ -36,6 +36,11 @@ class McOrder extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+    public function pro_user()
+    {
+        return $this->belongsTo(User::class,'pro_pharmacy_id','id');
+    }
+
     public function employe()
     {
         return $this->belongsTo(User::class,'employee_id','id');
@@ -50,6 +55,17 @@ class McOrder extends Model
     {
         return $this->belongsTo(McPayment::class,'payment_id','id');
     }
+
+    public function order_detail()
+    {
+        return $this->hasMany(McOrderDetail::class,'order_id','id');
+    }
+
+    public function order_delivery()
+    {
+        return $this->hasMany(McOrderDelivery::class,'order_id','id');
+    }
+
 
     
 

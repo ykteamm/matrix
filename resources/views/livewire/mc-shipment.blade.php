@@ -78,10 +78,19 @@
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Buyurtmachi
-                                @if ($orders->pharmacy != null)
+                            @if ($orders->user_id != null)
+                                
+                                <span>{{$orders->user->last_name}} {{$orders->user->first_name}}</span>
+
+                                @endif
+                                {{-- @if ($orders->user_id != null)
+                                
+                                <span>{{$orders->user->last_name}} {{$orders->user->first_name}}</span>
+
+                                @else --}}
                                 <form action="{{route('mc-change-phar',$orders->id)}}" method="POSt" style="display: contents;">
                                     @csrf
-                                <select class="form-control" name="phar">
+                                <select class="" name="phar">
 
                                     @foreach ($pharmacy as $phar)
                                     @if ($phar->id == $orders->pharmacy->id)
@@ -97,10 +106,8 @@
                                         <i class="fas fa-save"></i>
                                     </button>
                                 </form>
-
-                                @else
-                                    <span>{{$orders->user->last_name}} {{$orders->user->first_name}}</span>
-                                @endif
+                                {{-- @endif --}}
+                                
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">

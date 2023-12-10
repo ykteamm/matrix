@@ -41,11 +41,15 @@
                                         <td>{{$order->number}}</td>
                                         <td>{{date('d.m.Y H:i',strtotime($order->order_date))}}</td>
                                         @if ($order->pharmacy != null)
-                                            <td>{{$order->pharmacy->name}}</td>
+                                            <td>{{$order->pharmacy->name}} @if (isset($order->user->first_name))
+                                               ( {{$order->user->first_name}} )
+                                            @endif</td>
                                         @else
                                             <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
                                         @endif
                                         <td>
+                                            
+
                                             @if (isset($order->pharmacy->region))
                                                 {{$order->pharmacy->region->name}}
                                             @endif
