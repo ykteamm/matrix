@@ -180,9 +180,15 @@
                           <li class="list-group-item d-flex justify-content-between align-items-center">
                             Kelgan pul
 
-                                <span>{{number_format($payment_sum,0,',','.')}} (qarz {{$order_sum  - $order_sum*$discount/100-$payment_sum}})</span>
+                                <span>{{number_format($payment_sum,0,',','.')}}</span>
     
                             </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Qarz
+    
+                                    <span>{{number_format($order_sum  - $order_sum*$discount/100-$payment_sum-$return_history_sum,0,',','.')}}</span>
+        
+                                </li>
                     </ul>
                 </div>
                 @endif
@@ -539,11 +545,16 @@
                                                                         </a>
                                                                     @else
                                                                         <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
-                                                                            <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
+                                                                            <button type="button" class="btn btn-warning pt-0 pb-0 pl-1 pr-1">
                                                                                 <i class="fas fa-reply"></i>
                                                                             </button>
                                                                         </a>
                                                                     @endif
+                                                                    <a href="{{route('mc-payment-delete',$payment_history_id[$key])}}">
+                                                                        <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
+                                                                            <i class="fas fa-trash"></i>
+                                                                        </button>
+                                                                    </a>
                                                                 @endif
                                                                 
                                                             </form>
@@ -567,7 +578,24 @@
                             <thead>
                             <tr>
                                 @foreach ($return_history as $item)
-                                    <th>{{date('d.m.Y H:i',strtotime($item->created_at))}}</th>
+                                <th>
+                                    @php
+                                            $d = date('Y-m-d',strtotime($item->created_at)).'T'.date('H:i',strtotime($item->created_at));
+                                        @endphp
+                                        <form action="{{route('mc-return-date',$item->id)}}" method="POST" >
+                                            @csrf
+                                            {{-- {{date('d.m.Y H:i',strtotime($item))}} --}}
+
+                                            <input type="datetime-local" name="return_date" value="{{$d}}">
+
+                                            <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                                <i class="fas fa-save"></i>
+                                            </button>
+
+                                            
+
+                                        </form>
+                                    </th>
                                 @endforeach
                             </tr>
                             </thead>
@@ -575,7 +603,22 @@
                                 <tr>
                                     @foreach ($return_history as $key => $item2)
                                         <td>
-                                            {{number_format($item2->amount,0,',','.')}}
+                                            <form action="{{route('mc-return',$item2->id)}}" method="POST" >
+                                                @csrf
+                                                <input type="number" name="amount" value="{{$item2->amount}}">
+
+                                                    <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                                        <i class="fas fa-save"></i>
+                                                    </button>
+
+                                                    <a href="{{route('mc-return-delete',$item2->id)}}">
+                                                        <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </a>
+                                            </form> 
+                                            {{-- {{number_format($item2->amount,0,',','.')}} --}}
+                                            
                                         </td>
                                     @endforeach
                                 </tr>

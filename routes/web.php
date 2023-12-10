@@ -544,6 +544,11 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('mc-return-day-pharmacy', [OrderController::class, 'mcPharmacyReturnDay'])->name('mc-return-day-pharmacy');
 
     Route::get('mc-payment-last/{id}', [OrderController::class, 'mcChangePaymentLast'])->name('mc-payment-last');
+    Route::get('mc-payment-delete/{id}', [OrderController::class, 'mcChangePaymentDelete'])->name('mc-payment-delete');
+    Route::get('mc-return-delete/{id}', [OrderController::class, 'mcChangeReturnDelete'])->name('mc-return-delete');
+
+    Route::post('mc-return/{id}', [OrderController::class, 'mcChangeReturn'])->name('mc-return');
+    Route::post('mc-return-date/{id}', [OrderController::class, 'mcChangeReturnDate'])->name('mc-return-date');
 
     Route::get('mc-pharmacy', [OrderController::class, 'pharmacy'])->name('mc-pharmacy');
     Route::get('last-order', [OrderController::class, 'lastOrders'])->name('last.order');

@@ -11,6 +11,7 @@ use App\Models\McPayment;
 use App\Models\McPaymentHistory;
 use App\Models\Pharmacy;
 use App\Models\PharmacyUser;
+use App\Models\McReturnHistory;
 use App\Models\ProductSold;
 use App\Models\Region;
 use App\Models\Shift;
@@ -389,5 +390,47 @@ class OrderController extends Controller
 
     }
 
+    public function mcChangePaymentDelete($id)
+    {
+        $order = McPaymentHistory::destroy($id);
+
+        
+        return redirect()->back();
+
+    }
+
+    public function mcChangeReturnDelete($id)
+    {
+        $order = McReturnHistory::destroy($id);
+
+        
+        return redirect()->back();
+
+    }
+
+    public function mcChangeReturn(Request $request,$id)
+    {
+        $order = McReturnHistory::find($id);
+        $order->amount = $request->amount;
+        $order->save();
+        
+        return redirect()->back();
+
+    }
+
+    public function mcChangeReturnDate(Request $request,$id)
+    {
+        $date = $request->return_date;
+
+        $date = date('Y-m-d H:i:s',strtotime($date));
+
+
+        $order = McReturnHistory::find($id);
+        $order->created_at = $date;
+        $order->save();
+
+        return redirect()->back();
+
+    }
     
 }

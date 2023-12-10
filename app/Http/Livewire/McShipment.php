@@ -74,6 +74,7 @@ class McShipment extends Component
     public $vozvrat = [];
     public $vozvrat_max = [];
     public $return_history;
+    public $return_history_sum = 0;
 
     public $skidka = 0;
 
@@ -177,6 +178,10 @@ class McShipment extends Component
         // dd($this->payment_history_id[260]->last);
 
         $this->return_history = McReturnHistory::where('order_id',$this->order_id)->orderBy('id','ASC')->get();
+
+        $this->return_history_sum = McReturnHistory::where('order_id',$this->order_id)->sum('amount');
+
+        // dd($this->return_history_sum);
 
         $this->order_sum = McOrderDelivery::where('order_id',$order_id)->sum(DB::raw('quantity * price'));
     }

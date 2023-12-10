@@ -14,6 +14,7 @@ class McMoney extends Component
     public $orders;
     public $order_pay;
     public $order_sum;
+    public $return_sum;
 
     public $begin;
     public $end;
@@ -27,10 +28,11 @@ class McMoney extends Component
             $ids = McOrder::pluck('id')->toArray();
         }
 
-            $this->orders = McOrder::with('pharmacy','pharmacy.region','user','employe','delivery','payment')->whereIn('id',$ids)->orderBy('id','ASC')->get();
+            $this->orders = McOrder::with('pharmacy','pharmacy.region','user','employe','delivery','payment')->whereIn('id',$ids)->orderBy('id','DESC')->get();
 
         foreach ($this->orders as $key => $value) {
             $this->order_pay[$value->id] = McPaymentHistory::where('order_id',$value->id)->sum('amount');
+            $this->return_sum[$value->id] = McReturnHistory::where('order_id',$value->id)->sum('amount');
             $this->order_sum[$value->id] = McOrderDelivery::where('order_id',$value->id)->sum(DB::raw('quantity * price'));
         }
     }

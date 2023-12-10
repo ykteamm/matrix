@@ -75,7 +75,7 @@
                                                 @if($order_sum[$order->id] == null)
                                                 0
                                                 @else
-                                                {{number_format($order_sum[$order->id] - $order_sum[$order->id]*$order->discount/100-$order_pay[$order->id],0,',','.')}}
+                                                {{number_format($order_sum[$order->id] - $order_sum[$order->id]*$order->discount/100-$order_pay[$order->id]-$return_sum[$order->id],0,',','.')}}
                                                 @endif
                                             </span>
                                         </td>
