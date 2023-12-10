@@ -432,5 +432,17 @@ class OrderController extends Controller
         return redirect()->back();
 
     }
+
+    public function mcChangeOrderPhrmacy(Request $request,$id)
+    {
+        $order = McOrder::find($id);
+        $order->pharmacy_id = $request->phar;
+        $order->save();
+
+        return redirect()->back();
+
+    }
+
+    
     
 }

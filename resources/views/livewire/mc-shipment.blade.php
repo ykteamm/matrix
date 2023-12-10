@@ -79,7 +79,25 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Buyurtmachi
                                 @if ($orders->pharmacy != null)
-                                    <span>{{$orders->pharmacy->name}}</span>
+                                <form action="{{route('mc-change-phar',$orders->id)}}" method="POSt" style="display: contents;">
+                                    @csrf
+                                <select class="form-control" name="phar">
+
+                                    @foreach ($pharmacy as $phar)
+                                    @if ($phar->id == $orders->pharmacy->id)
+                                        <option value="{{$phar->id}}" selected>{{$orders->pharmacy->name}}</option>
+                                    @else
+                                        <option value="{{$phar->id}}">{{$phar->name}}</option>
+                                        
+                                    @endif
+                                    @endforeach
+
+                                </select>
+                                    <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </form>
+
                                 @else
                                     <span>{{$orders->user->last_name}} {{$orders->user->first_name}}</span>
                                 @endif
@@ -636,5 +654,7 @@
         window.addEventListener('refresh-page', event => {
            window.location.reload(false); 
         })
+
+
       </script>
 </div>

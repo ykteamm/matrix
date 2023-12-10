@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\McDelivery;
 use App\Models\McOrder;
+use App\Models\Pharmacy;
 use App\Models\McOrderDelivery;
 use App\Models\McOrderDetail;
 use App\Models\McOrderReturn;
@@ -64,6 +65,7 @@ class McShipment extends Component
     public $payment_sum;
     public $order_sum;
     public $medicines;
+    public $pharmcy;
 
     public $prod_array = [];
     public $order_product = [];
@@ -181,9 +183,13 @@ class McShipment extends Component
 
         $this->return_history_sum = McReturnHistory::where('order_id',$this->order_id)->sum('amount');
 
-        // dd($this->return_history_sum);
 
         $this->order_sum = McOrderDelivery::where('order_id',$order_id)->sum(DB::raw('quantity * price'));
+
+        $this->pharmacy = Pharmacy::with('region')->get();
+
+        // dd($this->pharmacy);
+
     }
 
 

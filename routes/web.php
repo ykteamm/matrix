@@ -550,6 +550,9 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('mc-return/{id}', [OrderController::class, 'mcChangeReturn'])->name('mc-return');
     Route::post('mc-return-date/{id}', [OrderController::class, 'mcChangeReturnDate'])->name('mc-return-date');
 
+    Route::post('mc-change-phar/{id}', [OrderController::class, 'mcChangeOrderPhrmacy'])->name('mc-change-phar');
+
+
     Route::get('mc-pharmacy', [OrderController::class, 'pharmacy'])->name('mc-pharmacy');
     Route::get('last-order', [OrderController::class, 'lastOrders'])->name('last.order');
     Route::post('last-order-save', [OrderController::class, 'lastOrdersSave'])->name('last.order.save');
