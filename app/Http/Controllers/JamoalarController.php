@@ -128,7 +128,8 @@ class JamoalarController extends Controller
                         DB::raw('DATE(created_at) as date'),
                         DB::raw('SUM(number * price_product) as totalSum')
                     )
-                    ->whereBetween('created_at', [$request->start_date, $request->end_date])
+                    ->whereDate('created_at','>=', $request->start_date)
+                    ->whereDate('created_at','<=', $request->end_date)
                     ->orderBy('date', 'DESC')
                     ->groupBy('date', 'user_id');
             }])
@@ -146,7 +147,8 @@ class JamoalarController extends Controller
                         DB::raw('SUM(number * price_product) as totalSum')
                     )
 //                    ->whereDate('created_at', '=', '2023-06-27')
-                    ->whereBetween('created_at', [$request->start_date, $request->end_date])
+                        ->whereDate('created_at','>=', $request->start_date)
+                        ->whereDate('created_at','<=', $request->end_date)
                     ->orderBy('date', 'DESC')
                     ->groupBy('date','user_id'); // teacher relationship orqali id va name ustunlarini olish
 //                    ->get();
