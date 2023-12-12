@@ -197,8 +197,8 @@ class RekrutController extends Controller
         // $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
         $rekrut = Rekrut::with('region')->where('region_id',$id)
         // ->whereIn('xolat',[1,2,3,4])
-        ->whereDate('created_at','>=','2023-12-06')
-        ->whereDate('created_at','<=','2023-12-07')
+        ->whereDate('created_at','>=','2023-12-08')
+        ->whereDate('created_at','<=','2023-12-011')
         ->orderBy('district_id','ASC')
         ->get();
 // gf
