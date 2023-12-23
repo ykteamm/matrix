@@ -157,8 +157,8 @@ class MegaTurnirController extends Controller
         $teach = new MegaTurnirUserBattle;
         $teach->user1id = $request->user1id;
         $teach->user2id = $request->user2id;
-        $teach->begin = '2023-12-21';
-        $teach->end = '2023-12-22';
+        $teach->begin = '2023-12-23';
+        $teach->end = '2023-12-25';
         $teach->tour = 200;
         $teach->save();
 
