@@ -108,7 +108,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        
+        return 'Natijalar hisoblanyapti...';
         $id = Session::get('user')->id;
         $cap = DB::table('tg_user')->where('id',$id)->value('level');
         $rm = DB::table('tg_user')->where('id',$id)->value('rm');
