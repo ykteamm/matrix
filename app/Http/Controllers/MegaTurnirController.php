@@ -161,7 +161,7 @@ class MegaTurnirController extends Controller
         $teach->end = '2023-12-30';
         $teach->tour = 200;
         $teach->save();
-
+// fdfd
         return redirect()->back();
     }
 }
