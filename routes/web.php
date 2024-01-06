@@ -14,6 +14,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\MarketController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MijozController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\OrderController;
@@ -255,12 +256,18 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::resource('member',MemberController::class);
     Route::post('member-minus', [App\Http\Controllers\MemberController::class,'minus'])->name('member.minus');
+// trend
+    Route::get('trend',[App\Http\Controllers\TrendController::class,'trend'])->name('trend');
 
+    Route::post('region-statistic',[App\Http\Controllers\TrendController::class,'RegionStatistic'])->name('region.statistic');
     Route::get('trend-region/{range}',[App\Http\Controllers\TrendController::class,'region'])->name('trend.region');
+
+    Route::post('product-statistic',[App\Http\Controllers\TrendController::class,'ProductStatistic'])->name('product.statistic');
     Route::get('trend-product/{range}',[App\Http\Controllers\TrendController::class,'product'])->name('trend.product');
+
     Route::get('trend-user/{range}',[App\Http\Controllers\TrendController::class,'user'])->name('trend.user');
     Route::get('trend-pharmacy/{range}',[App\Http\Controllers\TrendController::class,'pharmacy'])->name('trend.pharmacy');
-
+// end trend
     #end-position
     #bro
     Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');

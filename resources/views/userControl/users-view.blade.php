@@ -173,10 +173,9 @@ use Illuminate\Support\Facades\DB;
                                     <select class="custom-select custom-select-lg mb-3 col-md-12" name="region_id" id="region_id" aria-label=".form-select-lg example">
                                         <option >Select Region</option>
                                         @foreach($region as $reg)
-                                            <option @if($users->region_id ==$reg->id) selected @else @endif value="{{$reg->id}}">{{$reg->name}}</option>
+                                        <option @if($users->region_id ==$reg->id) selected @else @endif value="{{$reg->id}}">{{$reg->name}}</option>
                                         @endforeach
                                     </select>
-
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="district_id">District ID</label><br>
