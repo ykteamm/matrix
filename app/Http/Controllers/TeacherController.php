@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductSold;
+use App\Models\Region;
 use App\Models\Teacher;
 use App\Models\TeacherUser;
 use App\Models\TeachGradeStar;
@@ -151,20 +152,123 @@ class TeacherController extends Controller
 
     public function yetakchi()
     {
-        $users = User::whereDate('date_joined','>=','2023-08-25')->get();
 
-        $array = [];
+        $date=[];
+        $date[] = [
+            '2023-01-01',
+            '2023-01-31',
+        ];
+        //fev
+                $date[] = [
+                    '2023-02-01',
+                    '2023-02-28',
+                ];
+        //mart
+                $date[] = [
+                    '2023-03-01',
+                    '2023-03-31',
+                ];
+        //aprel
+                $date[] = [
+                    '2023-04-01',
+                    '2023-04-30',
+                ];
+        //may
+                $date[] = [
+                    '2023-05-01',
+                    '2023-05-31',
+                ];
+        //iyun
+                $date[] = [
+                    '2023-06-01',
+                    '2023-06-30',
+                ];
+        // iyul
+                $date[] = [
+                    '2023-07-01',
+                    '2023-07-31',
+                ];
+        //        avg
+                $date[] = [
+                    '2023-08-01',
+                    '2023-08-31',
+                ];
+        //        sen
+                $date[] = [
+                    '2023-09-01',
+                    '2023-09-30',
+                ];
+        //        okt
+                $date[] = [
+                    '2023-10-01',
+                    '2023-10-31',
+                ];
+        //        noyabr
+                $date[] = [
+                    '2023-11-01',
+                    '2023-11-30',
+                ];
+        //        dekabr
+                $date[] = [
+                    '2023-12-01',
+                    '2023-12-31',
+                ];
 
-        foreach ($users as $key => $value) {
-            $sum = ProductSold::where('user_id',$value->id)->sum(DB::raw('price_product*number'));
+        $sort = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice, tg_region.id')
+                ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
+                ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
+                ->whereDate('created_at','>=','2023-01-01')
+                ->whereDate('created_at','<=','2023-12-31')
+                ->groupBy('tg_region.id')
+                ->orderBy('allprice', 'DESC')
+                ->get();
 
 
-            $array[] = array('user' => $value,'sum' => $sum);
+        $regions = [2,3,5,7,12,13,14,11,8,17,10,15,1,6,9];
 
+        $reg = [];
+        $elchi = [];
+        $name = [];
+
+        foreach ($regions as $index => $region) {
+            foreach ($date as $key => $value) {
+                $sort = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice')
+                ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
+                ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
+                ->whereDate('created_at','>=',$value[0])
+                ->whereDate('created_at','<=',$value[1])
+                ->where('tg_region.id','=',$region)
+                ->orderBy('allprice', 'DESC')
+                ->first()->allprice??0;
+
+                $ss = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice')
+                ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
+                ->join('tg_region', 'tg_region.id', 'tg_user.region_id')
+                ->whereDate('created_at','>=',$value[0])
+                ->whereDate('created_at','<=',$value[1])
+                ->where('tg_region.id','=',$region)
+                ->where('tg_user.specialty_id','=',1)
+                ->orderBy('allprice', 'DESC')
+                ->first()->allprice??0;
+
+                $reg[$region][$key] = $sort;
+                $elchi[$region][$key] = $ss;
+
+                $name[$region] = Region::find($region)->name;
+
+            }
         }
 
-        array_multisort(array_column($array, 'sum'), SORT_DESC, $array);
 
-        return $array;
+        return view('teacher.reg2024',[
+            'reg' => $reg,
+            'elchis' => $elchi,
+            'name' => $name,
+            'regions' => $regions,
+        ]);
+
     }
 }

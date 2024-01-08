@@ -371,25 +371,88 @@ class TrendController extends Controller
                     ->whereDate('created_at', $day)
                     ->first();
 
-                $user_daily_sales[$user_id][$day] = $daily_sales->daily_sales ?? 0;
+                $user = User::find($user_id);
+                $name = $user->first_name.' '.$user->last_name;
+
+                $user_daily_sales[$name][$day] = $daily_sales->daily_sales ?? 0;
             }
         }
-//        dd($user_daily_sales);
+
         return $user_daily_sales;
 
+        return redirect(abort(404));
+    }
+    public function DayStatistic2()
+    {
 
-//        $sort = DB::table('tg_productssold')
-//            ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice,
-//             tg_user.id,tg_user.first_name')
-//            ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
-//            ->whereDate('created_at','>=','2023-01-01')
-//            ->whereDate('created_at','<=','2023-12-31')
-//            ->groupBy('tg_user.id')
-//            ->orderBy('allprice', 'DESC')
-//            ->get();
+        $days = [];
+        for ($i=0; $i < 365; $i++) {
 
+            $date = date('Y-m-d',(strtotime ( '+'.$i.' day' , strtotime ( '2023-01-01') ) ));
+            $days[] = $date;
 
-//        return $sort;
+        }
+
+        $user_ids = User::pluck('id')->toArray();
+
+        $user_daily_sales = [];
+
+        foreach ($user_ids as $user_id) {
+            $user_daily_sales[$user_id] = [];
+
+            foreach ($days as $day) {
+                $daily_sales = DB::table('tg_productssold')
+                    ->selectRaw('SUM(price_product * number) as daily_sales')
+                    ->where('user_id', $user_id)
+                    ->whereDate('created_at', $day)
+                    ->first();
+
+                    $user = User::find($user_id);
+                    $region = Region::find($user->region_id);
+                    $name = $user->first_name.' '.$user->last_name;
+
+                $user_daily_sales[$region->name][$day] = $daily_sales->daily_sales ?? 0;
+            }
+        }
+
+        return $user_daily_sales;
+
+        return redirect(abort(404));
+    }
+    public function DayStatistic3()
+    {
+
+        $days = [];
+        for ($i=0; $i < 365; $i++) {
+
+            $date = date('Y-m-d',(strtotime ( '+'.$i.' day' , strtotime ( '2023-01-01') ) ));
+            $days[] = $date;
+
+        }
+
+        $user_ids = User::pluck('id')->toArray();
+
+        $user_daily_sales = [];
+
+        foreach ($user_ids as $user_id) {
+            $user_daily_sales[$user_id] = [];
+
+            foreach ($days as $day) {
+                $daily_sales = DB::table('tg_productssold')
+                    ->selectRaw('SUM(price_product * number) as daily_sales')
+                    ->where('user_id', $user_id)
+                    ->whereDate('created_at', $day)
+                    ->first();
+
+                    $user = User::find($user_id);
+                    $region = Region::find($user->region_id);
+                    $name = $user->first_name.' '.$user->last_name.'-'.$region->name;
+
+                $user_daily_sales[$name][$day] = $daily_sales->daily_sales ?? 0;
+            }
+        }
+
+        return $user_daily_sales;
 
         return redirect(abort(404));
     }
