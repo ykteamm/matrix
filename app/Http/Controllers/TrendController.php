@@ -357,11 +357,25 @@ class TrendController extends Controller
 
         }
 
-        $user_ids = User::pluck('id')->toArray();
+
+        $sort = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice, tg_user.id')
+                ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
+                ->whereDate('created_at','>=','2023-01-01')
+                ->whereDate('created_at','<=','2023-12-31')
+                ->groupBy('tg_user.id')
+                ->orderBy('allprice', 'DESC')
+                ->get();
+        foreach ($sort as $key => $value) {
+            if($value->allprice > 0)
+            {
+                $fff[] = $value->id;;
+            }
+        }
 
         $user_daily_sales = [];
 
-        foreach ($user_ids as $user_id) {
+        foreach ($fff as $user_id) {
             $user_daily_sales[$user_id] = [];
 
             foreach ($days as $day) {
@@ -393,11 +407,24 @@ class TrendController extends Controller
 
         }
 
-        $user_ids = User::pluck('id')->toArray();
+        $sort = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice, tg_user.id')
+                ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
+                ->whereDate('created_at','>=','2023-01-01')
+                ->whereDate('created_at','<=','2023-12-31')
+                ->groupBy('tg_user.id')
+                ->orderBy('allprice', 'DESC')
+                ->get();
+        foreach ($sort as $key => $value) {
+            if($value->allprice > 0)
+            {
+                $fff[] = $value->id;;
+            }
+        }
 
         $user_daily_sales = [];
 
-        foreach ($user_ids as $user_id) {
+        foreach ($fff as $user_id) {
             $user_daily_sales[$user_id] = [];
 
             foreach ($days as $day) {
@@ -430,11 +457,24 @@ class TrendController extends Controller
 
         }
 
-        $user_ids = User::pluck('id')->toArray();
+        $sort = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.price_product * tg_productssold.number) as allprice, tg_user.id')
+                ->join('tg_user', 'tg_user.id', 'tg_productssold.user_id')
+                ->whereDate('created_at','>=','2023-01-01')
+                ->whereDate('created_at','<=','2023-12-31')
+                ->groupBy('tg_user.id')
+                ->orderBy('allprice', 'DESC')
+                ->get();
+        foreach ($sort as $key => $value) {
+            if($value->allprice > 0)
+            {
+                $fff[] = $value->id;;
+            }
+        }
 
         $user_daily_sales = [];
 
-        foreach ($user_ids as $user_id) {
+        foreach ($fff as $user_id) {
             $user_daily_sales[$user_id] = [];
 
             foreach ($days as $day) {
