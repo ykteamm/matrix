@@ -340,6 +340,12 @@ class TrendController extends Controller
         return view('trend.product',compact('json','date_array','regions'));
     }
 
+    public function MonthStatistic()
+    {
+
+        return view('trend.month_statistic');
+    }
+
     public function user($range)
     {
         $date_array = $this->service->range($range);

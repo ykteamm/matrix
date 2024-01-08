@@ -83,6 +83,40 @@
              </form>
          </div>
 
+
+          <div class="container mt-5">
+              <h3>
+                  Oylik hisobotlar
+              </h3>
+
+              <div class="form-group col-md-1">
+                  <form action="{{ route('month.statistic') }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-block btn-outline-primary">
+                          OK
+                      </button>
+                  </form>
+              </div>
+
+{{--              <form action="{{route('month.statistic')}}" method="POST" class="row align-items-center">--}}
+{{--                  @csrf--}}
+{{--                  <div class="form-group col-md-6">--}}
+{{--                      <label for="region_id">Viloyatni tanglang</label><br>--}}
+{{--                      <select class="custom-select custom-select-lg mb-3 col-md-12" name="region_id" id="region_id" aria-label=".form-select-lg example">--}}
+{{--                          <option value="">--Tanglang--</option>--}}
+{{--                          @foreach($region as $reg)--}}
+{{--                              <option value="{{$reg->id}}">{{$reg->name}}</option>--}}
+{{--                          @endforeach--}}
+{{--                      </select>--}}
+{{--                  </div>--}}
+{{--                  <div class="form-group col-md-1">--}}
+{{--                      <button type="submit" class="btn btn-block btn-outline-primary">--}}
+{{--                          OK--}}
+{{--                      </button>--}}
+{{--                  </div>--}}
+{{--              </form>--}}
+          </div>
+
      </div>
    </div>
 
