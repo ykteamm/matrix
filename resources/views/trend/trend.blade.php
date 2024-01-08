@@ -117,6 +117,21 @@
 {{--              </form>--}}
           </div>
 
+          <div class="container mt-5">
+              <h3>
+                  Har kunlik savdo
+              </h3>
+
+              <div class="form-group col-md-1">
+                  <form action="{{ route('day.statistic') }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-block btn-outline-primary">
+                          OK
+                      </button>
+                  </form>
+              </div>
+          </div>
+
      </div>
    </div>
 

@@ -264,6 +264,8 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::post('month-statistic',[App\Http\Controllers\TrendController::class,'MonthStatistic'])->name('month.statistic');
 
+    Route::post('day-statistic',[App\Http\Controllers\TrendController::class,'DayStatistic'])->name('day.statistic');
+
     Route::post('product-statistic',[App\Http\Controllers\TrendController::class,'ProductStatistic'])->name('product.statistic');
     Route::get('trend-product/{range}',[App\Http\Controllers\TrendController::class,'product'])->name('trend.product');
 
