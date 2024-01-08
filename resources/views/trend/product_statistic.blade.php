@@ -68,22 +68,6 @@
                     // console.log(categoryInfo) // category_id
                     var filteredJson = {};
 
-                    // Filter the json object based on category_id
-                    // $.each(json, function (jsonIndex, jsonData) {
-                    //     var medicineInfo = medicine.find(med => med.id == jsonData.med_id);
-                    //     console.log(medicineInfo)
-                    //     // console.log(medicineInfo)
-                    //     //  console.log(jsonIndex) //category
-                    //     // console.log(jsonData) // med_id
-                    //     if (medicineInfo && medicineInfo.category_id == categoryInfo.id) {
-                    //         filteredJson[jsonIndex] = jsonData;
-                    //     }
-                    // });
-                    //
-                    // var seriesArray = Object.keys(filteredJson).map(jsonIndex => ({
-                    //     name: medicine.find(med => med.id == jsonIndex).name,
-                    //     data: filteredJson[jsonIndex]
-                    // }));
                 $.each(json[categoryInfo.id], function (medId, medData) {
                     var medicineInfo = medicine.find(med => med.id == medId);
 
@@ -98,6 +82,7 @@
                     // data: filteredJson[medId].map(data => ({ x: data.month, y: data.allprice })),
                     data: filteredJson[medId].map(data => data.allprice),
                 }));
+                console.log(seriesArray)
 
                     var region = {
                         series: seriesArray,

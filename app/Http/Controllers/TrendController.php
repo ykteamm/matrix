@@ -28,40 +28,185 @@ class TrendController extends Controller
         return view('trend.trend',compact('region'));
     }
 
+
     public function RegionStatistic(Request $request)
     {
         $region_id = $request->region_id;
-        $range = 'twelve';
-        $date_array = $this->service->range($range);
-        $json = array();
-        $regions = Region::orderBy('id','ASC')->where('id',$region_id)->get();
-        foreach($date_array as $key => $date)
-        {
-//            return $date;
-            foreach($regions as $key => $region)
-            {
-                $region_chart = DB::table('tg_productssold')
-                    ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice, tg_region.id')
-                    ->whereDate('tg_productssold.created_at','=',$date)
-                    ->where('tg_region.id','=',$region->id)
-                    ->join('tg_user','tg_user.id','tg_productssold.user_id')
-                    ->join('tg_region','tg_region.id','tg_user.region_id')
-                    ->orderBy('tg_region.id','ASC')
-                    ->groupBy('tg_region.id')->first();
+        $regions = Region::orderBy('id','ASC')->where('id',$region_id)->first();
+        $users = User::where('region_id',$region_id)
+            ->where('specialty_id',1)->pluck('id')->toArray();
 
-                if(isset($region_chart->allprice))
+            $users = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,
+                tg_user.id,
+                tg_user.first_name,
+                tg_user.last_name')
+                ->whereDate('tg_productssold.created_at','>=','2023-01-01')
+                ->whereDate('tg_productssold.created_at','<=','2023-12-31')
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->whereIn('tg_user.id',$users)
+                ->orderBy('allprice','DESC')
+                ->groupBy('tg_user.id')
+                ->get();
+        $user_data = User::where('region_id',$region_id)
+            ->where('specialty_id',1)->get();
+
+        $date=[];
+//yan
+        $date[] = [
+            '2023-01-01',
+            '2023-01-31',
+        ];
+//fev
+        $date[] = [
+            '2023-02-01',
+            '2023-02-28',
+        ];
+//mart
+        $date[] = [
+            '2023-03-01',
+            '2023-03-31',
+        ];
+//aprel
+        $date[] = [
+            '2023-04-01',
+            '2023-04-30',
+        ];
+//may
+        $date[] = [
+            '2023-05-01',
+            '2023-05-31',
+        ];
+//iyun
+        $date[] = [
+            '2023-06-01',
+            '2023-06-30',
+        ];
+// iyul
+        $date[] = [
+            '2023-07-01',
+            '2023-07-31',
+        ];
+//        avg
+        $date[] = [
+            '2023-08-01',
+            '2023-08-31',
+        ];
+//        sen
+        $date[] = [
+            '2023-09-01',
+            '2023-09-30',
+        ];
+//        okt
+        $date[] = [
+            '2023-10-01',
+            '2023-10-31',
+        ];
+//        noyabr
+        $date[] = [
+            '2023-11-01',
+            '2023-11-30',
+        ];
+//        dekabr
+        $date[] = [
+            '2023-12-01',
+            '2023-12-31',
+        ];
+//        2024 yan
+//        $date[] = [
+//            '2024-01-01',
+//            '2024-01-31',
+//        ];
+
+        $json = [];
+
+            foreach($users as  $user)
+            {
+                $date_array = [];
+                foreach ( $date as $d)
                 {
-                    $json[$region->id][] = $region_chart->allprice;
-                }else{
-                    $json[$region->id][] = 0;
+                    $region_chart = DB::table('tg_productssold')
+                        ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+                        ->whereDate('tg_productssold.created_at','>=',$d[0])
+                        ->whereDate('tg_productssold.created_at','<=',$d[1])
+                        ->where('user_id','=',$user->id)->get();
+
+                    $json[$user->id][] =
+                    [
+                        'month' => $d[0],
+                        'allprice' => $region_chart[0]->allprice ?? 0,
+                    ];
+                    $date_array[] = $d[0];
                 }
             }
-        }
-        $date_array = $this->service->format($date_array);
+//           return $date_array;
+//return $user_data;
+//            return $users;
+//    return $json;
 
-        return view('trend.region_statistic',compact('json','date_array','regions'));
+        return view('trend.region_statistic',compact('json','date_array','regions','users','user_data'));
     }
 
+    public function RegionStatistic2(Request $request)
+    {
+        $region_id = $request->region_id;
+        $range = 'twelve';
+        $date_array = $this->service->test($range);
+        unset($date_array[12]);
+//        return $date_array;
+        $json = array();
+        $regions = Region::orderBy('id','ASC')->where('id',$region_id)->first();
+        $users = User::where('region_id',$region_id)
+            ->where('specialty_id',1)->get();
+        $startDate = '01-01-2023';
+        $endDate = '01-01-2024';
+
+
+
+        foreach($users as  $user)
+        {
+            $region_chart = DB::table('tg_productssold')
+                ->selectRaw(
+                    'SUM(tg_productssold.number * tg_productssold.price_product) as allprice,
+                       tg_region.id as region_id,
+                        TO_CHAR(tg_productssold.created_at, \'YYYY-Mon\') as month,
+                        tg_user.username,
+                        tg_user.first_name,
+                        tg_user.last_name,
+                        tg_user.id
+                        '
+                )
+//                    ->whereDate('tg_productssold.created_at','=',$date)
+                ->whereBetween('tg_productssold.created_at', [$startDate, $endDate])
+                ->where('tg_region.id','=',$regions->id)
+                ->where('tg_user.id','=',$user->id)
+                ->join('tg_user','tg_user.id','tg_productssold.user_id')
+                ->join('tg_region','tg_region.id','tg_user.region_id')
+                ->orderByRaw('MIN(tg_productssold.created_at) ASC')
+                ->groupBy('tg_region.id','month','tg_user.username', 'tg_user.first_name','tg_user.id','tg_user.last_name')->get();
+
+//                return $region_chart;
+
+            // Massivga ma'lumotni qo'shamiz
+            foreach ($region_chart as $chart) {
+//                        $formattedMonth = Carbon::createFromFormat('Y-M', $chart->month)->format('d.m.Y');
+                $formattedMonth = Carbon::createFromFormat('Y-M', $chart->month)->firstOfMonth()->format('d.m.Y');
+                // If there is data available for the current medicine, add it to the $medicinesData array
+                $json[$chart->id][] = [
+                    'month' => $formattedMonth,
+                    'firstname' => $chart->first_name,
+                    'lastname' => $chart->last_name,
+                    'id' => $chart->id,
+                    'allprice' => $chart->allprice,
+                ];
+            }
+//
+        }
+        $date_array = $this->service->format($date_array);
+//        return $date_array;
+
+        return view('trend.region_statistic',compact('json','date_array','regions','users'));
+    }
     public function region($range)
     {
 
@@ -155,6 +300,7 @@ class TrendController extends Controller
                 $json[$cate->id] = $medicinesData;
             }
         }
+//        return $json;
         $date_array = $this->service->format($date_array);
 //        return $date_array;
 

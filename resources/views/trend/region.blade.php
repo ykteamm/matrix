@@ -41,7 +41,7 @@
                   {{$item->name}}
                </div>
                <div class="row" id="myregionid{{$item->id}}">
-               
+
                </div>
                @endforeach
              </div>
@@ -57,6 +57,7 @@
             var json = <?php echo json_encode( $json ) ?>;
             var date_array = <?php echo json_encode( $date_array ) ?>;
             $.each(json, function(index, value){
+
                var region = {
                     series: [{
                     name: 'Summa',
@@ -89,6 +90,6 @@
                 var regionChart = new ApexCharts(document.querySelector(`#myregionid${index}`), region);
                 regionChart.render();
             });
-      
+
       </script>
 @endsection
