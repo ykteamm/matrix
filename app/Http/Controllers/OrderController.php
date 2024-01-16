@@ -488,6 +488,8 @@ class OrderController extends Controller
 
     }
 
-    
+    public function sdf(){
+        return 34;
+    }
     
 }

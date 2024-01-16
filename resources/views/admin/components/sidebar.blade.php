@@ -143,6 +143,26 @@
                         @endisset
                     @endif
 
+                    @if (in_array(Session::get('user')->id,[154,37,405]))
+                        @isset(Session::get('per')['order'])
+                        @if (Session::get('per')['order'] == 'true')
+                            <li class="submenu">
+                                <a href="settings.html"><i class="fas fa-crown"></i> <span> New Order </span><span
+                                        class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    @isset(Session::get('per_admin')['order_zakaz'])
+                                        @if (Session::get('per_admin')['order_zakaz'] == 'true')
+
+                                        <li><a href="{{ route('new-order.index') }}"><span>Buyurtma berish</span></a>
+
+                                        @endif
+                                    @endisset
+                                </ul>
+                            </li>
+                        @endif
+                        @endisset
+                    @endif
+
                     @isset(Session::get('per')['rek'])
                         @if (Session::get('per')['rek'] == 'true')
                             <li class="submenu">
@@ -202,7 +222,7 @@
                                         <li><a href="{{ route('add-shogird') }}">Shogird tayinlash</a></li>
                                         <li><a href="{{ route('jamoalar') }}">Jamoalar</a></li>
                                         <li><a href="{{ route('st-grade') }}">Baholashlar</a></li>
-                                        <li><a href="{{ route('yetakchi') }}">Yetakchi</a></li>
+                                        <li><a href="{{ route('yetakchi') }}">2023 hisobot</a></li>
                                     </ul>
                                 </li>
                             @endif
