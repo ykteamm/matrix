@@ -1,8 +1,8 @@
 <div class="content main-wrapper ">
     <div class="row gold-box">
-       
+
         <div class="card flex-fill mt-5">
-            
+
             <div class="card-body">
                 <div class="text-right">
                     <a href="{{route('mc-money-month',['begin' => '2023-08-01','end' => '2023-08-31'])}}">
@@ -11,6 +11,9 @@
                     <a href="{{route('mc-money-month',['begin' => '2023-09-01','end' => '2023-09-30'])}}">
                         <button class="btn btn-primary">Sentabr</button>
                     </a>
+                    <a href="{{route('mc-money-month',['begin' => '2023-10-01','end' => '2023-10-31'])}}">
+                        <button class="btn btn-primary">Oktabr</button>
+                    </a>
                     <a href="{{route('money-coming')}}">
                         <button class="btn btn-primary">Jami</button>
                     </a>
@@ -18,7 +21,7 @@
               <div id="dtBasicExample1212333"></div>
 
                 <div class="table-responsive">
-                    
+
                     <table class="table table-striped mb-0" id="dtBasicExample12333">
                         <thead>
                         <tr>
@@ -48,7 +51,7 @@
                                             <td>{{$order->user->last_name}} {{$order->user->first_name}}</td>
                                         @endif
                                         <td>
-                                            
+
 
                                             @if (isset($order->pharmacy->region))
                                                 {{$order->pharmacy->region->name}}
@@ -56,7 +59,7 @@
                                         </td>
 
                                         <td>{{$order->discount}}%</td>
-                                    
+
                                         <td>{{number_format($order->price,0,',','.')}}</td>
                                         <td>
                                             {{number_format($order->price - $order->price*$order->discount/100,0,',','.')}}
@@ -84,7 +87,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                                
+
                                             <a href="{{route('mc-ord-id',['order_id' => $order->id])}}">
                                                 <button  class="btn btn-primary" style="padding: 0px 5px;">
                                                     <i class="fas fa-shipping-fast"></i>
@@ -98,8 +101,8 @@
                                                     </button>
                                                 </a>
                                             @endif
-                                            
-                                            
+
+
                                         </td>
                                 </tr>
                             @endforeach
@@ -110,10 +113,10 @@
         </div>
 
     </div>
-    
+
     <script>
         window.addEventListener('refresh-page', event => {
-           window.location.reload(false); 
+           window.location.reload(false);
         })
     </script>
 </div>

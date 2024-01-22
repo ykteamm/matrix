@@ -102,7 +102,7 @@ class McShipment extends Component
 
 
         $this->default_orders = McOrderDetail::where('order_id',$order_id)->pluck('quantity','product_id')->toArray();
-        
+
 
 
         foreach ($this->default_orders as $key => $value) {
@@ -114,8 +114,8 @@ class McShipment extends Component
 
 
         $this->orders = McOrder::with('pharmacy','user','employe','delivery','payment')->find($order_id);
-        
-        
+
+
 
         $this->order_datail_status = $this->orders->order_detail_status;
 
@@ -186,7 +186,7 @@ class McShipment extends Component
 
         $this->order_sum = McOrderDelivery::where('order_id',$order_id)->sum(DB::raw('quantity * price'));
 
-        $this->pharmacy = Pharmacy::with('region')->get();
+        $this->pharmacy = Pharmacy::with('region')->orderBy('name','ASC')->get();
 
         // dd($this->pharmacy);
 
@@ -225,7 +225,7 @@ class McShipment extends Component
 
         $this->products[$id] = $quantity;
 
-    }   
+    }
 
     public function changeReturnQuantity($quantity,$id)
     {
@@ -241,7 +241,7 @@ class McShipment extends Component
 
         $this->vozvrat[$id] = $quantity;
 
-    } 
+    }
 
     public function selectDelivery($delivery_id)
     {
@@ -260,14 +260,14 @@ class McShipment extends Component
 
     public function orderList()
     {
-        $this->dispatchBrowserEvent('refresh-page'); 
+        $this->dispatchBrowserEvent('refresh-page');
     }
 
     public function check()
     {
         $this->saved = 3;
 
-        
+
         foreach ($this->products as $pro_id => $quantity) {
             if($quantity > $this->ware_products[$pro_id])
             {
@@ -310,7 +310,7 @@ class McShipment extends Component
 
             }
 
-        
+
     }
 
 
@@ -334,7 +334,7 @@ class McShipment extends Component
 
             foreach($this->vozvrat as $key => $value)
             {
-                
+
                     $price = McOrderDelivery::where('order_id',$this->order_id)
                     ->where('product_id',$key)
                     ->first();
@@ -348,7 +348,7 @@ class McShipment extends Component
                     ]);
 
                     $arr_del[] = $mm;
-                
+
             }
 
             foreach ($arr_del as $key => $value) {
@@ -375,7 +375,7 @@ class McShipment extends Component
 
             foreach($this->order_products as $ord)
             {
-                
+
 
                 if($ord->debt == 0)
                 {
@@ -397,7 +397,7 @@ class McShipment extends Component
                         }
                     }
 
-                    
+
                 }else{
                     if($ord->debt >= $this->products[$ord->product_id])
                         {
@@ -426,7 +426,7 @@ class McShipment extends Component
 
 
 
-            } 
+            }
 
             foreach ($arr_del as $key => $value) {
                 $d = McOrderDelivery::find($value->id);
@@ -434,7 +434,7 @@ class McShipment extends Component
                 $d->save();
             }
 
-            
+
                 $debt_count = McOrderDetail::where('order_id',$this->order_id)->sum('debt');
 
                 if($debt_count == 0)
@@ -450,13 +450,13 @@ class McShipment extends Component
                     'delivery_id' => $this->delivery_id,
                 ]);
 
-                $this->dispatchBrowserEvent('refresh-page'); 
+                $this->dispatchBrowserEvent('refresh-page');
 
         }else{
             $this->error = 1;
         }
 
-    }   
+    }
 
     public function moneyView()
     {
@@ -494,7 +494,7 @@ class McShipment extends Component
     {
         $this->return_sum = $amount;
     }
-    
+
     public function saveMoneyReturn()
     {
 
@@ -510,10 +510,10 @@ class McShipment extends Component
                 'order_id' => $this->order_id,
                 'amount' => $this->return_sum*100/100
             ]);
-            $this->dispatchBrowserEvent('refresh-page'); 
+            $this->dispatchBrowserEvent('refresh-page');
         }
 
-        
+
     }
 
     public function saveMoneyComing()
@@ -533,7 +533,7 @@ class McShipment extends Component
                     'order_id' => $this->order_id,
                     'amount' => $this->amount*100/100
                 ]);
-                
+
                 $sum_payment_all = McPaymentHistory::where('order_id',$this->order_id)->sum('amount');
                 if($sum_payment_all >= $order_payment)
                 {
@@ -541,17 +541,17 @@ class McShipment extends Component
                     $upd->payment_status = 2;
                     $upd->save();
                 }
-                
 
-                $this->dispatchBrowserEvent('refresh-page'); 
+
+                $this->dispatchBrowserEvent('refresh-page');
             }
-            
+
 
         }else{
             $this->error = 1;
         }
-        
-    }  
+
+    }
 
     public function runError()
     {
@@ -561,7 +561,7 @@ class McShipment extends Component
     public function deleteError()
     {
         $this->error = 2;
-        $this->dispatchBrowserEvent('refresh-page'); 
+        $this->dispatchBrowserEvent('refresh-page');
     }
 
 
@@ -584,7 +584,7 @@ class McShipment extends Component
                 $shablon_id = Shablon::where('id',5)->first();
                 $q->where('shablon_id',$shablon_id->id);
             }])->select('id','name','category_id')->where('id',$id)->first()->toArray();
-            
+
             $this->order_product[] = $pr;
 
             $this->prod_count[$id] = 1;
@@ -594,12 +594,12 @@ class McShipment extends Component
             $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
 
             $this->skidka = $this->with_foiz($this->summa_array);
-       
+
             $this->discount = $this->with_foiz($this->summa_array);
-            
-            
+
+
         }
-        
+
 
     }
     public function input($value,$id) {
@@ -609,7 +609,7 @@ class McShipment extends Component
         }else{
             $v = $value;
         }
-        
+
         $this->prod_count[$id] = $v;
 
         $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
@@ -640,7 +640,7 @@ class McShipment extends Component
         $order->price = array_sum($this->summa_array);
         $order->discount = $this->discount;
         $order->save();
-        
+
 
         foreach ($this->order_product as $key => $product) {
             McOrderDetail::create([
@@ -651,7 +651,7 @@ class McShipment extends Component
             ]);
         }
 
-        $this->dispatchBrowserEvent('refresh-page'); 
+        $this->dispatchBrowserEvent('refresh-page');
 
     }
     public function with_foiz($array)
@@ -676,7 +676,7 @@ class McShipment extends Component
 
     public function changeOrderDate()
     {
-        dd($this->change_order_date);    
+        dd($this->change_order_date);
     }
 
     public function render()

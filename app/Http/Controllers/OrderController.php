@@ -32,7 +32,7 @@ class OrderController extends Controller
     {
         return view('order.warehouse');
     }
-    
+
     public function allOrders()
     {
         return view('order.shipment');
@@ -45,7 +45,7 @@ class OrderController extends Controller
 
     public function money()
     {
-        
+
 
         return view('order.money');
     }
@@ -75,10 +75,15 @@ class OrderController extends Controller
 
         return redirect()->back();
     }
-    
+
     public function report()
     {
         return view('order.report');
+    }
+
+    public function reportRegion()
+    {
+        return view('order.report-region');
     }
 
     public function mcAdmin()
@@ -114,9 +119,9 @@ class OrderController extends Controller
             'price' => $order->price-$minus_sum,
             'order_detail_status' => 3,
         ]);
-        
 
-        
+
+
 
         return redirect()->back();
     }
@@ -151,7 +156,7 @@ class OrderController extends Controller
                 'delivery_id' => 2,
                 'order_date' => $request->month,
                 'outer' => 1,
-    
+
             ]);
         }else{
             $new_order = McOrder::create([
@@ -163,7 +168,7 @@ class OrderController extends Controller
                 'order_date' => $request->month,
                 'outer' => 1,
             ]);
-    
+
             McPaymentHistory::create([
                 'payment_id' => $request->money_status,
                 'order_id' => $new_order->id,
@@ -172,7 +177,7 @@ class OrderController extends Controller
         }
 
         return redirect()->back();
-        
+
     }
 
     public function pharmacy()
@@ -180,7 +185,7 @@ class OrderController extends Controller
         $pharmacy_ids = Http::get(getProvizorUrl().'/api/pharmacy');
 
         $all_ids = Pharmacy::orderBy('id','ASC')->pluck('id','name')->toArray();
-        
+
         $use_order = [];
         $use_no_order = [];
 
@@ -260,7 +265,7 @@ class OrderController extends Controller
             'shift' => $shift,
         ]);
 
-        
+
     }
 
     public function mcPharmacyReturn()
@@ -286,7 +291,7 @@ class OrderController extends Controller
         $new->region_id = $id;
         $new->day = $request->day;
         $new->save();
-       
+
         return redirect()->back();
     }
 
@@ -302,7 +307,7 @@ class OrderController extends Controller
 
     }
 
-    
+
     public function mcChangeOrderDate(Request $request,$id)
     {
         $date = $request->change_order_date;
@@ -368,7 +373,7 @@ class OrderController extends Controller
         $delivery_q = McOrderDelivery::where('order_id',$id)->whereIn('id',$arr)->update([
             'created_at' => $date
         ]);
-        
+
         return redirect()->back();
 
     }
@@ -385,7 +390,7 @@ class OrderController extends Controller
         }
 
         $order->save();
-        
+
         return redirect()->back();
 
     }
@@ -394,7 +399,7 @@ class OrderController extends Controller
     {
         $order = McPaymentHistory::destroy($id);
 
-        
+
         return redirect()->back();
 
     }
@@ -403,7 +408,7 @@ class OrderController extends Controller
     {
         $order = McReturnHistory::destroy($id);
 
-        
+
         return redirect()->back();
 
     }
@@ -413,7 +418,7 @@ class OrderController extends Controller
         $order = McReturnHistory::find($id);
         $order->amount = $request->amount;
         $order->save();
-        
+
         return redirect()->back();
 
     }
@@ -491,5 +496,5 @@ class OrderController extends Controller
     public function sdf(){
         return 34;
     }
-    
+
 }

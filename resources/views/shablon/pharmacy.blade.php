@@ -85,14 +85,16 @@
                                         <td>
                                             @foreach ($item->shablon_pharmacy as $keys => $items)
                                                 @isset($items->pharmacy_id)
-                                                <span class="badge bg-info-light">{{$items->pharmacy->name}}</span>
+                                                    @isset($items->pharmacy->name)
+                                                        <span class="badge bg-info-light">{{$items->pharmacy->name}}</span>
+                                                    @endisset
                                                 @endisset
                                             @endforeach
                                         </td>
-                                        <td> 
+                                        <td>
                                             <a href="{{route('shablon.pharmacy.edit',$item->id)}}">
                                                 <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> </button>
-                                            </a> 
+                                            </a>
                                         <td>
                                     </tr>
                                 @endforeach

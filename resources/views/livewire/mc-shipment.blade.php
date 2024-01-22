@@ -1,6 +1,6 @@
 <div class="content main-wrapper ">
     <div class="row gold-box">
-       
+
         <div class="card flex-fill mt-5">
             <div class="row justify-content-between pr-3">
                 <div class="col-md-4">
@@ -17,7 +17,7 @@
                         </li>
                     </ul>
                 </div>
-                @if ($orders->payment_status != 2)
+                {{-- @if ($orders->payment_status != 2) --}}
                     <div class="col-md-4">
                         <ul class="list-group">
                             <li class="d-flex justify-content-between align-items-center">
@@ -35,7 +35,7 @@
                             </li>
                         </ul>
                     </div>
-                @endif
+                {{-- @endif --}}
             </div>
             <div class="row justify-content-between p-3">
                 <div class="col-md-4">
@@ -45,7 +45,7 @@
                             <span>{{$orders->number}}</span>
                         </li>
 
-                        
+
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Buyurtma xolati
                         <span>{{$status_array[$order_datail_status]}}</span>
@@ -59,7 +59,7 @@
                         @endphp
 
                         <form action="{{route('mc-order-change-date',$orders->id)}}" method="POST" >
-                            
+
 
                             @csrf
                             <input type="datetime-local" name="change_order_date" value="{{$d}}">
@@ -79,12 +79,12 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Buyurtmachi
                             @if ($orders->user_id != null)
-                                
+
                                 <span>{{$orders->user->last_name}} {{$orders->user->first_name}}</span>
 
                                 @endif
                                 {{-- @if ($orders->user_id != null)
-                                
+
                                 <span>{{$orders->user->last_name}} {{$orders->user->first_name}}</span>
 
                                 @else --}}
@@ -97,7 +97,7 @@
                                         <option value="{{$phar->id}}" selected>{{$orders->pharmacy->name}}</option>
                                     @else
                                         <option value="{{$phar->id}}">{{$phar->name}}</option>
-                                        
+
                                     @endif
                                     @endforeach
 
@@ -107,7 +107,7 @@
                                     </button>
                                 </form>
                                 {{-- @endif --}}
-                                
+
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -120,13 +120,13 @@
                 @if ($orders->price == null)
 
                 <div class="col-md-4">
-                    
+
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Skidka
                         <span>
                             <input type="text" value="{{$discount}}"  wire:keyup="changeDiscount($event.target.value)">
-                            %</span>  
+                            %</span>
 
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -158,13 +158,13 @@
                             Kelgan pul
 
                                 <span>{{number_format($payment_sum,0,',','.')}}</span>
-    
+
                             </li>
                     </ul>
                 </div>
                 @else
                 <div class="col-md-4">
-                    
+
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                         Skidka
@@ -174,7 +174,7 @@
                             @else
                             {{$discount}}
                             @endif
-                            %</span>  
+                            %</span>
 
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -206,20 +206,20 @@
                             Kelgan pul
 
                                 <span>{{number_format($payment_sum,0,',','.')}}</span>
-    
+
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Qarz
-    
-                                    <span>{{number_format($order_sum  - $order_sum*$discount/100-$payment_sum-$return_history_sum,0,',','.')}}</span>
-        
+
+                                    <span>{{number_format(($order_sum  - $order_sum*$discount/100)-$payment_sum-$return_history_sum,0,',','.')}}</span>
+
                                 </li>
                     </ul>
                 </div>
                 @endif
                 @if ($money_view == 2)
                     <div class="col-md-4">
-                        
+
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 To'lov shaklini tanlang
@@ -230,7 +230,7 @@
                                         <option value="{{$item->id}}">{{$item->type}}</option>
                                     @endforeach
                                 </select>
-                            </span>  
+                            </span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                             To'lov summasi
@@ -249,7 +249,7 @@
                                 document.querySelector('.mcorderpaysave').addEventListener('click', () => {
                                     document.querySelector('.mcorderpaysave').classList.add('d-none');
                                     document.querySelector('.mcorderpaysavenone').classList.remove('d-none');
-                                }); 
+                                });
                             </script>
                         </ul>
                     </div>
@@ -257,9 +257,9 @@
 
                 @if ($return_pro == 2)
                     <div class="col-md-4">
-                        
+
                         <ul class="list-group">
-                            
+
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                             Qaytgan tovar summasi
                             <span>
@@ -277,14 +277,14 @@
                                 document.querySelector('.mcorderreturnsave').addEventListener('click', () => {
                                     document.querySelector('.mcorderreturnsave').classList.add('d-none');
                                     document.querySelector('.mcorderreturnsavenone').classList.remove('d-none');
-                                }); 
+                                });
                             </script>
                         </ul>
                     </div>
                 @endif
 
-                
-                            
+
+
             </div>
             @if ($orders->price == null)
 
@@ -298,14 +298,14 @@
                                 </li>
                             @endforeach
                         @endisset
-                        
+
                     </ul>
                 </div>
-                
+
             @endif
 
             @if (count($order_product) > 0)
-                
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
@@ -320,7 +320,7 @@
                             </thead>
                             <tbody>
                                 @isset($order_product)
-                                    
+
                                 @foreach ($order_product as $key => $product)
                                     <tr>
                                         <td>{{$product['name']}}</td>
@@ -329,7 +329,7 @@
                                         <td>
                                             @if (isset($prod_count[$product['id']]))
                                                 {{number_format($product['price'][0]['price']*$prod_count[$product['id']],0,',','.')}}</td>
-                                            @else   
+                                            @else
                                                 {{number_format($product['price'][0]['price'],0,',','.')}}</td>
                                             @endif
                                         <td><button wire:click="$emit('delete_prod', {{ $key }},{{$product['id']}})" class="btn btn-danger" style="padding: 0px 5px;"><i class="fas fa-window-close"></i></button></td>
@@ -343,7 +343,7 @@
                 </div>
 
                 <div class="m-3">
-                        <button wire:click="$emit('saveOrder_Detail')" 
+                        <button wire:click="$emit('saveOrder_Detail')"
                         type="button" class="btn btn-block btn-primary mcordersave">Saqlash</button>
                         <button wire:click="$emit('save')" type="button" class="btn btn-block btn-primary mcordersavenonne d-none">Biroz kuting</button>
                 </div>
@@ -351,7 +351,7 @@
                     document.querySelector('.mcordersave').addEventListener('click', () => {
                         document.querySelector('.mcordersave').classList.add('d-none');
                         document.querySelector('.mcordersavenonne').classList.remove('d-none');
-                    }); 
+                    });
                 </script>
             @endif
 
@@ -381,21 +381,21 @@
                                                 <input type="datetime-local" name="change_order_date" value="{{$d}}">
 
                                             {{-- {{date('d.m.Y H:i',strtotime($item))}} --}}
-                                        
+
                                             <button type="submit" class="btn btn-primary pt-0 pb-0 pl-1 pr-1">
                                                 <i class="fas fa-save"></i>
                                             </button>
 
                                             </form>
                                         </th>
-                                        
+
                                     @endforeach
 
                                 @endif
                             @if($orders->order_detail_status != 3)
                                 <th>Otgruzka</th>
 
-                                <th>Sklad  
+                                <th>Sklad
                                     <select class="form-control-sm" wire:change="selectWarehouse($event.target.value)">
                                             @foreach ($warehouses as $ware)
                                                 <option @if ($ware_id == $ware->id)
@@ -406,7 +406,7 @@
                                 </th>
                             @endif
                             {{-- <th>
-                                Tovar qaytish 
+                                Tovar qaytish
                                 <button  wire:click="$emit('saveReturn')" type="button" class="btn btn-primary pt-0 pb-0 ml-2">
                                     <i class="fas fa-save"></i>
                                 </button>
@@ -433,14 +433,14 @@
                                     <tr>
                                         <td>{{$pro->medicine->name}}</td>
                                         <td>{{$default_orders[$pro->product_id]}}</td>
-                                        
+
                                         @if($order_datail_status != 1)
                                             @foreach ($detail_delivery_date as $key => $item)
                                                 <td>{{$detail_delivery[$key][$pro->product_id]}}</td>
                                             @endforeach
                                         @endif
                                         @if($orders->order_detail_status != 3)
-                                            
+
                                             <td><input type="text" value="{{$products[$pro->product_id]}}"  wire:keyup="changeQuantity($event.target.value,{{$pro->product_id}})"></td>
 
 
@@ -449,7 +449,7 @@
                                             @else
                                                 <td>0</td>
                                             @endif
-                                        
+
                                         @endif
                                         {{-- <td>
                                             <input type="text" value="{{$vozvrat[$pro->product_id]}}"  wire:keyup="changeReturnQuantity($event.target.value,{{$pro->product_id}})">
@@ -483,14 +483,14 @@
                         document.querySelector('.mcorderdelsave').addEventListener('click', () => {
                             document.querySelector('.mcorderdelsave').classList.add('d-none');
                             document.querySelector('.mcorderdelsavenone').classList.remove('d-none');
-                        }); 
+                        });
                     </script>
                 @endif
 
             @endif
             </div>
-            
-            
+
+
             @if(count($payment_history) > 0)
 
             {{-- <span>
@@ -499,7 +499,7 @@
                 @endphp
 
                 <form action="{{route('mc-order-change-date',$orders->id)}}" method="POST" >
-                    
+
 
                     @csrf
                     <input type="datetime-local" name="change_order_date" value="{{$d}}">
@@ -533,7 +533,7 @@
                                                 <i class="fas fa-save"></i>
                                             </button>
 
-                                            
+
 
                                         </form>
                                     </th>
@@ -581,7 +581,7 @@
                                                                         </button>
                                                                     </a>
                                                                 @endif
-                                                                
+
                                                             </form>
                                                         </td>
                                                     @else
@@ -598,6 +598,9 @@
 
             @if(count($return_history) > 0)
                 <div class="card-body p-1" style="border: 2px solid #61b994;border-radius: 8px;">
+                    <div>
+                        <h4>Qaytgan tovar</h4>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped mb-0">
                             <thead>
@@ -617,7 +620,7 @@
                                                 <i class="fas fa-save"></i>
                                             </button>
 
-                                            
+
 
                                         </form>
                                     </th>
@@ -641,9 +644,9 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </a>
-                                            </form> 
+                                            </form>
                                             {{-- {{number_format($item2->amount,0,',','.')}} --}}
-                                            
+
                                         </td>
                                     @endforeach
                                 </tr>
@@ -653,13 +656,13 @@
                 </div>
             @endif
         </div>
-        
-   
+
+
     </div>
-    
+
     <script>
         window.addEventListener('refresh-page', event => {
-           window.location.reload(false); 
+           window.location.reload(false);
         })
 
 
