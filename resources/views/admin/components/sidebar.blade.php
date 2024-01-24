@@ -601,7 +601,7 @@
                         </a>
                         <ul style="display: none;">
                             <li>
-                                <a href="{{ route('lms-index') }}">Users Check</a>
+                                <a href="{{route('lms-index')}}">Users Check</a>
                             </li>
                         </ul>
                     </li>
