@@ -592,6 +592,20 @@
                         </li>
                     @endif
                 @endisset
+
+                    <li class="submenu">
+                        <a href="">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span> LMS </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul style="display: none;">
+                            <li>
+                                <a href="{{ route('lms-index') }}">Users Check</a>
+                            </li>
+                        </ul>
+                    </li>
+
                 <li class="submenu">
                     <a href="settings.html">
                         <i class="fas fa-cog"></i>

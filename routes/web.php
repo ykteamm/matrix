@@ -489,6 +489,15 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('group-state-store', [TurnirController::class, 'groupStateStore'])->name('group-state.store');
     //TURNIR-END
 
+    //      LMS
+
+    Route::get('lms-index',[\App\Http\Controllers\LMSController::class,'index'])->name('lms-index');
+    Route::post('lms-user-check',[\App\Http\Controllers\LMSController::class,'UserCheck'])->name('lms-user-check');
+
+//    End LMS
+
+
+
     //MEGA-TURNIR-BEGIN
         Route::get('mega-turnir-teacher', [MegaTurnirController::class, 'teacher'])->name('mega-turnir-teacher');
         Route::post('mega-turnir-teacher-save', [MegaTurnirController::class, 'teacherSave'])->name('mega-turnir-teacher-save');
