@@ -47,7 +47,7 @@ class TeacherController extends Controller
 
         $teachers_user = TeacherUser::with('user','teacher')->orderBy('id','DESC')->get();
 
-        // return $teachers_user;
+//         return $teachers_user;
 
         return view('teacher.shogird',[
             'teachers' => $teachers,
