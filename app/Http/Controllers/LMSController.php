@@ -175,6 +175,7 @@ class LMSController extends Controller
             TeacherUser::create([
                 'teacher_id' => $data['teacher_id'],
                 'user_id' => $new,
+                'week_date'=> now()->format('Y-m-d'),
             ]);
 
             DB::table('lms_users')->where('id',$data['user_id'])->update([
