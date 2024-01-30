@@ -150,7 +150,7 @@ class McOrder extends Component {
             $this->prod_array[] = $id;
 
             $pr = Medicine::with(['price' => function($q){
-                $shablon_id = Shablon::where('id',5)->first();
+                $shablon_id = Shablon::where('id',6)->first();
                 $q->where('shablon_id',$shablon_id->id);
             }])->select('id','name','category_id')->where('id',$id)->first()->toArray();
             
