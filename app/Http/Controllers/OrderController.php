@@ -12,6 +12,7 @@ use App\Models\McPaymentHistory;
 use App\Models\Pharmacy;
 use App\Models\PharmacyUser;
 use App\Models\McReturnHistory;
+use App\Models\Price;
 use App\Models\ProductSold;
 use App\Models\Region;
 use App\Models\Shift;
@@ -451,6 +452,50 @@ class OrderController extends Controller
     public function mcChangeprice()
     {
         return view('order.change-price');
+    }
+
+    public function mcYanvar()
+    {
+        $orders123 = McOrder::whereDate('order_date','>=','2024-01-01')->get();
+        // $orders123 = McOrder::whereDate('order_date','>=','2024-01-01')->pluck('id');
+
+        // return $orders123 ;
+
+
+        foreach ($orders123 as $ord) {
+        
+            $ids = $ord->id;
+
+            $orders = McOrder::where('id',$ids)->first();
+
+            $details = McOrderDetail::where('order_id',$orders->id)->get();
+            $delivery = McOrderDelivery::where('order_id',$orders->id)->get();
+
+            $sum = 0;
+            foreach ($details as $key => $value) {
+                $prices = Price::where('shablon_id',6)->where('medicine_id',$value->product_id)->first();
+                $sum += $value->quantity*$prices->price;
+
+                $detail = McOrderDetail::where('id',$value->id)->update([
+                    'price' => $prices->price
+                ]);
+                
+            }   
+
+            foreach ($delivery as $key => $value) {
+                $prices = Price::where('shablon_id',6)->where('medicine_id',$value->product_id)->first();
+
+                $detail = McOrderDelivery::where('id',$value->id)->update([
+                    'price' => $prices->price
+                ]);
+                
+            } 
+
+            $orders->price = $sum;
+            $orders->save();
+        }
+        
+        return $orders ;
     }
 
     public function mcUpdatePrice(Request $request)

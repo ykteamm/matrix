@@ -576,6 +576,8 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('mc-change-phar/{id}', [OrderController::class, 'mcChangeOrderPhrmacy'])->name('mc-change-phar');
 
 
+    Route::get('mc-yanvar', [OrderController::class, 'mcYanvar'])->name('mc-yanvar');
+
     Route::get('mc-change-price', [OrderController::class, 'mcChangePrice'])->name('mc-change-price');
     Route::post('mc-update-price', [OrderController::class, 'mcUpdatePrice'])->name('mc-update-price');
 
