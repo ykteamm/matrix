@@ -1,11 +1,11 @@
 <div class="content main-wrapper ">
     <div class="row gold-box mt-3">
 
-        <div style="text-align: center" class="mt-3 mb-2">
+        {{-- <div style="text-align: center" class="mt-3 mb-2">
             <a href="{{route('mc-yanvar')}}">
                 Yanvar narxalrni avtomat yangilash
             </a>
-        </div>
+        </div> --}}
 
             <select class="form-control mt-5" wire:model="med_id" wire:change="change">
                 @foreach ($medicine as $item)
