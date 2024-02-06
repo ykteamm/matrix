@@ -114,6 +114,35 @@
                             Vositachi
                                 <span>{{$orders->employe->last_name}} {{$orders->employe->first_name}}</span>
                         </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Predoplata
+
+                            <span>
+                                <button type="button" wire:click="last_month" class="btn btn-primary pt-1 pb-1 pl-1 pr-1">
+                                    O'tgan oy
+                                    @if ($orders->prepayment == 3)
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </button>
+
+                                <button type="button" wire:click="this_month" class="btn btn-primary pt-1 pb-1 pl-1 pr-1">
+                                    Shu oy
+                                    @if ($orders->prepayment == 2)
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </button>
+
+                                <button type="button" wire:click="not_month" class="btn btn-primary pt-1 pb-1 pl-1 pr-1">
+                                    Yo'q
+                                    @if ($orders->prepayment == 1)
+                                        <i class="fas fa-check"></i>
+                                    @endif
+                                </button>
+                            </span>
+
+
+
+                        </li>
 
                     </ul>
                 </div>
@@ -562,7 +591,7 @@
                                                                 </button>
 
                                                                 @if(isset($payment_history_id[$key]->last))
-                                                                    @if ($payment_history_id[$key]->last == 0)
+                                                                    {{-- @if ($payment_history_id[$key]->last == 0)
                                                                         <a href="{{route('mc-payment-last',$payment_history_id[$key])}}">
                                                                             <button type="button" class="btn btn-success pt-0 pb-0 pl-1 pr-1">
                                                                                 <i class="fas fa-share"></i>
@@ -574,7 +603,7 @@
                                                                                 <i class="fas fa-reply"></i>
                                                                             </button>
                                                                         </a>
-                                                                    @endif
+                                                                    @endif --}}
                                                                     <a href="{{route('mc-payment-delete',$payment_history_id[$key])}}">
                                                                         <button type="button" class="btn btn-danger pt-0 pb-0 pl-1 pr-1">
                                                                             <i class="fas fa-trash"></i>

@@ -82,6 +82,8 @@ class McShipment extends Component
 
     public $change_order_date;
 
+    // predoplata bomasa 1, shu oy 2 , otgan oy 3
+
     protected $listeners = ['shipment' => 'shipmentOrder','order_List' => 'orderList', 'save' => 'saveData','change_Status' => 'changeStatus'
     ,'saveMoney_Coming' => 'saveMoneyComing','delete_Error' => 'deleteError','delete_prod' => 'deleteProd','saveOrder_Detail' => 'saveOrderDetail'
     ,'saveReturn' => 'saveReturnData','saveMoney_Return' => 'saveMoneyReturn',
@@ -654,6 +656,34 @@ class McShipment extends Component
         $this->dispatchBrowserEvent('refresh-page');
 
     }
+
+    public function last_month()
+    {
+        $order = McOrder::find(intval($this->order_id));
+        $order->prepayment = 3;
+        $order->save();
+        $this->dispatchBrowserEvent('refresh-page');
+
+    }
+
+    public function this_month()
+    {
+        $order = McOrder::find(intval($this->order_id));
+        $order->prepayment = 2;
+        $order->save();
+        $this->dispatchBrowserEvent('refresh-page');
+
+    }
+
+    public function not_month()
+    {
+        $order = McOrder::find(intval($this->order_id));
+        $order->prepayment = 1;
+        $order->save();
+        $this->dispatchBrowserEvent('refresh-page');
+
+    }
+
     public function with_foiz($array)
     {
        $sum = array_sum($array);
