@@ -154,7 +154,7 @@ class RekrutController extends Controller
         ->join('tg_region','tg_region.id','rekruts.region_id')
         ->join('tg_district','tg_district.id','rekruts.district_id')
         ->where('rekruts.rm_id',Session::get('user')->id)
-        ->whereDate('rekruts.created_at','>=','2023-09-01')
+        ->whereDate('rekruts.created_at','>=','2024-02-01')
         ->get();
 
         return view('rekrut.rm',[
@@ -197,8 +197,8 @@ class RekrutController extends Controller
         // $rekrut = Rekrut::with('region')->where('region_id',$id)->where('group_id',$igs->id)
         $rekrut = Rekrut::with('region')->where('region_id',$id)
         // ->whereIn('xolat',[1,2,3,4])
-        ->whereDate('created_at','>=','2024-01-31')
-        ->whereDate('created_at','<=','2024-01-31')
+        ->whereDate('created_at','>=','2024-02-01')
+        ->whereDate('created_at','<=','2024-02-06')
         ->orderBy('district_id','ASC')
         ->get();
 // gf
