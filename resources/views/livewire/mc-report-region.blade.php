@@ -61,6 +61,9 @@
                         <tr class="table-secondary">
                             <th>Apteka</th>
                             <th>Yangi kelgan pul</th>
+                            <th>Eski kelgan pul</th>
+                            <th>Yangi qolgan pul</th>
+                            <th>Eski qolgan pul</th>
                             <th>Otgan oy predoplata</th>
                             <th>Vozvrat</th>
                             {{-- <th>Kelgan pul</th>
@@ -81,13 +84,30 @@
                             <tr>
                                 <td>{{$phar->name}}</td>
                                 <td>{{$yangi_kelgan_pul[$phar->id]}}</td>
-                                <td>{{$otgan_oy_predoplata[$phar->id]}}</td>
+                                <td>{{$eski_kelgan_pul[$phar->id]}}</td>
+                                <td>{{$yangi_qolgan_pul[$phar->id]}}</td>
+                                <td>{{$eski_qolgan_pul[$phar->id]}}</td>
+                                <td>
+                                    @if (isset($otgan_oy_predoplata[$phar->id]))
+                                        {{$otgan_oy_predoplata[$phar->id]}}
+                                    @else
+                                        0
+                                    @endif
+                                </td>
                                 <td>{{$vozvrat[$phar->id]}}</td>
                             </tr>
 
                             @endforeach
 
-
+                            <tr>
+                                <td>Jami</td>
+                                <td>{{array_sum($yangi_kelgan_pul)}}</td>
+                                <td>{{array_sum($eski_kelgan_pul)}}</td>
+                                <td>{{array_sum($yangi_qolgan_pul)}}</td>
+                                <td>{{array_sum($eski_qolgan_pul)}}</td>
+                                <td>{{array_sum($otgan_oy_predoplata)}}</td>
+                                <td>{{array_sum($vozvrat)}}</td>
+                            </tr>
 
                         </tbody>
                     </table>
