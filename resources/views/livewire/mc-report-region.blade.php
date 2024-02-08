@@ -300,6 +300,128 @@
               <div class="card-body">
                 <div class="table-responsive">
                     <div class="text-left mb-2">
+                        <h3>Yangi UZB</h3>
+                    </div>
+                    <table class="table table-striped mb-0">
+                        <thead>
+                        <tr class="table-secondary">
+                            <th>Viloyat</th>
+                            <th>Kelgan pul</th>
+                            <th>Otgruzka</th>
+                            <th>Yangi qarz yopildi</th>
+                            <th>Yangi qarz qoldi</th>
+                            <th>Eski qarz yopildi</th>
+                            <th>Eski qarz qoldi</th>
+                            <th>Umumiy qarz</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $yangi_qarz_yopildi = [];
+                                $yangi_qarz_qoldi = [];
+                                $eski_qarz_yopildi = [];
+                                $eski_qarz_qoldi = [];
+                                $otgan_oy_predoplata_bolgan = [];
+                                $shu_oy_predoplata_bolgan = [];
+                                $shu_oy_vozvrat_bolgan = [];
+                            @endphp
+                            @foreach ($regions as $item)
+
+                                @if (in_array($item->id,[8,17]))
+                                    <tr>
+                                        <td>
+                                            {{ $item->name}}
+                                        </td>
+                                        @php
+                                            $yangi_qarz_yopildi[$item->id] = 0;
+                                            $yangi_qarz_qoldi[$item->id] = 0;
+                                            $eski_qarz_yopildi[$item->id] = 0;
+                                            $eski_qarz_qoldi[$item->id] = 0;
+                                            $otgan_oy_predoplata_bolgan[$item->id] = 0;
+                                            $shu_oy_predoplata_bolgan[$item->id] = 0;
+                                            $shu_oy_vozvrat_bolgan[$item->id] = 0;
+                                        @endphp
+                                        @foreach ($pharmacy as $phr)
+                                            @if ($phr->region_id == $item->id)
+                                                @php
+                                                    $yangi_qarz_yopildi[$item->id] += $yangi_kelgan_pul[$phr->id]??0;
+                                                    $yangi_qarz_qoldi[$item->id] += $yangi_qolgan_pul[$phr->id]??0;
+                                                    $eski_qarz_yopildi[$item->id] += $eski_kelgan_pul[$phr->id]??0;
+                                                    $eski_qarz_qoldi[$item->id] += $eski_qolgan_pul[$phr->id]??0;
+                                                    $otgan_oy_predoplata_bolgan[$item->id] += $otgan_oy_predoplata[$phr->id]??0;
+                                                    $shu_oy_predoplata_bolgan[$item->id] += $shu_oy_predoplata[$phr->id]??0;
+                                                    $shu_oy_vozvrat_bolgan[$item->id] += $shu_oy_vozvrat[$phr->id]??0;
+                                                @endphp
+                                            @endif
+                                        @endforeach
+                                        <td>
+                                            {{ $yangi_qarz_yopildi[$item->id] + $eski_qarz_yopildi[$item->id]}}
+                                        </td>
+                                        <td>
+                                            {{ $yangi_qarz_yopildi[$item->id] + $yangi_qarz_qoldi[$item->id] + $shu_oy_vozvrat_bolgan[$item->id] + $otgan_oy_predoplata_bolgan[$item->id] - $shu_oy_predoplata_bolgan[$item->id]}}
+                                        </td>
+                                        <td>
+                                            {{ $yangi_qarz_yopildi[$item->id] }}
+                                        </td>
+                                        <td>
+                                            {{ $yangi_qarz_qoldi[$item->id] }}
+                                        </td>
+                                        <td>
+                                            {{ $eski_qarz_yopildi[$item->id] }}
+                                        </td>
+                                        <td>
+                                            {{ $eski_qarz_qoldi[$item->id] }}
+                                        </td>
+                                        <td>
+                                            {{ $eski_qarz_qoldi[$item->id] + $yangi_qarz_qoldi[$item->id] }}
+
+                                        </td>
+                                    </tr>
+
+                                @endif
+
+                            @endforeach
+                            <tr>
+                                <td>
+                                    Jami
+                                </td>
+                                <td>
+                                    {{array_sum($yangi_qarz_yopildi) + array_sum($eski_qarz_yopildi)}}
+                                </td>
+                                <td>
+                                    {{array_sum($yangi_qarz_yopildi) + array_sum($yangi_qarz_qoldi) + array_sum($shu_oy_vozvrat_bolgan) + array_sum($otgan_oy_predoplata_bolgan) -array_sum($shu_oy_predoplata_bolgan)}}
+
+                                </td>
+                                <td>
+                                    {{array_sum($yangi_qarz_yopildi)}}
+
+                                </td>
+                                <td>
+                                    {{array_sum($yangi_qarz_qoldi)}}
+
+                                </td>
+                                <td>
+                                    {{array_sum($eski_qarz_yopildi)}}
+
+                                </td>
+                                <td>
+                                    {{array_sum($eski_qarz_qoldi)}}
+
+                                </td>
+                                <td>
+                                    {{array_sum($eski_qarz_qoldi) + array_sum($yangi_qarz_qoldi)}}
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="table-responsive">
+                    <div class="text-left mb-2">
                         <h3>Garb</h3>
                     </div>
                     <table class="table table-striped mb-0">
