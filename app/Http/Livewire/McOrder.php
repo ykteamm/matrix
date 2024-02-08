@@ -46,7 +46,7 @@ class McOrder extends Component {
     public $amount;
 
     protected $listeners = ['delete_prod' => 'deleteProd','save' => 'saveOrder','saveMoney_Coming' => 'saveMoneyComing','addProd'];
-    
+
 
     public function mount() {
         $this->code = ModelsMcOrder::orderBy('id','DESC')->first()->id;
@@ -119,7 +119,7 @@ class McOrder extends Component {
             ->where('name', 'LIKE', '%'.$search.'%')
             ->orderBy('region_id','ASC')->get();
         }
-        
+
 
 
     }
@@ -133,7 +133,7 @@ class McOrder extends Component {
         }
     }
     public function selectPharmacyOrUser($id) {
- 
+
         $this->pharmacy_or_user_id = $id;
 
         $this->products = Medicine::all();
@@ -153,7 +153,7 @@ class McOrder extends Component {
                 $shablon_id = Shablon::where('id',6)->first();
                 $q->where('shablon_id',$shablon_id->id);
             }])->select('id','name','category_id')->where('id',$id)->first()->toArray();
-            
+
             $this->order_product[] = $pr;
 
             $this->prod_count[$id] = 1;
@@ -163,10 +163,10 @@ class McOrder extends Component {
             $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
 
             $this->skidka = $this->with_foiz($this->summa_array);
-       
-            
+
+
         }
-        
+
 
     }
     public function with_foiz($array)
@@ -200,7 +200,7 @@ class McOrder extends Component {
 
 
     }
-    
+
     public function input($value,$id) {
         if(strlen($value) == 0)
         {
@@ -208,7 +208,7 @@ class McOrder extends Component {
         }else{
             $v = $value;
         }
-        
+
         $this->prod_count[$id] = $v;
 
         $this->summa_array[$id] = $this->prod_count[$id] * $this->prod_price[$id];
@@ -218,7 +218,7 @@ class McOrder extends Component {
 
     }
 
-    
+
 
     public function saveOrder()
     {
@@ -230,12 +230,12 @@ class McOrder extends Component {
         } else {
             $this->saveOrderUser();
         }
-        
+
     }
 
     public function saveOrderPharmacy()
     {
-        
+
         $new_order = ModelsMcOrder::create([
 
             'pharmacy_id' => $this->pharmacy_or_user_id,
@@ -288,7 +288,7 @@ class McOrder extends Component {
 
     public function refreshPage()
     {
-        $this->dispatchBrowserEvent('refresh-page'); 
+        $this->dispatchBrowserEvent('refresh-page');
     }
     public function getSpecialRegionId()
     {
@@ -341,7 +341,7 @@ class McOrder extends Component {
             'order_id' => $new_order->id,
             'amount' => $this->amount*100/100
         ]);
-        $this->dispatchBrowserEvent('refresh-page'); 
+        $this->dispatchBrowserEvent('refresh-page');
 
     }
     public function render()

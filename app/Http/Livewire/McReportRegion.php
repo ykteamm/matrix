@@ -18,6 +18,7 @@ use Livewire\Component;
 class McReportRegion extends Component
 {
     public $regions;
+    public $all_regions;
     public $months;
     public $active_region = 'Qashqadaryo';
     public $active_region_id = 5;
@@ -43,6 +44,8 @@ class McReportRegion extends Component
     public $eski_qolgan_pul = [];
     public $otgan_oy_predoplata = [];
     public $vozvrat = [];
+    public $shu_oy_vozvrat = [];
+    public $shu_oy_predoplata = [];
 
     public $pharmacy;
 
@@ -54,10 +57,14 @@ class McReportRegion extends Component
     public function mount()
     {
         $this->regions = Region::all();
+        $this->all_regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
         $this->active_month = date('2023-10-01');
 
+        $this->active_region_id = Region::pluck('id')->toArray();
+
+        // $this->active_region_id = [10,11,14];
 
         $this->hisobotMonth($this->active_region_id,$this->active_month);
 
@@ -69,7 +76,7 @@ class McReportRegion extends Component
         $this->active_month = date('Y-m'.'-01',strtotime('01.'.$month));
 
 
-        // $this->hisobotMonth($this->active_region_id,$this->active_month);
+        $this->hisobotMonth($this->active_region_id,$this->active_month);
 
 
 
@@ -79,11 +86,11 @@ class McReportRegion extends Component
     {
 
         $this->active_region = Region::find($idOrAll)->name;
-        $this->active_region_id = $idOrAll;
+        $this->active_region_id = [$idOrAll];
 
+        $this->regions = Region::whereIn('id',$this->active_region_id)->get();
 
-
-        // $this->hisobotMonth($this->region_id,$this->active_month);
+        $this->hisobotMonth($this->active_region_id,$this->active_month);
 
 
     }
@@ -91,7 +98,14 @@ class McReportRegion extends Component
     public function hisobotMonth($region_id,$active_month)
     {
 
-        $region_id = [8];
+        $this->yangi_kelgan_pul = [];
+        $this->eski_kelgan_pul = [];
+        $this->yangi_qolgan_pul = [];
+        $this->eski_qolgan_pul = [];
+        $this->otgan_oy_predoplata = [];
+        $this->vozvrat = [];
+        $this->shu_oy_vozvrat = [];
+        // $region_id = [10,11,14];
         $report = new McReportService($active_month);
 
         $this->pharmacy = Pharmacy::whereIn('region_id',$region_id)->get();
@@ -128,6 +142,40 @@ class McReportRegion extends Component
                                                     ->sum('amount');
                 }
 
+            #shu_oy_vozvrat
+
+                $orders = McOrder::with('pharmacy')->where('pharmacy_id',$value->id)
+                ->whereDate('order_date','>=',$report->active_month)
+                ->whereDate('order_date','<=',$report->last_active_month)
+                ->get();
+                $this->shu_oy_vozvrat[$value->id] = 0;
+                foreach ($orders as $ord => $order) {
+                    $first_del = McOrderDelivery::where('order_id',$order->id)->orderBy('id','ASC')->first();
+                    if($first_del)
+                    {
+                        if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
+                        {
+                            $first_voz = McReturnHistory::where('order_id',$order->id)->first();
+                            if($first_voz)
+                            {
+
+                                if(strtotime($report->active_month) <= strtotime($first_voz->created_at) && strtotime($report->last_active_month) >= strtotime($first_voz->created_at))
+                                {
+                                    $this->shu_oy_vozvrat[$value->id] += McReturnHistory::where('order_id',$order->id)
+                                                            ->whereDate('created_at','>=',$report->active_month)
+                                                            ->whereDate('created_at','<=',$report->last_active_month)
+                                                            ->sum('amount');
+                                }
+                            }
+
+                        }
+                    }
+
+
+                }
+
+            #shu_oy_vozvrat
+
             #yangi_kelgan_pul
 
             $orders = McOrder::with('pharmacy')->where('pharmacy_id',$value->id)
@@ -140,15 +188,37 @@ class McReportRegion extends Component
 
             $this->yangi_kelgan_pul[$value->id] = 0;
                 foreach ($orders as $ord => $order) {
-                    $first_del = McOrderDelivery::where('order_id',$order->id)->first();
+                    $first_del = McOrderDelivery::where('order_id',$order->id)->orderBy('id','ASC')->first();
 
-                    if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
+                    // $ord = McOrder::where('id',543)->get();
+                    // $first_del = McOrderDelivery::where('order_id',$ord[0]->id)->orderBy('id','ASC')->first();
+
+                    if($first_del)
                     {
-                    $yan_kel_1[$value->id] += McPaymentHistory::where('order_id',$order->id)
-                                                    ->whereDate('created_at','>=',$report->active_month)
-                                                    ->whereDate('created_at','<=',$report->last_active_month)
-                                                    ->sum('amount');
+                        if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
+                        {
+                            $yan_kel_1[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
+
+                            // $yan_kel_1[$value->id][$order->id] = McPaymentHistory::where('order_id',$order->id)
+                            //                             ->whereDate('created_at','>=',$report->active_month)
+                            //                             ->whereDate('created_at','<=',$report->last_active_month)
+                            //                             ->sum('amount');
+                            // dd(McPaymentHistory::where('order_id',$ord[0]->id)
+                            // ->whereDate('created_at','>=',$report->active_month)
+                            // ->whereDate('created_at','<=',$report->last_active_month)
+                            // ->sum('amount'));
+
+                        }
+                    }else{
+                        $yan_kel_1[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
                     }
+
                 }
             #yangi_kelgan_pul
 
@@ -185,7 +255,10 @@ class McReportRegion extends Component
             $this->yangi_qolgan_pul[$value->id] = 0;
                 foreach ($orders as $ord => $order) {
 
-                    $first_del = McOrderDelivery::where('order_id',$order->id)->first();
+                    $first_del = McOrderDelivery::where('order_id',$order->id)->orderBy('id','ASC')->first();
+
+                    if($first_del)
+                    {
 
                     if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
                     {
@@ -210,8 +283,13 @@ class McReportRegion extends Component
                         // $this->yangi_qolgan_pul[$value->id] += $order_price[$value->id];
                         // $testar[$order->id] = $price - $price*$order->discount/100;
                         $this->yangi_qolgan_pul[$value->id] += $order_price - $ord1 -$voz1;
+                        // $this->yangi_qolgan_pul[$value->id][$order->id] = $order_price;
 
                     }
+                }
+
+                    // $this->yangi_qolgan_pul[$value->id][$order->id] = $first_del;
+
 
                 }
 
@@ -222,10 +300,10 @@ class McReportRegion extends Component
             ->whereDate('order_date','<',$report->active_month)
             ->get();
 
-            if(count($orders) > 0)
-            {
-                $testar[] = $orders[0];
-            }
+            // if(count($orders) > 0)
+            // {
+            //     $testar[] = $orders[0];
+            // }
             // $ord_last[$value->id] = 0;
             // $ord_last_vozvrat[$value->id] = 0;
             // $order_last_price[$value->id] = 0;
@@ -255,8 +333,13 @@ class McReportRegion extends Component
                                                         // ->whereDate('created_at','>=',$report->active_month)
                                                         ->whereDate('created_at','<=',$report->last_active_month)
                                                         ->sum('amount');
-
+                        $shu_oy = 0;
                         if($order->prepayment == 3){
+                            $shu_oy = McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
+
                             $ord_last = $ord_last - McPaymentHistory::where('order_id',$order->id)->first()->amount??0;
                             $order_last_price = 0;
                         }
@@ -266,8 +349,8 @@ class McReportRegion extends Component
                                             ->whereDate('created_at','<=',$report->last_active_month)
                                             ->sum('amount');
 
-                        $this->eski_qolgan_pul[$value->id] += $order_last_price - $ord_last - $ord_last_vozvrat;
-                        // $eski_q_p1[$value->id][$order->id] = $order_last_price.'-'.$ord_last.'-'.$ord_last_vozvrat.'='.$order_last_price - $ord_last - $ord_last_vozvrat;
+                        $this->eski_qolgan_pul[$value->id] += $order_last_price - $ord_last - $ord_last_vozvrat + $shu_oy;
+                        // $eski_q_p1[$value->id][$order->id] = $order_last_price.'-'.$ord_last.'-'.$ord_last_vozvrat.'-'.$shu_oy.'='.$order_last_price - $ord_last - $ord_last_vozvrat + $shu_oy;
 
                     }else{
 
@@ -277,12 +360,23 @@ class McReportRegion extends Component
 
                         if( $first_money ){
 
+                            if($order->prepayment == 3)
+                            {
+
+                            }
+
                             $a1 = $order->price;
                             $a2 = McReturnHistory::where('order_id',$order->id)
                                             ->sum('amount');
                             $a3  = McPaymentHistory::where('order_id',$order->id)
                             ->whereDate('created_at','<=',$report->last_active_month)
                             ->sum('amount');
+
+                            if($order->prepayment == 3)
+                            {
+                                $a3 = 0;
+                            }
+
                             $this->eski_qolgan_pul[$value->id] += $a1 - $a2 - $a3;
                         // $eski_q_p2[$value->id] = $a1[$value->id].'-'.$a2[$value->id].'-'.$a3[$value->id];
 
@@ -321,57 +415,90 @@ class McReportRegion extends Component
             ->where('prepayment','=',3)
             ->get();
 
-
+            $this->otgan_oy_predoplata[$value->id] = 0;
+            $this->shu_oy_predoplata[$value->id] = 0;
 
             foreach ($orders as $ord => $order) {
 
-                $first_del = McOrderDelivery::where('order_id',$order->id)->first();
-                $first_pay = McPaymentHistory::where('order_id',$order->id)->first();
-
-                $this->otgan_oy_predoplata[$value->id] = 0;
+                $first_del = McOrderDelivery::where('order_id',$order->id)->orderBy('id','ASC')->first();
+                $first_pay = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
 
 
-                if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
+
+                if(isset($first_del))
                 {
 
-                    if(isset($first_pay))
+                    if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
                     {
-                        $this->otgan_oy_predoplata[$value->id] += $first_pay->amount;
 
-                        $yan_kel_2[$value->id] += McPaymentHistory::where('order_id',$order->id)
-                                                    ->whereDate('created_at','>=',$report->active_month)
-                                                    ->whereDate('created_at','<=',$report->last_active_month)
-                                                    ->sum('amount');
+                        if(isset($first_pay))
+                        {
+                            $this->otgan_oy_predoplata[$value->id] += $first_pay->amount;
 
-                        $price = McOrderDelivery::where('order_id', $order->id)
-                                                    //  ->whereDate('created_at','>=',$report->active_month)
-                                                     ->whereDate('created_at','<=',$report->last_active_month)
-                                                    ->sum(DB::raw('quantity*price'));
+                            $yan_kel_2[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
 
-                        $order_last_price = $price - $price*$order->discount/100;
+                            $price = McOrderDelivery::where('order_id', $order->id)
+                                                        //  ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum(DB::raw('quantity*price'));
 
-                        $pay = McPaymentHistory::where('order_id',$order->id)->first()->amount??0;
+                            $order_last_price = $price - $price*$order->discount/100;
 
-                        $a3  = McReturnHistory::where('order_id',$order->id)
+                            $pay = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first()->amount??0;
+
+                            $shu_oy = McPaymentHistory::where('order_id',$order->id)
+                            ->whereDate('created_at','>=',$report->active_month)
                             ->whereDate('created_at','<=',$report->last_active_month)
                             ->sum('amount');
-                            $this->yangi_qolgan_pul[$value->id] += $order_last_price - $pay - $a3;
+
+                            $a3  = McReturnHistory::where('order_id',$order->id)
+                                ->whereDate('created_at','<=',$report->last_active_month)
+                                ->sum('amount');
+                                $this->yangi_qolgan_pul[$value->id] += $order_last_price - $pay - $a3 - $shu_oy;
+                        }
                     }
+                }else{
+                    if(isset($first_pay))
+                        {
+
+                            $this->shu_oy_predoplata[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
+                        }
                 }
 
-                if(strtotime($report->last_active_month) <= strtotime($first_del->created_at))
+                if(isset($first_del))
                 {
 
-                    if(isset($first_pay))
+                    if(strtotime($report->last_active_month) <= strtotime($first_del->created_at))
                     {
-                        // $this->otgan_oy_predoplata[$value->id] += $first_pay->amount;
 
-                        $yan_kel_2[$value->id] += McPaymentHistory::where('order_id',$order->id)
-                                                    ->whereDate('created_at','>=',$report->active_month)
-                                                    ->whereDate('created_at','<=',$report->last_active_month)
-                                                    ->sum('amount');
+                        if(isset($first_pay))
+                        {
+                            // $this->otgan_oy_predoplata[$value->id] += $first_pay->amount;
+
+                            $yan_kel_2[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
+
+                            $this->shu_oy_predoplata[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                        ->whereDate('created_at','>=',$report->active_month)
+                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->sum('amount');
+
+                            // $testar[$value->id][$order->id] = McPaymentHistory::where('order_id',$order->id)
+                            //                             ->whereDate('created_at','>=',$report->active_month)
+                            //                             ->whereDate('created_at','<=',$report->last_active_month)
+                            //                             ->sum('amount');
+                        }
                     }
                 }
+
             }
 
             #predoplata_otgan_oydan
@@ -390,7 +517,7 @@ class McReportRegion extends Component
         //     $first_pay = McPaymentHistory::where('order_id',$orders[0]->id)->first();
 
         // dd(strtotime($report->active_month),strtotime($first_del->created_at),strtotime($report->last_active_month));
-        // dd($eski_q_p1);
+        // dd($testar);
 
 
         // $this->orders = McOrder::with('pharmacy')->whereIn('pharmacy_id',$pharmacy_ids)->get();
