@@ -297,7 +297,7 @@
                 </div>
               </div>
 
-              {{-- <div class="card-body">
+              <div class="card-body">
                 <div class="table-responsive">
                     <div class="text-left mb-2">
                         <h3>Garb</h3>
@@ -364,7 +364,7 @@
                         </tbody>
                     </table>
                 </div>
-              </div> --}}
+              </div>
            </div>
         </div>
     </div>
