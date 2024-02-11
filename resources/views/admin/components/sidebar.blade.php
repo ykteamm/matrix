@@ -607,6 +607,21 @@
                     </li>
 
                 <li class="submenu">
+                    <a href="">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span> Topshiriqlar </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <ul style="display: none;">
+                        <li>
+                            <a href="{{route('topshiriq-index')}}">Topshiriq</a>
+                        </li>
+                        <li>
+                            <a href="{{route('topshiriq-level')}}">Daraja</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="submenu">
                     <a href="settings.html">
                         <i class="fas fa-cog"></i>
                     <span> Sozlamalar </span>

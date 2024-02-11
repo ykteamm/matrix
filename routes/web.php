@@ -495,6 +495,16 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::post('lms-user-check',[\App\Http\Controllers\LMSController::class,'UserCheck'])->name('lms-user-check');
 
 //    End LMS
+//    Topshiriq
+    Route::get('topshiriq-index',[\App\Http\Controllers\TopshiriqController::class,'index'])->name('topshiriq-index');
+    Route::post('topshiriq-create',[\App\Http\Controllers\TopshiriqController::class,'create'])->name('topshiriq-create');
+    Route::put('topshiriq-update/{id}',[\App\Http\Controllers\TopshiriqController::class,'update'])->name('topshiriq-update');
+//    Daraja
+    Route::get('topshiriq-level',[\App\Http\Controllers\TopshiriqController::class,'level'])->name('topshiriq-level');
+    Route::post('topshiriq-level-create',[\App\Http\Controllers\TopshiriqController::class,'LevelCreate'])->name('topshiriq-level-create');
+    Route::put('topshiriq-level-update/{id}',[\App\Http\Controllers\TopshiriqController::class,'LevelUpdate'])->name('topshiriq-level-update');
+
+//    End Topshiriq
 
 
 
