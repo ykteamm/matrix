@@ -32,6 +32,7 @@ class TopshiriqController extends Controller
         $topshiriq->end_date = $request->end_date;
         $topshiriq->number = $request->number;
         $topshiriq->star = $request->star;
+        $topshiriq->crystall = $request->crystall;
         $topshiriq->key = $request->key;
         if (!$topshiriq->save()){
             return redirect(route('topshiriq-index'))->with('error','Xatolik bor!');
@@ -48,6 +49,7 @@ class TopshiriqController extends Controller
         $topshiriq->end_date = $request->end_date;
         $topshiriq->number = $request->number;
         $topshiriq->star = $request->star;
+        $topshiriq->crystall = $request->crystall;
         $topshiriq->key = $request->key;
         $topshiriq->status = $request->status;
         if (!$topshiriq->save()){

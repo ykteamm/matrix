@@ -76,12 +76,18 @@
                                     <label for="key">Key</label>
                                     <input type="text" name="key" id="key" class="form-control" placeholder="Key" required>
                                 </div>
-                                <div class="form-group col-6 mt-10">
+
+                                <div class="form-group col-4 mt-10">
+                                    <label for="crystall">Crystall</label>
+                                    <input type="number" name="crystall" id="crystall" class="form-control" placeholder="Crystall" required>
+                                </div>
+
+                                <div class="form-group col-4 mt-10">
                                     <label for="first_date">Boshlanish sana</label>
                                     <input type="date" name="first_date" id="first_date" class="form-control" placeholder="date" required>
                                 </div>
 
-                                <div class="form-group col-6 mt-10">
+                                <div class="form-group col-4 mt-10">
                                     <label for="end_date">Tugash sana</label>
                                     <input type="date" name="end_date" id="end_date" class="form-control" placeholder="date" required>
                                 </div>
@@ -118,6 +124,7 @@
                         <th style="border: 1px solid">End-date</th>
                         <th style="border: 1px solid">Number</th>
                         <th style="border: 1px solid">Star</th>
+                        <th style="border: 1px solid">Cyrstall</th>
                         <th style="border: 1px solid">Key</th>
                         <th style="border: 1px solid">Status</th>
                         <th style="border: 1px solid">Action</th>
@@ -146,6 +153,9 @@
                         </td>
                         <td style="border: 1px solid">
                             {{$top->star}}
+                        </td>
+                        <td style="border: 1px solid">
+                            {{$top->crystall}}
                         </td>
                         <td style="border: 1px solid">
                             {{$top->key}}
@@ -200,12 +210,18 @@
                                                         <label for="key">Key</label>
                                                         <input type="text" value="{{$top->key}}" name="key" id="key" class="form-control" placeholder="Key" required>
                                                     </div>
-                                                    <div class="form-group col-6 mt-10">
+
+                                                    <div class="form-group col-4 mt-10">
+                                                        <label for="star">Crystall</label>
+                                                        <input type="number" value="{{$top->crystall}}" name="crystall" id="crystall" class="form-control" placeholder="Crystall" required>
+                                                    </div>
+
+                                                    <div class="form-group col-4 mt-10">
                                                         <label for="first_date">Boshlanish sana</label>
                                                         <input type="date" value="{{$top->first_date}}" name="first_date" id="first_date" class="form-control" placeholder="date" required>
                                                     </div>
 
-                                                    <div class="form-group col-6 mt-10">
+                                                    <div class="form-group col-4 mt-10">
                                                         <label for="end_date">Tugash sana</label>
                                                         <input type="date" value="{{$top->end_date}}" name="end_date" id="end_date" class="form-control" placeholder="date" required>
                                                     </div>
