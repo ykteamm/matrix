@@ -273,7 +273,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
     Route::get('trend-user/{range}',[App\Http\Controllers\TrendController::class,'user'])->name('trend.user');
     Route::get('trend-pharmacy/{range}',[App\Http\Controllers\TrendController::class,'pharmacy'])->name('trend.pharmacy');
-// end trend
+    // end trend
     #end-position
     #bro
     Route::get('plan/{id}', [PlanController::class,'create'])->name('plan');
