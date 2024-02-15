@@ -77,7 +77,9 @@ class ElchilarService
                 } else if ($climate == 'east'){
                     $elchi = $elchi->where('tg_region.side', 2);
                 }
-                $elchi = $elchi->orderBy('tg_region.side','ASC')->get();
+                $elchi = $elchi->orderBy('tg_region.side','ASC')
+                // ->where('tg_user.id',541)
+                ->get();
 
             }else
             {
@@ -193,7 +195,7 @@ class ElchilarService
                 }
             }
         }
-        
+
         $elchi = $dd;
 
         $elchi_work=[];
@@ -347,7 +349,7 @@ class ElchilarService
                     $all_best_month = $all_best_month + $best_month[$elch->id][0]['bestsumText'];
                 }
 
-               
+
 
 
                 $proggg = myPrognoz($elch->id);
@@ -720,20 +722,20 @@ class ElchilarService
                 {
                     if($user->work_start > $day)
                     {
-                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'close' => $close,'day' => $day];
-    
+                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'rezerv_open' => $open,'close' => $close,'day' => $day];
+
                     }elseif($user->work_start == null)
                     {
-                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'close' => $close,'day' => $day];
+                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => 1111,'rezerv_open' => $open,'close' => $close,'day' => $day];
                     }
                     else{
-                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
-    
+                        $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'rezerv_open' => $open,'close' => $close,'day' => $day];
+
                     }
                 }else{
-                    $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'close' => $close,'day' => $day];
+                    $sold2[$keys]= ['sold'=>$MonthSold, 'hour' => $hour, 'minute'=>$minute,'open' => $open,'rezerv_open' => $open,'close' => $close,'day' => $day];
                 }
-                
+
 
             }
             $sold[$item->id]=$sold2;

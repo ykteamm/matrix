@@ -175,21 +175,23 @@ class WorkDayServices
     {
 
 
-
-        // dd($date);
+        // $date = '2024-01-20';
 
         $day = $this->getWorkInMonth(date('m.Y',strtotime($date)));
+
+
 
         $day_json = json_decode($day->day_json);
 
         $add_array = json_decode($day->add_day);
 
         $day_s = date('d', (strtotime($date)));
-        // dd($add_array);
+
 
         $ddd = $day_json[$day_s-1];
 
         $if_user = DB::table('teacher_users')->where('user_id',$user_id)->first();
+
 
         if($if_user)
         {
@@ -198,6 +200,7 @@ class WorkDayServices
                     return 0;
                 }
         }
+
 
         $if_user_work = DB::table('tg_user')->where('id',$user_id)->first();
 
@@ -250,6 +253,7 @@ class WorkDayServices
             }
 
         }else{
+
             if($shift->close_date == null)
             {
                 $table = ProductSold::where('user_id',$shift->user_id)->whereDate('created_at',$shift->created_at)->orderByDesc('id')->value('created_at');
@@ -264,19 +268,24 @@ class WorkDayServices
                 $close_date = date('H:i:s',strtotime($shift->close_date));
             }
 
+
             $open_date = date('H:i:s',strtotime($shift->open_date));
 
 
             $all_diff_g = (strtotime($close_date) - strtotime($open_date))/60;
+
+
 
             if($all_diff_g/60 > 4)
             {
                 $all_diff_g = $all_diff_g - 60;
             }
 
+
             if(strtotime($open_date) > strtotime($th_start_work))
             {
                 $diff_open = (strtotime($open_date) - strtotime($th_start_work))/60;
+
                 if($diff_open <= 10)
                 {
                     $diff_open = 0;
@@ -284,41 +293,33 @@ class WorkDayServices
             }else{
                 $diff_open = 0;
             }
+
             if(strtotime($close_date) < strtotime($th_end_work))
             {
-                $diff_close = (strtotime($th_end_work) - strtotime($close_date))/60;
-                if($diff_close <= 10)
+                if(date('w',strtotime($date)) == 6)
                 {
-                    $diff_close = 0;
+                    $diff_close = (strtotime($th_end_work) - strtotime($close_date))/60;
+
+
+                    if($diff_close <= 120)
+                    {
+                        $diff_close = 0;
+                    }else{
+                        $diff_close = $diff_close - 120;
+                    }
+                }else{
+                    $diff_close = (strtotime($th_end_work) - strtotime($close_date))/60;
+                    if($diff_close <= 10)
+                    {
+                        $diff_close = 0;
+                    }
                 }
+
             }else{
                 $diff_close = 0;
             }
-            
-            $shanba = 0;
-            if(date('w',strtotime($date)) == 6)
-            {
-                $shanba = 120;
                 $all_diff = $diff_open + $diff_close;
-
-                if($all_diff > $shanba)
-                {
-                    $all_diff = $all_diff - $shanba;
-                }else{
-                    $all_diff = 0;
-                }
-            }else{
-                $all_diff = $diff_open + $diff_close;
-            }
-
-
         }
-        // dd($all_diff);
-        // if($all_diff != 0)
-        // {
-        //     $all_diff = $all_diff - $all_diff_g
-        // }
-            // dd($all_diff);
         return $all_diff;
     }
     public function getSpecialStartDay($date,$user_id)
@@ -558,11 +559,12 @@ class WorkDayServices
     {
         $date = $month.'-01';
             // $date = date('Y-m-d',(strtotime ( '-'.$i.' month' , strtotime ( Carbon::now() ) ) ));
-            $date_begin = $this->getFirstDate($date);
-            $date_end = $this->getLastDate($date);
+        $date_begin = $this->getFirstDate($date);
+        $date_end = $this->getLastDate($date);
         $Variable1 = strtotime($date_begin);
         $Variable2 = strtotime($date_end);
         $arr = [];
+
         for ($currentDate = $Variable2; $currentDate >= $Variable1;$currentDate -= (86400))
         {
             $hafta = date('w', $currentDate);

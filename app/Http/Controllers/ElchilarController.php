@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PlanWeek;
 use App\Models\ProductSold;
+use App\Models\Shift;
 use App\Models\User;
 use App\Services\ElchilarService;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,45 +22,6 @@ class ElchilarController extends Controller
 
     public function kunlik(Request $request, $month)
     {
-
-        $users = User::whereDate('date_joined','>','2023-08-01')->get();
-
-        $arr = [];
-        $arr2 = [];
-        
-        foreach ($users as $key => $value) {
-            
-            $pro = ProductSold::where('user_id',$value->id)->first();
-
-            if($pro)
-            {
-                $sum = 0;
-                for ($i=1; $i < 100; $i++) { 
-
-                    $d = date('Y-m-d',strtotime('+'.$i.' day',strtotime($pro->created_at)));
-
-                    $sold = ProductSold::where('user_id',$value->id)
-                    ->whereDate('created_at','>=',$pro->created_at)
-                    ->whereDate('created_at','<=',$d)
-                    ->sum(DB::raw('number*price_product'));
-
-                    if($sold >= 1750000)
-                    {
-                        $arr2[$value->id] = $d;
-
-                        $update = DB::table('tg_user')->where('id',$value->id)->update([
-                            'status' => 1,
-                            'work_start' => $d
-                        ]);
-
-                        break;
-                    }
-
-                }
-            }
-
-        }
-
 
         $all_or_new = $request->input('all_or_new') ?? 'all';
         $side = $request->input('side') ?? 'all';
@@ -91,7 +53,6 @@ class ElchilarController extends Controller
         $user_id = Session::get('user')->id;
         $data = $this->service->elchilar($month, $endofmonth, $user_id, $regions, $all_or_new, $side);
         $elchi = $data->elchi;
-        // return $elchi;
         $elchi_fact = $data->elchi_fact;
         $average = $data->average;
 
@@ -103,7 +64,7 @@ class ElchilarController extends Controller
                 $asd[] = $value;
             }
         }
-        
+
         $average_array = round(array_sum($asd)/count($asd));
 
         $elchi_prognoz = $data->elchi_prognoz;
@@ -112,6 +73,9 @@ class ElchilarController extends Controller
         $best_month = $data->best_month;
         $all_best_month = $data->all_best_month;
         $day_work = $data->all_work_day;
+
+        // return $day_work;
+
         // dd($elchi, $elchi_fact[$elchi[0]->id]);
         $item = $this->service->plan($elchi, $month, $endofmonth);
 
@@ -122,9 +86,14 @@ class ElchilarController extends Controller
         $days = $this->service->checkCalendar($month, $endofmonth);
         $sold = $this->service->sold($elchi, $days);
 
-        // dd($sold);
 
         $haftalik = $this->service->haftalik($days, $sold, $elchi);
+
+        // $new = Shift::whereNull('close_date')->get();
+
+        // dd($sold);
+
+
         $viloyatlar = $this->service->viloyatlar();
         $tot_sold_day = $this->service->day_sold($elchi, $days, $sold);
         $total_fact = $this->service->total_fact($elchi_fact);
@@ -132,7 +101,7 @@ class ElchilarController extends Controller
         $total_plan = $this->service->total_plan($plan);
         $total_planday = $this->service->total_planday($plan_day);
         $total_haftalik = $this->service->total_week($haftalik, $days, $month);
-        
+
         if ($all_or_new == 'all' || $all_or_new == 'pro' || $all_or_new == 'new' || $all_or_new == 'elchi' || $all_or_new == 'elchi_all') {
             uasort($elchi, function ($a, $b) use ($elchi_fact) {
                 if(!isset($elchi_fact[$a['id']]))
@@ -143,9 +112,9 @@ class ElchilarController extends Controller
                 {
                     $elchi_fact[$b['id']]=0;
                 }
-                
+
                 return $elchi_fact[$a['id']] > $elchi_fact[$b['id']] ? -1 : 1;
-                
+
             });
             $elchi = new Collection($elchi);
         }

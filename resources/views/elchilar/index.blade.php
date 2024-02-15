@@ -323,7 +323,7 @@
                                         @php
                                             $date_joined = strtotime($item->date_joined);
                                             $work_start = strtotime($item->date_joined);
-                                            $d26 = strtotime(date('2023-04-26'));
+                                            $d26 = strtotime(date('2021-04-26'));
                                         @endphp
                                         @if ($date_joined < $d26)
                                             <span
@@ -461,24 +461,32 @@
                                                     <div>{{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}</div>
                                                 </span>
                                                 <div>
-                                                    @if ($sold[$item->id][$i]['open'] == null)
+                                                    @if($sold[$item->id][$i]['close'] != null )
+                                                    <span class="badge bg-warning-light">
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['rezerv_open']))}} -
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+                                                    </span>
+                                                    @else
+                                                        @if ($sold[$item->id][$i]['open'] == null)
                                                         <span class="badge bg-danger-light">
 
                                                             Ishda emas
 
-                                                            
-                                                        </span>
-                                                    @elseif($sold[$item->id][$i]['open'] == 1111)
-                                                        ---
-                                                    @else
-                                                        {{date('H:i',strtotime($sold[$item->id][$i]['open']))}}
-                                                        @if ($sold[$item->id][$i]['close'] == null)
-                                                        ---
-                                                        @else
-                                                            {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
 
+                                                        </span>
+                                                        @elseif($sold[$item->id][$i]['open'] == 1111)
+                                                            ---
+                                                        @else
+                                                            {{date('H:i',strtotime($sold[$item->id][$i]['open']))}}
+                                                            @if ($sold[$item->id][$i]['close'] == null)
+                                                            ---
+                                                            @else
+                                                                {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+
+                                                            @endif
                                                         @endif
                                                     @endif
+
                                                  </div>
                                             </td>
                                         @else

@@ -169,7 +169,6 @@ class UserController extends Controller
     public function userMoneyProfil($id, $month)
     {
         $currentDate = date('Y-m-d');
-
         $last_date = Carbon::createFromFormat('Y-m-d', $month . '-01')
             ->lastOfMonth()
             ->format('Y-m-d');
@@ -184,7 +183,10 @@ class UserController extends Controller
 
         $service = new WorkDayServices($id, $active);
 
+
         $userData = $service->getMonthMaoshKunlik($month);
+
+        // dd($userData);
 
         // $yearMonths = ['2023-03','2023-04'];
 
