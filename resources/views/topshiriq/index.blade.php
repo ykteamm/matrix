@@ -79,7 +79,7 @@
 
                                 <div class="form-group col-4 mt-10">
                                     <label for="crystall">Crystall</label>
-                                    <input type="number" name="crystall" id="crystall" class="form-control" placeholder="Crystall" required>
+                                    <input type="number" name="crystall" id="crystall" class="form-control" placeholder="Crystall">
                                 </div>
 
                                 <div class="form-group col-4 mt-10">
