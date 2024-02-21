@@ -177,6 +177,7 @@ class WorkDayServices
 
         // $date = '2024-01-20';
 
+        // dd($date);
         $day = $this->getWorkInMonth(date('m.Y',strtotime($date)));
 
 
@@ -476,14 +477,11 @@ class WorkDayServices
 
     public function getMonthMaosh($month)
     {
-        // $month = $month - 1;
-        // for($i=$month;$i>=0;$i--)
-        // for($i=0;$i<=$month;$i++)
-        // {
 
-            // dd($month);
+
+            dd($this->user_id);
             $date = $month.'-01';
-            // $date = date('Y-m-d',(strtotime ( '-'.$i.' month' , strtotime ( Carbon::now() ) ) ));
+
             $date_begin = $this->getFirstDate($date);
             $date_end = $this->getLastDate($date);
             $month_sol = DB::table('tg_productssold')
@@ -544,12 +542,6 @@ class WorkDayServices
                 'spec' => $specialty_id->specialty_id,
                 'money_premya' => $money_premya
             );
-
-
-
-            // }
-            // dd($this->user_id);
-            // dd($date);
 
         return $st;
 

@@ -152,6 +152,7 @@ class UserController extends Controller
                 ->toArray();
 
             foreach ($users as $id) {
+                $id = 533;
                 $service = new WorkDayServices($id, $active);
                 $userData = $service->getMonthMaosh($month);
                 $reg['sum'] += ($userData['maosh'] - $userData['jarima']);
@@ -163,6 +164,7 @@ class UserController extends Controller
 
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
 
+        dd($data);
 
         return view('userControl.user-money', compact('data', 'yearMonths', 'month','regions','regText','region_id'));
     }
@@ -186,7 +188,6 @@ class UserController extends Controller
 
         $userData = $service->getMonthMaoshKunlik($month);
 
-        // dd($userData);
 
         // $yearMonths = ['2023-03','2023-04'];
 

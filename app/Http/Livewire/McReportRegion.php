@@ -60,11 +60,11 @@ class McReportRegion extends Component
         $this->all_regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
-        $this->active_month = date('2023-10-01');
+        $this->active_month = date('2023-11-01');
 
         $this->active_region_id = Region::pluck('id')->toArray();
 
-        // $this->active_region_id = [10,11,14];
+        $this->active_region_id = [1];
 
         $this->hisobotMonth($this->active_region_id,$this->active_month);
 
@@ -424,7 +424,6 @@ class McReportRegion extends Component
                 $first_pay = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
 
 
-
                 if(isset($first_del))
                 {
 
@@ -457,9 +456,12 @@ class McReportRegion extends Component
                             $a3  = McReturnHistory::where('order_id',$order->id)
                                 ->whereDate('created_at','<=',$report->last_active_month)
                                 ->sum('amount');
-                                $this->yangi_qolgan_pul[$value->id] += $order_last_price - $pay - $a3 - $shu_oy;
+                            $this->yangi_qolgan_pul[$value->id] += $order_last_price - $pay - $a3 - $shu_oy;
+
                         }
                     }
+                    $testar[$value->id][$order->id] = $report->active_month;
+
                 }else{
                     if(isset($first_pay))
                         {
@@ -517,7 +519,7 @@ class McReportRegion extends Component
         //     $first_pay = McPaymentHistory::where('order_id',$orders[0]->id)->first();
 
         // dd(strtotime($report->active_month),strtotime($first_del->created_at),strtotime($report->last_active_month));
-        // dd($testar);
+        dd($testar);
 
 
         // $this->orders = McOrder::with('pharmacy')->whereIn('pharmacy_id',$pharmacy_ids)->get();
