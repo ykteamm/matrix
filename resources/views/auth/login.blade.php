@@ -55,7 +55,7 @@
                         <input type="text" name="login" class="form-control" />
                      </div>
                      <div class="form-group">
-                        <label class="form-control-label">Parol </label>
+                        <label class="form-control-label">Parol d</label>
                         <div class="pass-group">
                            <input type="password" name="password" id="password2" class="form-control pass-input" />
                            <span class="fas fa-eye toggle-password" onclick="myFunction2()"></span>
