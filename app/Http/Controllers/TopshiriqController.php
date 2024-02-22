@@ -10,7 +10,7 @@ class TopshiriqController extends Controller
 {
     public function index()
     {
-        $topshiriq = Topshiriq::orderBy('id','asc')->get();
+        $topshiriq = Topshiriq::orderBy('id','asc')->where('status',1)->get();
 
         return view('topshiriq.index',compact('topshiriq'));
     }
