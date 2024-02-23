@@ -64,7 +64,7 @@ class McReportRegion extends Component
 
         $this->active_region_id = Region::pluck('id')->toArray();
 
-        $this->active_region_id = [1];
+        $this->active_region_id = [10,11,14];
 
         $this->hisobotMonth($this->active_region_id,$this->active_month);
 
@@ -237,7 +237,22 @@ class McReportRegion extends Component
                                                     ->whereDate('created_at','>=',$report->active_month)
                                                     ->whereDate('created_at','<=',$report->last_active_month)
                                                     ->sum('amount');
+                    }else{
+                        $first_del = McOrderDelivery::where('order_id',$order->id)->first();
+                        if($first_del)
+                        {
+                            if(strtotime($report->active_month) > strtotime($first_del->created_at))
+                            {
+                                $this->eski_kelgan_pul[$value->id] += McPaymentHistory::where('order_id',$order->id)
+                                                    ->whereDate('created_at','>=',$report->active_month)
+                                                    ->whereDate('created_at','<=',$report->last_active_month)
+                                                    ->sum('amount');
+                            } 
+                        
+                        }
+                        
                     }
+
 
 
                 }
@@ -300,19 +315,7 @@ class McReportRegion extends Component
             ->whereDate('order_date','<',$report->active_month)
             ->get();
 
-            // if(count($orders) > 0)
-            // {
-            //     $testar[] = $orders[0];
-            // }
-            // $ord_last[$value->id] = 0;
-            // $ord_last_vozvrat[$value->id] = 0;
-            // $order_last_price[$value->id] = 0;
-            // $ff[$value->id] = 0;
-            // $a1[$value->id] = 0;
-            // $a2[$value->id] = 0;
-            // $a3[$value->id] = 0;
-
-            // $eski_q_p1[$value->id] = 0;
+            
             $eski_q_p2[$value->id] = 0;
             $eski_q_p3[$value->id] = 0;
 
@@ -323,14 +326,12 @@ class McReportRegion extends Component
                     if($first_del){
 
                         $price = McOrderDelivery::where('order_id', $order->id)
-                        //  ->whereDate('created_at','>=',$report->active_month)
                          ->whereDate('created_at','<=',$report->last_active_month)
                         ->sum(DB::raw('quantity*price'));
 
                         $order_last_price = $price - $price*$order->discount/100;
 
                         $ord_last = McPaymentHistory::where('order_id',$order->id)
-                                                        // ->whereDate('created_at','>=',$report->active_month)
                                                         ->whereDate('created_at','<=',$report->last_active_month)
                                                         ->sum('amount');
                         $shu_oy = 0;
@@ -341,20 +342,24 @@ class McReportRegion extends Component
                                                         ->sum('amount');
 
                             $ord_last = $ord_last - McPaymentHistory::where('order_id',$order->id)->first()->amount??0;
+                            
                             $order_last_price = 0;
+                            
+                            if(strtotime($report->active_month) > strtotime($first_del->created_at))
+                            {
+                                $order_last_price = $ord_last;
+                            }
+
                         }
 
                         $ord_last_vozvrat = McReturnHistory::where('order_id',$order->id)
-                                            // ->whereDate('created_at','>=',$report->active_month)
                                             ->whereDate('created_at','<=',$report->last_active_month)
                                             ->sum('amount');
 
                         $this->eski_qolgan_pul[$value->id] += $order_last_price - $ord_last - $ord_last_vozvrat + $shu_oy;
-                        // $eski_q_p1[$value->id][$order->id] = $order_last_price.'-'.$ord_last.'-'.$ord_last_vozvrat.'-'.$shu_oy.'='.$order_last_price - $ord_last - $ord_last_vozvrat + $shu_oy;
+                        $testar[$value->id][$order->id] = $order_last_price.'-'.$ord_last.'-'.$ord_last_vozvrat.'-'.$shu_oy;
 
                     }else{
-
-
 
                         $first_money = McPaymentHistory::where('order_id',$order->id)->first();
 
@@ -378,25 +383,15 @@ class McReportRegion extends Component
                             }
 
                             $this->eski_qolgan_pul[$value->id] += $a1 - $a2 - $a3;
-                        // $eski_q_p2[$value->id] = $a1[$value->id].'-'.$a2[$value->id].'-'.$a3[$value->id];
-
-
                         }else{
 
                             $order_last_price = $order->price;
                             $ord_last_vozvrat = McReturnHistory::where('order_id',$order->id)
-                                            // ->whereDate('created_at','>=',$report->active_month)
-                                            // ->whereDate('created_at','<=',$report->last_active_month)
                                             ->sum('amount');
                             $ff = McPaymentHistory::where('order_id',$order->id)
-                            // ->whereDate('created_at','>=',$report->active_month)
                             ->whereDate('created_at','<=',$report->last_active_month)
                             ->sum('amount');
                             $this->eski_qolgan_pul[$value->id] += $order_last_price - $ord_last_vozvrat;
-                            // $eski_q_p3[$value->id] = $order_last_price[$value->id];
-                            // $this->eski_qolgan_pul[$value->id] +
-
-
                         }
 
 
@@ -406,7 +401,6 @@ class McReportRegion extends Component
 
                 }
 
-            // $this->eski_qolgan_pul[$value->id] = $eski_q_p1[$value->id] + $eski_q_p2[$value->id] + $eski_q_p3[$value->id];
             #eski_qolgan_pul
 
             #predoplata_otgan_oydan
@@ -423,11 +417,12 @@ class McReportRegion extends Component
                 $first_del = McOrderDelivery::where('order_id',$order->id)->orderBy('id','ASC')->first();
                 $first_pay = McPaymentHistory::where('order_id',$order->id)->orderBy('id','ASC')->first();
 
+                $report_last_active_month = $report->last_active_month.' 23:59:59';
 
                 if(isset($first_del))
                 {
 
-                    if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report->last_active_month) >= strtotime($first_del->created_at))
+                    if(strtotime($report->active_month) <= strtotime($first_del->created_at) && strtotime($report_last_active_month) >= strtotime($first_del->created_at))
                     {
 
                         if(isset($first_pay))
@@ -436,12 +431,12 @@ class McReportRegion extends Component
 
                             $yan_kel_2[$value->id] += McPaymentHistory::where('order_id',$order->id)
                                                         ->whereDate('created_at','>=',$report->active_month)
-                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->whereDate('created_at','<=',$report_last_active_month)
                                                         ->sum('amount');
 
                             $price = McOrderDelivery::where('order_id', $order->id)
                                                         //  ->whereDate('created_at','>=',$report->active_month)
-                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->whereDate('created_at','<=',$report_last_active_month)
                                                         ->sum(DB::raw('quantity*price'));
 
                             $order_last_price = $price - $price*$order->discount/100;
@@ -450,17 +445,19 @@ class McReportRegion extends Component
 
                             $shu_oy = McPaymentHistory::where('order_id',$order->id)
                             ->whereDate('created_at','>=',$report->active_month)
-                            ->whereDate('created_at','<=',$report->last_active_month)
+                            ->whereDate('created_at','<=',$report_last_active_month)
                             ->sum('amount');
 
                             $a3  = McReturnHistory::where('order_id',$order->id)
-                                ->whereDate('created_at','<=',$report->last_active_month)
+                                ->whereDate('created_at','<=',$report_last_active_month)
                                 ->sum('amount');
                             $this->yangi_qolgan_pul[$value->id] += $order_last_price - $pay - $a3 - $shu_oy;
 
+                            // $testar[$value->id][$order->id] = $order_last_price.'-'.$pay.'-'.$a3.'-'.$shu_oy;
+
+
                         }
                     }
-                    $testar[$value->id][$order->id] = $report->active_month;
 
                 }else{
                     if(isset($first_pay))
@@ -468,7 +465,7 @@ class McReportRegion extends Component
 
                             $this->shu_oy_predoplata[$value->id] += McPaymentHistory::where('order_id',$order->id)
                                                         ->whereDate('created_at','>=',$report->active_month)
-                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->whereDate('created_at','<=',$report_last_active_month)
                                                         ->sum('amount');
                         }
                 }
@@ -476,7 +473,7 @@ class McReportRegion extends Component
                 if(isset($first_del))
                 {
 
-                    if(strtotime($report->last_active_month) <= strtotime($first_del->created_at))
+                    if(strtotime($report_last_active_month) <= strtotime($first_del->created_at))
                     {
 
                         if(isset($first_pay))
@@ -485,24 +482,24 @@ class McReportRegion extends Component
 
                             $yan_kel_2[$value->id] += McPaymentHistory::where('order_id',$order->id)
                                                         ->whereDate('created_at','>=',$report->active_month)
-                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->whereDate('created_at','<=',$report_last_active_month)
                                                         ->sum('amount');
 
                             $this->shu_oy_predoplata[$value->id] += McPaymentHistory::where('order_id',$order->id)
                                                         ->whereDate('created_at','>=',$report->active_month)
-                                                        ->whereDate('created_at','<=',$report->last_active_month)
+                                                        ->whereDate('created_at','<=',$report_last_active_month)
                                                         ->sum('amount');
 
                             // $testar[$value->id][$order->id] = McPaymentHistory::where('order_id',$order->id)
                             //                             ->whereDate('created_at','>=',$report->active_month)
-                            //                             ->whereDate('created_at','<=',$report->last_active_month)
+                            //                             ->whereDate('created_at','<=',$report_last_active_month)
                             //                             ->sum('amount');
                         }
                     }
                 }
 
             }
-
+ 
             #predoplata_otgan_oydan
 
             $this->yangi_kelgan_pul[$value->id] = $yan_kel_1[$value->id] + $yan_kel_2[$value->id];
@@ -511,50 +508,9 @@ class McReportRegion extends Component
 
         }
 
-        // $orders = McOrder::with('pharmacy')->where('pharmacy_id',6)
-        //     ->where('prepayment','=',3)
-        //     ->get();
+        // dd($testar);
 
-        //     $first_del = McOrderDelivery::where('order_id',$orders[0]->id)->first();
-        //     $first_pay = McPaymentHistory::where('order_id',$orders[0]->id)->first();
-
-        // dd(strtotime($report->active_month),strtotime($first_del->created_at),strtotime($report->last_active_month));
-        dd($testar);
-
-
-        // $this->orders = McOrder::with('pharmacy')->whereIn('pharmacy_id',$pharmacy_ids)->get();
-
-
-
-            // $this->last_close_money = $report->lastCloseMoney($region_id,$pharmacy_ids);
-            // $this->last_accept_money = $report->lastAcceptMoney($region_id,$pharmacy_ids);
-
-            // $this->new_close_money = $report->newCloseMoney($region_id,$pharmacy_ids);
-            // $this->new_accept_money = $report->newAcceptMoney($region_id,$pharmacy_ids);
-
-            // $this->predoplata = $report->predoplata($region_id,$pharmacy_ids);
-
-            // $this->predoplata_new = $report->predoplataNew($region_id,$pharmacy_ids);
-
-            // $this->ofis_tovar_qarz = $report->ofisTovarQarz($region_id,$pharmacy_ids);
-
-
-            // $this->all_money[$region_id] = $this->last_close_money[$region_id] + $this->new_close_money[$region_id];
-
-            // $otr = $this->new_close_money[$region_id] + $this->new_accept_money[$region_id] + $this->predoplata[$region_id];
-
-            // if($otr < $this->predoplata_new[$region_id])
-            // {
-            //     $this->otgruzka[$region_id] = $this->predoplata_new[$region_id];
-
-            // }else{
-            //     $this->otgruzka[$region_id] = $this->new_close_money[$region_id] + $this->new_accept_money[$region_id] + $this->predoplata[$region_id]-$this->predoplata_new[$region_id];
-
-            // }
-
-            // $this->otgruzka[$region_id] = $this->new_close_money[$region_id] + $this->new_accept_money[$region_id] + $this->predoplata[$region_id]-$this->predoplata_new[$region_id];
-
-            // $this->product_accept[$region_id] = 0;
+           
 
 
 
