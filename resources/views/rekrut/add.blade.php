@@ -9,22 +9,36 @@
       <div class="col-sm-12">
          <div class="card mt-5">
             <div class="card-body text-right">
-                <div class="btn-group">
-    
+                <form action="{{ route('rekrut-ustoz-hisobot') }}" method="POST" class="form*">
+                    @csrf
+                    <input type="date" name="date1" required>
+                    <span> - </span>
+                    <input type="date" name="date2" required>
+                    <select name="region_id" id="" style="padding: 5px 10px" required>
+                        <option value="" selected disabled >Viloyat tanlang</option>
+                        @foreach ($regions as $reg)
+                            <option value="{{$reg->id}}">{{$reg->name}}</option>
+                        @endforeach
+
+                    </select>
+                    <button type="submit" >Ustozga Hisobot</button>
+                </form>
+                {{-- <div class="btn-group">
+
                     <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ustozga Hisobot
                     </button>
                     <div class="dropdown-menu">
                         @foreach ($regions as $reg)
-                            
+
                             <a class="dropdown-item" href="{{route('rekrut-ustoz-hisobot',['id' => $reg->id])}}" target="_blank">{{$reg->name}}</a>
                         @endforeach
-                        
+
                             <a class="dropdown-item" href="#">
                             </a>
                         <div class="dropdown-divider"></div>
                     </div>
-                </div>
+                </div> --}}
              </div>
             <div class="card-body">
                 <form action="{{ route('rekrut-save-user') }}" method="POST">
@@ -75,14 +89,14 @@
                             </select>
                         </div>
 
-                        
+
 
                         <div class="form-group col-md-4">
                             <input type="text"  name="phone" value="+998" class="form-control form-control-sm" required placeholder="Telefon"/>
                         </div>
 
-                        
-                        
+
+
                         <div class="form-group col-md-4">
                             <input type="number"  name="age" class="form-control form-control-sm" required placeholder="Yosh"/>
                         </div>
@@ -99,7 +113,7 @@
                         <div class="form-group col-md-4">
                             <input type="text"  name="link" class="form-control form-control-sm" required placeholder="Link"/>
                         </div>
-                        
+
                         <div class="form-group col-md-4">
                             <select class="form-control form-control-sm" name='rm_id'>
                                 <option value="" disabled selected hidden>RM-USTOZ</option>
@@ -113,7 +127,7 @@
 
                             </select>
                         </div>
-                        
+
 
                         <div class="form-group col-md-4">
                             <select class="form-control form-control-sm" name='group_id'>
@@ -138,11 +152,11 @@
                 </form>
 
             </div>
-            
+
          </div>
-         
+
          <div class="card-body">
-            
+
             <div id="dtBasicExample1212"></div>
 
             <div class="table-responsive">
@@ -168,30 +182,30 @@
                     <tbody>
                     @foreach($rekruts as $rekrut)
                         <tr>
-                            <td> <a href="{{route('rekrut-edit',$rekrut->rid)}}"> <i class="fas fa-edit"></i> </a> 
-                                
-                                <a href="{{route('rekrut-sms',$rekrut->rid)}}">  
-                                
+                            <td> <a href="{{route('rekrut-edit',$rekrut->rid)}}"> <i class="fas fa-edit"></i> </a>
+
+                                <a href="{{route('rekrut-sms',$rekrut->rid)}}">
+
                                     <button class="btn btn-primary">
                                     SMS
                                     </button>
                                     {{$rekrut->sms}}
                                 </a>
                                 @if (isset($smar[$rekrut->rid]))
-                                <button class="btn 
+                                <button class="btn
                                     @if (floor($smar[$rekrut->rid]) >= 50)
                                         btn-success
                                     @else
                                         btn-danger
-                                        
+
                                     @endif
                                 ">
                                     {{floor($smar[$rekrut->rid])}}%
                                 </button>
                                 @else
-                                    
+
                                 @endif
-                                
+
                             </td>
                             <td>{{$rekrut->fname}}</td>
                             <td>{{$rekrut->lname}} </td>
@@ -201,9 +215,9 @@
                             <td>{{$rekrut->r}} </td>
                             <td>{{$rekrut->d}} </td>
                             <td style="width: 10px">
-                                
 
-                                    
+
+
 
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -233,13 +247,13 @@
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 5])}}">Uyi uzoq</a>
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 6])}}">Kelolmaydi,ishlaydi</a>
                                             <a class="dropdown-item" href="{{route('rekrut-change-xolat',['id' => $rekrut->rid,'xolat' => 7])}}">Ishlamaydi</a>
-                                            
+
                                             <a class="dropdown-item" href="#">
                                             </a>
                                         <div class="dropdown-divider"></div>
                                         </div>
                                     </div>
-                                    
+
 
                             </td>
                             <td>
@@ -250,7 +264,7 @@
                                     <div class="dropdown-menu">
                                         @foreach ($groups as $p)
                                         <a class="dropdown-item" href="{{route('rekrut-change-potok',['id' => $rekrut->rid,'potok' => $p->id])}}">{{$p->title}}</a>
-                                            
+
                                         @endforeach
                                         <a class="dropdown-item" href="#">
                                         </a>

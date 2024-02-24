@@ -7,9 +7,13 @@
    </div>
    <div class="row headbot">
       <div class="col-sm-12">
-         
+
          <div class="card-body">
-            
+            <div class="text-center">
+                <span>{{date('d.m.Y',strtotime($date1))}}</span>
+                <span>-</span>
+                <span>{{date('d.m.Y',strtotime($date2))}}</span>
+            </div>
             <div id="dtBasicExample1212"></div>
 
             <div class="table-responsive">

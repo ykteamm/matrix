@@ -452,7 +452,7 @@ class McShipment extends Component
                     'delivery_id' => $this->delivery_id,
                 ]);
 
-                $this->dispatchBrowserEvent('refresh-page');
+                $this->$this->dispatchBrowserEvent('refresh-page');('refresh-page');
 
         }else{
             $this->error = 1;

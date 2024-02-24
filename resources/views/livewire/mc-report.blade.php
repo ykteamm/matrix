@@ -9,12 +9,12 @@
         .allmcbg{
             background: rgb(142, 204, 245)
         }
-        
+
     </style>
     <div class="content container-fluid main-wrapper mt-5">
         <div class="row gold-box">
            @include('admin.components.logo')
-           <div class="card flex-fill"> 
+           <div class="card flex-fill">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped mb-0" id="dtBasicExample12333">
@@ -34,15 +34,79 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>fff</td>
-                                    <td>fff</td>
-                                    <td>fff</td>
-                                    <td>fff</td>
-                                    <td>fff</td>
-                                    <td>fff</td>
-                                    <td>fff</td>
-                                </tr>
+                                @foreach ($regions as $reg => $val)
+                                {{-- @php
+                                    $name = App\Models\Region::find($reg)->name;
+                                @endphp --}}
+                                    <tr data-toggle="collapse" data-target="#accordion{{$val->id}}" class="clickable">
+                                            <td>{{$val->name}}. {{$bron_olish[$val->id]}}</td>
+                                            <td>{{$val->name}}. {{$razgavor[$val->id]}}</td>
+                                            <td>4</td>
+                                            <td>4</td>
+                                            <td>4</td>
+                                            <td>4</td>
+                                            <td>{{$val->name}}. {{$otkaz[$val->id]}}</td>
+                                    </tr>
+
+                                    {{-- @if (isset($brons[$reg])) --}}
+                                    <div id="accordion{{$val->id}}" class="collapse">
+
+                                                <tr>
+                                                    <td>
+                                                        @if (isset($brons[$val->id]))
+                                                            @foreach ($brons[$val->id] as $d => $t)
+                                                                @php
+                                                                    $name = App\Models\Pharmacy::find($t->pharmacy_id)->name;
+                                                                @endphp
+                                                                <p>
+                                                                    {{$name}}. {{$t->bron_puli}}
+                                                                    <button wire:click="status1({{$t->id}})"> <i class="fas fa-arrow-right"></i> </button>
+                                                                    <button wire:click="status3({{$t->id}})"> <i class="fas fa-trash"></i> </button>
+                                                                </p>
+
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (isset($razgavor_brons[$val->id]))
+                                                            @foreach ($razgavor_brons[$val->id] as $d => $t)
+                                                                @php
+                                                                    $name = App\Models\Pharmacy::find($t->pharmacy_id)->name;
+                                                                @endphp
+                                                                <p>
+                                                                    {{$name}}. {{$t->bron_puli}}
+                                                                    <button wire:click="status0({{$t->id}})"> <i class="fas fa-arrow-left"></i> </button>
+                                                                    <button wire:click="status3({{$t->id}})"> <i class="fas fa-trash"></i> </button>
+                                                                </p>
+
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
+                                                    <td>5</td>
+                                                    <td>5</td>
+                                                    <td>5</td>
+                                                    <td>5</td>
+                                                    <td>
+                                                        @if (isset($otkaz_brons[$val->id]))
+                                                            @foreach ($otkaz_brons[$val->id] as $d => $t)
+                                                                @php
+                                                                    $name = App\Models\Pharmacy::find($t->pharmacy_id)->name;
+                                                                @endphp
+                                                                <p>
+                                                                    {{$name}}. {{$t->bron_puli}}
+                                                                    <button wire:click="status0({{$t->id}})"> <i class="fas fa-arrow-left"></i> </button>
+                                                                </p>
+
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                    </div>
+
+                                @endforeach
+
+
+
                             </tbody>
                         </table>
                     </div>
@@ -80,7 +144,7 @@
                                 </div>
                             </div>
                         </ul>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
