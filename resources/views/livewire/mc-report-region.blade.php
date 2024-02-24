@@ -104,7 +104,13 @@
                                                 @php
                                                     $yangi_qarz_yopildi[$item->id] += $yangi_kelgan_pul[$phr->id]??0;
                                                     $yangi_qarz_qoldi[$item->id] += $yangi_qolgan_pul[$phr->id]??0;
+
+                                                    // if($eski_qarz_yopildi[$phr->id]??0 <= 0)
+                                                    // {
+                                                    //     $eski_qarz_yopildi[$phr->id] = 0;
+                                                    // }
                                                     $eski_qarz_yopildi[$item->id] += $eski_kelgan_pul[$phr->id]??0;
+
                                                     $eski_qarz_qoldi[$item->id] += $eski_qolgan_pul[$phr->id]??0;
                                                     $otgan_oy_predoplata_bolgan[$item->id] += $otgan_oy_predoplata[$phr->id]??0;
                                                     $shu_oy_predoplata_bolgan[$item->id] += $shu_oy_predoplata[$phr->id]??0;

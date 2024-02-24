@@ -479,11 +479,15 @@ class WorkDayServices
     {
 
 
-            dd($this->user_id);
+
+
+
+            // dd($work_start);
             $date = $month.'-01';
 
             $date_begin = $this->getFirstDate($date);
             $date_end = $this->getLastDate($date);
+
             $month_sol = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
             ->whereDate('tg_productssold.created_at','>=',$date_begin)
@@ -530,6 +534,8 @@ class WorkDayServices
             ->get();
 
 
+
+
             $st = array(
                 'maosh' =>maosh($month_sol),
                 'summa' => $month_sol,
@@ -542,6 +548,85 @@ class WorkDayServices
                 'spec' => $specialty_id->specialty_id,
                 'money_premya' => $money_premya
             );
+
+            $ws = DB::table('tg_user')->where('id',$this->user_id)->first();
+
+            $work_start = $ws->work_start;
+
+            if(strtotime($date_begin) <= strtotime($work_start) && strtotime($work_start) <= strtotime($date_end))
+            {
+
+                $work_day = Shift::where('user_id',$this->user_id)->where('open_date','!=',NULL)
+                            ->whereDate('open_date','>=',$date_begin)
+                            ->whereDate('open_date','<=',$date_end)
+                            ->count('id');
+
+                            $day = $this->getWorkInMonth(date('m.Y',strtotime($date)));
+
+                            $add_array = json_decode($day->add_day);
+
+                            $work_day_in = $day->work_day - count($add_array);
+
+                $maosh = floor($work_day * 2000000 / $work_day_in);
+
+
+                $st = array(
+                    'maosh' =>$maosh,
+                    'summa' => $month_sol,
+                    'jarima' => $jarima,
+                    'time' => $time,
+                    'id' => $this->user_id,
+                    'name' => $names,
+                    'premya' => $premya,
+                    'shtraf' => 0,
+                    'spec' => $specialty_id->specialty_id,
+                    'money_premya' => $money_premya
+                );
+            }
+
+            $plus_date = date('Y-m-d',(strtotime ( '30 days' , strtotime ( $work_start ) ) ));
+
+
+            if(strtotime($date_begin) <= strtotime($plus_date) && strtotime($plus_date) <= strtotime($date_end))
+            {
+                $last_plus_date = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_begin ) ) ));
+
+                $ldate_begin = $this->getFirstDate($last_plus_date);
+                $ldate_end = $this->getLastDate($last_plus_date);
+
+                $work_day = Shift::where('user_id',$this->user_id)->where('open_date','!=',NULL)
+                            ->whereDate('open_date','>=',$ldate_begin)
+                            ->whereDate('open_date','<=',$ldate_end)
+                            ->count('id');
+
+
+                            $day = $this->getWorkInMonth(date('m.Y',strtotime($ldate_begin)));
+
+                            $add_array = json_decode($day->add_day);
+
+                            $work_day_in = $day->work_day - count($add_array);
+
+                $maosh = floor($work_day * 2000000 / $work_day_in);
+
+                $endi = floor((2000000 - $maosh) / (2000000/$work_day_in));
+
+                dd($endi);
+
+                $st = array(
+                    'maosh' =>$maosh,
+                    'summa' => $month_sol,
+                    'jarima' => $jarima,
+                    'time' => $time,
+                    'id' => $this->user_id,
+                    'name' => $names,
+                    'premya' => $premya,
+                    'shtraf' => 0,
+                    'spec' => $specialty_id->specialty_id,
+                    'money_premya' => $money_premya
+                );
+            }
+
+
 
         return $st;
 
