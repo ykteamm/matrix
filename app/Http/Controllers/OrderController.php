@@ -17,6 +17,7 @@ use App\Models\ProductSold;
 use App\Models\Region;
 use App\Models\Shift;
 use App\Models\Stock;
+use App\Models\Bron;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
@@ -80,6 +81,18 @@ class OrderController extends Controller
     public function report()
     {
         return view('order.report');
+    }
+
+    public function reportSave(Request $request)
+    {
+
+        $bron = new Bron;
+        $bron->bron_puli = $request->bron_puli;
+        $bron->pharmacy_id = $request->pharmacy_id;
+        $bron->date = $request->date;
+        $bron->save();
+
+        return redirect()->back();
     }
 
     public function reportRegion()

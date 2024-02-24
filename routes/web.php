@@ -560,6 +560,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('shipment', [OrderController::class, 'shipment'])->name('shipment');
     Route::get('money-coming', [OrderController::class, 'money'])->name('money-coming');
     Route::get('report', [OrderController::class, 'report'])->name('report');
+    Route::post('report-save', [OrderController::class, 'reportSave'])->name('report-save');
     Route::get('report-region', [OrderController::class, 'reportRegion'])->name('report-region');
     Route::get('mc-admin', [OrderController::class, 'mcAdmin']);
     Route::get('mc-admin-restore/{id}', [OrderController::class, 'mcOrderRestore'])->name('mc-admin-restore');

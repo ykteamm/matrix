@@ -127,14 +127,15 @@
                                         @if (Session::get('per_admin')['order_report'] == 'true')
 
                                         <li><a href="{{ route('orders') }}"><span>Buyurtmalar</span></a>
-                                        <li><a href="{{ route('warehouse') }}"><span>Sklad</span></a>
                                         <li><a href="{{ route('money-coming') }}"><span>Pul kelishi</span></a>
                                         {{-- <li><a href="{{ route('last.order') }}"><span>Eski buyurtmalar</span></a> --}}
-                                        <li><a href="{{ route('report') }}"><span>Hisobot 1</span></a>
-                                            <li><a href="{{ route('report-region') }}"><span>Hisobot Region</span></a>
-                                        <li><a href="{{ route('mc-pharmacy') }}"><span>Dorixonalar</span></a>
-                                        <li><a href="{{ route('mc-pharmacy-return-money') }}"><span>Pul qaytaish vaqtlari</span></a>
+                                        <li><a href="{{ route('report-region') }}"><span>Hisobot Region</span></a>
+                                        <li><a href="{{ route('report') }}"><span>Hisobot Bitrix</span></a>
+
+                                        {{-- <li><a href="{{ route('mc-pharmacy') }}"><span>Dorixonalar</span></a> --}}
+                                        {{-- <li><a href="{{ route('mc-pharmacy-return-money') }}"><span>Pul qaytaish vaqtlari</span></a> --}}
                                             <li><a href="{{ route('mc-change-price') }}"><span>Narxlar o'zgarishi</span></a>
+                                                <li><a href="{{ route('warehouse') }}"><span>Sklad</span></a>
 
                                         @endif
                                     @endisset
