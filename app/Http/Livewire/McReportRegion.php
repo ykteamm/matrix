@@ -60,11 +60,11 @@ class McReportRegion extends Component
         $this->all_regions = Region::all();
         $this->months = Calendar::where('id','>',24)->orderBy('id','ASC')->pluck('year_month');
 
-        $this->active_month = date('2023-11-01');
+        $this->active_month = date('2023-12-01');
 
         $this->active_region_id = Region::pluck('id')->toArray();
 
-        // $this->active_region_id = [17];
+        // $this->active_region_id = [13];
 
         $this->hisobotMonth($this->active_region_id,$this->active_month);
 

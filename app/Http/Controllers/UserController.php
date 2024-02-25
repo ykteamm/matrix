@@ -153,8 +153,8 @@ class UserController extends Controller
 
 
             foreach ($users as $id) {
-                $id = 533;
-                $month = '2024-01';
+                // $id = 533;
+                // $month = '2024-02';
                 $service = new WorkDayServices($id, $active);
                 $userData = $service->getMonthMaosh($month);
                 $reg['sum'] += ($userData['maosh'] - $userData['jarima']);

@@ -557,7 +557,7 @@ class WorkDayServices
             {
 
                 $work_day = Shift::where('user_id',$this->user_id)->where('open_date','!=',NULL)
-                            ->whereDate('open_date','>=',$date_begin)
+                            ->whereDate('open_date','>=',$work_start)
                             ->whereDate('open_date','<=',$date_end)
                             ->count('id');
 
@@ -578,7 +578,7 @@ class WorkDayServices
                     'id' => $this->user_id,
                     'name' => $names,
                     'premya' => $premya,
-                    'shtraf' => 0,
+                    'shtraf' => $shtraf,
                     'spec' => $specialty_id->specialty_id,
                     'money_premya' => $money_premya
                 );
@@ -591,16 +591,16 @@ class WorkDayServices
             {
                 $last_plus_date = date('Y-m-d',(strtotime ( '-1 month' , strtotime ( $date_begin ) ) ));
 
-                $ldate_begin = $this->getFirstDate($last_plus_date);
-                $ldate_end = $this->getLastDate($last_plus_date);
+                // $ldate_begin = $this->getFirstDate($last_plus_date);
+                // $ldate_end = $this->getLastDate($last_plus_date);
 
                 $work_day = Shift::where('user_id',$this->user_id)->where('open_date','!=',NULL)
-                            ->whereDate('open_date','>=',$ldate_begin)
-                            ->whereDate('open_date','<=',$ldate_end)
+                            ->whereDate('open_date','>=',$date_begin)
+                            ->whereDate('open_date','<',$plus_date)
                             ->count('id');
 
 
-                            $day = $this->getWorkInMonth(date('m.Y',strtotime($ldate_begin)));
+                            $day = $this->getWorkInMonth(date('m.Y',strtotime($date_begin)));
 
                             $add_array = json_decode($day->add_day);
 
@@ -608,12 +608,23 @@ class WorkDayServices
 
                 $maosh = floor($work_day * 2000000 / $work_day_in);
 
-                $endi = floor((2000000 - $maosh) / (2000000/$work_day_in));
+                $month_sol = DB::table('tg_productssold')
+                ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
+                ->whereDate('tg_productssold.created_at','>=',$plus_date)
+                ->whereDate('tg_productssold.created_at','<=',$date_end)
+                ->where('tg_productssold.user_id',$this->user_id)
+                ->get()[0]->allprice;
 
-                dd($endi);
+                if($month_sol == NULL)
+                {
+                    $month_sol = 0;
+                }
+
+                $oylik = floor(maosh($month_sol) + $maosh);
+
 
                 $st = array(
-                    'maosh' =>$maosh,
+                    'maosh' =>$oylik,
                     'summa' => $month_sol,
                     'jarima' => $jarima,
                     'time' => $time,

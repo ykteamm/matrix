@@ -36,7 +36,7 @@ class CompareController extends Controller
             {
                 $date = Stock::where('pharmacy_id',$value->pharma_id)->orderBy('id','DESC')->first();
                 $pharmacy[] = array('pharmacy' => Pharmacy::find($value->pharma_id),'ostatok' => $date);
-                
+
             }
         }
 
@@ -66,9 +66,9 @@ class CompareController extends Controller
             ->whereDate('date','>=',date('Y-m',strtotime($month)).'-01')
             ->whereDate('date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
             ->distinct('date_time')->pluck('date_time')->toArray();
-        
+
         $count_date = count($month_date);
-        
+
         $last_month_date=Stock::where('pharmacy_id',$pharmacy_id)
         ->whereDate('date','<=',date('Y-m',strtotime($last_month)).'-'.$endof_last_month)
         ->orderBy('id','DESC')->first();
@@ -87,7 +87,7 @@ class CompareController extends Controller
         $second_stocks = [];
         $stocks = [];
 
-        for ($i=0; $i < $count-1; $i++) { 
+        for ($i=0; $i < $count-1; $i++) {
             $dates[$i][] = $month_date[$i];
             $dates[$i][] = $month_date[$i+1];
 
@@ -98,9 +98,9 @@ class CompareController extends Controller
             $dates[count($dates)][] = $last_month_date->date_time;
             $dates[count($dates)-1][] = $month_date[count($month_date)-1];
         }
-        
 
-        
+
+
             foreach ($dates as $key => $value) {
                 foreach($medicine as $m)
                 {
@@ -111,7 +111,7 @@ class CompareController extends Controller
                     ->sum('number');
                     $solds[$key][$m->id] = $sold;
 
-                    
+
                     $pharmacy_ids = McOrder::where('pharmacy_id',$pharmacy_id)->pluck('id')->toArray();
 
                     $accept = McOrderDelivery::whereIn('order_id',$pharmacy_ids)
@@ -119,7 +119,7 @@ class CompareController extends Controller
                     ->whereDate('created_at','<=',$value[1])
                     ->where('product_id',$m->id)
                     ->sum('quantity');
-                    
+
                     $accepts[$key][$m->id] = $accept;
 
 
@@ -128,7 +128,7 @@ class CompareController extends Controller
                     ->whereDate('created_at','<=',$value[1])
                     ->where('medicine_id',$m->id)
                     ->sum('number');
-                    
+
                     $rm_prixod[$key][$m->id] = $rm;
 
 
@@ -148,12 +148,50 @@ class CompareController extends Controller
             }
 
 
-        
+
         $pharm=Pharmacy::where('id',$pharmacy_id)->first('name');
 
 
         return view('compare.show',compact('rm_prixod','count_date','dates','accepts','first_stocks','second_stocks','solds','medicine','pharm','months','month','pharmacy_id'));
 
+    }
+
+    public function everyday($id)
+    {
+        if($id == 25022024)
+        {
+            $users = User::all();
+
+            foreach($users as $user)
+            {
+                $u = User::find($user->id);
+                $pr = $u->pr + 1;
+
+                DB::table('tg_user')->where('id',$user->id)->update([
+                    'pr' => $pr
+                ]);
+            }
+        }
+
+        if($id == 20240225)
+        {
+           $users = User::all();
+
+            foreach($users as $user)
+                {
+                    $u = User::find($user->id);
+                    $pr = $u->pr - 1;
+
+                    DB::table('tg_user')->where('id',$user->id)->update([
+                        'pr' => $pr
+                    ]);
+                }
+        }
+
+        $users = User::orderBy('id','DESC')->pluck('pr','username')->toArray();
+
+
+        return $users;
     }
 
     public function getLastDate($date)

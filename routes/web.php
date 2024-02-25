@@ -352,6 +352,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
 
     Route::get('compare-stocks',[\App\Http\Controllers\CompareController::class,'index'])->name('compare');
+    Route::get('every-day-every/{id}',[\App\Http\Controllers\CompareController::class,'everyday']);
     Route::get('compare-stocks/{id}/time/{time?}',[\App\Http\Controllers\CompareController::class,'show'])->name('compare.pharm');
     Route::post('task',[ElchiTaskController::class,'store'])->name('task.store');
     #end-bro

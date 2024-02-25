@@ -20,6 +20,9 @@
                     <a href="{{route('mc-money-month',['begin' => '2023-12-01','end' => '2023-12-31'])}}">
                         <button class="btn btn-primary">Dekabr</button>
                     </a>
+                    <a href="{{route('mc-money-month',['begin' => '2024-01-01','end' => '2024-01-31'])}}">
+                        <button class="btn btn-primary">Yanvar</button>
+                    </a>
                     <a href="{{route('money-coming')}}">
                         <button class="btn btn-primary">Jami</button>
                     </a>

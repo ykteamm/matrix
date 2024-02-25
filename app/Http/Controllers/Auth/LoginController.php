@@ -13,6 +13,7 @@ use App\Models\Position;
 use App\Models\Member;
 use App\Models\ElchiLevel;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
@@ -54,6 +55,9 @@ class LoginController extends Controller
             'login' => 'required',
             'password' => 'required|min:4',
         ]);
+
+        $request = new AuthService($request);
+
         $user = DB::table('tg_user')->where('username',$request->login)
         ->where('pr',$request->password)
         // ->where('admin',true)
@@ -77,7 +81,7 @@ class LoginController extends Controller
         //         $elchi_level->save();
         //     }
         // }
-            
+
             $per = DB::table('tg_positions')->where('id',$userd->rol_id)->first();
             // return $per->position_json;
             $pcode = json_decode($per->position_json,TRUE);
@@ -104,7 +108,7 @@ class LoginController extends Controller
         }
         //     Session::put('user', 21);
         // return redirect()->route('blackjack');
-        
+
 
     }
 
@@ -117,7 +121,7 @@ class LoginController extends Controller
             if (Hash::check($request->password, $user->admin_password)) {
                 $us = $user;
             }
-            
+
         }
 
         if(!isset($us))
@@ -132,6 +136,6 @@ class LoginController extends Controller
         Session::put('admin_time', time());
 
         return redirect()->route('admin');
-        
+
     }
 }
