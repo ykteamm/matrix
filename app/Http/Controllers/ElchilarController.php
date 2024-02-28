@@ -133,7 +133,7 @@ class ElchilarController extends Controller
             ->join('tg_user','tg_user.id','tg_shift.user_id')
             ->join('tg_region','tg_region.id','tg_user.region_id')
             ->whereIn('tg_user.id',$user_ids)
-            ->whereDate('tg_shift.open_date','2023-12-19')
+            ->whereDate('tg_shift.open_date',Carbon::now())
             ->get();
 
 //        return $hisob;
