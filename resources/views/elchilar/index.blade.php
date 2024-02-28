@@ -127,7 +127,6 @@
                 style="height: 85vh; overflow-y: scroll">
                 <table class="table mb-0 table-striped ">
                     <thead class="ddth">
-
                         <tr style="position: sticky;z-index: 1000; top:0vh; color: white"
                             onmouseover="$(this).css('cursor','pointer')"; onmouseleave="$(this).css('color','black');"
                             class="asd bg-success tr">
@@ -192,6 +191,7 @@
                             {{--                    <th class="text-right">Action </th> --}}
                         </tr>
                     </thead>
+
                     <tbody class="dd">
                         <tr style="position: sticky;z-index: 1000; top:76vh; color: white" class="bg-success tr">
                             <td>{{ 00 }}</td>
@@ -279,7 +279,10 @@
                         </tr>
                         @php $t=0; @endphp
                         @foreach ($elchi as $key => $item)
+                            @php $user = true @endphp
+                            @foreach($hisob as $ids)
                             @if (true)
+                                @if($item->id == $ids->user_id)
                                 <tr id="{{ $item->id }}"
                                     class="tr tr{{ $item->v_id }} gsh{{ $item->side }} vil{{ $item->v_id }}"
                                     onmouseover="$(this).css('cursor','pointer') ">
@@ -292,21 +295,21 @@
                                         @endif
                                     </td>
                                     <td class="p-0">{{ $item->v_name }} </td>
-                                    <td class='
-                                    {{-- clickable-row  --}}
-                                    fixed p-0'
-                                        {{-- data-href='{{ route('elchi', ['id' => $item->id, 'time' => 'today']) }}' --}}
-                                        >
-                                        <div class="testtest mb-1" onclick="livewire.emit('for_kunlikmodal',{{$item->id}});" data-toggle="modal" data-target="#kunlikmodal">
-                                            <strong>
-                                                <img class="mr-2 mb-1" src="{{ $item->image_url }}"
-                                                    style="border-radius:50%" height="20px"> {{ $item->last_name }}
-                                                {{ $item->first_name }} ( Elchi )
-                                            </strong>
-                                        </div>
-                                        <div class="mt-1">
-                                        </div>
-                                    </td>
+                                        <td class='
+                                        {{-- clickable-row  --}}
+                                        fixed p-0'
+                                            {{-- data-href='{{ route('elchi', ['id' => $item->id, 'time' => 'today']) }}' --}}
+                                             style="background: rgba(62,245,62,0.9); color: white">
+                                            <div class="testtest mb-1" onclick="livewire.emit('for_kunlikmodal',{{$item->id}});" data-toggle="modal" data-target="#kunlikmodal">
+                                                <strong>
+                                                    <img class="mr-2 mb-1" src="{{ $item->image_url }}"
+                                                        style="border-radius:50%" height="20px"> {{ $item->last_name }}
+                                                    {{ $item->first_name }} ( Elchi )
+                                                </strong>
+                                            </div>
+                                            <div class="mt-1">
+                                            </div>
+                                        </td>
                                     <td class="fixed p-0">
                                         @if ($item->sid == 9)
                                             <span class="badge badge-danger">Provizor</span>
@@ -523,8 +526,259 @@
                                         @endphp
                                     @endforeach
                                 </tr>
+                                    @php
+                                        $user = false;
+                                        $t++;
+                                    @endphp
+                                @endif
+                            @endif
+                            @endforeach
+                            @if($user == true)
+                                <tr id="{{ $item->id }}"
+                                    class="tr tr{{ $item->v_id }} gsh{{ $item->side }} vil{{ $item->v_id }}"
+                                    onmouseover="$(this).css('cursor','pointer') ">
+                                    <td class="p-0" onclick="myf({{ $item->id }})">{{ $t + 1 }} </td>
+                                    <td class="p-0" onclick="myf({{ $item->id }})">
+                                        @if ($item->side == 2)
+                                            Sharq
+                                        @else
+                                            G‘arb
+                                        @endif
+                                    </td>
+                                    <td class="p-0">{{ $item->v_name }} </td>
+                                    <td class='
+                                        {{-- clickable-row  --}}
+                                        fixed p-0'
+                                        {{-- data-href='{{ route('elchi', ['id' => $item->id, 'time' => 'today']) }}' --}}
+                                    >
+                                        <div class="testtest mb-1" onclick="livewire.emit('for_kunlikmodal',{{$item->id}});" data-toggle="modal" data-target="#kunlikmodal">
+                                            <strong>
+                                                <img class="mr-2 mb-1" src="{{ $item->image_url }}"
+                                                     style="border-radius:50%" height="20px"> {{ $item->last_name }}
+                                                {{ $item->first_name }} ( Elchi )
+                                            </strong>
+                                        </div>
+                                        <div class="mt-1">
+                                        </div>
+                                    </td>
+                                    <td class="fixed p-0">
+                                        @if ($item->sid == 9)
+                                            <span class="badge badge-danger">Provizor</span>
+                                        @else
+                                            @if ($item->status == 1)
+                                                <span class="badge badge-primary">Elchi</span>
+                                            @else
+                                                <span class="badge badge-warning">Yangi elchi</span>
+                                            @endif
+                                        @endif
 
+                                    </td>
+                                    <td class="fixed p-0">
+                                        @php
+                                            $date_joined = strtotime($item->date_joined);
+                                            $work_start = strtotime($item->date_joined);
+                                            $d26 = strtotime(date('2021-04-26'));
+                                        @endphp
+                                        @if ($date_joined < $d26)
+                                            <span
+                                                class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->date_joined)) }}
+                                            </span>
+                                        @else
+                                            @if($item->work_start != null)
+                                                <span
+                                                    class="badge bg-primary-light">{{ date('d.m.Y', strtotime($item->work_start)) }}
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="badge bg-primary-light">-
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </td>
+
+                                    <td class="fixed p-0">
+                                        @if (count($item->pharmacy) == 0)
+                                            Aptekasi yoq
+                                        @else
+                                            @if (isset($encane[$item->id]) && count($encane[$item->id]) > 0)
+                                                @foreach ($encane[$item->id] as $items)
+                                                    <p class="mb-0"> {{ $items->name }}
+                                                        ({{ number_format($items->allprice, '0', ',', '.') }})
+                                                    </p>
+                                                @endforeach
+                                            @else
+                                                Savdo qilmagan
+                                            @endif
+                                        @endif
+
+                                    </td>
+                                    <td class="yashir p-0 text-center"><span class="text-center">
+                                        @if (isset($average[$item->id]))
+                                                {{ number_format($average[$item->id], '0', ',', '.') }}
+                                            @else
+                                                0
+                                            @endif
+                                    </span> </td>
+                                    <td class="yashir p-0 text-center"><span class="text-center">
+                                            @if (isset($day_work[$item->id]))
+                                                {{ $day_work[$item->id] }}
+                                            @else
+                                                0
+                                            @endif
+                                        </span> </td>
+                                    <td class="yashir p-0 text-center kunlik-shox"><span class="text-center">
+                                            @if (isset($king_sold[$item->id]))
+                                                {{ $king_sold[$item->id] }}
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
+                                    </td>
+
+                                    <td class="yashir p-0 text-center d-none oylik-shox"><span class="text-center">
+                                        @if (isset($king_sold_month[$item->id]))
+                                                {{ $king_sold_month[$item->id] }}
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td class="yashir p-0 text-center"><span class="text-center">
+                                        @if (isset($best_month[$item->id]))
+                                                {{$best_month[$item->id][0]['bestsum']}}
+                                                @if($best_month[$item->id][0]['date'] != 0)
+                                                    <p><span class="badge badge-info">
+                                                {{$best_month[$item->id][0]['date']}}
+                                            </span></p>
+                                                @endif
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
+                                    </td>
+                                    {{-- {{ dd($elchi_fact); }} --}}
+                                    <td class="yashir p-0"><span
+                                            class="badge bg-success-light">{{ number_format($plan_day[$item->id], 0, '', '.') }}</span>
+                                    </td>
+                                    @if (isset($elchi_fact[$item->id]))
+                                        <td class="yashir qizil p-0" name="{{ $elchi_fact[$item->id] }}"> <span
+                                                class="badge bg-warning-light">{{ number_format($elchi_fact[$item->id], 0, ',', ' ') }}</span>
+                                        </td>
+                                    @else
+                                        <td class="yashir qizil p-0" name="0"> <span
+                                                class="badge bg-warning-light">0</span></td>
+                                    @endif
+                                    <td class="yashir p-0"><span
+                                            class="badge bg-primary-light">{{ number_format($plan[$item->id], 0, '', '.') }}</span>
+                                    </td>
+                                    @if (isset($elchi_prognoz[$item->id]))
+                                        <td class="yashir p-0"> <span
+                                                class="badge bg-success-light">{{ number_format($elchi_prognoz[$item->id], 0, '', '.') }}</span>
+                                        </td>
+                                    @endif
+                                    @php
+                                        $i = 0;
+                                        $s = 0;
+                                        $arr = 0;
+                                    @endphp
+                                    @foreach ($days as $day)
+                                        @if ($i == 0 || $i == 7 || $i == 14 || $i == 21)
+                                            @if ($haftalik[$item->id][$s] == 0)
+                                                <td onclick="weeks({{ $s }})"
+                                                    class="week{{ $s }}  p-0 week hover{{ $s }}"
+                                                    onmouseover="$(`.hover{{ $s }}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
+                                                    onmouseleave="$(`.hover{{ $s }}`).css('background','white').css('color','black');"
+                                                    data-bs-toggle="tooltip"
+                                                    title="{{ $item->last_name }} {{ $item->first_name }}"><span
+                                                        class="week{{ $s }}">{{ number_format($haftalik[$item->id][$s], 0, '', '.') }}
+                                                    </span></td>
+                                            @else
+                                                <td onclick="weeks({{ $s }})"
+                                                    class="week{{ $s }} weeks{{ $i }}  p-0 week hover{{ $s }} "
+                                                    onmouseover="$(`.hover{{ $s }}`).css('background','yellow').css('cursor','pointer').css('color','blue');"
+                                                    onmouseleave="$(`.hover{{ $s }}`).css('background','white').css('color','black');"
+                                                    data-bs-toggle="tooltip"
+                                                    title="{{ $item->last_name }} {{ $item->first_name }}"><span
+                                                        class="week{{ $s }} badge bg-success-light">{{ number_format($haftalik[$item->id][$s], 0, '', '.') }}
+                                                    </span></td>
+                                            @endif
+                                        @endif
+
+
+                                        @if ($sold[$item->id][$i]['sold'] == 0)
+                                            <td style="display: none" onclick="days({{ $s }})"
+                                                class="days{{ $s }} p-0"
+                                                onmouseover="$(`.hover{{ $s }}`).css('cursor','pointer');"
+                                                data-bs-toggle="tooltip"
+                                                title="{{ $item->last_name }} {{ $item->first_name }}">
+                                                <span style="">
+                                                    <div>{{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}</div>
+                                                </span>
+                                                <div>
+                                                    @if($sold[$item->id][$i]['close'] != null )
+                                                        <span class="badge bg-warning-light">
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['rezerv_open']))}} -
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+                                                    </span>
+                                                    @else
+                                                        @if ($sold[$item->id][$i]['open'] == null)
+                                                            <span class="badge bg-danger-light">
+
+                                                            Ishda emas
+
+
+                                                        </span>
+                                                        @elseif($sold[$item->id][$i]['open'] == 1111)
+                                                            ---
+                                                        @else
+                                                            {{date('H:i',strtotime($sold[$item->id][$i]['open']))}}
+                                                            @if ($sold[$item->id][$i]['close'] == null)
+                                                                ---
+                                                            @else
+                                                                {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+
+                                                            @endif
+                                                        @endif
+                                                    @endif
+
+                                                </div>
+                                            </td>
+                                        @else
+                                            <td style="display: none;" onclick="days({{ $s }})"
+                                                class=" days{{ $s }} p-0"
+                                                onmouseover="$(`.hover{{ $s }}`).css('cursor','pointer');"
+                                                data-bs-toggle="tooltip"
+                                                title="{{ $item->last_name }} {{ $item->first_name }}">
+                                                <span class="days{{ $s }} badge bg-primary-light">
+                                                    {{ number_format($sold[$item->id][$i]['sold'], 0, '', '.') }}
+                                                </span>
+                                                <span style="
+                                                                background: rgb(17, 78, 139);
+                                                                padding: 3px 6px;
+                                                                font-size: 10px;
+                                                                color: white;
+                                                                border-radius: 5px;
+                                                                margin-left:4px;"
+                                                >{{ $sold[$item->id][$i]['hour'].".".$sold[$item->id][$i]['minute'] }}
+                                                </span>
+                                                <div>
+                                                    <span class="badge bg-warning-light">
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['open']))}} -
+                                                        {{date('H:i',strtotime($sold[$item->id][$i]['close']))}}
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        @endif
+                                        @php
+                                            $i++;
+                                            if ($i == 7 || $i == 14 || $i == 21) {
+                                                $s++;
+                                            }
+                                        @endphp
+                                    @endforeach
+                                </tr>
                                 @php
+                                    $user = true;
                                     $t++;
                                 @endphp
                             @endif
@@ -561,6 +815,7 @@
             <livewire:elchi-kunlik/>
         </div>
     </div>
+
     @section('admin_script')
         <script>
             function yangiEchilar() {

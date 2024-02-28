@@ -7,6 +7,7 @@ use App\Models\ProductSold;
 use App\Models\Shift;
 use App\Models\User;
 use App\Services\ElchilarService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +53,9 @@ class ElchilarController extends Controller
         $endofmonth = $this->service->endmonth($month, $months);
         $user_id = Session::get('user')->id;
         $data = $this->service->elchilar($month, $endofmonth, $user_id, $regions, $all_or_new, $side);
+
         $elchi = $data->elchi;
+//        return $elchi;
         $elchi_fact = $data->elchi_fact;
         $average = $data->average;
 
@@ -118,9 +121,24 @@ class ElchilarController extends Controller
             });
             $elchi = new Collection($elchi);
         }
+//        $a  = $elchi->count();
+//        return $a;
 
-        // return $sold;
 
-        return view('elchilar.index', compact('average_array','average','all_best_month','all_or_new', 'side', 'region', 'day_work', 'king_sold','king_sold_month','best_month', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
+        $user_ids = DB::table('tg_user')->pluck('id')->toArray();
+//        return $user_ids;
+
+        $hisob = DB::table('tg_shift')
+            ->select('tg_shift.*','tg_user.first_name','tg_user.last_name','tg_user.phone_number','tg_region.name','tg_user.username')
+            ->join('tg_user','tg_user.id','tg_shift.user_id')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->whereIn('tg_user.id',$user_ids)
+            ->whereDate('tg_shift.open_date','2023-12-19')
+            ->get();
+
+//        return $hisob;
+//         return $sold;
+
+        return view('elchilar.index', compact('hisob','average_array','average','all_best_month','all_or_new', 'side', 'region', 'day_work', 'king_sold','king_sold_month','best_month', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
     }
 }
