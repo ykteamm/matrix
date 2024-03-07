@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PlanWeek;
 use App\Models\ProductSold;
+use App\Models\Region;
 use App\Models\Shift;
 use App\Models\User;
 use App\Services\ElchilarService;
@@ -140,5 +141,21 @@ class ElchilarController extends Controller
 //         return $sold;
 
         return view('elchilar.index', compact('hisob','average_array','average','all_best_month','all_or_new', 'side', 'region', 'day_work', 'king_sold','king_sold_month','best_month', 'calendars', 'test', 'vil', 'total_haftalik', 'total_fact', 'total_prog', 'total_plan', 'total_planday', 'viloyatlar', 'tot_sold_day', 'years', 'endofmonth', 'month', 'elchi_prognoz', 'months', 'elchi', 'elchi_fact', 'plan', 'plan_day', 'encane', 'days', 'sold', 'haftalik', 'viloyatlar'));
+    }
+
+    public function NowWork()
+    {
+
+        $users = User::
+            select('tg_user.first_name','tg_user.last_name','tg_user.username','tg_user.status','tg_user.pr','tg_user.phone_number','tg_user.birthday','tg_region.name as region_name','tg_district.name as district_name')
+            ->join('tg_region','tg_region.id','tg_user.region_id')
+            ->join('tg_district','tg_district.id','tg_user.district_id')
+            ->whereIn('tg_user.status',[0,1,2])
+            ->get();
+
+//        return $users;
+
+        return view('elchilar.now_work',compact('users'));
+
     }
 }

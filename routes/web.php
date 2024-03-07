@@ -283,6 +283,7 @@ Route::middleware([LoginAuth::class])->group(function () {
     Route::get('plan/{id}/update-all', [PlanController::class,'updateAll'])->name('plan.update-all');
     Route::get('plan/show/{id}/{startday?}', [PlanController::class,'show'])->name('plan.show');
     Route::post('plan/{id}/update', [PlanController::class,'update'])->name('plan.update');
+    Route::get('now_work',[ElchilarController::class,'NowWork'])->name('now_work');
     Route::get('elchilar-kunlik/{month}', [ElchilarController::class,'kunlik'])->name('elchilar');
     Route::get('user-control', [UserController::class,'index'])->name('user-control');
     Route::get('user-register', [UserController::class,'userRegister'])->name('user-register');

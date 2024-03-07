@@ -86,6 +86,18 @@
                 @endif
             @endisset
 
+{{--            @isset(Session::get('per')['now_work'])--}}
+{{--               @if (Session::get('per')['now_work'] == 'true')--}}
+                  <div class="col-auto">
+                        <a href="{{ route('now_work')}}">
+                            <button class="btn btn-none-color">
+                                Hozir ishlayotganlar
+                            </button>
+                        </a>
+                  </div>
+{{--               @endif--}}
+{{--            @endisset--}}
+
             @isset(Session::get('per')['trend'])
                 @if (Session::get('per')['trend'] == 'true')
                     <div class="col-auto">
