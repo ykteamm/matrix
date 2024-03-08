@@ -399,6 +399,7 @@ Route::middleware([LoginAuth::class])->group(function () {
 
 //   Start Jamolar
 
+    Route::get('jamoalar-plan',[JamoalarController::class,'JamoalarPlan'])->name('jamoalar-plan');
     Route::get('jamoalar',[JamoalarController::class,'index'])->name('jamoalar');
     Route::post('create_jamoa',[JamoalarController::class,'CreateJamoa'])->name('create_jamoa');
     Route::delete('delete_jamoa/{id}',[JamoalarController::class,'DeleteJamoa'])->name('delete_jamoa');

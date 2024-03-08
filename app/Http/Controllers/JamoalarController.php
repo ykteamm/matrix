@@ -13,6 +13,67 @@ use Illuminate\Support\Facades\DB;
 
 class JamoalarController extends Controller
 {
+    public function JamoalarPlan()
+    {
+        $monday = date("Y-m-d", strtotime('monday this week'));
+        $sunday = date("Y-m-d", strtotime('sunday this week'));
+
+        $teachers_sales = DB::table('tg_jamoalar')
+            ->select(
+                'tg_user.first_name',
+                'tg_user.last_name',
+                'tg_user.id',
+            )
+            ->join('tg_user', 'tg_user.id', '=', 'tg_jamoalar.teacher_id')
+            ->distinct()
+            ->get();
+
+        foreach ($teachers_sales as $sales){
+            $members_savdo = DB::table('tg_user')
+                ->select(
+                    'tg_user.id as user_id',
+                    'tg_user.first_name',
+                    'tg_user.last_name',
+                    DB::raw('COALESCE(SUM(tg_productssold.number * tg_productssold.price_product), 0) as shogird_savdo')
+                )
+                ->leftJoin('tg_productssold', function ($join) use ($monday, $sunday) {
+                    $join->on('tg_user.id', '=', 'tg_productssold.user_id')
+                        ->whereDate('tg_productssold.created_at', '>=', $monday)
+                        ->whereDate('tg_productssold.created_at', '<=', $sunday);
+                })
+                ->whereIn('tg_user.id', function ($query) use ($sales) {
+                    $query->select('user_id')
+                        ->from('tg_jamoalar')
+                        ->where('teacher_id', $sales->id);
+                })
+                ->groupBy('tg_user.id', 'tg_user.first_name', 'tg_user.last_name')
+                ->get();
+
+            $check = DB::table('tg_productssold')
+                ->selectRaw('SUM(number * price_product) as total_savdo')
+                ->where('user_id', $sales->id)
+                ->whereDate('created_at', '>=', $monday)
+                ->whereDate('created_at', '<=', $sunday)
+                ->first();
+
+            $sales->total_savdo = $check->total_savdo ? $check->total_savdo : 0;
+            $sales->members_savdo = $members_savdo->map(function ($item) {
+                return [
+                    'user_id' => $item->user_id,
+                    'first_name' => $item->first_name,
+                    'last_name' => $item->last_name,
+                    'shogird_savdo' => $item->shogird_savdo,
+                ];
+            });
+        }
+
+//        return $teachers_sales;
+
+
+
+
+        return view('jamoalar.plan',compact('teachers_sales','monday','sunday'));
+    }
     public function index(){
 
         $teachers = Teacher::select('teachers.*', 'tg_user.first_name as user_first_name', 'tg_user.last_name as user_last_name')
