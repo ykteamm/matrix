@@ -20,7 +20,7 @@ $t_r = 1;
                                 <th>Telefon</th>
                                 <th>Username</th>
                                 <th>Parol</th>
-                                <th>Tug'ilgan kuni</th>
+                                <th>Yoshi</th>
                             </tr>
                             </thead>
                             <tbody>
