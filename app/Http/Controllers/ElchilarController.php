@@ -102,9 +102,11 @@ class ElchilarController extends Controller
 
         $plan = $item->plan;
 
+        $endofmonth1 = $this->service->endmonth($month, $months);
+
         $plan_day = $item->planday;
         $encane = $this->service->encane($elchi, $month);
-        $days = $this->service->checkCalendar($month, $endofmonth);
+        $days = $this->service->checkCalendar($month, $endofmonth1);
         $sold = $this->service->sold($elchi, $days);
 
 
