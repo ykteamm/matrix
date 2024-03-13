@@ -143,7 +143,7 @@ class UserController extends Controller
                 ->whereDate('tg_productssold.created_at','>=',$month.'-01')
                 ->whereDate('tg_productssold.created_at','<=',$last_date)
                 // ->where('tg_user.id', 108)
-                ->whereIn('tg_user.status', [0,1,2])
+                ->whereIn('tg_user.status', [0,1,2,4])
                 ->where('tg_region.id', $region->id)
                 ->join('tg_user','tg_user.id','tg_productssold.user_id')
                 ->join('tg_region','tg_region.id','tg_user.region_id')
