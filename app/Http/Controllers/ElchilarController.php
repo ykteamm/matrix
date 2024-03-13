@@ -57,6 +57,7 @@ class ElchilarController extends Controller
 //        $endofmonth = $this->service->endmonth($month, $months);
         $user_id = Session::get('user')->id;
 //        return $user_id;
+
         $startofmonth = Carbon::createFromFormat('Y-m-d', $month . '-01')
             ->firstOfMonth()
             ->format('Y-m-d');
@@ -116,10 +117,12 @@ class ElchilarController extends Controller
 
         // dd($sold);
 
+//        return $elchi_fact[79];
 
         $viloyatlar = $this->service->viloyatlar();
         $tot_sold_day = $this->service->day_sold($elchi, $days, $sold);
         $total_fact = $this->service->total_fact($elchi_fact);
+//        return $total_fact;
         $total_prog = $this->service->total_prog($elchi_prognoz);
         $total_plan = $this->service->total_plan($plan);
         $total_planday = $this->service->total_planday($plan_day);

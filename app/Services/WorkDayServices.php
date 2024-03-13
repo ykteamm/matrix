@@ -567,6 +567,7 @@ class WorkDayServices
                 $maosh = floor($work_day * 2000000 / $work_day_in);
 
 
+
                 $st = array(
                     'maosh' =>$maosh,
                     'summa' => $month_sol,
@@ -607,7 +608,7 @@ class WorkDayServices
 
                 $month_sol = DB::table('tg_productssold')
                 ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
-                ->whereDate('tg_productssold.created_at','>=',$plus_date)
+                ->whereDate('tg_productssold.created_at','>=',$date_begin)
                 ->whereDate('tg_productssold.created_at','<=',$date_end)
                 ->where('tg_productssold.user_id',$this->user_id)
                 ->get()[0]->allprice;

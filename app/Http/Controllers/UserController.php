@@ -156,6 +156,7 @@ class UserController extends Controller
                 // $id = 533;
                 // $month = '2024-02';
                 $service = new WorkDayServices($id, $active);
+//                return $service;
                 $userData = $service->getMonthMaosh($month);
                 $reg['sum'] += ($userData['maosh'] - $userData['jarima']);
                 $reg['users'][] = $userData;
@@ -164,6 +165,7 @@ class UserController extends Controller
 
 //            return $data;
         }
+//        return $data;
 //        return $data;
 //        $date = $month.'-01';
 //        $months = '2024-02';
