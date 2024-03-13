@@ -9,6 +9,7 @@ use App\Models\Shift;
 use App\Models\User;
 use App\Services\ElchilarService;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +18,10 @@ use Illuminate\Support\Facades\Session;
 class ElchilarController extends Controller
 {
     public $service;
+
     public function __construct(ElchilarService $service)
     {
+
         $this->service = $service;
     }
 
@@ -51,9 +54,23 @@ class ElchilarController extends Controller
         }
         $years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032];
         $months = $this->service->month();
-        $endofmonth = $this->service->endmonth($month, $months);
+//        $endofmonth = $this->service->endmonth($month, $months);
         $user_id = Session::get('user')->id;
-        $data = $this->service->elchilar($month, $endofmonth, $user_id, $regions, $all_or_new, $side);
+//        return $user_id;
+        $startofmonth = Carbon::createFromFormat('Y-m-d', $month . '-01')
+            ->firstOfMonth()
+            ->format('Y-m-d');
+
+        $endofmonth = Carbon::createFromFormat('Y-m-d', $month . '-01')
+            ->lastOfMonth()
+            ->format('Y-m-d');
+
+
+//        return $month;
+//        return $last_date;
+        $data = $this->service->elchilar($startofmonth, $endofmonth, $user_id, $regions, $all_or_new, $side);
+
+//        return $data;
 
         $elchi = $data->elchi;
 //        return $elchi;

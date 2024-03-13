@@ -478,15 +478,12 @@ class WorkDayServices
     public function getMonthMaosh($month)
     {
 
-
-
-
-
             // dd($work_start);
             $date = $month.'-01';
 
             $date_begin = $this->getFirstDate($date);
             $date_end = $this->getLastDate($date);
+
 
             $month_sol = DB::table('tg_productssold')
             ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')

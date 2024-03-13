@@ -161,9 +161,14 @@ class UserController extends Controller
                 $reg['users'][] = $userData;
             }
             $data[$region->name] = $reg;
+
+//            return $data;
         }
+//        return $data;
+//        $date = $month.'-01';
+//        $months = '2024-02';
 
-
+//        return $date;
         $yearMonths = Calendar::whereDate('created_at', '>=', '2023-02-24')->pluck('year_month')->toArray();
 
         // dd($data);

@@ -16,6 +16,7 @@ use App\Models\Team;
 use App\Models\PharmacyUser;
 use App\Models\Shift;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -35,8 +36,8 @@ class ElchilarService
         $yes_user_id = DB::table('tg_productssold')
                     ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice,tg_user.id')
                     ->where('tg_user.rm','!=',1)
-                    ->whereDate('tg_productssold.created_at','>=',date('Y-m',strtotime($month)).'-01')
-                    ->whereDate('tg_productssold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                    ->whereDate('tg_productssold.created_at','>=',$month)
+                    ->whereDate('tg_productssold.created_at','<=',$endofmonth)
                     ->join('tg_user','tg_user.id','tg_productssold.user_id')
                     ->groupBy('tg_user.id')->pluck('id')->toArray();
         // $yes_user_id = array_unique(array_merge($get_work_user,$sold_work_user));
@@ -182,8 +183,8 @@ class ElchilarService
             $s=DB::table('tg_productssold')
                 ->where('user_id',$value->id)
                 ->selectRaw('SUM(tg_productssold.number*tg_productssold.price_product) as all_price,user_id')
-                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->whereDate('created_at','>=',$month)
+                ->whereDate('created_at','<=',$endofmonth)
                 ->groupBy('user_id')
                 ->first();
 
@@ -249,8 +250,8 @@ class ElchilarService
         foreach($elchi as $elch)
         {
             $date = DB::table('tg_shift')
-                ->whereDate('open_date','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('open_date','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->whereDate('open_date','>=',$month)
+                ->whereDate('open_date','<=',$endofmonth)
                 ->where('active',2)
                 ->where('user_id',$elch->id)
                 ->orderBy('open_date','DESC')
@@ -275,11 +276,21 @@ class ElchilarService
 
                 $month_sol = DB::table('tg_productssold')
                 ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as allprice')
-                ->whereDate('tg_productssold.created_at','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('tg_productssold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->whereDate('tg_productssold.created_at','>=',$month)
+                ->whereDate('tg_productssold.created_at','<=',$endofmonth)
                 ->where('tg_productssold.user_id',$elch->id)
                 ->get()[0]->allprice;
 
+            $endOfMonth = new DateTime($endofmonth);
+            $kun = new DateTime($month);
+
+// Calculate the difference between the two dates
+            $interval = $endOfMonth->diff($kun);
+
+// Get the number of days
+            $days = $interval->days;
+
+//            return $days;
                 if($month_sol == NULL)
                 {
                     $month_sol = 0;
@@ -295,7 +306,7 @@ class ElchilarService
                     }
                     // $en = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->lastOfMonth()->format('d');
 
-                    $prog = floor(($month_sol*$endofmonth)/$st);
+                    $prog = floor(($month_sol * $days)/$st);
 
                     // $prog = ($month_sol*30)/14;
                 }
@@ -332,8 +343,8 @@ class ElchilarService
                 ->selectRaw('count(tg_king_sold.id) as count')
                 ->where('tg_king_sold.admin_check',1)
                 ->where('tg_user.id',$elch->id)
-                ->whereDate('tg_king_sold.created_at','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('tg_king_sold.created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->whereDate('tg_king_sold.created_at','>=',$month)
+                ->whereDate('tg_king_sold.created_at','<=',$endofmonth)
                 ->join('tg_order','tg_order.id','tg_king_sold.order_id')
                 ->join('tg_user','tg_user.id','tg_order.user_id')
                 ->get();
@@ -360,16 +371,16 @@ class ElchilarService
                 ->where('tg_shift.open_date','!=',null)
                 ->where('tg_shift.user_id',$elch->id)
                 ->where('tg_shift.pharma_id','!=',42)
-                ->whereDate('tg_shift.open_date','>=',$month.'-01')
-                ->whereDate('tg_shift.open_date','<',$month.'-'.$endofmonth)
+                ->whereDate('tg_shift.open_date','>=',$month)
+                ->whereDate('tg_shift.open_date','<',$endofmonth)
                 ->count();
 
                 $shift2 = DB::table('tg_smena')
                 ->selectRaw('count(tg_smena.id) as count')
                 ->where('tg_smena.smena',2)
                 ->where('tg_smena.user_id',$elch->id)
-                ->whereDate('tg_smena.created_at','>=',$month.'-01')
-                ->whereDate('tg_smena.created_at','<',$month.'-'.$endofmonth)
+                ->whereDate('tg_smena.created_at','>=',$month)
+                ->whereDate('tg_smena.created_at','<',$endofmonth)
                 ->get()[0]->count;
 
                 $work_d[$elch->id] = $shift+$shift2;
@@ -390,8 +401,8 @@ class ElchilarService
             $s=DB::table('tg_productssold')
                 ->where('user_id',$item->id)
                 ->selectRaw('SUM(tg_productssold.number*tg_productssold.price_product) as all_price,user_id')
-                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)
+                ->whereDate('created_at','>=',$month)
+                ->whereDate('created_at','<=',$endofmonth)
                 ->groupBy('user_id')
                 ->first();
 
@@ -578,8 +589,9 @@ class ElchilarService
             // $planday[$i]=$plan_sum[$i]/$cal->work_day$cal->work_day;
 
             $plans=DB::table('user_plans')->where('user_id',$item->id)
-                ->whereDate('created_at','>=',date('Y-m',strtotime($month)).'-01')
-                ->whereDate('created_at','<=',date('Y-m',strtotime($month)).'-'.$endofmonth)->get();
+                ->whereDate('created_at', '>=', date('Y-m-d', strtotime($month . '-01')))
+                ->whereDate('created_at', '<=', date('Y-m-t', strtotime($month)))
+                ->get();
             if(count($plans) > 0)
             {
                 $plan_sum[$item->id] = $plans[0]->plan;
@@ -1134,7 +1146,7 @@ class ElchilarService
 
     public function total_fact($fact)
     {
-        $tot_fact=0;
+        $tot_fact = 0;
         foreach ($fact as $item){
             $tot_fact+=$item;
         }
