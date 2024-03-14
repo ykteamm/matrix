@@ -161,11 +161,12 @@ class LMSController extends Controller
                 'callback_url' => 'http://0000.uz/test.php'
             ]);
 
+            $today =   date("Y-m-d");
             DailyWork::create([
                 'user_id' => $new,
                 'start_work' => $data['start_work'],
                 'finish_work' => $data['end_work'],
-                'start' => '2023-03-15'
+                'start' => $today
             ]);
             PharmacyUser::create([
                 'user_id' => $new,
