@@ -33,13 +33,13 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <button
-                                                            class="btn @if ($user->onemonthago > 15000000) btn-success @else btn-danger @endif">
+                                                            class="btn @if ($user->onemonthago > 10000000) btn-success @else btn-danger @endif">
                                                             {{ number_format($user->onemonthago, 0, ',', ' ') }}
                                                         </button>
                                                     </td>
                                                     <td class="text-center">
                                                         <button
-                                                            class="btn @if ($user->twomonthago > 15000000) btn-success @else btn-danger @endif">
+                                                            class="btn @if ($user->twomonthago > 10000000) btn-success @else btn-danger @endif">
                                                             {{ number_format($user->twomonthago, 0, ',', ' ') }}
                                                         </button>
                                                     </td>
@@ -88,18 +88,18 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <button
-                                                        class="btn @if ($user->onemonthago > 15000000) btn-success @else btn-danger @endif">
+                                                        class="btn @if ($user->onemonthago > 10000000) btn-success @else btn-danger @endif">
                                                         {{ number_format($user->onemonthago, 0, ',', ' ') }}
                                                     </button>
                                                 </td>
                                                 <td class="text-center">
                                                     <button
-                                                        class="btn @if ($user->twomonthago > 15000000) btn-success @else btn-danger @endif">
+                                                        class="btn @if ($user->twomonthago > 10000000) btn-success @else btn-danger @endif">
                                                         {{ number_format($user->twomonthago, 0, ',', ' ') }}
                                                     </button>
                                                 </td>
                                                 <td class="text-center">
-                                                    @if ($user->onemonthago < 15000000 && $user->twomonthago < 15000000)
+                                                    @if ($user->onemonthago < 10000000 && $user->twomonthago < 10000000)
                                                         <button class="btn btn-danger">Imkon berildi</button>
                                                     @else
                                                         <button class="btn btn-success">Yaxshi</button>
