@@ -158,8 +158,9 @@
                                         <p>Hozircha savdo yo'q</p>
                                     @else
                                         @foreach($jamoa['teacher_id'] as $total)
+                                            @php $totalsum = number_format($total['totalsum'], 0, '.', ' '); @endphp
                                             {{$total['date']}}<br>
-                                            {{ $total['totalsum'] }}
+                                            {{ $totalsum }}
                                         @endforeach
                                     @endif
                                     <br>
@@ -241,9 +242,10 @@
                                                     @else
                                                         @foreach($users['user_id'] as $total)
                                                             @if($total['totalsum'])
+                                                                @php $shogird_total_sum = number_format($total['totalsum'], 0, '.', ' '); @endphp
                                                                 Total
                                                                 <br>
-                                                                {{$total['totalsum']}}
+                                                                {{$shogird_total_sum}}
                                                             @else
                                                             @endif
                                                         @endforeach
@@ -372,7 +374,11 @@
                                                 @endforeach
                                             @endif
                                     @endforeach
-                                    {{$totalShoird + $totalTeacher}}
+                                    @php
+                                        $jamoa_total_sum = $totalShoird + $totalTeacher;
+                                        $jamoa_sum_all = number_format($jamoa_total_sum, 0, '.', ' ');
+                                    @endphp
+                                    {{$jamoa_sum_all}}
                                 </td>
                             </tr>
                         @endforeach
