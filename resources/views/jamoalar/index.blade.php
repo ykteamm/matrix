@@ -149,9 +149,11 @@
                         @foreach($jamoaUsers as $jamoa)
                             <tr>
     {{--                            @dd($jamoaUsers)--}}
-                                <td style="border: 1px solid">{{ $jamoa['id']}}</td>
                                 <td style="border: 1px solid">
-                                    {{$jamoa['first_name']}} {{$jamoa['last_name']}}
+                                    <a href="{{ route('jamoalar-report',['id' => $jamoa['id']]) }}">{{ $jamoa['id']}}</a>
+                                </td>
+                                <td style="border: 1px solid">
+                                    <a href="{{ route('jamoalar-report',['id' => $jamoa['id']]) }}">{{$jamoa['first_name']}} {{$jamoa['last_name']}}</a>
                                     <br><br>
                                     @if($jamoa['teacher_id'] == null)
     {{--                                    <p>{{date('Y-m-d')}}</p>--}}

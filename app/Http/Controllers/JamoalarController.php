@@ -354,4 +354,100 @@ class JamoalarController extends Controller
 //        return now();
 
     }
+
+
+
+    public function JamoalarReport($teacher_id)
+    {
+        $monday = date("Y-m-d", strtotime('monday this week'));
+        $sunday = date("Y-m-d", strtotime('sunday this week'));
+        $month_name = Carbon::now()->locale('uz_UZ')->monthName;
+
+//        return $month_name;
+
+        $first_day_month = date("Y-m-01");
+        $end_day_month = date("Y-m-t");
+
+        $teacher = DB::table('tg_user')->where('id',$teacher_id)->first();
+
+        $shogird = DB::table('tg_jamoalar')->where('teacher_id',$teacher_id)->pluck('user_id')->prepend($teacher_id);
+
+//        return $shogird;
+        $user_info = DB::table('tg_user')
+//            ->select('tg_user.id','tg_user.first_name','tg_user.last_name','tg_user.image_url','tg_user.region_id','tg_user.district_id')
+            ->selectRaw('
+                 tg_user.id,
+                 tg_user.first_name,
+                 tg_user.last_name,
+                 tg_user.image_url,
+                 tg_region.name as region_name,
+                 tg_district.name as district_name')
+            ->join('tg_region', 'tg_user.region_id', '=', 'tg_region.id')
+            ->join('tg_district', 'tg_user.district_id', '=', 'tg_district.id')
+            ->whereIn('tg_user.id',$shogird)
+            ->get();
+
+        $check_week = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as total_savdo,
+                 tg_user.first_name,
+                 tg_user.id,
+                 tg_user.last_name,
+                 tg_user.image_url,
+                 tg_region.name as region_name,
+                 tg_district.name as district_name')
+            ->whereIn('user_id', $shogird)
+            ->join('tg_user', 'tg_productssold.user_id', '=', 'tg_user.id')
+            ->join('tg_region', 'tg_user.region_id', '=', 'tg_region.id')
+            ->join('tg_district', 'tg_user.district_id', '=', 'tg_district.id')
+            ->whereDate('created_at', '>=', $monday)
+            ->whereDate('created_at', '<=', $sunday)
+            ->groupBy('tg_user.id','tg_region.name','tg_district.name')
+            ->get();
+
+        $check_month = DB::table('tg_productssold')
+            ->selectRaw('SUM(tg_productssold.number * tg_productssold.price_product) as total_savdo,
+                 tg_user.first_name,
+                 tg_user.id,
+                 tg_user.last_name,
+                 tg_user.image_url,
+                 tg_region.name as region_name,
+                 tg_district.name as district_name')
+            ->whereIn('user_id', $shogird)
+            ->join('tg_user', 'tg_productssold.user_id', '=', 'tg_user.id')
+            ->join('tg_region', 'tg_user.region_id', '=', 'tg_region.id')
+            ->join('tg_district', 'tg_user.district_id', '=', 'tg_district.id')
+            ->whereDate('created_at', '>=', $first_day_month)
+            ->whereDate('created_at', '<=', $end_day_month)
+            ->groupBy('tg_user.id','tg_region.name','tg_district.name')
+            ->get();
+
+
+//        return $check;
+
+        $users = [];
+        foreach ($user_info as $user) {
+            $users[$user->id] = (object) [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'region_name'=>$user->region_name,
+                'district_name'=>$user->district_name,
+                'image_url' => $user->image_url,
+                'week_total_savdo' => 0,
+                'month_total_savdo' => 0,
+            ];
+        }
+
+        foreach ($check_week as $week) {
+            $users[$week->id]->week_total_savdo = $week->total_savdo;
+        }
+
+        foreach ($check_month as $month) {
+            $users[$month->id]->month_total_savdo = $month->total_savdo;
+        }
+
+//        return $users;
+
+        return view('jamoalar.report',compact('users','monday','sunday','month_name','teacher'));
+    }
 }
